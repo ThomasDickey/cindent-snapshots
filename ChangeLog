@@ -6,6 +6,13 @@ new bugs in the 2.x version.  And it still does not fix the bugs that I have
 noticed myself in indent.  Perhaps the next maintainer of indent will know
 something about regression testing -T.Dickey 2002/4/7
 
+2002-04-26
+	+ refine check for inner_stmt, resetting p_l_follow only if the left
+	  curly-brace follows a left parenthesis or comma, as expected.
+
+	+ revert change for fake semicolon from 2002-04-14 (other changes
+	  yield the same effect).
+
 2002-04-23
 	+ modify logic for save_com so that a comment which follows a
 	  final right-parenthesis is not moved to a new line.  That keeps

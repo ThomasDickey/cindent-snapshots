@@ -869,7 +869,10 @@ indent (
 
 	  if (parser_state_tos->inner_stmt != 0
 	   && parser_state_tos->inner_stmt > parser_state_tos->paren_depth)
-	    parser_state_tos->inner_stmt = 0;
+	    {
+	      parser_state_tos->inner_stmt = 0;
+	      sp_sw = false;
+	    }
 
 	  /* check for end of if (...), or some such */
 	  if (sp_sw && (parser_state_tos->p_l_follow == 0))
@@ -1062,9 +1065,20 @@ indent (
 	     && parser_state_tos->inner_stmt > parser_state_tos->paren_depth)
 	      message(token_col(), "Nested inner statement");
 	    parser_state_tos->inner_stmt = parser_state_tos->paren_depth;
-	  }
-	  if (parser_state_tos->inner_stmt)
+
+	    /*
+	     * Reset, so we'll format statement fragments within the curly
+	     * braces.  But limit it to the following:
+	     *		foo({statement})
+	     *		foo(param,{statement})
+	     * Otherwise we'll get into trouble with things like
+	     *		foo(if(){something})
+	     * by splitting the line at odd points.
+	     */
+	    if (last_code == lparen
+	     || last_code == comma)
 	    parser_state_tos->p_l_follow = 0;
+	  }
 
 	  parser_state_tos->in_stmt = false;	/* dont indent the {} */
 	  if (!parser_state_tos->block_init)
@@ -1150,6 +1164,7 @@ indent (
 	  break;
 
 	case rbrace:		/* got a right curly-brace */
+#if 0
 	  if (parser_state_tos->last_token == rparen)
 	    {
 	      handle_semicolon( 0,
@@ -1160,6 +1175,7 @@ indent (
 				&scase,
 				&force_nl);
 	    }
+#endif
 	  /* semicolons can be omitted in declarations */
 	  if (parser_state_tos->p_stack[parser_state_tos->tos] == decl
 	      && !parser_state_tos->block_init)

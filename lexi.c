@@ -616,7 +616,7 @@ lexi (void)
     case '=':
       if (parser_state_tos->in_or_st &&
 	  parser_state_tos->last_token != cpp_operator)
-	parser_state_tos->block_init = 1;
+	parser_state_tos->block_init = true;
 
       if (*buf_ptr == '=')	/* == */
 	inc_token_len();
