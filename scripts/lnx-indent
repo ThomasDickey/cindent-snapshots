@@ -1,0 +1,59 @@
+#!/bin/sh
+# $Id: lnx-indent,v 1.1 2002/09/17 21:43:18 tom Exp $
+# Indent LYNX files.
+NOOP=no
+OPTS='
+-nbacc
+--blank-lines-after-declarations
+--blank-lines-after-procedures
+--braces-on-if-line
+--continue-at-parentheses
+--cuddle-else
+--dont-break-procedure-type
+--indent-level4
+--line-length80
+--no-space-after-casts
+--no-space-after-function-call-names
+--parameter-indentation4
+--swallow-optional-blank-lines
+-T BOOL
+-T BOOLEAN
+-T PRIVATE
+-T PUBLIC
+'
+for name in $*
+do
+	case $name in
+	-n)	NOOP=yes
+		OPTS="$OPTS -v"
+		;;
+	-*)
+		OPTS="$OPTS $name"
+		;;
+	*)
+		save="${name}".a$$
+		mv "$name" "$save"
+		cp "$save" "$name"
+		chmod u+w "$name"
+		${INDENT_PROG-indent} -npro $OPTS "$name"
+		if test $NOOP = yes ; then
+			if ! ( cmp -s "$name" $save )
+			then
+				diff -u $save "$name"
+			fi
+			mv "$save" "$name"
+			rm -f "${name}~"
+		else
+			if ( cmp -s "$name" "$save" )
+			then
+				echo "** unchanged $name"
+				rm -f "${name}" "${name}~"
+				mv "$save" "$name"
+			else
+				echo "** updated $name"
+				rm -f "$save"
+			fi
+		fi
+		;;
+	esac
+done
