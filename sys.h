@@ -21,6 +21,7 @@
 
 #ifdef DEBUG
 extern int debug;
+extern int exp_D;
 #endif
 
 #define INLINE

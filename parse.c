@@ -554,12 +554,18 @@ FUNCTION: Implements the reduce part of the parsing algorithm
 ALGORITHM: The following reductions are done.  Reductions are repeated until
    no more are possible.
 
-Old TOS		     New TOS <stmt> <stmt>	     <stmtl> <stmtl> <stmt>
-   <stmtl> do <stmt>		     dohead <dohead> <whilestmt>
-   <dostmt> if <stmt>		     "ifstmt" switch <stmt>	     <stmt>
-   decl <stmt>		     <stmt> "ifelse" <stmt>	     <stmt> for
-   <stmt>		     <stmt> while <stmt>		     <stmt>
-   "dostmt" while	     <stmt>
+   Old TOS                   New TOS
+   <stmt> <stmt>             <stmtl>
+   <stmtl> <stmt>            <stmtl>
+   do <stmt>                 dohead
+   <dohead> <whilestmt>      <dostmt>
+   if <stmt>                 "ifstmt"
+   switch <stmt>             <stmt>
+   decl <stmt>               <stmt>
+   "ifelse" <stmt>           <stmt>
+   for <stmt>                <stmt>
+   while <stmt>              <stmt>
+   "dostmt" while            <stmt>
 
 On each reduction, parser_state_tos->i_l_follow (the indentation for the
    following line) is set to the indentation level associated with the old
