@@ -56,7 +56,7 @@ infodir = ${prefix}/info
 
 SHELL =   /bin/sh
 SRC =	  indent.c io.c lexi.c parse.c comments.c args.c globs.c \
-	  backup.c memcpy.c
+	  backup.c memcpy.c memmove.c
 OBJ =	  indent.o io.o lexi.o parse.o comments.o args.o globs.o \
 	  backup.o @LIBOBJS@
 HEADERS = indent.h sys.h version.h backup.h
@@ -141,7 +141,7 @@ clean: mostlyclean
 
 # Delete all files created by configuring or building indent
 distclean: clean
-	rm -f makefile indent-*.tar* config.status
+	rm -f makefile indent-*.tar* config.status config.cache *.log
 	rm -rf indent-*
 
 # Clean up the .o files, leaving the man stuff

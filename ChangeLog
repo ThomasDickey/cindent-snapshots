@@ -1,3 +1,12 @@
+1999-06-09	Thomas Dickey
+
+        + suppress a blank line before #endif after a declaration, unless we're
+	  putting blanks around preprocessor lines anyway.
+
+	+ update the configure script (I was not able to build the original
+	  program on SunOS 4.1.3 because of the memmove reference).
+
+------------------------------------------------------------------------------
 1998-12-02    <jla@void.arceneaux.com>
 
 	* indent.c (need_chars): Changed this #define to an inline

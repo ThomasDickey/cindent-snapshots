@@ -26,6 +26,7 @@
 #if defined (HAVE_UNISTD_H)
 #include <unistd.h>
 #endif
+
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -1715,6 +1716,8 @@ indent (this_file)
 		  postfix_blankline_requested++;
 		  n_real_blanklines = 0;
 		}
+	      else
+	          prefix_blankline_requested = 0;
 	    }
 
 	  /* Normally, subsequent processing of the newline character

@@ -648,7 +648,7 @@ found:
 	    t = (char *) p->p_obj;
 	    do
 	      {
-		set_option (t, 0, 0);
+		set_option (t, (char *)0, 0);
 		/* advance to character following next NUL */
 		while (*t++);
 	      }
@@ -793,7 +793,7 @@ scan_profile (f)
       else if (i == EOF)
 	{
 	  if (this)
-	    set_option (this, 0, 1);
+	    set_option (this, (char *)0, 1);
 	  return;
 	}
     }

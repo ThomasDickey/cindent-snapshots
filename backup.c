@@ -60,8 +60,8 @@
 #else
 #include <fcntl.h>
 #endif
-#include <string.h>
 
+#include <string.h>
 
 #ifndef isascii
 #define ISDIGIT(c) (isdigit ((unsigned char) (c)))
@@ -73,26 +73,22 @@
 
 #include <sys/types.h>
 
-#ifdef DIRENT
-#include <dirent.h>
-#ifdef direct
-#undef direct
+#if HAVE_DIRENT_H
+# include <dirent.h>
+# define NAMLEN(dirent) strlen((dirent)->d_name)
+#else
+# define dirent direct
+# define NAMLEN(dirent) (dirent)->d_namlen
+# if HAVE_SYS_NDIR_H
+#  include <sys/ndir.h>
+# endif
+# if HAVE_SYS_DIR_H
+#  include <sys/dir.h>
+# endif
+# if HAVE_NDIR_H
+#  include <ndir.h>
+# endif
 #endif
-#define direct dirent
-#define NLENGTH(direct) (strlen((direct)->d_name))
-#else /* !DIRENT */
-#define NLENGTH(direct) ((direct)->d_namlen)
-#ifdef USG
-#ifdef SYSNDIR
-#include <sys/ndir.h>
-#else /* !SYSNDIR */
-#include <ndir.h>
-#endif /* !SYSNDIR */
-#else /* !USG */
-#include <sys/dir.h>
-#endif /* !USG */
-#endif /* !DIRENT */
-
 
 #if defined (_POSIX_VERSION)	/* Might be defined in unistd.h.  */
 /* POSIX does not require that the d_ino field be present, and some
@@ -178,7 +174,7 @@ highest_version (filename, dirname)
      char *filename, *dirname;
 {
   DIR *dirp;
-  struct direct *dp;
+  struct dirent *dp;
   int highest_version;
   int this_version;
   int file_name_length;
@@ -192,7 +188,7 @@ highest_version (filename, dirname)
 
   while ((dp = readdir (dirp)) != 0)
     {
-      if (!REAL_DIR_ENTRY (dp) || NLENGTH (dp) <= file_name_length + 2)
+      if (!REAL_DIR_ENTRY (dp) || NAMLEN (dp) <= file_name_length + 2)
 	continue;
 
       this_version = version_number (filename, dp->d_name, file_name_length);
