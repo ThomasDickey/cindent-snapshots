@@ -139,7 +139,10 @@ print_comment ()
       while (1)
 	{
 	  do
+	  {
 	    *e_com++ = *buf_ptr++;
+	    CHECK_COM_SIZE;
+	  }
 	  while (*buf_ptr != '*' && buf_ptr < buf_end);
 
 	  CHECK_COM_SIZE;

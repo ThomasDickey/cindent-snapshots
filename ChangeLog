@@ -1,3 +1,8 @@
+2000-01-12	Thomas Dickey
+
+	+ fix a buffer overflow when reading a comment with very long line
+	  (e.g., 2k).
+
 1999-06-09	Thomas Dickey
 
         + suppress a blank line before #endif after a declaration, unless we're
