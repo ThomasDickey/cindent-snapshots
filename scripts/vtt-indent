@@ -1,13 +1,15 @@
 #!/bin/sh
-# $Id: ncu-indent,v 1.9 2004/06/09 00:02:43 tom Exp $
+# $Id: vtt-indent,v 1.2 2004/07/25 15:13:47 tom Exp $
+# indent vttest
 NOOP=no
 OPTS='
+-c 17
 --blank-lines-after-procedures
 --braces-on-if-line
 --continuation-indentation0
 --continue-at-parentheses
 --cuddle-else
---indent-level4
+--indent-level2
 --leave-preprocessor-space
 --no-blank-lines-after-commas
 --no-blank-lines-after-declarations
@@ -15,26 +17,11 @@ OPTS='
 --procnames-start-lines
 --space-special-semicolon
 --swallow-optional-blank-lines
---tab-size8
+--tab-size2
 
--T NCURSES_EXPORT_VAR
--T SCREEN
--T TERMTYPE
--T attr_t
--T chtype
--T inline
-
--T BUFFER
--T CHARTYPE
 -T FILE
 -T GCC_NORETURN
--T LINE
--T MARK
--T RETSIGTYPE 
--T TBUFF
--T WINDOW
 -T size_t
--T va_list
 '
 for name in $*
 do
@@ -52,19 +39,15 @@ do
 		rm -f "$save" "$test"
 		mv "$name" "$save"
 		sed \
-			-e '/MODULE_ID(/s/)$/);/' \
 			-e 's,\<GCC_NORETURN;,;//GCC_NORETURN;,' \
-			-e 's,\(\<NCURSES_EXPORT_VAR\>\),//\1,' \
 			"$save" >"$test"
 		cp "$test" "$name"
 		chmod u+w "$name"
 		# ${INDENT_PROG-indent} --version
 		${INDENT_PROG-indent} -npro $OPTS "$name"
 		sed \
-			-e '/MODULE_ID(/s/);$/)/' \
 			-e 's,;[ 	]*//GCC_NORETURN;, GCC_NORETURN;,' \
-			-e 's,//\(\<NCURSES_EXPORT_VAR\>\),\1,' \
-			"$name" >"$test"
+			"$name" | expand -t 2 >"$test"
 		mv "$test" "$name"
 		rm -f "${name}~"
 		if test $NOOP = yes ; then
