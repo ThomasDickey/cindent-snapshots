@@ -1,5 +1,4 @@
 #!/bin/sh
-# $Id: lnx-indent,v 1.1 2002/09/17 21:43:18 tom Exp $
 # Indent LYNX files.
 NOOP=no
 OPTS='
@@ -12,14 +11,13 @@ OPTS='
 --dont-break-procedure-type
 --indent-level4
 --line-length80
---no-space-after-casts
 --no-space-after-function-call-names
 --parameter-indentation4
+--space-after-cast
+--space-special-semicolon
 --swallow-optional-blank-lines
 -T BOOL
 -T BOOLEAN
--T PRIVATE
--T PUBLIC
 '
 for name in $*
 do
