@@ -2,7 +2,6 @@
 # Indent LYNX files.
 NOOP=no
 OPTS='
--nbacc
 --blank-lines-after-declarations
 --blank-lines-after-procedures
 --braces-on-if-line
@@ -28,12 +27,13 @@ OPTS='
 -T FILE
 -T GCC_NORETURN 
 -T GCC_UNUSED 
+-T GLOBALREF 
 -T GroupDef 
 -T GroupDefList 
 -T HTAAFailReasonType 
 -T HTAAProt 
--T HTAAServer 
 -T HTAARealm 
+-T HTAAServer 
 -T HTAssoc 
 -T HTAssocList 
 -T HTAtom 
@@ -43,6 +43,7 @@ OPTS='
 -T HTChunk 
 -T HTConverter 
 -T HTFormat 
+-T HTLine 
 -T HTLinkType 
 -T HTList 
 -T HTParentAnchor 
@@ -51,6 +52,8 @@ OPTS='
 -T HTStream
 -T HTStyle 
 -T HTStyleChange 
+-T HTStyleSheet 
+-T HText 
 -T HyperDoc 
 -T InitResponseAPDU 
 -T Item 
@@ -79,6 +82,7 @@ OPTS='
 -T eServerType 
 -T pdu_type
 -T query_term 
+-nbacc
 '
 for name in $*
 do
@@ -89,12 +93,26 @@ do
 	-*)
 		OPTS="$OPTS $name"
 		;;
-	*)
+	*.[ch])
 		save="${name}".a$$
+		test="${name}".b$$
+		rm -f "$save" "$test"
 		mv "$name" "$save"
-		cp "$save" "$name"
+		sed \
+			-e '/MODULE_ID(/s/)$/);/' \
+			-e 's,;[ 	]*\<GCC_PRINTFLIKE,;//GCC_PRINTFLIKE,' \
+			-e 's,[ 	]*\<GCC_NORETURN;,;//GCC_NORETURN;,' \
+			"$save" >"$test"
+		cp "$test" "$name"
 		chmod u+w "$name"
 		${INDENT_PROG-indent} -npro $OPTS "$name"
+		sed \
+			-e '/MODULE_ID(/s/);$/)/' \
+			-e 's,;[ 	]*//GCC_NORETURN;, GCC_NORETURN;,' \
+			-e 's,;[ 	]*//GCC_PRINTFLIKE, GCC_PRINTFLIKE,' \
+			"$name" >"$test"
+		mv "$test" "$name"
+		rm -f "${name}~"
 		if test $NOOP = yes ; then
 			if ! ( cmp -s "$name" $save )
 			then
@@ -113,6 +131,9 @@ do
 				rm -f "$save"
 			fi
 		fi
+		;;
+	*)
+		echo "** ignored:   $name"
 		;;
 	esac
 done
