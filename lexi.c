@@ -88,9 +88,6 @@ char chartype[128] =
 #define MAX_HASH_VALUE 67
 /* maximum key range = 64, duplicates = 0 */
 
-#ifdef __GNUC__
-inline
-#endif
 static unsigned int
 hash (char *str, int unsigned len)
 {
@@ -114,13 +111,8 @@ hash (char *str, int unsigned len)
   return len + asso_values[(int) str[len - 1]] + asso_values[(int) str[0]];
 }
 
-#ifdef __GNUC__
-inline
-#endif
-struct templ*
-is_reserved (str, len)
-     char *str;
-     unsigned int len;
+static struct templ*
+is_reserved (char *str, unsigned len)
 {
   static struct templ wordlist[] =
     {
@@ -188,11 +180,8 @@ is_reserved (str, len)
   return 0;
 }
 
-
-extern int squest;
-
 enum codes
-lexi ()
+lexi (void)
 {
   int unary_delim;		/* this is set to 1 if the current token
 				   forces a following operator to be unary */
@@ -319,7 +308,7 @@ lexi ()
       last_code = ident;
 
       /* Check whether the token is a reserved word.  Use perfect hashing... */
-      p = is_reserved (token, token_end - token);
+      p = is_reserved (token, (unsigned) (token_end - token));
 
       if (!p && user_specials != 0)
 	{

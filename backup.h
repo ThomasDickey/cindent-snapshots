@@ -42,11 +42,11 @@ struct version_control_values
 /* Determine the value of `version_control' by looking in the
    environment variable "VERSION_CONTROL".  Defaults to
    numbered_existing. */
-extern enum backup_mode version_control_value ();
+extern enum backup_mode version_control_value (void);
 
 /* Initialize information used in determining backup filenames. */
-extern void initialize_backups ();
+extern void initialize_backups (void);
 
 /* Make a backup copy of FILE, taking into account version-control.
    See the description at the beginning of the file for details. */
-extern void make_backup ();
+extern void make_backup (struct file_buffer *);

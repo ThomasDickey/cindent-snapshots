@@ -32,7 +32,7 @@
 #include <stdlib.h>
 
 void
-usage ()
+usage (void)
 {
   fprintf (stderr, "usage: indent file [-o outfile ] [ options ]\n");
   fprintf (stderr, "       indent file1 file2 ... fileN [ options ]\n");
@@ -72,10 +72,10 @@ int break_comma;
 
 /* Round up P to be a multiple of SIZE. */
 #ifndef ROUND_UP
-#define ROUND_UP(p,size) (((unsigned long) (p) + (size) - 1) & ~((size) - 1))
+#define ROUND_UP(p,size) (((unsigned long) (p) + (size) - 1) & (unsigned long)( ~((size) - 1)))
 #endif
 
-static INLINE void
+static void
 need_chars (struct buf *bp, int needed)
 {
   int current_size = (bp->end - bp->ptr);
@@ -83,25 +83,12 @@ need_chars (struct buf *bp, int needed)
   if ((current_size + needed) >= bp->size)
     {
       bp->size = ROUND_UP (current_size + needed, 1024);
-      bp->ptr = xrealloc (bp->ptr, bp->size);
+      bp->ptr = xrealloc (bp->ptr, (unsigned) bp->size);
       if (bp->ptr == NULL)
 	fatal ("Ran out of memory");
       bp->end = bp->ptr + current_size;
     }
 }
-
-#if 0
-/* Insure that BUFSTRUC has at least REQ more chars left, if not extend it.
-      Note:  This may change bufstruc.ptr.  */
-#define need_chars(bufstruc, req) \
-  if ((bufstruc.end - bufstruc.ptr + (req)) >= bufstruc.size) \
-{\
-         int cur_chars = bufstruc.end - bufstruc.ptr;\
-         bufstruc.size *= 2;\
-         bufstruc.ptr = xrealloc (bufstruc.ptr,bufstruc.size);\
-         bufstruc.end = bufstruc.ptr + cur_chars;\
-}
-#endif
 
 /* True if there is an embedded comment on this code line */
 int embedded_comment_on_line;
@@ -120,26 +107,26 @@ int squest;
 
 #define CHECK_CODE_SIZE \
 	if (e_code >= l_code) { \
-	    int nsize = l_code-s_code+400; \
-	    codebuf = (char *) xrealloc (codebuf, nsize); \
-	    e_code = codebuf + (e_code-s_code) + 1; \
+	    unsigned nsize = (l_code - s_code + 400); \
+	    codebuf = xrealloc (codebuf, nsize); \
+	    e_code = codebuf + (e_code - s_code) + 1; \
 	    l_code = codebuf + nsize - 5; \
 	    s_code = codebuf + 1; \
 	}
 
 #define CHECK_LAB_SIZE \
 	if (e_lab >= l_lab) { \
-	    int nsize = l_lab-s_lab+400; \
-	    labbuf = (char *) xrealloc (labbuf, nsize); \
-	    e_lab = labbuf + (e_lab-s_lab) + 1; \
+	    unsigned nsize = (l_lab - s_lab + 400); \
+	    labbuf = xrealloc (labbuf, nsize); \
+	    e_lab = labbuf + (e_lab - s_lab) + 1; \
 	    l_lab = labbuf + nsize - 5; \
 	    s_lab = labbuf + 1; \
 	}
 
 /* Compute the length of the line we will be outputting. */
 
-INLINE int
-output_line_length ()
+static int
+output_line_length (void)
 {
   int lab_length = 0;
   int code_length = 0;
@@ -168,19 +155,14 @@ output_line_length ()
   return length;
 }
 
-extern void free ();
-extern void parse_lparen_in_decl ();
-extern void init_parser ();
-extern void print_comment ();
-
 /* Force a newline at this point in the output stream. */
 
 #define PARSE(token) if (parse (token) != total_success) \
                        file_exit_value = indent_error
 
-enum exit_values
-indent (this_file)
-     struct file_buffer *this_file;
+static enum exit_values
+indent (
+     struct file_buffer *this_file)
 {
   int i;
   enum codes hd_type;
@@ -438,17 +420,6 @@ indent (this_file)
 	      save_com.len++;
 	      buf_ptr = token;
 
-	      /* A total nightmare is created by trying to get the
-		 next token into this save buffer.  Rather than that,
-		 I've just backed up the buffer pointer to point
-		 at `token'. --jla 9/95 */
-#if 0
-	      for (t_ptr = token; t_ptr < token_end; ++t_ptr)
-		{
-		  need_chars (&save_com, token_end - token);
-		  *save_com.end++ = *t_ptr;
-		}
-#endif
 	      parser_state_tos->procname = "\0";
 	      parser_state_tos->procname_end = "\0";
 	      parser_state_tos->classname = "\0";
@@ -526,9 +497,6 @@ indent (this_file)
 	  (type_code != form_feed))
 	{
 	  if ((force_nl
-#if 0
-	       && (type_code != semicolon || (break_line && buf_break != NULL))
-#endif
 	       && (type_code != semicolon)
 	       && (type_code != lbrace || !btype_2)))
 	    {
@@ -714,9 +682,9 @@ indent (this_file)
 	      && *token == '('
 	      && parser_state_tos->tos <= 2)
 	    {
-	      /* this is a kluge to make sure that declarations will be
+	      /* this is a kludge to make sure that declarations will be
 	         aligned right if proc decl has an explicit type on it, i.e.
-	         "int a(x) {..." */
+	         "int a(x) {..." ("}" may be present) */
 	      parse_lparen_in_decl ();
 
 	      /* Turn off flag for structure decl or initialization.  */
@@ -725,8 +693,8 @@ indent (this_file)
 	  if (parser_state_tos->sizeof_keyword)
 	    parser_state_tos->sizeof_mask |= 1 << parser_state_tos->p_l_follow;
 
-	  /* The '(' that starts a cast can never be preceeded by an
-	     indentifier or decl.  */
+	  /* The '(' that starts a cast can never be preceded by an
+	     identifier or decl.  */
 	  if (parser_state_tos->last_token == decl
 	      || (parser_state_tos->last_token == ident
 		  && parser_state_tos->last_rw != rw_return))
@@ -777,11 +745,6 @@ indent (this_file)
 	    }
 	  *e_code++ = token[0];
 
-#if 0
-	  if (!parser_state_tos->cast_mask || cast_space)
-	    parser_state_tos->want_blank = true;
-#endif
-
 	  /* check for end of if (...), or some such */
 	  if (sp_sw && (parser_state_tos->p_l_follow == 0))
 	    {
@@ -815,12 +778,7 @@ indent (this_file)
 
 	case unary_op:		/* this could be any unary operation */
 	  
-	  if (parser_state_tos->want_blank
-#if 0
-	      /* Add space for C++ destructors. */
-	      || (parser_state_tos->last_token == doublecolon)
-#endif
-	    )
+	  if (parser_state_tos->want_blank)
 
 	    {
 	      buf_break = e_code;
@@ -989,27 +947,6 @@ indent (this_file)
 	     we aren't any more */
 	  parser_state_tos->in_decl = (parser_state_tos->dec_nest > 0);
 
-#if 0	/* Changed to allow "{}" inside parens, as when
-	   passed to a macro.  -jla */
-	  if ((!sp_sw || hd_type != forstmt)
-	      && parser_state_tos->p_l_follow > 0)
-	    {
-
-	      /* This should be true iff there were unbalanced parens in the
-	         stmt.  It is a bit complicated, because the semicolon might
-	         be in a for stmt */
-	      WARNING ("Unbalanced parens", 0, 0);
-	      parser_state_tos->p_l_follow = 0;
-	      if (sp_sw)
-		{		/* this is a check for a if, while, etc. with
-				   unbalanced parens */
-		  sp_sw = false;
-		  /* dont lose the if, or whatever */
-		  PARSE (hd_type);
-		}
-	    }
-#endif
-
 	  /* If we have a semicolon following an if, while, or for, and the
 	     user wants us to, we should insert a space (to show that there
 	     is a null statement there).  */
@@ -1031,7 +968,7 @@ indent (this_file)
 	    }
 	  break;
 
-	case lbrace:		/* got a '{' */
+	case lbrace:		/* got a left curly-brace */
 	  parser_state_tos->in_stmt = false;	/* dont indent the {} */
 	  if (!parser_state_tos->block_init)
 	    force_nl = true;	/* force other stuff on same line as '{' onto
@@ -1064,20 +1001,6 @@ indent (this_file)
 	  if (parser_state_tos->in_parameter_declaration)
 	    prefix_blankline_requested = 0;
 
-#if 0	/* Changed to allow "{}" inside parens, as when
-	   passed to a macro.  -jla */
-	  if (parser_state_tos->p_l_follow > 0)
-	    {			/* check for preceeding unbalanced parens */
-	      WARNING ("Unbalanced parens", 0, 0);
-	      parser_state_tos->p_l_follow = 0;
-	      if (sp_sw)
-		{		/* check for unclosed if, for, etc. */
-		  sp_sw = false;
-		  PARSE (hd_type);
-		  parser_state_tos->ind_level = parser_state_tos->i_l_follow;
-		}
-	    }
-#endif
 	  if (s_code == e_code)
 	    parser_state_tos->ind_stmt = false;	/* dont put extra indentation
 						   on line with '{' */
@@ -1104,11 +1027,6 @@ indent (this_file)
 							   indentation of
 							   comments */
 
-#if 0				/* Doesn't work currently. */
-	      if (blanklines_after_declarations_at_proctop
-		  && parser_state_tos->in_parameter_declaration)
-		postfix_blankline_requested = 1;
-#endif
 	      parser_state_tos->in_parameter_declaration = 0;
 	    }
 	  dec_ind = 0;
@@ -1138,16 +1056,6 @@ indent (this_file)
 	  if (parser_state_tos->p_stack[parser_state_tos->tos] == decl
 	      && !parser_state_tos->block_init)
 	    PARSE (semicolon);
-
-#if 0	/* Changed to allow "{}" inside parens, as when
-	   passed to a macro.  -jla */
-	  if (parser_state_tos->p_l_follow)
-	    {			/* check for unclosed if, for, else. */
-	      WARNING ("Unbalanced parens", 0, 0);
-	      parser_state_tos->p_l_follow = 0;
-	      sp_sw = false;
-	    }
-#endif
 
 	  parser_state_tos->just_saw_decl = 0;
 	  parser_state_tos->block_init_level--;
@@ -1187,15 +1095,6 @@ indent (this_file)
 		   && blanklines_after_procs
 		   && parser_state_tos->dec_nest <= 0)
 	    postfix_blankline_requested = 1;
-
-#if 0
-	  parser_state_tos->search_brace
-	    = (cuddle_else
-	       && parser_state_tos->p_stack[parser_state_tos->tos] == ifhead
-	       && (parser_state_tos->il[parser_state_tos->tos]
-		   >= parser_state_tos->ind_level));
-#endif
-
 	  break;
 
 	case swstmt:		/* got keyword "switch" */
@@ -1320,11 +1219,8 @@ indent (this_file)
 	    parser_state_tos->in_or_st = true;
 
 	  parser_state_tos->in_decl = parser_state_tos->decl_on_line = true;
-#if 0
-	  if (!parser_state_tos->in_or_st && parser_state_tos->dec_nest <= 0)
-#endif
-	    if (parser_state_tos->dec_nest <= 0)
-	      parser_state_tos->just_saw_decl = 2;
+	  if (parser_state_tos->dec_nest <= 0)
+	    parser_state_tos->just_saw_decl = 2;
 	  if (prefix_blankline_requested
 	      && (parser_state_tos->block_init != 0
 		  || parser_state_tos->block_init_level != -1
@@ -1552,7 +1448,7 @@ indent (this_file)
 		  }
 		need_chars (&save_com, com_end - com_start + 1);
 		strncpy (save_com.end, s_lab + com_start,
-			 com_end - com_start);
+			 (unsigned) (com_end - com_start));
 		save_com.end[com_end - com_start] = '\0';
 		save_com.end += com_end - com_start;
 		save_com.len += com_end - com_start;
@@ -1786,13 +1682,6 @@ indent (this_file)
     }				/* end of main while (1) loop */
 }
 
-
-extern void initialize_backups ();
-extern void reset_parser ();
-extern char *set_profile ();
-extern void set_defaults ();
-extern int set_option ();
-
 /* Points to current input file name */
 char *in_name = 0;
 
@@ -1816,9 +1705,7 @@ int debug;
 #endif
 
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main (int argc, char **argv)
 {
   int i;
   char *profile_pathname = 0;
@@ -2000,7 +1887,7 @@ main (argc, argv)
       exit_status = indent (current_input);
     }
 
-  exit (exit_status);
+  exit ((int)exit_status);
 
 #ifdef _WIN32
   return 0;

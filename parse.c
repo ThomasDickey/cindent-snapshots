@@ -25,7 +25,7 @@ struct parser_state *parser_state_tos;
 #define INITIAL_STACK_SIZE 2
 
 void
-init_parser ()
+init_parser (void)
 {
   parser_state_tos
   = (struct parser_state *) xmalloc (sizeof (struct parser_state));
@@ -55,7 +55,7 @@ init_parser ()
 }
 
 void
-reset_parser ()
+reset_parser (void)
 {
   parser_state_tos->next = 0;
   parser_state_tos->tos = 0;
@@ -133,7 +133,7 @@ reset_parser ()
    stack if necessary.  */
 
 int
-inc_pstack ()
+inc_pstack (void)
 {
   if (++parser_state_tos->tos >= parser_state_tos->p_stack_size)
     {
@@ -158,7 +158,7 @@ inc_pstack ()
 static char **debug_symbol_strings;
 
 void
-debug_init ()
+debug_init (void)
 {
   int size = ((int) period + 4) * sizeof (char *);
 
@@ -203,8 +203,8 @@ debug_init ()
 #endif
 
 enum exit_values
-parse (tk)
-     enum codes tk;		/* the code for the construct scanned */
+parse (
+     enum codes tk)		/* the code for the construct scanned */
 {
   int i;
   enum exit_values my_value = total_success;
@@ -433,9 +433,9 @@ parse (tk)
 	}
       break;
 
-      /* This is a fatal error which cases the program to exit. */
+      /* This is a fatal error which causes the program to exit. */
     default:
-      fatal ("Unknown code to parser", 0, 0);
+      fatal ("Unknown code to parser");
     }
 
   reduce ();			/* see if any reduction can be done */
@@ -492,7 +492,7 @@ HISTORY: initial coding 	November 1976	D A Willcox of CAC
 \*----------------------------------------------*/
 
 void
-reduce ()
+reduce (void)
 {
   int i;
 
@@ -581,8 +581,8 @@ reduce ()
    necessary to make sure that "int foo(), bar()" gets formatted correctly
    under -bc.  */
 
-INLINE void
-parse_lparen_in_decl ()
+void
+parse_lparen_in_decl (void)
 {
   inc_pstack ();
   parser_state_tos->p_stack[parser_state_tos->tos] = stmt;

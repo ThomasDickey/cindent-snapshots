@@ -176,7 +176,8 @@ extern char *token;
 extern char *token_end;
 
 /* Functions from lexi.c */
-extern enum codes lexi ();
+extern enum codes lexi (void);
+extern void addkey (char *, enum rwcodes);
 
 /* Used to keep track of buffers.  */
 struct buf
@@ -350,7 +351,8 @@ struct fstate
   char size;
   unsigned char allcaps;
 };
-char *chfont ();
+
+extern char *chfont (struct fstate *, struct fstate *, char *);
 
 extern struct fstate
   keywordf,			/* keyword font */
@@ -486,10 +488,10 @@ extern int else_endif_col;
 
 
 /* Declared in globs.c */
-extern char *xmalloc ();
-extern char *xrealloc ();
-extern void message ();
-extern void fatal ();
+extern char *xmalloc (unsigned);
+extern char *xrealloc (char *, unsigned);
+extern void message (char *, char *, ...);
+extern void fatal (char *, ...);
 
 /* Warning messages:  indent continues */
 #define WARNING(s,a,b) message ("Warning", s, a, b)
@@ -497,13 +499,31 @@ extern void fatal ();
 /* Error messages: indent stops processing the current file. */
 #define ERROR(s,a,b) message ("Error", s, a, b)
 
+/* Declared in args.c */
+extern char * set_profile (void);
+extern int set_option (char *, char *, int);
+extern void set_defaults (void);
+
+/* Declared in comment.c */
+extern void print_comment (void);
+
+/* Declared in indent.c */
+extern int squest;
+
+extern void usage (void);
+
 /* Declared in io.c */
-extern void fill_buffer ();
-extern void dump_line ();
-extern int current_column (), count_columns ();
-extern int compute_code_target (), compute_label_target ();
+extern int compute_code_target (void);
+extern int compute_label_target (void);
+extern int count_columns (int, char *, int);
+extern int current_column (void);
+extern void dump_line (void);
+extern void fill_buffer (void);
 
 /* Declared in parse.c */
-extern enum exit_values parse ();
-extern void reduce ();
-extern int inc_pstack ();
+extern enum exit_values parse (enum codes);
+extern int inc_pstack (void);
+extern void init_parser (void);
+extern void parse_lparen_in_decl (void);
+extern void reduce (void);
+extern void reset_parser (void);

@@ -23,9 +23,9 @@
 #define CHECK_COM_SIZE \
 	if (e_com >= l_com) \
           { \
-	    int nsize = l_com-s_com+400; \
+	    unsigned nsize = (l_com - s_com + 400); \
 	    combuf = (char *) xrealloc (combuf, nsize); \
-	    e_com = combuf + (e_com-s_com) + 1; \
+	    e_com = combuf + (e_com - s_com) + 1; \
 	    l_com = combuf + nsize - 5; \
 	    s_com = combuf + 1; \
 	  }
@@ -75,7 +75,7 @@ int out_coms;
    */
 
 void
-print_comment ()
+print_comment (void)
 {
   register int column, format;
   enum codes comment_type;
@@ -635,7 +635,7 @@ print_comment ()
 	 user specified -sc. */
       if (line_preamble)
 	{
-	  (void) memcpy (e_com, line_preamble, line_preamble_length);
+	  (void) memcpy (e_com, line_preamble, (unsigned) line_preamble_length);
 	  e_com += line_preamble_length;
 	  column = start_column + line_preamble_length;
 	}
@@ -653,7 +653,7 @@ print_comment ()
 	      save_ptr++;
 	      save_length--;
 	    }
-	  (void) memcpy (e_com, save_ptr, save_length);
+	  (void) memcpy (e_com, save_ptr, (unsigned) save_length);
 	  text_on_line = e_com;
 	  e_com += save_length;
 	  /* We only break if formatting, in which cases there

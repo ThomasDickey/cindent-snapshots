@@ -1,9 +1,23 @@
-2000-01-12	Thomas Dickey
+I started patching indent before 2.0 came out, sent my changes to the 2.0
+maintainer who neither acknowledged nor incorporated the fixes.  Post-2.0
+development of indent has not produced a version (through 2.2.7) which I
+find useful since most of the differences I see between their respective
+outputs are new bugs in the 2.x version.  Perhaps the next maintainer of
+indent will know something about regression testing -T.Dickey 2002/4/7
+
+2002-04-07
+
+	+ convert to ANSI C.
+
+	+ change message() output format to make it consistent with other
+	  applications such as 'grep', i.e., filename:linenumber:message
+
+2000-01-12
 
 	+ fix a buffer overflow when reading a comment with very long line
 	  (e.g., 2k).
 
-1999-06-09	Thomas Dickey
+1999-06-09
 
         + suppress a blank line before #endif after a declaration, unless we're
 	  putting blanks around preprocessor lines anyway.
@@ -56,7 +70,7 @@
 
 	* regression/TEST: added new test files bbb-test.c and
 	class-func.cc.
-	
+
 	* comments.c (print_comment): Use new variable
 	`comment_lines_count' to count lines in a boxed comment.  When
 	printing a boxed comment, set `parser_state_tos->com_col' to
@@ -170,7 +184,7 @@ Thu May 15 15:52:25 1997  Joseph Arceneaux  <jla@emptiness.arceneaux.com>
 	* lexi.c (lexi): When a keyword is found, check for new rwcodes
 	element rw_operator and if found return `operator'.
 	In default case, return `overloaded' if last token was `operator'.
-	
+
 Fri Apr 11 12:25:08 1997  Joseph Arceneaux  <jla@emptiness.arceneaux.com>
 
 	* indent.h (codes): New code `doublecolon'.
@@ -444,7 +458,7 @@ Mon Feb 21 16:55:43 1994  Joseph Arceneaux  (jla@geech.gnu.ai.mit.edu)
 	(main): New variable `exit_status' used to return final exit
 	value.
 	New variable `status' in for loop for checking return value of
-	`indent'.	
+	`indent'.
 	All calls to `exit' changed to use new enum values.
 
 Sun Feb 20 18:16:56 1994  Joseph Arceneaux  (jla@albert.gnu.ai.mit.edu)
@@ -1258,7 +1272,7 @@ Thu Jan 23 14:02:06 1992  Joseph Arceneaux  (jla at wombat.gnu.ai.mit.edu)
 	* indent.c (main):  On switch default when searching brace, added
 	explicit parens to 2nd if statment.
 	* indent_globs.h, io.c: Made variable `in_prog_size' unsigned.
-		 
+
 Wed Jan 15 11:59:35 1992  Joseph Arceneaux  (jla at hugo)
 
 	* args.c:  Accept "-gnu" option.

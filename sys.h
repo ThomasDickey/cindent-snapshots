@@ -23,11 +23,7 @@
 extern int debug;
 #endif
 
-#ifdef __GNUC__
-#define INLINE __inline__
-#else
 #define INLINE
-#endif
 
 #ifdef VMS
 # define ONE_DOT_PER_FILENAME 1
@@ -63,4 +59,5 @@ struct file_buffer
   char *data;
 };
 
-extern struct file_buffer *read_file (), *read_stdin ();
+extern struct file_buffer *read_file (char *);
+extern struct file_buffer *read_stdin (void);

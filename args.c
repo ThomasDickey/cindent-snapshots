@@ -35,9 +35,6 @@ int else_endif_col;
 
 extern char *in_name;
 
-char *getenv ();
-void usage ();
-
 /* profile types */
 enum profile
 {
@@ -498,11 +495,11 @@ struct long_option_conversion option_conversions[] =
    argument.  Compare the two, returning true if they are equal, and if they
    are equal set *START_PARAM to point to the argument in S2.  */
 
-INLINE static int
-eqin (s1, s2, start_param)
-     char *s1;
-     char *s2;
-     char **start_param;
+static int
+eqin (
+     char *s1,
+     char *s2,
+     char **start_param)
 {
   while (*s1)
     {
@@ -514,8 +511,8 @@ eqin (s1, s2, start_param)
 }
 
 /* Set the defaults. */
-INLINE void
-set_defaults ()
+void
+set_defaults (void)
 {
   struct pro *p;
 
@@ -533,9 +530,8 @@ static char *option_prefixes[] =
   0
 };
 
-INLINE static int
-option_prefix (arg)
-     char *arg;
+static int
+option_prefix (char *arg)
 {
   char **prefixes = option_prefixes;
   char *this_prefix, *argp;
@@ -567,9 +563,7 @@ extern void addkey (char *key, enum rwcodes val);
    Returns 1 if the option had a value, returns 0 otherwise. */
 
 int
-set_option (option, param, explicit)
-     char *option, *param;
-     int explicit;
+set_option (char *option, char *param, int explicit)
 {
   struct pro *p = pro;
   char *param_start;
@@ -638,7 +632,7 @@ found:
 	  exit (invocation_error);
 
 	case PRO_FUNCTION:
-	  ((void(*)()) p->p_obj) ();
+	  ((void(*)(void)) p->p_obj) ();
 	  break;
 
 	case PRO_SETTINGS:
@@ -715,8 +709,7 @@ found:
 /* Scan the options in the file F. */
 
 static void
-scan_profile (f)
-     FILE *f;
+scan_profile (FILE *f)
 {
   int i;
   char *p, *this, *next, *temp;
@@ -811,8 +804,6 @@ scan_profile (f)
 #define PROFILE_FORMAT "%s/%s"
 #endif
 
-extern void free ();
-
 /* set_profile looks for ./.indent.pro or $HOME/.indent.pro, in
    that order, and reads the options given in that file.  Return the
    path of the file read.
@@ -820,7 +811,7 @@ extern void free ();
    Note that as of version 1.3, indent only reads one file. */
 
 char *
-set_profile ()
+set_profile (void)
 {
   FILE *f;
   char *fname;
@@ -829,7 +820,7 @@ set_profile ()
 
   if ((f = fopen (INDENT_PROFILE, "r")) != NULL)
     {
-      int len = strlen (INDENT_PROFILE) + 3;
+      unsigned len = strlen (INDENT_PROFILE) + 3;
 
       scan_profile (f);
       (void) fclose (f);
