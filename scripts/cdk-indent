@@ -1,0 +1,50 @@
+#!/bin/sh
+# $Id: cdk-indent,v 1.1 2002/04/30 22:45:11 tom Exp $
+# Indent CDK files.
+# Seems to match the style except for struct-data and single-line cases (sigh).
+NOOP=no
+OPTS='
+--ignore-profile
+--brace-indent0
+--braces-after-if-line
+--dont-break-procedure-type
+--indent-level3
+--no-blank-lines-after-commas
+--no-space-after-casts
+'
+for name in $*
+do
+	case $name in
+	-n)	NOOP=yes
+		OPTS="$OPTS -v"
+		;;
+	-*)
+		OPTS="$OPTS $name"
+		;;
+	*)
+		save="${name}".a$$
+		mv "$name" "$save"
+		cp "$save" "$name"
+		chmod u+w "$name"
+		${INDENT_PROG-indent} -v $OPTS "$name"
+		if test $NOOP = yes ; then
+			if ! ( cmp -s "$name" $save )
+			then
+				diff -u $save "$name"
+			fi
+			mv "$save" "$name"
+			rm -f "${name}~"
+		else
+			if ( cmp -s "$name" "$save" )
+			then
+				echo "** unchanged $name"
+				rm -f "${name}" "${name}~"
+				mv "$save" "$name"
+			else
+				echo "** updated $name"
+				rm -f "$save"
+			fi
+		fi
+		;;
+	esac
+done
