@@ -1110,6 +1110,7 @@ indent (
 	  parser_state_tos->in_or_st = false;
 
 	  PARSE (lbrace);
+	  if (last_code != lparen)
 	  if (parser_state_tos->want_blank)	/* put a blank before left curly-brace if
 						   left curly-brace is not at start of
 						   line */
@@ -1782,6 +1783,7 @@ int max_input_files = 128;
 
 #ifdef DEBUG
 int debug = 1;
+int exp_D = 0;
 #endif
 
 int

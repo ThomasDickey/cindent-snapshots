@@ -189,6 +189,9 @@ struct pro
 /* Settings for original defaults */
 struct pro pro[] =
 {
+#ifdef DEBUG
+  {"D", PRO_BOOL, false, ON, &debug, &exp_D},
+#endif
   {"T", PRO_KEY, 0, ONOFF_NA, 0, &exp_T},
   {"bacc", PRO_BOOL, false, ON,
    &blanklines_around_conditional_compilation, &exp_bacc},
