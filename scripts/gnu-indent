@@ -1,0 +1,4 @@
+#!/bin/bash
+export INDENT_PROG=/usr/local/indent/bin/indent-2.2.7
+export INDENT_PROG=/usr/local/indent/bin/indent-2.0
+tst-indent $*

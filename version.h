@@ -7,6 +7,9 @@
     Berkeley code in Sept 1989.  This version extends up to 1.1.3.
 
     After many changes by jla, including the switch to making "-gnu"
-    the default, the version numbering was changed and 1.2 released. */
+    the default, the version numbering was changed and 1.2 released.
 
-#define VERSION_STRING "GNU indent 2.0 (20020421)"
+    The number after the base version is my patch date -TD
+*/
+
+#define VERSION_STRING "GNU indent 2.0-20020423"

@@ -1,24 +1,33 @@
 #!/bin/sh
+# $Id: ncu-indent,v 1.2 2002/04/23 22:41:15 tom Exp $
+OPTS=
 for name in $*
 do
-	A=${name}.a$$
-	B=${name}.b$$
-	rm -f $A $B
-	mv $name $A
-	sed -e '/MODULE_ID(/s/)$/);/' $A >$B
-	cp $B $name
-	chmod u+w $name
-	indent $name
-	if ( cmp -s $name $B )
-	then
-		echo '** unchanged '$name
-		rm -f ${name} ${name}~
-		mv $A $name
-	else
-		echo '** updated '$name
-		sed -e '/MODULE_ID(/s/);$/)/' $name >$B
-		mv $B $name
-		rm -f $A
-	fi
-	rm -f $B
+	case $name in
+	-*)
+		OPTS="$OPTS $name"
+		;;
+	*)
+		save="${name}".a$$
+		test="${name}".b$$
+		rm -f "$save" "$test"
+		mv "$name" "$save"
+		sed -e '/MODULE_ID(/s/)$/);/' "$save" >"$test"
+		cp "$test" "$name"
+		chmod u+w "$name"
+		${INDENT_PROG-indent} $OPTS "$name"
+		if ( cmp -s "$name" "$test" )
+		then
+			echo "** unchanged $name"
+			rm -f "${name}" "${name}~"
+			mv "$save" "$name"
+		else
+			echo "** updated $name"
+			sed -e '/MODULE_ID(/s/);$/)/' "$name" >"$test"
+			mv "$test" "$name"
+			rm -f "$save"
+		fi
+		rm -f "$test"
+		;;
+	esac
 done
