@@ -846,7 +846,8 @@ indent (
 	  if (--parser_state_tos->p_l_follow < 0)
 	    {
 	      parser_state_tos->p_l_follow = 0;
-	      message (1, "Extra %c", (int) *token);
+	      if (!parser_state_tos->inner_stmt)
+		message (token_col(), "Extra %c", (int) *token);
 	    }
 
 	  /* if the paren starts the line, then indent it */
@@ -861,8 +862,13 @@ indent (
 	    }
 	  *e_code++ = token[0];
 
+	  if (parser_state_tos->inner_stmt != 0
+	   && parser_state_tos->inner_stmt > parser_state_tos->paren_depth)
+	    parser_state_tos->inner_stmt = 0;
+
 	  /* check for end of if (...), or some such */
-	  if (sp_sw && (parser_state_tos->p_l_follow == 0))
+	  if (sp_sw && (parser_state_tos->p_l_follow == 0
+		     || parser_state_tos->inner_stmt))
 	    {
 
 	      /* Indicate that we have just left the parenthesized expression
@@ -1015,7 +1021,7 @@ indent (
 	  buf_break = e_code;
 	  *e_lab++ = ' ';
 	  *e_lab = '\0';
-	  /* parser_state_tos->pcas e will be used by dump_line to decide
+	  /* parser_state_tos->pcase will be used by dump_line to decide
 	     how to indent the label. force_nl will force a case n: to be
 	     on a line by itself */
 	  force_nl = parser_state_tos->pcase = scase;
@@ -1042,6 +1048,20 @@ indent (
 	  break;
 
 	case lbrace:		/* got a left curly-brace */
+	  if (parser_state_tos->paren_depth > 0)
+	  {
+	    /* FIXME: make this handle nested inner statements.  That would
+	     * probably require saving the paren_depth values on a stack.
+	     * For now, just detect/warn about this.
+	     */
+	    if (parser_state_tos->inner_stmt > 0
+	     && parser_state_tos->inner_stmt > parser_state_tos->paren_depth)
+	      message(token_col(), "Nested inner statement");
+	    parser_state_tos->inner_stmt = parser_state_tos->paren_depth;
+	  }
+	  if (parser_state_tos->inner_stmt)
+	    parser_state_tos->p_l_follow = 0;
+
 	  parser_state_tos->in_stmt = false;	/* dont indent the {} */
 	  if (!parser_state_tos->block_init)
 	    force_nl = true;	/* force other stuff on same line as left curly-brace onto

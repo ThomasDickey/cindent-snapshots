@@ -9,4 +9,4 @@
     After many changes by jla, including the switch to making "-gnu"
     the default, the version numbering was changed and 1.2 released. */
 
-#define VERSION_STRING "GNU indent 2.0"
+#define VERSION_STRING "GNU indent 2.0 (20020421)"

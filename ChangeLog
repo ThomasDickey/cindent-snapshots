@@ -6,6 +6,18 @@ new bugs in the 2.x version.  And it still does not fix the bugs that I have
 noticed myself in indent.  Perhaps the next maintainer of indent will know
 something about regression testing -T.Dickey 2002/4/7
 
+2002-04-21
+	+ add inner_stmt field to parser_state struct, using this to denote
+	  a statement within "({" and "})" pairs.  The corresponding logic
+	  allows if-statements, etc., to be indented within the delimiters.
+
+	+ add command-line -D option if DEBUG is defined.  This turns on parse
+	  information.  Also show the lines which are read, to provide context
+	  for the parse information.
+
+	+ fix the comment for reduce() which is garbled in all of the versions
+	  of GNU indent.
+
 2002-04-14
 	+ generate gperf.c and gperf-cc.c (as in 2.2.7), but align with 2.0
 	  tables, to provide a known starting point.

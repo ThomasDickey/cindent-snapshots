@@ -202,6 +202,7 @@ reset_parser (void)
   parser_state_tos->dec_nest = 0;
   parser_state_tos->i_l_follow = 0;
   parser_state_tos->ind_level = 0;
+  parser_state_tos->inner_stmt = 0;
   parser_state_tos->last_u_d = false;
   parser_state_tos->p_l_follow = 0;
   parser_state_tos->paren_level = 0;

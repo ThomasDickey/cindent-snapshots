@@ -811,6 +811,10 @@ fill_buffer (void)
   buf_ptr = cur_line;
   buf_end = in_prog_pos;
   buf_break = NULL;
+#ifdef DEBUG
+  if (debug)
+    printf("%6d: %.*s", in_line_no, buf_end - buf_ptr, buf_ptr);
+#endif
 }
 
 #ifdef DEBUG
