@@ -282,6 +282,28 @@ inc_pstack (void)
   return parser_state_tos->tos;
 }
 
+#ifdef DEBUG
+static void
+show_pstack(void)
+{
+  int i;
+
+  if (debug)
+    {
+      printf ("\nParseStack [%d]:\n", (int) parser_state_tos->p_stack_size);
+      for (i = 1; i <= parser_state_tos->tos; ++i)
+	printf ("  [%3d] =>  indent:%3d  stack: %2d (%s)\n",
+		(int) i,
+		(int) parser_state_tos->il[i],
+		(int) parser_state_tos->p_stack[i],
+		parsecode2s(parser_state_tos->p_stack[i]));
+      printf ("\n");
+    }
+}
+#else
+#define show_pstack() /* nothing */
+#endif
+
 enum exit_values
 parse (
      enum codes tk)		/* the code for the construct scanned */
@@ -435,7 +457,9 @@ parse (
 
       if (parser_state_tos->p_stack[parser_state_tos->tos] != ifhead)
 	{
-	  message (0, "Unmatched 'else'");
+	  message (0, "Unmatched 'else' (stack has %s rather than %s)",
+		   parsecode2s(parser_state_tos->p_stack[parser_state_tos->tos]),
+		   parsecode2s(ifhead));
 	  my_value = indent_error;
 	}
       else
@@ -461,9 +485,16 @@ parse (
 	    = parser_state_tos->il[--parser_state_tos->tos];
 	  parser_state_tos->p_stack[parser_state_tos->tos] = stmt;
 	}
+      else if (parser_state_tos->p_stack[parser_state_tos->tos - 1] == stmtl)
+	{
+	  message(token_col(), "FIXME");
+	  parser_state_tos->ind_level = parser_state_tos->i_l_follow
+	    = parser_state_tos->il[--parser_state_tos->tos];
+	}
       else
 	{
-	  message (0, "Expected %s on stack rather than %s",
+	  message (0, "After %s, expected %s on stack, not %s",
+		  parsecode2s(rbrace),
 		  parsecode2s(lbrace),
 		  parsecode2s(parser_state_tos->p_stack[parser_state_tos->tos - 1]));
 	  my_value = indent_error;
@@ -511,19 +542,7 @@ parse (
 
   reduce ();			/* see if any reduction can be done */
 
-#ifdef DEBUG
-  if (debug)
-    {
-      printf ("\nParseStack [%d]:\n", (int) parser_state_tos->p_stack_size);
-      for (i = 1; i <= parser_state_tos->tos; ++i)
-	printf ("  [%3d] =>  indent:%3d  stack: %2d (%s)\n",
-		(int) i,
-		(int) parser_state_tos->il[i],
-		(int) parser_state_tos->p_stack[i],
-		parsecode2s(parser_state_tos->p_stack[i]));
-      printf ("\n");
-    }
-#endif
+  show_pstack();
 
   return total_success;
 }
