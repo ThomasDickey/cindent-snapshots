@@ -177,12 +177,14 @@ extern int  break_line;		/* Whether or not we should break the line. */
 extern char *token;
 /* points to the first char after the end of token */
 extern char *token_end;
-
+/* length of token */
 extern int token_len;
+/* points to the beginning of the buffer containing token */
 extern char *token_buf;
 
 /* Functions from lexi.c */
 extern enum codes lexi (void);
+extern int token_col (void);
 extern void addkey (char *, enum rwcodes);
 
 /* Used to keep track of buffers.  */

@@ -843,6 +843,24 @@ lexi (void)
   return (code);
 }
 
+int
+token_col (void)
+{
+  int col;
+  int n;
+
+  for (n = col = 0; n <= (token - token_buf); ++n)
+    {
+      if (token_buf[n] == '\t')
+	col = (col | 7) + 1;
+      else
+	++col;
+    }
+  if (col == 0)
+    col = 1;
+  return col;
+}
+
 /* Add the given keyword to the keyword table, using val as
    the keyword type */
 
