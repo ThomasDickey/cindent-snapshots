@@ -1,4 +1,7 @@
-/* Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
+/*
+   Updates 2002 - Thomas Dickey
+
+   Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
    Copyright (c) 1992, Free Software Foundation, Inc.  All rights reserved.
 
@@ -58,129 +61,12 @@ static unsigned int user_specials_max;
 /* Index in user_specials of the first unused entry.  */
 static unsigned int user_specials_idx;
 
-char chartype[128] =
-{				/* this is used to facilitate the decision of
-				   what type (alphanumeric, operator) each
-				   character is */
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 3, 0, 0, 1, 3, 3, 0,
-  0, 0, 3, 3, 0, 3, 0, 3,
-  1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 0, 0, 3, 3, 3, 3,
-  0, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 0, 0, 0, 3, 1,
-  0, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 0, 3, 0, 3, 0
-};
+/* this is used to facilitate the decision of what type (alphanumeric,
+ * operator) each character is
+ */
+char chartype[256];
 
-/* C code produced by gperf version 2.5 (GNU C++ version) */
-/* Command-line: gperf -D -c -p -t -T -g -j1 -o -K rwd -N is_reserved indent-c++.gperf  */
-
-#define TOTAL_KEYWORDS 39
-#define MIN_WORD_LENGTH 2
-#define MAX_WORD_LENGTH 9
-#define MIN_HASH_VALUE 4
-#define MAX_HASH_VALUE 67
-/* maximum key range = 64, duplicates = 0 */
-
-static unsigned int
-hash (char *str, int unsigned len)
-{
-  static unsigned char asso_values[] =
-    {
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 68, 68,
-     68, 68, 68, 68, 68, 68, 68, 68, 31,  4,
-      0,  0, 21, 33,  6, 19, 68,  0, 20,  1,
-     23, 30, 14, 68,  6,  7,  0, 10,  7,  5,
-     68, 68, 68, 68, 68, 68, 68, 68,
-    };
-
-  return len + asso_values[(int) str[len - 1]] + asso_values[(int) str[0]];
-}
-
-static struct templ*
-is_reserved (char *str, unsigned len)
-{
-  static struct templ wordlist[] =
-    {
-      {"",}, {"",}, {"",}, {"",}, 
-      {"else",  rw_sp_nparen,},
-      {"enum",  rw_struct_like,},
-      {"double",  rw_decl,},
-      {"default",  rw_case,},
-      {"case",  rw_case,},
-      {"const",  rw_decl,},
-      {"while",  rw_sp_paren,},
-      {"void",  rw_decl,},
-      {"short",  rw_decl,},
-      {"struct",  rw_struct_like,},
-      {"char",  rw_decl,},
-      {"volatile",  rw_decl,},
-      {"class",  rw_struct_like,},
-      {"static",  rw_decl,},
-      {"unsigned",  rw_decl,},
-      {"switch",  rw_switch,},
-      {"register",  rw_decl,},
-      {"private",  rw_decl,},
-      {"int",  rw_decl,},
-      {"protected",  rw_decl,},
-      {"public",  rw_decl,},
-      {"inline",  rw_decl,},
-      {"float",  rw_decl,},
-      {"friend",  rw_decl,},
-      {"typedef",  rw_decl,},
-      {"extern",  rw_decl,},
-      {"for",  rw_sp_paren,},
-      {"new",  rw_sizeof,},
-      {"do",  rw_sp_nparen,},
-      {"va_dcl",  rw_decl,},
-      {"sizeof",  rw_sizeof,},
-      {"return",  rw_return,},
-      {"break",  rw_break,},
-      {"",}, 
-      {"union",  rw_struct_like,},
-      {"",}, {"",}, {"",}, 
-      {"if",  rw_sp_paren,},
-      {"",}, 
-      {"operator",  rw_operator,},
-      {"",}, {"",}, {"",}, {"",}, {"",}, {"",}, {"",}, {"",}, {"",}, 
-      {"",}, {"",}, {"",}, 
-      {"long",  rw_decl,},
-      {"",}, 
-      {"global",  rw_decl,},
-      {"",}, {"",}, {"",}, {"",}, {"",}, {"",}, {"",}, 
-      {"goto",  rw_break,},
-    };
-
-  if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
-    {
-      int key = hash (str, len);
-
-      if (key <= MAX_HASH_VALUE && key >= 0)
-        {
-          char *s = wordlist[key].rwd;
-
-          if (*s == *str && !strncmp (str + 1, s + 1, len - 1))
-            return &wordlist[key];
-        }
-    }
-  return 0;
-}
+#include "gperf.c"
 
 /* We do not always increment token_len when we increment buf_ptr, but the
  * reverse is true.  Make the result a little more readable.
@@ -225,7 +111,7 @@ lexi (void)
 
   /* Scan an alphanumeric token */
   if ((! (buf_ptr[0] == 'L' && (buf_ptr[1] == '"' || buf_ptr[1] == '\''))
-          && chartype[(int) *buf_ptr] == alphanum)
+          && chartype[UChar(*buf_ptr)] == alphanum)
       || (buf_ptr[0] == '.' && isdigit (buf_ptr[1])))
     {
       /* we have a character or number */
@@ -281,7 +167,7 @@ lexi (void)
 	    }
 	}
       else
-	while (chartype[(int) *buf_ptr] == alphanum)
+	while (chartype[UChar(*buf_ptr)] == alphanum)
 	  {			/* copy it over */
 	    inc_token_len();
 	    if (buf_ptr >= buf_end)
@@ -461,7 +347,7 @@ lexi (void)
 
 		/* If the next char is ';' or ',' or '(' we have a function
 		   declaration, not a definition.
-		   
+
 		   I've added '=' to this list to keep from breaking
 		   a non-valid C macro from libc.  -jla */
 		if (*tp != ';' && *tp != ',' && *tp != '(' && *tp != '=')
@@ -776,19 +662,6 @@ lexi (void)
       token_end = buf_ptr;
       break;
 
-#if 0
-      /* Contributed by Beverly Brown, <beverly@norton.datacube.com> */
-    case '*':
-      /* If the * is part of a declaration such as char *,
-	 we're still a decl */
-      if(parser_state_tos->last_token == decl)
-	{
-	  unary_delim = parser_state_tos->last_u_d;
-	  last_code = decl;
-	  return decl;
-	}
-#endif
-
     default:
       if (token[0] == '/' && (*buf_ptr == '*' || *buf_ptr == '/'))
 	{
@@ -891,4 +764,28 @@ addkey (char *key, enum rwcodes val)
   p->rwd = key;
   p->rwcode = val;
   return;
+}
+
+static void
+set_chartype(char *list, int code)
+{
+  while (*list != 0)
+    {
+      chartype[UChar(*list++)] = code;
+    }
+}
+
+/*
+ * We could build the program source using special tools such as gperf, and
+ * hardcode the character table - or we could generate the tables once at
+ * runtime.  The latter is not much overhead, and is more easily maintained.
+ */
+void
+init_lexi(void)
+{
+  memset(chartype, 0, sizeof(chartype));
+  set_chartype("$_0123456789", alphanum);
+  set_chartype("abcdefghijklmnopqrstuvwxyz", alphanum);
+  set_chartype("ABCDEFGHIJKLMNOPQRSTUVWXYZ", alphanum);
+  set_chartype("!%&*+-/<=>?^|~", opchar);
 }

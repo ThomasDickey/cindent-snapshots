@@ -63,7 +63,7 @@ BUG REPORTS
   How to report bugs:
 
   Please begin your bug report with a concise and factual description
-  of the behaviour you consider to be abberant.  If you have narrowed
+  of the behavior you consider to be aberrant.  If you have narrowed
   the problem down to the use of a particular option, please mention
   that.  In general, also be sure to mention the command line options
   used to invoke indent, as well as the contents of your .indent.pro

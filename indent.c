@@ -199,6 +199,77 @@ warn_broken_line(int which)
 #define PARSE(token) if (parse (token) != total_success) \
                        file_exit_value = indent_error
 
+/*
+ * The logic for 'semicolon' is a separate function so we can borrow most of
+ * it when faking a semicolon after "})" before a following "}".
+ */
+static void
+handle_semicolon(int insert,
+		 int dec_ind,
+		 int sp_sw,
+		 int last_token_ends_sp,
+  		 enum exit_values *caller_exit,
+		 int *scase,
+		 int *force_nl)
+{
+  enum exit_values file_exit_value = *caller_exit;
+
+  /* we are not in an initialization or structure declaration */
+  parser_state_tos->in_or_st = false;
+  *scase = false;
+  squest = 0;
+  /* The following code doesn't seem to do much good. Just because
+     we've found something like extern int foo();    or int (*foo)();
+     doesn't mean we are out of a declaration.  Now if it was serving
+     some purpose we'll have to address that.... if
+     (parser_state_tos->last_token == rparen)
+     parser_state_tos->in_parameter_declaration = 0; */
+  parser_state_tos->cast_mask = 0;
+  parser_state_tos->sizeof_mask = 0;
+  parser_state_tos->block_init = 0;
+  parser_state_tos->block_init_level = 0;
+  parser_state_tos->just_saw_decl--;
+
+  if (parser_state_tos->in_decl
+      && s_code == e_code
+      && !parser_state_tos->block_init)
+    while ((e_code - s_code) < (dec_ind - 1))
+      {
+	CHECK_CODE_SIZE;
+	buf_break = e_code;
+	*e_code++ = ' ';
+      }
+  *e_code = '\0';	/* null terminate code sect */
+
+  /* if we were in a first level structure declaration,
+     we aren't any more */
+  parser_state_tos->in_decl = (parser_state_tos->dec_nest > 0);
+
+  /* If we have a semicolon following an if, while, or for, and the
+     user wants us to, we should insert a space (to show that there
+     is a null statement there).  */
+  if (insert)
+    {
+      if (last_token_ends_sp && space_sp_semicolon)
+	{
+	  buf_break = e_code;
+	  *e_code++ = ' ';
+	}
+      *e_code++ = ';';
+      *e_code = '\0';	/* null terminate code sect */
+    }
+  parser_state_tos->want_blank = true;
+  /* we are no longer in the middle of a statement */
+  parser_state_tos->in_stmt = (parser_state_tos->p_l_follow > 0);
+
+  if (!sp_sw)
+    {			/* if not if for (;;) */
+      PARSE (semicolon);
+      *force_nl = true;	/* force newline after a end of statement */
+    }
+  *caller_exit = file_exit_value;
+}
+
 static enum exit_values
 indent (
      struct file_buffer *this_file)
@@ -961,56 +1032,13 @@ indent (
 	  break;
 
 	case semicolon:
-	  /* we are not in an initialization or structure declaration */
-	  parser_state_tos->in_or_st = false;
-	  scase = false;
-	  squest = 0;
-	  /* The following code doesn't seem to do much good. Just because
-	     we've found something like extern int foo();    or int (*foo)();
-	     doesn't mean we are out of a declaration.  Now if it was serving
-	     some purpose we'll have to address that.... if
-	     (parser_state_tos->last_token == rparen)
-	     parser_state_tos->in_parameter_declaration = 0; */
-	  parser_state_tos->cast_mask = 0;
-	  parser_state_tos->sizeof_mask = 0;
-	  parser_state_tos->block_init = 0;
-	  parser_state_tos->block_init_level = 0;
-	  parser_state_tos->just_saw_decl--;
-
-	  if (parser_state_tos->in_decl
-	      && s_code == e_code
-	      && !parser_state_tos->block_init)
-	    while ((e_code - s_code) < (dec_ind - 1))
-	      {
-		CHECK_CODE_SIZE;
-		buf_break = e_code;
-		*e_code++ = ' ';
-	      }
-	  *e_code = '\0';	/* null terminate code sect */
-
-	  /* if we were in a first level structure declaration,
-	     we aren't any more */
-	  parser_state_tos->in_decl = (parser_state_tos->dec_nest > 0);
-
-	  /* If we have a semicolon following an if, while, or for, and the
-	     user wants us to, we should insert a space (to show that there
-	     is a null statement there).  */
-	  if (last_token_ends_sp && space_sp_semicolon)
-	    {
-	      buf_break = e_code;
-	      *e_code++ = ' ';
-	    }
-	  *e_code++ = ';';
-	  *e_code = '\0';	/* null terminate code sect */
-	  parser_state_tos->want_blank = true;
-	  /* we are no longer in the middle of a statement */
-	  parser_state_tos->in_stmt = (parser_state_tos->p_l_follow > 0);
-
-	  if (!sp_sw)
-	    {			/* if not if for (;;) */
-	      PARSE (semicolon);
-	      force_nl = true;	/* force newline after a end of statement */
-	    }
+	  handle_semicolon( 1,
+			    dec_ind,
+			    sp_sw,
+			    last_token_ends_sp,
+			    &file_exit_value,
+			    &scase,
+			    &force_nl);
 	  break;
 
 	case lbrace:		/* got a left curly-brace */
@@ -1097,6 +1125,16 @@ indent (
 	  break;
 
 	case rbrace:		/* got a right curly-brace */
+	  if (parser_state_tos->last_token == rparen)
+	    {
+	      handle_semicolon( 0,
+				dec_ind,
+				sp_sw,
+				last_token_ends_sp,
+				&file_exit_value,
+				&scase,
+				&force_nl);
+	    }
 	  /* semicolons can be omitted in declarations */
 	  if (parser_state_tos->p_stack[parser_state_tos->tos] == decl
 	      && !parser_state_tos->block_init)
@@ -1754,6 +1792,7 @@ main (int argc, char **argv)
   int using_stdin = false;
   enum exit_values exit_status;
 
+  init_lexi ();
   init_parser ();
   initialize_backups ();
   exit_status = total_success;

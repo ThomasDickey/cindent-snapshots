@@ -125,6 +125,8 @@ enum rwcodes
 #define L_CURL '{'
 #define R_CURL '}'
 
+#define UChar(c) (0xff & ((unsigned char)(c)))
+
 #define DEFAULT_RIGHT_MARGIN 78
 
 #define DEFAULT_RIGHT_COMMENT_MARGIN 78
@@ -186,6 +188,7 @@ extern char *token_buf;
 extern enum codes lexi (void);
 extern int token_col (void);
 extern void addkey (char *, enum rwcodes);
+extern void init_lexi (void);
 
 /* Used to keep track of buffers.  */
 struct buf
@@ -194,8 +197,8 @@ struct buf
   char *end;			/* points to the character beyond the last
 				   one (e.g. is equal to ptr if the buffer is
 				   empty).  */
-  int size;			/* how many chars are currently allocated.  */
-  int len;			/* how many chars we're actually using. */
+  unsigned size;		/* how many chars are currently allocated.  */
+  unsigned len;			/* how many chars we're actually using. */
   int column;			/* Column we were in when we switched buffers. */
 };
 

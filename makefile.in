@@ -100,6 +100,14 @@ parse.o: parse.c indent.h sys.h makefile
 comments.o: comments.c indent.h sys.h makefile
 memcpy.o: memcpy.c indent.h sys.h makefile
 
+# Build source files which rely on tools not necessarily on target
+gperf.c : indent.gperf
+	gperf -c -p -t -T -g -j1 -o -K rwd -N is_reserved indent.gperf  >$@
+#	gperf -D -c -l -p -t -T -g -j1 -o -K rwd -N is_reserved indent.gperf > $@
+
+gperf-cc.c : indent-cc.gperf
+	gperf -D -c -l -p -t -T -g -j1 -o -K rwd -N is_reserved_cc -H hash_cc indent-cc.gperf > $@
+
 # Build tag tables
 tags: ${SRC}
 	${CTAGS} -t ${SRC} ${HEADERS}
@@ -169,7 +177,7 @@ dist: ${TARFILES}
 tar: dist
 
 # NOTE: GNU tar has a compress option, -z, which used to be used below.
-# However, GNU is now using `gzip' as it's compaction utility, and this
+# However, GNU is now using `gzip' as its compaction utility, and this
 # function has not yet been integrated into GNU `tar'.
 #	tar -c -h -f ${TARFILE} ${DISTDIR}
 #	compress ${TARFILE}
