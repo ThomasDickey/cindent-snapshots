@@ -22,6 +22,7 @@ OPTS='
 -T CSOfield_info 
 -T DIR
 -T DocAddress 
+-T DocInfo 
 -T DocObj
 -T EntryInfo 
 -T FILE
@@ -63,8 +64,13 @@ OPTS='
 -T LYUCcharset 
 -T LexItem 
 -T ProgramPaths 
+-T STable_cellinfo 
+-T STable_info 
+-T STable_rowinfo 
+-T STable_states 
 -T SearchAPDU 
 -T SearchResponseAPDU 
+-T TextAnchor 
 -T UCode_t 
 -T UserDefList 
 -T WAISDocumentCodes 
@@ -74,12 +80,15 @@ OPTS='
 -T WAISDocumentShortHeader 
 -T WAISDocumentText 
 -T WAISInitResponse 
+-T WAISSearch 
 -T _cdecl
 -T any 
 -T bit_map 
+-T boolean 
 -T bstring 
 -T data_tag
 -T eServerType 
+-T lynx_list_item_type 
 -T pdu_type
 -T query_term 
 -nbacc
@@ -100,7 +109,7 @@ do
 		mv "$name" "$save"
 		sed \
 			-e '/MODULE_ID(/s/)$/);/' \
-			-e 's,;[ 	]*\<GCC_PRINTFLIKE,;//GCC_PRINTFLIKE,' \
+			-e 's,)[ 	]*\<GCC_PRINTFLIKE,);//GCC_PRINTFLIKE,' \
 			-e 's,[ 	]*\<GCC_NORETURN;,;//GCC_NORETURN;,' \
 			"$save" >"$test"
 		cp "$test" "$name"
@@ -109,7 +118,7 @@ do
 		sed \
 			-e '/MODULE_ID(/s/);$/)/' \
 			-e 's,;[ 	]*//GCC_NORETURN;, GCC_NORETURN;,' \
-			-e 's,;[ 	]*//GCC_PRINTFLIKE, GCC_PRINTFLIKE,' \
+			-e 's,);[ 	]*//GCC_PRINTFLIKE,) GCC_PRINTFLIKE,' \
 			"$name" >"$test"
 		mv "$test" "$name"
 		rm -f "${name}~"
