@@ -22,6 +22,7 @@
 
 #include "sys.h"
 #include "indent.h"
+
 #include <ctype.h>
 #include <stdlib.h>
 
@@ -48,11 +49,8 @@
 
 #endif /* not VMS */
 
-extern void free ();
-
 /* number of levels a label is placed to left of code */
 #define LABEL_OFFSET 2
-
 
 /* Stuff that needs to be shared with the rest of indent. Documented in
    indent.h.  */
@@ -73,7 +71,7 @@ int suppress_blanklines = 0;
 static int comment_open;
 
 int paren_target;
-
+
 #ifdef VMS
 /* Folks say VMS requires its own read routine.  Then again, some folks
    say it doesn't.  Different folks have also sent me conflicting versions
@@ -105,12 +103,12 @@ vms_read (int file_desc, char *buffer, int nbytes)
     return nbytes - nleft;
 }
 #endif /* VMS */
-
-INLINE int
-count_columns (column, bp, stop_char)
-     int column;
-     char *bp;
-     char stop_char;
+
+int
+count_columns (
+     int column,
+     char *bp,
+     int stop_char)
 {
   while (*bp != stop_char && *bp != NULL_CHAR)
     {
@@ -137,8 +135,8 @@ count_columns (column, bp, stop_char)
 
 /* Return the column we are at in the input line. */
 
-INLINE int
-current_column ()
+int
+current_column (void)
 {
   char *p;
   int column;
@@ -186,38 +184,38 @@ current_column ()
    the line is currently in column CURRENT_COLUMN.  Returns the ending
    column. */
 
-INLINE int
-pad_output (current_column, target_column)
-  int current_column;
-  int target_column;
+static int
+pad_output (
+  int my_current_col,
+  int target_column)
 {
-  if (current_column >= target_column)
-    return current_column;
+  if (my_current_col >= target_column)
+    return my_current_col;
 
   if (tabsize > 1)
     {
       int offset;
 
-      offset = tabsize - (current_column - 1) % tabsize;
-      while (current_column + offset <= target_column)
+      offset = tabsize - (my_current_col - 1) % tabsize;
+      while (my_current_col + offset <= target_column)
 	{
 	  putc (TAB, output);
-	  current_column += offset;
+	  my_current_col += offset;
 	  offset = tabsize;
 	}
     }
 
-  while (current_column < target_column)
+  while (my_current_col < target_column)
     {
       putc (' ', output);
-      current_column++;
+      my_current_col++;
     }
 
-  return current_column;
+  return my_current_col;
 }
-
+
 void
-dump_line ()
+dump_line (void)
 {				/* dump_line is the routine that actually
 				   effects the printing of the new source. It
 				   prints the label section, followed by the
@@ -374,13 +372,9 @@ dump_line ()
 
 	      not_truncated = 0;
 	      len = (e_code - buf_break - 1);
-	      memmove (s_code, buf_break + 1, len);
+	      memmove (s_code, buf_break + 1, (unsigned) len);
 	      e_code = s_code + len;
 	      buf_break = e_code;
-#if 0
-	      if (parser_state_tos->want_blank)
-		*e_code++ = ' ';
-#endif
 	      *e_code = '\0';
 	      break_line = 0;
 	    }
@@ -408,7 +402,7 @@ dump_line ()
 		}
 
 	      cur_col = pad_output (cur_col, target);
-	      fwrite (com_st, e_com - com_st, 1, output);
+	      fwrite (com_st, (unsigned) (e_com - com_st), 1, output);
 	      cur_col += e_com - com_st;
 	      com_lines++;
 	    }
@@ -485,7 +479,7 @@ dump_line ()
 /* Return the column in which we should place the code about to be output. */
 
 int
-compute_code_target ()
+compute_code_target (void)
 {
   int target_col = parser_state_tos->ind_level + 1;
 
@@ -498,27 +492,11 @@ compute_code_target ()
 
   if (! lineup_to_parens)
     return target_col + (continuation_indent * parser_state_tos->paren_level);
-
-#if 0
-  t = paren_target;
-  if ((w = count_columns (t, s_code, NULL_CHAR) - max_col) > 0
-      && count_columns (target_col, s_code, NULL_CHAR) <= max_col)
-    {
-      t -= w + 1;
-      if (t > target_col)
-	target_col = t;
-    }
-  else
-    target_col = t;
-
-  return target_col;
-#endif
-
   return paren_target;
 }
 
 int
-compute_label_target ()
+compute_label_target (void)
 {
   return
     (parser_state_tos->pcase
@@ -539,8 +517,8 @@ compute_label_target ()
 static struct file_buffer fileptr;
 
 struct file_buffer *
-read_file (filename)
-     char *filename;
+read_file (
+     char *filename)
 {
   int fd;
   /* Required for MSDOS, in order to read files larger than 32767
@@ -548,7 +526,7 @@ read_file (filename)
   unsigned int size;
 
   struct stat file_stats;
-  int namelen = strlen (filename);
+  unsigned namelen = strlen (filename);
 
   fd = open (filename, O_RDONLY, 0777);
   if (fd < 0)
@@ -582,7 +560,7 @@ read_file (filename)
 #endif
     fatal ("Error reading input file %s", filename);
   if (close (fd) < 0)
-    fatal ("Error closeing input file %s", filename);
+    fatal ("Error closing input file %s", filename);
 
   /* Apparently, the DOS stores files using CR-LF for newlines, but
      then the DOS `read' changes them into '\n'.  Thus, the size of the
@@ -591,7 +569,7 @@ read_file (filename)
     fileptr.size = size;
 
   if (fileptr.name != 0)
-    fileptr.name = (char *) xrealloc (fileptr.name, (unsigned) namelen + 1);
+    fileptr.name = (char *) xrealloc (fileptr.name, namelen + 1);
   else
     fileptr.name = (char *) xmalloc (namelen + 1);
   (void) memcpy (fileptr.name, filename, namelen);
@@ -602,19 +580,15 @@ read_file (filename)
   return &fileptr;
 }
 
-/* This should come from stdio.h and be some system-optimal number */
-#ifndef BUFSIZ
-#define BUFSIZ 1024
-#endif
-
 /* Suck the standard input into a file_buffer structure, and
    return a pointer to that structure. */
 
 struct file_buffer stdinptr;
 
 struct file_buffer *
-read_stdin ()
+read_stdin (void)
 {
+  /* This should be some system-optimal number */
   unsigned int size = 15 * BUFSIZ;
   int ch = EOF;
   char *p;
@@ -671,7 +645,7 @@ extern struct file_buffer *current_input;
    not recognize such lines. */
 
 void
-fill_buffer ()
+fill_buffer (void)
 {
   char *p;
   int finished_a_line;
@@ -812,110 +786,10 @@ fill_buffer ()
   buf_end = in_prog_pos;
   buf_break = NULL;
 }
-
-
-INLINE void
-writefdef (f, nm)
-     struct fstate *f;
-     unsigned int nm;
-{
-  fprintf (output, ".ds f%c %s\n.nr s%c %d\n",
-	   (int) nm, f->font, nm, (int) f->size);
-}
-
-#if 0
-/* Write characters starting at S to change the font from OF to NF.  Return a
-   pointer to the character after the last character written. For troff mode
-   only.  */
-char *
-chfont (of, nf, s)
-     struct fstate *of, *nf;
-     char *s;
-{
-  if (of->font[0] != nf->font[0]
-      || of->font[1] != nf->font[1])
-    {
-      *s++ = '\\';
-      *s++ = 'f';
-      if (nf->font[1])
-	{
-	  *s++ = '(';
-	  *s++ = nf->font[0];
-	  *s++ = nf->font[1];
-	}
-      else
-	*s++ = nf->font[0];
-    }
-  if (nf->size != of->size)
-    {
-      *s++ = '\\';
-      *s++ = 's';
-      if (nf->size < of->size)
-	{
-	  *s++ = '-';
-	  *s++ = '0' + of->size - nf->size;
-	}
-      else
-	{
-	  *s++ = '+';
-	  *s++ = '0' + nf->size - of->size;
-	}
-    }
-  return s;
-}
-
-void
-parsefont (f, s0)
-     struct fstate *f;
-     char *s0;
-{
-  char *s = s0;
-  int sizedelta = 0;
-  int i;
-
-  f->size = 0;
-  f->allcaps = 1;
-  for (i = 0; i < 4; i++)
-    f->font[i] = 0;
-
-  while (*s)
-    {
-      if (isdigit (*s))
-	f->size = f->size * 10 + *s - '0';
-      else if (isupper (*s))
-	if (f->font[0])
-	  f->font[1] = *s;
-	else
-	  f->font[0] = *s;
-      else if (*s == 'c')
-	f->allcaps = 1;
-      else if (*s == '+')
-	sizedelta++;
-      else if (*s == '-')
-	sizedelta--;
-      else
-	{
-	  fprintf (stderr, "indent: bad font specification: %s\n", s0);
-	  exit (invocation_error);
-	}
-      s++;
-    }
-  if (f->font[0] == 0)
-    f->font[0] = 'R';
-  if (bodyf.size == 0)
-    bodyf.size = 11;
-  if (f->size == 0)
-    f->size = bodyf.size + sizedelta;
-  else if (sizedelta > 0)
-    f->size += bodyf.size;
-  else
-    f->size = bodyf.size - f->size;
-}
-#endif
 
 #ifdef DEBUG
 void
-dump_debug_line ()
+dump_debug_line (void)
 {
   fprintf (output, "\n*** Debug output marker line ***\n");
 }

@@ -114,8 +114,6 @@
 #define BACKUP_SUFFIX_FORMAT "%s.~%d~"
 #endif
 
-extern void free ();
-
 /* Default backup file suffix to use */
 static char *simple_backup_suffix = BACKUP_SUFFIX_STR;
 
@@ -128,8 +126,7 @@ enum backup_mode version_control = unknown;
    the value of `simple_backup_suffix'. */
 
 static char *
-simple_backup_name (pathname)
-     char *pathname;
+simple_backup_name (char *pathname)
 {
   char *backup_name;
 
@@ -144,10 +141,7 @@ simple_backup_name (pathname)
    that number.  BASE_LENGTH is the string length of BASE. */
 
 static int
-version_number (base, direntry, base_length)
-     char *base;
-     char *direntry;
-     int base_length;
+version_number (char *base, char *direntry, unsigned base_length)
 {
   int version;
   char *p;
@@ -170,20 +164,19 @@ version_number (base, direntry, base_length)
    DIRNAME.  Return 0 if there are no numbered versions. */
 
 static int
-highest_version (filename, dirname)
-     char *filename, *dirname;
+highest_version (char *filename, char *dirname)
 {
   DIR *dirp;
   struct dirent *dp;
-  int highest_version;
+  int the_highest;
   int this_version;
-  int file_name_length;
+  unsigned file_name_length;
 
   dirp = opendir (dirname);
   if (!dirp)
     return 0;
 
-  highest_version = 0;
+  the_highest = 0;
   file_name_length = strlen (filename);
 
   while ((dp = readdir (dirp)) != 0)
@@ -192,12 +185,12 @@ highest_version (filename, dirname)
 	continue;
 
       this_version = version_number (filename, dp->d_name, file_name_length);
-      if (this_version > highest_version)
-	highest_version = this_version;
+      if (this_version > the_highest)
+	the_highest = this_version;
     }
 
   closedir (dirp);
-  return highest_version;
+  return the_highest;
 }
 
 
@@ -205,8 +198,7 @@ highest_version (filename, dirname)
    are no backups, or only a simple backup, return 0. */
 
 static int
-max_version (pathname)
-     char *pathname;
+max_version (char *pathname)
 {
   char *p;
   char *filename;
@@ -219,12 +211,12 @@ max_version (pathname)
 
   if (*p == '/')
     {
-      int dirlen = p - pathname;
+      unsigned dirlen = (unsigned)(p - pathname);
       char *dirname;
 
       filename = p + 1;
       dirname = xmalloc (dirlen + 1);
-      strncpy (dirname, pathname, (dirlen));
+      strncpy (dirname, pathname, dirlen);
       dirname[dirlen] = '\0';
       version = highest_version (filename, dirname);
       free (dirname);
@@ -241,21 +233,21 @@ max_version (pathname)
    value of VERSION_CONTROL. */
 
 static char *
-generate_backup_filename (version_control, pathname)
-     enum backup_mode version_control;
-     char *pathname;
+generate_backup_filename (
+     enum backup_mode the_mode,
+     char *pathname)
 {
   int last_numbered_version;
   char *backup_name;
 
-  if (version_control == none)
+  if (the_mode == none)
     return 0;
 
-  if (version_control == simple)
+  if (the_mode == simple)
     return simple_backup_name (pathname);
 
   last_numbered_version = max_version (pathname);
-  if (version_control == numbered_existing
+  if (the_mode == numbered_existing
       && last_numbered_version == 0)
     return simple_backup_name (pathname);
 
@@ -282,15 +274,12 @@ static struct version_control_values values[] =
   {unknown, 0}			/* Initial, undefined value. */
 };
 
-
-extern char *getenv ();
-
 /* Determine the value of `version_control' by looking in the
    environment variable "VERSION_CONTROL".  Defaults to
    numbered_existing. */
 
 enum backup_mode
-version_control_value ()
+version_control_value (void)
 {
   char *version;
   struct version_control_values *v;
@@ -314,7 +303,7 @@ version_control_value ()
 /* Initialize information used in determining backup filenames. */
 
 void
-initialize_backups ()
+initialize_backups (void)
 {
   char *v = getenv ("SIMPLE_BACKUP_SUFFIX");
 
@@ -338,8 +327,7 @@ initialize_backups ()
    See the description at the beginning of the file for details. */
 
 void
-make_backup (file)
-     struct file_buffer *file;
+make_backup (struct file_buffer *file)
 {
   int fd;
   char *backup_filename;

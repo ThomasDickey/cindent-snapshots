@@ -17,17 +17,19 @@
 
 #include "sys.h"
 #include "indent.h"
+
+#include <errno.h>
 #include <malloc.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 /* Like malloc but get error if no storage available.  size really should be
    size_t, but not all systems have size_t, so I hope "unsigned" will work.
    It works for GNU style machines, where it is 32 bits, and works on
    MS-DOS.  */
 
-INLINE char *
-xmalloc (size)
-     unsigned size;
+char *
+xmalloc (unsigned size)
 {
   char *val = (char *) malloc (size);
   if (!val)
@@ -47,10 +49,8 @@ xmalloc (size)
 
 /* Like realloc but get error if no storage available.  */
 
-INLINE char *
-xrealloc (ptr, size)
-     char *ptr;
-     unsigned size;
+char *
+xrealloc (char *ptr, unsigned size)
 {
   char *val = (char *) realloc (ptr, size);
   if (!val)
@@ -63,29 +63,34 @@ xrealloc (ptr, size)
 }
 
 void
-message (kind, string, a0, a1, a2)
-     char *kind, *string;
-     unsigned int *a0, *a1, *a2;
+message (char *kind, char *string, ...)
 {
-  if (kind)
-    fprintf (stderr, "indent: %s:%d: %s:", in_name, line_no, kind);
+  va_list ap;
 
-  fprintf (stderr, string, a0, a1, a2);
+  if (kind)
+    fprintf (stderr, "%s:%d: %s:", in_name, line_no, kind);
+
+  va_start (ap, string);
+  vfprintf (stderr, string, ap);
+  va_end (ap);
+
   fprintf (stderr, "\n");
 }
-
-extern int errno;
 
 /* Print a fatal error message and exit, or, if compiled with
    "DEBUG" defined, abort (). */
 
 void
-fatal (string, a0, a1, a2)
-     char *string;
-     unsigned int *a0, *a1, *a2;
+fatal (char *string, ...)
 {
+  va_list ap;
+
   fprintf (stderr, "indent: Fatal Error: ");
-  fprintf (stderr, string, a0, a1, a2);
+
+  va_start (ap, string);
+  vfprintf (stderr, string, ap);
+  va_end (ap);
+
   fprintf (stderr, "\n");
 
 #ifdef DEBUG
