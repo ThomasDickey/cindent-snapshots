@@ -509,6 +509,7 @@ extern void print_comment (void);
 
 /* Declared in indent.c */
 extern int squest;
+extern struct file_buffer *current_input;
 
 extern void usage (void);
 

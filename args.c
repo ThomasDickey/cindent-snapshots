@@ -33,8 +33,6 @@
 
 int else_endif_col;
 
-extern char *in_name;
-
 /* profile types */
 enum profile
 {
