@@ -8,15 +8,17 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2, or (at your option)
 # any later version.
-# 
+#
 # GNU indent is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GNU indent; see the file COPYING.  If not, write to
 # the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+SHELL =   /bin/sh
 
 #### Start of system configuration section. ####
 
@@ -29,7 +31,7 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 
-AWK = awk
+AWK = @AWK@
 MAKEINFO = makeinfo
 
 # Used in making distributions.  GNU now uses the utility `gzip'
@@ -40,8 +42,8 @@ ZIP = gzip
 DVITOGHOSTSCRIPT = dvi2ps indent.dvi > indent.ps
 CTAGS = etags
 
-CFLAGS = -O
-LDFLAGS = -g
+CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@
 
 # C compiler -D options.
 DEFS = @DEFS@
@@ -54,7 +56,6 @@ infodir = ${prefix}/info
 
 #### End of system configuration section. ####
 
-SHELL =   /bin/sh
 SRC =	  indent.c io.c lexi.c parse.c comments.c args.c globs.c \
 	  backup.c memcpy.c memmove.c
 OBJ =	  indent.o io.o lexi.o parse.o comments.o args.o globs.o \
@@ -69,7 +70,7 @@ CONFIG = configure.in configure CONF-README
 
 MANJUNK = indent.dvi indent.cp indent.cps indent.aux indent.dlog \
 indent.fn indent.fns indent.ky indent.kys indent.log indent.pg   \
-indent.pgs indent.toc indent.tp indent.tps indent.vr indent.vrs indent.ps 
+indent.pgs indent.toc indent.tp indent.tps indent.vr indent.vrs indent.ps
 
 # What to put in a distribution
 TARFILES = ${SRC} Makefile makefile.in ${MAN} ${HEADERS} \
@@ -88,7 +89,6 @@ indent: ${OBJ}
 .c.o:
 	${CC} -c ${DEFS} ${CPPFLAGS} ${CFLAGS} $<
 
-
 backup.o: backup.c backup.h sys.h indent.h makefile
 globs.o: globs.c sys.h indent.h makefile
 
@@ -100,13 +100,10 @@ parse.o: parse.c indent.h sys.h makefile
 comments.o: comments.c indent.h sys.h makefile
 memcpy.o: memcpy.c indent.h sys.h makefile
 
-
 # Build tag tables
 tags: ${SRC}
 	${CTAGS} -t ${SRC} ${HEADERS}
 TAGS: tags
-
-
 
 # Documents
 #
@@ -186,4 +183,3 @@ tarfile:
 	@${TAR} -c -v -h -f ${TARFILE} ${DISTDIR}
 	${ZIP} --verbose --best ${TARFILE}
 	@rm -rf ${DISTDIR}
-

@@ -627,9 +627,6 @@ read_stdin (void)
   return &stdinptr;
 }
 
-/* Points to the current input buffer */
-extern struct file_buffer *current_input;
-
 /* Advance `buf_ptr' so that it points to the next line of input.
 
    If the next input line contains an indent control comment turning
