@@ -30,7 +30,6 @@
 #endif
 #include <string.h>
 
-
 #ifdef VMS
 #   include <file.h>
 #   include <types.h>
@@ -617,7 +616,7 @@ struct file_buffer *
 read_stdin ()
 {
   unsigned int size = 15 * BUFSIZ;
-  int ch;
+  int ch = EOF;
   char *p;
 
   if (stdinptr.data != 0)

@@ -445,7 +445,6 @@ print_comment ()
 		/* We are printing this line "as is", so output it
 		   and continue on to the next line. */
 		goto end_line;
-	      break;
 
 	    case '*':
 	      /* Check if we've reached the end of the comment. */

@@ -33,7 +33,6 @@
 #endif
 #include <string.h>
 
-
 /* Stuff that needs to be shared with the rest of indent. Documented in
    indent.h.  */
 char *token;
