@@ -108,7 +108,7 @@ static void
 pass_char(int ch)
 {
   if (ch == '\n')
-    ++line_no;
+    ++out_line_no;
   putc (ch, output);
 }
 
@@ -560,7 +560,7 @@ read_file (
     fatal ("Can't stat input file %s", filename);
 
   if (file_stats.st_size == 0)
-    ERROR ("Warning: Zero-length file %s", filename, 0);
+    message (-1, "Warning: Zero-length file %s", filename);
 
 #ifdef __MSDOS__
   if (file_stats.st_size < 0 || file_stats.st_size > (0xffff - 1))
@@ -734,7 +734,10 @@ fill_buffer (void)
 		    }
 
 		  if (*p == EOL)
-		    cur_line = p + 1;
+		    {
+		      ++in_line_no;
+		      cur_line = p + 1;
+		    }
 		  pass_char (*p++);
 		  while (*p == ' ' || *p == TAB)
 		    pass_char (*p++);
@@ -764,6 +767,7 @@ fill_buffer (void)
 				{
 				  if (*p == EOL)
 				    {
+				      ++in_line_no;
 				      inhibited = 0;
 				      cur_line = p + 1;
 				    }
@@ -784,13 +788,14 @@ fill_buffer (void)
       /* Here for newline -- finish up unless formatting is off */
       if (*p == EOL)
 	{
+	  ++in_line_no;
 	  finished_a_line = 1;
 	  in_prog_pos = p + 1;
 	}
       /* Here for embedded NULLs */
       else if ((unsigned int) (p - current_input->data) < current_input->size)
 	{
-	  WARNING ("Warning: File %s contains NULL-characters\n",
+	  message (-1, "Warning: File %s contains NULL-characters\n",
 		   current_input->name, 0);
 	  p++;
 	}

@@ -120,7 +120,8 @@ reset_parser (void)
   s_code = e_code = codebuf + 1;
   s_com = e_com = combuf + 1;
 
-  line_no = 1;
+  in_line_no = 0;
+  out_line_no = 1;
   had_eof = false;
   break_comma = false;
   bp_save = 0;
@@ -359,7 +360,7 @@ parse (
 
       if (parser_state_tos->p_stack[parser_state_tos->tos] != ifhead)
 	{
-	  ERROR ("Unmatched 'else'", 0, 0);
+	  message (0, "Unmatched 'else'", 0, 0);
 	  my_value = indent_error;
 	}
       else
@@ -387,7 +388,7 @@ parse (
 	}
       else
 	{
-	  ERROR ("Stmt nesting error.", 0, 0);
+	  message (0, "Stmt nesting error.", 0, 0);
 	  my_value = indent_error;
 	}
       break;

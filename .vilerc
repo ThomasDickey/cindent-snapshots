@@ -1,0 +1,3 @@
+set glob=on
+source ~/.vilerc
+set csw=2

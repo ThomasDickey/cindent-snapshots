@@ -61,7 +61,8 @@ struct buf save_com;
 char *bp_save;
 char *be_save;
 int code_lines;
-int line_no;
+int in_line_no;
+int out_line_no;
 struct fstate keywordf;
 struct fstate stringf;
 struct fstate boxcomf;
@@ -155,6 +156,55 @@ output_line_length (void)
   return length;
 }
 
+/* Warn when we are about to split a line, showing if possible where it will
+ * be broken.
+ */
+static void
+warn_broken_line(void)
+{
+  int n;
+  int col = 0;
+  int len = token_len ? token_len : 1;
+  char *s = token;
+
+  if (isgraph(*s))
+    {
+    for (n = 0; n <= (token - token_buf); ++n)
+      {
+	if (token_buf[n] == '\t')
+	  col = (col | 7) + 1;
+	else
+	  ++col;
+      }
+    }
+  else
+    {
+      switch (*s)
+	{
+	  case ' ':
+	    s = "space";
+	    break;
+	  case '\r':
+	    s = "carriage return";
+	    break;
+	  case '\n':
+	    s = "newline";
+	    break;
+	  case '\t':
+	    s = "tab";
+	    break;
+	  case '\f':
+	    s = "form feed";
+	    break;
+	  default:
+	    s = "nonprinting character";
+	    break;
+	}
+	len = strlen(s);
+    }
+  message (col ? col : 1, "Line broken at %.*s", len, s);
+}
+
 /* Force a newline at this point in the output stream. */
 
 #define PARSE(token) if (parse (token) != total_success) \
@@ -190,8 +240,8 @@ indent (
   /* true iff last keyword was an else */
   int last_else = 0;
 
-/* Used when buffering up comments to remember that
-   a newline was passed over */
+  /* Used when buffering up comments to remember that
+     a newline was passed over */
   int flushed_nl = 0;
   int force_nl = 0;
 
@@ -299,11 +349,11 @@ indent (
 		  goto check_type;
 		}
 
-	      /* We need to put the '{' back into save_com somewhere.  */
+	      /* We need to put the left curly-brace back into save_com somewhere.  */
 	      if (btype_2)
 		{
 		  /* Put the brace at the beginning of the saved buffer*/
-		  save_com.ptr[0] = '{';
+		  save_com.ptr[0] = L_CURL;
 		  save_com.len = 1;
 		  save_com.column = current_column ();
 		}
@@ -314,7 +364,7 @@ indent (
 		     a `dump_line' call, thus ensuring that the brace
 		     will go into the right column. */
 		  *save_com.end++ = EOL;
-		  *save_com.end++ = '{';
+		  *save_com.end++ = L_CURL;
 		  save_com.len += 2;
 		}
 
@@ -359,7 +409,7 @@ indent (
 			  fill_buffer ();
 			  if (had_eof)
 			    {
-			      ERROR ("EOF encountered in comment", 0, 0);
+			      message (0, "EOF encountered in comment");
 			      return indent_punt;
 			    }
 			}
@@ -387,7 +437,7 @@ indent (
 		  (type_code == sp_nparen
 		   && *token == 'e'		/* "else" statement */
 		   && e_code != s_code
-		   && e_code[-1] == '}'))	/* The "else" follows '}' */
+		   && e_code[-1] == R_CURL))	/* The "else" follows right curly-brace */
 		force_nl = false;
 	      else if (flushed_nl)
 		force_nl = true;
@@ -405,8 +455,8 @@ indent (
 		  need_chars (&save_com, 2);
 		  *save_com.end++ = EOL;
 		  save_com.len++;
-		  if (verbose && !flushed_nl)
-		    WARNING ("Line broken", 0, 0);
+		  if (!flushed_nl)
+		    warn_broken_line ();
 		  flushed_nl = false;
 		}
 
@@ -469,7 +519,7 @@ indent (
 	    dump_line ();
 	  if (parser_state_tos->tos > 1)	/* check for balanced braces */
 	    {
-	      ERROR ("Unexpected end of file", 0, 0);
+	      message (0, "Unexpected end of file");
 	      file_exit_value = indent_error;
 	    }
 
@@ -496,8 +546,8 @@ indent (
 	       && (type_code != semicolon)
 	       && (type_code != lbrace || !btype_2)))
 	    {
-	      if (verbose && !flushed_nl)
-		WARNING ("Line broken", 0, 0);
+	      if (!flushed_nl)
+		warn_broken_line ();
 
 	      flushed_nl = false;
 	      if (break_line)
@@ -617,11 +667,11 @@ indent (
 	
 	     However, if the current line is empty, the left brace is
 	     already on a new line, so don't molest it.  */
-	  if (token[0] == '{'
+	  if (token[0] == L_CURL
 	      && (s_code != e_code || s_com != e_com || s_lab != e_lab))
 	    {
 	      dump_line ();
-	      /* Do not put a space before the '{'.  */
+	      /* Do not put a space before the left curly-brace.  */
 	      parser_state_tos->want_blank = false;
 	    }
 
@@ -725,7 +775,7 @@ indent (
 	  if (--parser_state_tos->p_l_follow < 0)
 	    {
 	      parser_state_tos->p_l_follow = 0;
-	      WARNING ("Extra %c", (int) *token, 0);
+	      message (1, "Extra %c", (int) *token);
 	    }
 
 	  /* if the paren starts the line, then indent it */
@@ -966,7 +1016,7 @@ indent (
 	case lbrace:		/* got a left curly-brace */
 	  parser_state_tos->in_stmt = false;	/* dont indent the {} */
 	  if (!parser_state_tos->block_init)
-	    force_nl = true;	/* force other stuff on same line as '{' onto
+	    force_nl = true;	/* force other stuff on same line as left curly-brace onto
 				   new line */
 	  else if (parser_state_tos->block_init_level <= 0)
 	    parser_state_tos->block_init_level = 1;
@@ -998,7 +1048,7 @@ indent (
 
 	  if (s_code == e_code)
 	    parser_state_tos->ind_stmt = false;	/* dont put extra indentation
-						   on line with '{' */
+						   on line with left curly-brace */
 	  if (parser_state_tos->in_decl && parser_state_tos->in_or_st)
 	    {
 	      /* This is a structure declaration.  */
@@ -1032,8 +1082,8 @@ indent (
 	  parser_state_tos->in_or_st = false;
 
 	  PARSE (lbrace);
-	  if (parser_state_tos->want_blank)	/* put a blank before '{' if
-						   '{' is not at start of
+	  if (parser_state_tos->want_blank)	/* put a blank before left curly-brace if
+						   left curly-brace is not at start of
 						   line */
 	    {
 	      buf_break = e_code;
@@ -1041,12 +1091,12 @@ indent (
 	    }
 
 	  parser_state_tos->want_blank = false;
-	  *e_code++ = '{';
+	  *e_code++ = L_CURL;
 	  *e_code = '\0';	/* null terminate code sect */
 	  parser_state_tos->just_saw_decl = 0;
 	  break;
 
-	case rbrace:		/* got a '}' */
+	case rbrace:		/* got a right curly-brace */
 	  /* semicolons can be omitted in declarations */
 	  if (parser_state_tos->p_stack[parser_state_tos->tos] == decl
 	      && !parser_state_tos->block_init)
@@ -1055,12 +1105,11 @@ indent (
 	  parser_state_tos->just_saw_decl = 0;
 	  parser_state_tos->block_init_level--;
 	  if (s_code != e_code && !parser_state_tos->block_init)
-	    {			/* '}' must be first on line */
-	      if (verbose)
-		WARNING ("Line broken", 0, 0);
+	    {			/* right curly-brace must be first on line */
+	      warn_broken_line ();
 	      dump_line ();
 	    }
-	  *e_code++ = '}';
+	  *e_code++ = R_CURL;
 	  parser_state_tos->want_blank = true;
 	  parser_state_tos->in_stmt = parser_state_tos->ind_stmt = false;
 	  if (parser_state_tos->dec_nest > 0)
@@ -1112,10 +1161,9 @@ indent (
 	  parser_state_tos->in_stmt = false;
 	  if (*token == 'e')
 	    {
-	      if (e_code != s_code && (!cuddle_else || e_code[-1] != '}'))
+	      if (e_code != s_code && (!cuddle_else || e_code[-1] != R_CURL))
 		{
-		  if (verbose)
-		    WARNING ("Line broken", 0, 0);
+		  warn_broken_line ();
 		  dump_line ();	/* make sure this starts a line */
 		  parser_state_tos->want_blank = false;
 		}
@@ -1128,8 +1176,7 @@ indent (
 	    {
 	      if (e_code != s_code)
 		{		/* make sure this starts a line */
-		  if (verbose)
-		    WARNING ("Line broken", 0, 0);
+		  warn_broken_line ();
 		  dump_line ();
 		  parser_state_tos->want_blank = false;
 		}
@@ -1572,7 +1619,7 @@ indent (
 		}
 	      else
 		{
-		  ERROR ("Unmatched #else", 0, 0);
+		  message (0, "Unmatched #else");
 		  file_exit_value = indent_error;
 		}
 	    }
@@ -1597,7 +1644,7 @@ indent (
 		}
 	      else
 		{
-		  ERROR ("Unmatched #endif", 0, 0);
+		  message (0, "Unmatched #endif");
 		  file_exit_value = indent_error;
 		}
 
@@ -1609,7 +1656,7 @@ indent (
 	      else
 	          prefix_blankline_requested = 0;
 	    }
-	  /* fprintf(stderr, "[%d]:%s\n", line_no, s_lab + 1); */
+	  /* fprintf(stderr, "[%d]:%s\n", out_line_no, s_lab + 1); */
 
 	  /* Normally, subsequent processing of the newline character
 	     causes the line to be printed.  The following clause handles
@@ -1706,11 +1753,6 @@ main (int argc, char **argv)
   char *profile_pathname = 0;
   int using_stdin = false;
   enum exit_values exit_status;
-
-#ifdef DEBUG
-  if (debug)
-    debug_init ();
-#endif
 
   init_parser ();
   initialize_backups ();
