@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: ncu-indent,v 1.2 2002/04/23 22:41:15 tom Exp $
+# $Id: ncu-indent,v 1.3 2002/04/28 16:00:21 tom Exp $
 OPTS=
 for name in $*
 do
@@ -15,6 +15,7 @@ do
 		sed -e '/MODULE_ID(/s/)$/);/' "$save" >"$test"
 		cp "$test" "$name"
 		chmod u+w "$name"
+		${INDENT_PROG-indent} --version
 		${INDENT_PROG-indent} $OPTS "$name"
 		if ( cmp -s "$name" "$test" )
 		then
