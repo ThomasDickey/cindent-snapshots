@@ -1,0 +1,24 @@
+#!/bin/sh
+for name in $*
+do
+	A=${name}.a$$
+	B=${name}.b$$
+	rm -f $A $B
+	mv $name $A
+	sed -e '/MODULE_ID(/s/)$/);/' $A >$B
+	cp $B $name
+	chmod u+w $name
+	indent $name
+	if ( cmp -s $name $B )
+	then
+		echo '** unchanged '$name
+		rm -f ${name} ${name}~
+		mv $A $name
+	else
+		echo '** updated '$name
+		sed -e '/MODULE_ID(/s/);$/)/' $name >$B
+		mv $B $name
+		rm -f $A
+	fi
+	rm -f $B
+done
