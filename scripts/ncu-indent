@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: ncu-indent,v 1.4 2003/04/13 13:32:12 tom Exp $
+# $Id: ncu-indent,v 1.5 2004/05/01 22:08:20 tom Exp $
 NOOP=no
 OPTS=
 for name in $*
@@ -17,12 +17,18 @@ do
 		test="${name}".b$$
 		rm -f "$save" "$test"
 		mv "$name" "$save"
-		sed -e '/MODULE_ID(/s/)$/);/' "$save" >"$test"
+		sed \
+			-e '/MODULE_ID(/s/)$/);/' \
+			-e 's,\<GCC_NORETURN;,;//GCC_NORETURN;,' \
+			"$save" >"$test"
 		cp "$test" "$name"
 		chmod u+w "$name"
 		# ${INDENT_PROG-indent} --version
 		${INDENT_PROG-indent} $OPTS "$name"
-		sed -e '/MODULE_ID(/s/);$/)/' "$name" >"$test"
+		sed \
+			-e '/MODULE_ID(/s/);$/)/' \
+			-e 's,;[ 	]*//GCC_NORETURN;, GCC_NORETURN;,' \
+			"$name" >"$test"
 		mv "$test" "$name"
 		rm -f "${name}~"
 		if test $NOOP = yes ; then
