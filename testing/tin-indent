@@ -1,0 +1,23 @@
+#!/bin/sh
+indent \
+	--blank-lines-after-declarations \
+	--blank-lines-after-procedures \
+	--brace-indent8 \
+	--braces-on-if-line  \
+	--cuddle-else  \
+	--case-indentation8  \
+	--space-after-cast  \
+	--blank-before-sizeof  \
+	--declaration-indentation0 \
+	--parameter-indentation8 \
+	--indent-level8   \
+	--no-blank-lines-after-commas  \
+	--dont-format-first-column-comments  \
+	--dont-space-special-semicolon  \
+	--space-after-procedure-calls  \
+	--procnames-start-lines  \
+	--swallow-optional-blank-lines  \
+	--tab-size8  \
+	--dont-format-comments \
+	--leave-preprocessor-space \
+	$*
