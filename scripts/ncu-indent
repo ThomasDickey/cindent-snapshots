@@ -1,13 +1,18 @@
 #!/bin/sh
-# $Id: ncu-indent,v 1.3 2002/04/28 16:00:21 tom Exp $
+# $Id: ncu-indent,v 1.4 2003/04/13 13:32:12 tom Exp $
+NOOP=no
 OPTS=
 for name in $*
 do
 	case $name in
+	-v|-n)
+		NOOP=yes
+		OPTS="$OPTS -v"
+		;;
 	-*)
 		OPTS="$OPTS $name"
 		;;
-	*)
+	*.[ch])
 		save="${name}".a$$
 		test="${name}".b$$
 		rm -f "$save" "$test"
@@ -15,20 +20,30 @@ do
 		sed -e '/MODULE_ID(/s/)$/);/' "$save" >"$test"
 		cp "$test" "$name"
 		chmod u+w "$name"
-		${INDENT_PROG-indent} --version
+		# ${INDENT_PROG-indent} --version
 		${INDENT_PROG-indent} $OPTS "$name"
-		if ( cmp -s "$name" "$test" )
-		then
+		sed -e '/MODULE_ID(/s/);$/)/' "$name" >"$test"
+		mv "$test" "$name"
+		rm -f "${name}~"
+		if test $NOOP = yes ; then
+			if (cmp -s "$name" "$save" ) then
+				echo "** no change: $name"
+			else
+				diff -u "$save" "$name"
+			fi
+			rm -f "$name"
+			mv "$save" "$name"
+		elif ( cmp -s "$name" "$save" ) ; then
 			echo "** unchanged $name"
-			rm -f "${name}" "${name}~"
+			rm -f "${name}"
 			mv "$save" "$name"
 		else
 			echo "** updated $name"
-			sed -e '/MODULE_ID(/s/);$/)/' "$name" >"$test"
-			mv "$test" "$name"
 			rm -f "$save"
 		fi
-		rm -f "$test"
+		;;
+	*)
+		echo "** ignored:   $name"
 		;;
 	esac
 done
