@@ -286,7 +286,6 @@ indent (
 	  switch (type_code)
 	    {
 	    case newline:
-	      ++line_no;
 	      flushed_nl = true;
 	    case form_feed:
 	      break;		/* form feeds and newlines found here will be
@@ -342,7 +341,6 @@ indent (
 						   comments */
 		      *save_com.end++ = ' ';
 		      save_com.len += 2;
-		      --line_no;
 		    }
 		  *save_com.end++ = '/';	/* copy in start of comment */
 		  *save_com.end++ = '*';
@@ -404,8 +402,6 @@ indent (
 	      if (force_nl)
 		{
 		  force_nl = false;
-		  --line_no;	/* this will be re-increased when the nl is
-				   read from the buffer */
 		  need_chars (&save_com, 2);
 		  *save_com.end++ = EOL;
 		  save_com.len++;
@@ -480,7 +476,7 @@ indent (
 	  if (verbose)
 	    {
 	      printf ("There were %d output lines and %d comments\n",
-		      (int) out_lines, (int) out_coms);
+		      (int) out_lines, (int) com_lines);
 	      if (com_lines > 0 && code_lines > 0)
 		printf ("(Lines with comments)/(Lines with code): %6.3f\n",
 			(1.0 * com_lines) / code_lines);
@@ -608,7 +604,6 @@ indent (
 	  /* If we were on the line with a #else or a #endif, we aren't
 	     anymore.  */
 	  else_or_endif = false;
-	  ++line_no;		/* keep track of input line number */
 	  break;
 
 	case lparen:
@@ -1444,7 +1439,6 @@ indent (
 						   comments */
 		    *save_com.end++ = ' ';
 		    save_com.len += 2;
-		    --line_no;
 		  }
 		need_chars (&save_com, com_end - com_start + 1);
 		strncpy (save_com.end, s_lab + com_start,
@@ -1615,6 +1609,7 @@ indent (
 	      else
 	          prefix_blankline_requested = 0;
 	    }
+	  /* fprintf(stderr, "[%d]:%s\n", line_no, s_lab + 1); */
 
 	  /* Normally, subsequent processing of the newline character
 	     causes the line to be printed.  The following clause handles

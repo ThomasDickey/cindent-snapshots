@@ -250,7 +250,7 @@ extern int com_lines;		/* the number of lines with comments, set by
 
 
 extern int had_eof;		/* set to true when input is exhausted */
-extern int line_no;		/* the current input line number. */
+extern int line_no;		/* the current output line number. */
 
 extern int max_col;		/* the maximum allowable line length */
 extern int verbose;		/* when true, non-essential error messages
