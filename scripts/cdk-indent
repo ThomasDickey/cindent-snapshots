@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: cdk-indent,v 1.5 2004/08/24 23:14:58 tom Exp $
+# $Id: cdk-indent,v 1.6 2004/12/23 20:58:31 tom Exp $
 # Indent CDK files.
 # Seems to match the style except for struct-data and single-line cases (sigh).
 NOOP=no
@@ -12,6 +12,7 @@ OPTS='
 --no-blank-lines-after-commas
 --no-space-after-casts
 
+-T CDKDIALOG
 -T CDKENTRY
 -T CDKHISTOGRAM
 -T CDKGRAPH
