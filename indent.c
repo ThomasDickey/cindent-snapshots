@@ -395,6 +395,10 @@ indent (
 	  /* After scanning an if(), while (), etc., it might be necessary to
 	     keep track of the text between the if() and the start of the
 	     statement which follows.  Use save_com to do so.  */
+#ifdef DEBUG
+	  if (debug > 1)
+	    printf("token %s\n", parsecode2s(type_code));
+#endif
 	  switch (type_code)
 	    {
 	    case newline:
@@ -436,7 +440,8 @@ indent (
 	      /* Save this comment in the `save_com' buffer, for
 		 possible re-insertion in the output stream later. */
 	    case comment:
-	      if (!flushed_nl || save_com.end != save_com.ptr)
+	      if ((last_code != rparen || parser_state_tos->paren_depth != 0)
+	       && (!flushed_nl || save_com.end != save_com.ptr))
 		{
 		  need_chars (&save_com, 10);
 		  if (save_com.end == save_com.ptr)
@@ -867,8 +872,7 @@ indent (
 	    parser_state_tos->inner_stmt = 0;
 
 	  /* check for end of if (...), or some such */
-	  if (sp_sw && (parser_state_tos->p_l_follow == 0
-		     || parser_state_tos->inner_stmt))
+	  if (sp_sw && (parser_state_tos->p_l_follow == 0))
 	    {
 
 	      /* Indicate that we have just left the parenthesized expression

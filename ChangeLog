@@ -6,6 +6,22 @@ new bugs in the 2.x version.  And it still does not fix the bugs that I have
 noticed myself in indent.  Perhaps the next maintainer of indent will know
 something about regression testing -T.Dickey 2002/4/7
 
+2002-04-23
+	+ modify logic for save_com so that a comment which follows a
+	  final right-parenthesis is not moved to a new line.  That keeps
+	  comments from moving in this case:
+
+	  	int main(int argc,
+			 char *argv[])	/* the params */
+		{
+		}
+
+	  Otherwise the comment would be moved past the left curly-brace.
+
+	+ fix an interaction overlooked in inner_stmt that caused an
+	  unnecessary newline on the closing right-parenthesis of an
+	  if-statement inside the inner-statement block.
+
 2002-04-21
 	+ add inner_stmt field to parser_state struct, using this to denote
 	  a statement within "({" and "})" pairs.  The corresponding logic
