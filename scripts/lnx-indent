@@ -10,14 +10,35 @@ OPTS='
 --cuddle-else
 --dont-break-procedure-type
 --indent-level4
+--leave-preprocessor-space
 --line-length80
 --no-space-after-function-call-names
 --parameter-indentation4
 --space-after-cast
 --space-special-semicolon
 --swallow-optional-blank-lines
+-T _cdecl
 -T BOOL
 -T BOOLEAN
+-T HTStyleChange 
+-T HTParentAnchor 
+-T LYUCcharset 
+-T SearchResponseAPDU 
+-T query_term 
+-T any 
+-T pdu_type
+-T bit_map 
+-T data_tag
+-T SearchAPDU 
+-T InitResponseAPDU 
+-T WAISDocumentCodes 
+-T DocObj
+-T WAISDocumentHeadlines 
+-T WAISDocumentText 
+-T WAISDocumentLongHeader 
+-T WAISDocumentShortHeader 
+-T WAISInitResponse 
+-T WAISDocumentHeader 
 '
 for name in $*
 do
