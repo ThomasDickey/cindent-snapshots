@@ -1,7 +1,38 @@
 #!/bin/sh
-# $Id: ncu-indent,v 1.5 2004/05/01 22:08:20 tom Exp $
+# $Id: ncu-indent,v 1.7 2004/05/22 22:51:03 tom Exp $
 NOOP=no
-OPTS=
+OPTS='
+--blank-lines-after-procedures
+--braces-on-if-line
+--continuation-indentation0
+--continue-at-parentheses
+--cuddle-else
+--indent-level4
+--leave-preprocessor-space
+--no-blank-lines-after-commas
+--no-blank-lines-after-declarations
+--no-space-after-function-call-names
+--procnames-start-lines
+--space-special-semicolon
+--swallow-optional-blank-lines
+--tab-size8
+
+-T NCURSES_EXPORT_VAR
+-T SCREEN
+-T TERMTYPE
+-T attr_t
+-T chtype
+-T inline
+
+-T BUFFER
+-T FILE
+-T GCC_NORETURN
+-T LINE
+-T MARK
+-T RETSIGTYPE 
+-T WINDOW
+-T size_t
+'
 for name in $*
 do
 	case $name in
@@ -20,14 +51,16 @@ do
 		sed \
 			-e '/MODULE_ID(/s/)$/);/' \
 			-e 's,\<GCC_NORETURN;,;//GCC_NORETURN;,' \
+			-e 's,\(\<NCURSES_EXPORT_VAR\>\),//\1,' \
 			"$save" >"$test"
 		cp "$test" "$name"
 		chmod u+w "$name"
 		# ${INDENT_PROG-indent} --version
-		${INDENT_PROG-indent} $OPTS "$name"
+		${INDENT_PROG-indent} -npro $OPTS "$name"
 		sed \
 			-e '/MODULE_ID(/s/);$/)/' \
 			-e 's,;[ 	]*//GCC_NORETURN;, GCC_NORETURN;,' \
+			-e 's,//\(\<NCURSES_EXPORT_VAR\>\),\1,' \
 			"$name" >"$test"
 		mv "$test" "$name"
 		rm -f "${name}~"
