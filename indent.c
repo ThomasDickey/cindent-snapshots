@@ -160,24 +160,13 @@ output_line_length (void)
  * be broken.
  */
 static void
-warn_broken_line(void)
+warn_broken_line(int which)
 {
-  int n;
-  int col = 0;
+  int col = token_col();
   int len = token_len ? token_len : 1;
   char *s = token;
 
-  if (isgraph(*s))
-    {
-    for (n = 0; n <= (token - token_buf); ++n)
-      {
-	if (token_buf[n] == '\t')
-	  col = (col | 7) + 1;
-	else
-	  ++col;
-      }
-    }
-  else
+  if (!isgraph(*s))
     {
       switch (*s)
 	{
@@ -202,7 +191,7 @@ warn_broken_line(void)
 	}
 	len = strlen(s);
     }
-  message (col ? col : 1, "Line broken at %.*s", len, s);
+  message (col, "Line split #%d at %.*s", which, len, s);
 }
 
 /* Force a newline at this point in the output stream. */
@@ -217,7 +206,8 @@ indent (
   int i;
   enum codes hd_type;
   char *t_ptr;
-  enum codes type_code;
+  enum codes last_code;
+  enum codes type_code = code_eof;
   enum exit_values file_exit_value = total_success;
 
   /* current indentation for declarations */
@@ -291,6 +281,7 @@ indent (
 				   we reach eof */
       int is_procname_definition;
 
+      last_code = type_code;
       type_code = lexi ();	/* lexi reads one token.  "token" points to
 				   the actual characters. lexi returns a code
 				   indicating the type of token */
@@ -325,7 +316,7 @@ indent (
 				|| parser_state_tos->classname[0] != '\0');
 
       /* The following code moves everything following an if (), while (),
-         else, etc. up to the start of the following stmt to a buffer. This
+         else, etc. up to the start of the following statement to a buffer. This
          allows proper handling of both kinds of brace placement. */
       flushed_nl = false;
       while (parser_state_tos->search_brace)
@@ -456,7 +447,7 @@ indent (
 		  *save_com.end++ = EOL;
 		  save_com.len++;
 		  if (!flushed_nl)
-		    warn_broken_line ();
+		    warn_broken_line (1);
 		  flushed_nl = false;
 		}
 
@@ -542,12 +533,20 @@ indent (
 	  (type_code != preesc) &&
 	  (type_code != form_feed))
 	{
+	  /*
+	   * Do not split "({" or "})" chunks since those may be used to
+	   * indicate gcc compound statements (ugh).  A more conventional
+	   * use is in xterm, which uses the latter in macros to simplify
+	   * ifdef's.
+	   */
 	  if ((force_nl
+	       && !(last_code == lparen && type_code == lbrace)
+	       && !(type_code == rparen && last_code == rbrace)
 	       && (type_code != semicolon)
 	       && (type_code != lbrace || !btype_2)))
 	    {
 	      if (!flushed_nl)
-		warn_broken_line ();
+		warn_broken_line (2);
 
 	      flushed_nl = false;
 	      if (break_line)
@@ -563,7 +562,8 @@ indent (
 	  parser_state_tos->in_stmt = true;	/* turn on flag which causes
 						   an extra level of
 						   indentation. this is
-						   turned off by a ; or } */
+						   turned off by a semicolon or
+						   right curly-brace */
 	  if (s_com != e_com)
 	    {			/* the turkey has embedded a comment in a
 				   line. Move it from the com buffer to the
@@ -807,7 +807,7 @@ indent (
 	      parser_state_tos->last_u_d = true;	/* inform lexi that a
 							   following operator is
 							   unary */
-	      parser_state_tos->in_stmt = false;	/* dont use stmt
+	      parser_state_tos->in_stmt = false;	/* dont use statement
 							   continuation
 							   indentation */
 
@@ -936,7 +936,7 @@ indent (
 	      break;
 	    }
 	  parser_state_tos->in_stmt = false;	/* seeing a label does not
-						   imply we are in a stmt */
+						   imply we are in a statement */
 	  for (t_ptr = s_code; *t_ptr; ++t_ptr)
 	    *e_lab++ = *t_ptr;	/* turn everything so far into a label */
 	  e_code = s_code;
@@ -1003,13 +1003,13 @@ indent (
 	  *e_code++ = ';';
 	  *e_code = '\0';	/* null terminate code sect */
 	  parser_state_tos->want_blank = true;
-	  /* we are no longer in the middle of a stmt */
+	  /* we are no longer in the middle of a statement */
 	  parser_state_tos->in_stmt = (parser_state_tos->p_l_follow > 0);
 
 	  if (!sp_sw)
 	    {			/* if not if for (;;) */
 	      PARSE (semicolon);
-	      force_nl = true;	/* force newline after a end of stmt */
+	      force_nl = true;	/* force newline after a end of statement */
 	    }
 	  break;
 
@@ -1077,7 +1077,7 @@ indent (
 	  dec_ind = 0;
 
 	  /* We are no longer looking for an initializer or structure. Needed
-	     so that the '=' in "enum bar {a = 1" does not get interpreted as
+	     so that the '=' in "enum bar {a = 1 ...}" does not get interpreted as
 	     the start of an initializer.  */
 	  parser_state_tos->in_or_st = false;
 
@@ -1106,7 +1106,7 @@ indent (
 	  parser_state_tos->block_init_level--;
 	  if (s_code != e_code && !parser_state_tos->block_init)
 	    {			/* right curly-brace must be first on line */
-	      warn_broken_line ();
+	      warn_broken_line (3);
 	      dump_line ();
 	    }
 	  *e_code++ = R_CURL;
@@ -1163,7 +1163,7 @@ indent (
 	    {
 	      if (e_code != s_code && (!cuddle_else || e_code[-1] != R_CURL))
 		{
-		  warn_broken_line ();
+		  warn_broken_line (4);
 		  dump_line ();	/* make sure this starts a line */
 		  parser_state_tos->want_blank = false;
 		}
@@ -1176,7 +1176,7 @@ indent (
 	    {
 	      if (e_code != s_code)
 		{		/* make sure this starts a line */
-		  warn_broken_line ();
+		  warn_broken_line (5);
 		  dump_line ();
 		  parser_state_tos->want_blank = false;
 		}
@@ -1687,7 +1687,7 @@ indent (
 
 	default:
 	  abort ();
-	}			/* end of big switch stmt */
+	}			/* end of big switch statement */
 
       *e_code = '\0';		/* make sure code section is null terminated */
       if (type_code != comment
@@ -1743,7 +1743,7 @@ char **in_file_names;
 int max_input_files = 128;
 
 #ifdef DEBUG
-int debug;
+int debug = 1;
 #endif
 
 int

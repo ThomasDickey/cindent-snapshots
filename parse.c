@@ -24,6 +24,133 @@ struct parser_state *parser_state_tos;
 #define INITIAL_BUFFER_SIZE 1000
 #define INITIAL_STACK_SIZE 2
 
+char *
+parsecode2s(enum codes value)
+{
+  char *result = "?";
+  switch (value)
+    {
+      case code_eof:
+        result = "EOF";
+	break;
+      case newline:
+        result = "newline";
+	break;
+      case lparen:
+        result = "left parenthesis";
+	break;
+      case rparen:
+        result = "right parenthesis";
+	break;
+      case start_token:
+        result = "start_token";
+	break;
+      case unary_op:
+        result = "unary_op";
+	break;
+      case binary_op:
+        result = "binary_op";
+	break;
+      case postop:
+        result = "postop";
+	break;
+      case question:
+        result = "question mark";
+	break;
+      case casestmt:
+        result = "casestmt";
+	break;
+      case colon:
+        result = "colon";
+	break;
+      case doublecolon:			/* For C++ class methods. */
+        result = "doublecolon";
+	break;
+      case semicolon:
+        result = "semicolon";
+	break;
+      case lbrace:
+        result = "left brace";
+	break;
+      case rbrace:
+        result = "right brace";
+	break;
+      case ident:
+        result = "identifier or string";
+	break;
+      case overloaded:			/* For C++ overloaded operators (like +) */
+        result = "overloaded";
+	break;
+      case cpp_operator:
+        result = "cpp_operator";
+	break;
+      case comma:
+        result = "comma";
+	break;
+      case comment:			/* A "slash-star" comment */
+        result = "comment";
+	break;
+      case cplus_comment:		/* A C++ "slash-slash" */
+        result = "cplus_comment";
+	break;
+      case swstmt:
+        result = "switch-statement";
+	break;
+      case preesc:			/* '#'.  */
+        result = "preesc";
+	break;
+      case form_feed:
+        result = "form_feed";
+	break;
+      case decl:
+        result = "declaration";
+	break;
+      case sp_paren:			/* if, for, or while token */
+        result = "sp_paren";
+	break;
+      case sp_nparen:
+        result = "sp_nparen";
+	break;
+      case ifstmt:
+        result = "if-statement";
+	break;
+      case whilestmt:
+        result = "while-statement";
+	break;
+      case forstmt:
+        result = "for-statement";
+	break;
+      case stmt:
+        result = "statement";
+	break;
+      case stmtl:
+        result = "statement list";
+	break;
+      case elselit:
+        result = "elselit";
+	break;
+      case dolit:
+        result = "dolit";
+	break;
+      case dohead:
+        result = "do-head";
+	break;
+      case dostmt:
+        result = "do-statement";
+	break;
+      case ifhead:
+        result = "if-head";
+	break;
+      case elsehead:
+        result = "else-head";
+	break;
+      case struct_delim:		/* '.' or "->" */
+	result = "struct_delim";
+	break;
+    }
+  return result;
+}
+
 void
 init_parser (void)
 {
@@ -155,54 +282,6 @@ inc_pstack (void)
   return parser_state_tos->tos;
 }
 
-#ifdef DEBUG
-static char **debug_symbol_strings;
-
-void
-debug_init (void)
-{
-  int size = ((int) period + 4) * sizeof (char *);
-
-  debug_symbol_strings = (char **) xmalloc (size);
-
-  debug_symbol_strings[code_eof] = "code_eof";
-  debug_symbol_strings[newline] = "newline";
-  debug_symbol_strings[lparen] = "lparen";
-  debug_symbol_strings[rparen] = "rparen";
-  debug_symbol_strings[unary_op] = "unary_op";
-  debug_symbol_strings[binary_op] = "binary_op";
-  debug_symbol_strings[postop] = "postop";
-  debug_symbol_strings[question] = "question";
-  debug_symbol_strings[casestmt] = "casestmt";
-  debug_symbol_strings[colon] = "colon";
-  debug_symbol_strings[semicolon] = "semicolon";
-  debug_symbol_strings[lbrace] = "lbrace";
-  debug_symbol_strings[rbrace] = "rbrace";
-  debug_symbol_strings[ident] = "ident";
-  debug_symbol_strings[comma] = "comma";
-  debug_symbol_strings[comment] = "comment";
-  debug_symbol_strings[swstmt] = "swstmt";
-  debug_symbol_strings[preesc] = "preesc";
-  debug_symbol_strings[form_feed] = "form_feed";
-  debug_symbol_strings[decl] = "decl";
-  debug_symbol_strings[sp_paren] = "sp_paren";
-  debug_symbol_strings[sp_nparen] = "sp_nparen";
-  debug_symbol_strings[ifstmt] = "ifstmt";
-  debug_symbol_strings[whilestmt] = "whilestmt";
-  debug_symbol_strings[forstmt] = "forstmt";
-  debug_symbol_strings[stmt] = "stmt";
-  debug_symbol_strings[stmtl] = "stmtl";
-  debug_symbol_strings[elselit] = "elselit";
-  debug_symbol_strings[dolit] = "dolit";
-  debug_symbol_strings[dohead] = "dohead";
-  debug_symbol_strings[dostmt] = "dostmt";
-  debug_symbol_strings[ifhead] = "ifhead";
-  debug_symbol_strings[elsehead] = "elsehead";
-  debug_symbol_strings[period] = "period";
-}
-
-#endif
-
 enum exit_values
 parse (
      enum codes tk)		/* the code for the construct scanned */
@@ -213,11 +292,9 @@ parse (
 #ifdef DEBUG
   if (debug)
     {
-      if (tk >= code_eof && tk <= period)
-	printf ("Parse: %s\n", debug_symbol_strings[tk]);
-      else
-	printf ("Parse: Unknown code: %d for %s\n",
-		(int) tk, token ? token : "NULL");
+      if (debug > 1)
+	printf ("%s:%d:%d: ", in_name, in_line_no, token_col());
+      printf ("Parse: %s\n", parsecode2s(tk));
     }
 #endif
 
@@ -266,7 +343,7 @@ parse (
 	  && else_if)		/* "else if ..." */
 	parser_state_tos->i_l_follow
 	  = parser_state_tos->il[parser_state_tos->tos];
-    case dolit:		/* 'do' */
+    case dolit:			/* 'do' */
     case forstmt:		/* for (...) */
       inc_pstack ();
       parser_state_tos->p_stack[parser_state_tos->tos] = tk;
@@ -277,7 +354,7 @@ parse (
       parser_state_tos->search_brace = btype_2;
       break;
 
-    case lbrace:		/* scanned { */
+    case lbrace:		/* scanned left curly-brace */
       break_comma = false;	/* don't break comma in an initial list */
       if (parser_state_tos->p_stack[parser_state_tos->tos] == stmt
 	  || parser_state_tos->p_stack[parser_state_tos->tos] == stmtl)
@@ -305,17 +382,15 @@ parse (
 	      /* it is a group as part of a while, for, etc. */
 
 	      /* For -bl formatting, indent by brace_indent additional spaces
-	         e.g. if (foo == bar) { <--> brace_indent spaces (in this
-	         example, 4) */
+	       * e.g.,
+	       * 	if (foo == bar) { <--> brace_indent spaces
+	       *	}
+	       * (in this example, 4)
+	       */
 	      if (!btype_2)
 		{
 		  parser_state_tos->ind_level += brace_indent;
 		  parser_state_tos->i_l_follow += brace_indent;
-#if 0
-		  if (parser_state_tos->p_stack[parser_state_tos->tos]
-		      == swstmt)
-		    case_ind += brace_indent;
-#endif
 		}
 
 	      if (parser_state_tos->p_stack[parser_state_tos->tos] == swstmt
@@ -360,7 +435,7 @@ parse (
 
       if (parser_state_tos->p_stack[parser_state_tos->tos] != ifhead)
 	{
-	  message (0, "Unmatched 'else'", 0, 0);
+	  message (0, "Unmatched 'else'");
 	  my_value = indent_error;
 	}
       else
@@ -378,7 +453,7 @@ parse (
 	}
       break;
 
-    case rbrace:		/* scanned a } */
+    case rbrace:		/* scanned a right curly-brace */
       /* stack should have <lbrace> <stmt> or <lbrace> <stmtl> */
       if (parser_state_tos->p_stack[parser_state_tos->tos - 1] == lbrace)
 	{
@@ -388,7 +463,9 @@ parse (
 	}
       else
 	{
-	  message (0, "Stmt nesting error.", 0, 0);
+	  message (0, "Expected %s on stack rather than %s",
+		  parsecode2s(lbrace),
+		  parsecode2s(parser_state_tos->p_stack[parser_state_tos->tos - 1]));
 	  my_value = indent_error;
 	}
       break;
@@ -396,9 +473,6 @@ parse (
     case swstmt:		/* had switch (...) */
       inc_pstack ();
       parser_state_tos->p_stack[parser_state_tos->tos] = swstmt;
-#if 0
-      parser_state_tos->cstk[parser_state_tos->tos] = case_ind;
-#endif
       parser_state_tos->cstk[parser_state_tos->tos]
 	= case_indent + parser_state_tos->i_l_follow;
       if (! btype_2)
@@ -410,10 +484,6 @@ parse (
       /* case labels should be one level down from switch, plus
 	 `case_indent' if any.  Then, statements should be the `ind_size'
 	 further. */
-#if 0
-      case_ind = parser_state_tos->i_l_follow + case_indent;
-      parser_state_tos->i_l_follow += case_indent + ind_size;
-#endif
       parser_state_tos->i_l_follow += ind_size;
       parser_state_tos->search_brace = btype_2;
       break;
@@ -446,9 +516,11 @@ parse (
     {
       printf ("\nParseStack [%d]:\n", (int) parser_state_tos->p_stack_size);
       for (i = 1; i <= parser_state_tos->tos; ++i)
-	printf ("  stack[%d] =>   stack: %d   ind_level: %d\n",
-		(int) i, (int) parser_state_tos->p_stack[i],
-		(int) parser_state_tos->il[i]);
+	printf ("  [%3d] =>  indent:%3d  stack: %2d (%s)\n",
+		(int) i,
+		(int) parser_state_tos->il[i],
+		(int) parser_state_tos->p_stack[i],
+		parsecode2s(parser_state_tos->p_stack[i]));
       printf ("\n");
     }
 #endif
@@ -536,9 +608,6 @@ reduce (void)
 
 	    case swstmt:
 	      /* <switch> <stmt> */
-#if 0
-	      case_ind = parser_state_tos->cstk[parser_state_tos->tos - 1];
-#endif
 
 	    case decl:		/* finish of a declaration */
 	    case elsehead:
@@ -561,9 +630,6 @@ reduce (void)
 	  if (parser_state_tos->p_stack[parser_state_tos->tos - 1] == dohead)
 	    {
 	      /* it is termination of a do while */
-#if 0
-	      parser_state_tos->p_stack[--parser_state_tos->tos] = stmt;
-#endif
 	      parser_state_tos->p_stack[--parser_state_tos->tos] = dostmt;
 	      break;
 	    }

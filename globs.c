@@ -69,6 +69,7 @@ message (int warnings, char *string, ...)
     {
       va_list ap;
 
+      fflush(stdout);
       if (warnings >= 0)
 	{
 	  fprintf (stderr, "%s:%d", in_name, in_line_no);
@@ -83,6 +84,7 @@ message (int warnings, char *string, ...)
       va_end (ap);
 
       fprintf (stderr, "\n");
+      fflush(stderr);
     }
 }
 
