@@ -5,6 +5,17 @@ find useful since most of the differences I see between their respective
 outputs are new bugs in the 2.x version.  Perhaps the next maintainer of
 indent will know something about regression testing -T.Dickey 2002/4/7
 
+2002-04-09
+	+ drop 'out_coms' variable, using 'com_lines' instead in the summary
+	  printed by the -v option.
+
+	+ change logic for line_no, to record it as the output line number,
+	  and correct some places where it was not counted, e.g., within
+	  multi-line comments and at a backslash before a newline.
+
+	+ minor cleanup of configure script to use $AWK, $CFLAGS and $LDFLAGS
+	  variables.
+
 2002-04-07
 
 	+ convert to ANSI C.

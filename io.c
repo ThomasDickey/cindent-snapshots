@@ -104,6 +104,28 @@ vms_read (int file_desc, char *buffer, int nbytes)
 }
 #endif /* VMS */
 
+static void
+pass_char(int ch)
+{
+  if (ch == '\n')
+    ++line_no;
+  putc (ch, output);
+}
+
+static void
+pass_text(char *s)
+{
+  while (*s != 0)
+    pass_char(*s++);
+}
+
+static void
+pass_n_text(char *s, int n)
+{
+  while (n-- > 0)
+    pass_char(*s++);
+}
+
 int
 count_columns (
      int column,
@@ -199,7 +221,7 @@ pad_output (
       offset = tabsize - (my_current_col - 1) % tabsize;
       while (my_current_col + offset <= target_column)
 	{
-	  putc (TAB, output);
+	  pass_char (TAB);
 	  my_current_col += offset;
 	  offset = tabsize;
 	}
@@ -207,7 +229,7 @@ pad_output (
 
   while (my_current_col < target_column)
     {
-      putc (' ', output);
+      pass_char (' ');
       my_current_col++;
     }
 
@@ -239,7 +261,7 @@ dump_line (void)
          rather than treat it as a normal blank line.  */
       if (parser_state_tos->use_ff)
 	{
-	  putc ('\014', output);
+	  pass_char ('\014');
 	  parser_state_tos->use_ff = false;
 	}
       else
@@ -265,10 +287,10 @@ dump_line (void)
 	n_real_blanklines = 1;
 
       while (--n_real_blanklines >= 0)
-	putc (EOL, output);
+	pass_char (EOL);
       n_real_blanklines = 0;
       if (parser_state_tos->ind_level == 0)
-	parser_state_tos->ind_stmt = 0;	/* this is a class A kludge. dont do
+	parser_state_tos->ind_stmt = 0;	/* This is a class A kludge. Don't do
 					   additional statement indentation
 					   if we are at bracket level 0 */
 
@@ -280,7 +302,7 @@ dump_line (void)
 	  if (comment_open)
 	    {
 	      comment_open = 0;
-	      fprintf (output, ".*/\n");
+	      pass_text (".*/\n");
 	    }
 	  while (e_lab > s_lab && (e_lab[-1] == ' ' || e_lab[-1] == TAB))
 	    e_lab--;
@@ -294,26 +316,28 @@ dump_line (void)
 	      if (e_lab[-1] == EOL)
 		e_lab--;
 	      do
-		putc (*s++, output);
+		pass_char (*s++);
 	      while (s < e_lab && 'a' <= *s && *s <= 'z');
 	      while ((*s == ' ' || *s == TAB) && s < e_lab)
 		s++;
 	      if (s < e_lab)
 		{
+		  pass_char((tabsize > 1) ? '\t' : ' ');
 		  if (s[0] == '/' && (s[1] == '*' || s[1] == '/'))
-		    fprintf (output, (tabsize > 1 ? "\t%.*s" : "  %.*s"),
-			     e_lab - s, s);
+		    {
+		      pass_n_text (s, e_lab - s);
+		    }
 		  else
-		    fprintf (output, (tabsize > 1
-				      ? "\t/* %.*s */"
-				      : "  /* %.*s */"),
-			     e_lab - s, s);
+		    {
+		      pass_text("/* ");
+		      pass_n_text (s, e_lab - s);
+		      pass_text(" */");
+		    }
 		}
 	    }
 	  else
-	    fprintf (output, "%.*s", (int) (e_lab - s_lab), s_lab);
-	  cur_col = count_columns (cur_col, s_lab,
-				   NULL_CHAR);
+	    pass_n_text (s_lab, e_lab - s_lab);
+	  cur_col = count_columns (cur_col, s_lab, NULL_CHAR);
 	}
       else
 	cur_col = 1;		/* there is no label section */
@@ -331,7 +355,7 @@ dump_line (void)
 	  if (comment_open)
 	    {
 	      comment_open = 0;
-	      fprintf (output, ".*/\n");
+	      pass_text (".*/\n");
 	    }
 
 	  /* If a comment begins this line, then indent it to the right
@@ -365,7 +389,7 @@ dump_line (void)
 	      int len;
 
 	      for (p = s_code; p < buf_break; p++)
-		putc (*p, output);
+		pass_char (*p);
 
 	      *buf_break = '\0';
 	      cur_col = count_columns (cur_col, s_code, NULL_CHAR);
@@ -381,7 +405,7 @@ dump_line (void)
 	  else
 	    {
 	      for (p = s_code; p < e_code; p++)
-		putc (*p, output);
+		pass_char (*p);
 	      cur_col = count_columns (cur_col, s_code, NULL_CHAR);
 	    }
 	}
@@ -396,13 +420,13 @@ dump_line (void)
 
 	      if (cur_col > target)
 		{
-		  putc (EOL, output);
+		  pass_char (EOL);
 		  cur_col = 1;
 		  ++out_lines;
 		}
 
 	      cur_col = pad_output (cur_col, target);
-	      fwrite (com_st, (unsigned) (e_com - com_st), 1, output);
+	      pass_n_text (com_st, e_com - com_st);
 	      cur_col += e_com - com_st;
 	      com_lines++;
 	    }
@@ -413,11 +437,11 @@ dump_line (void)
 
       if (parser_state_tos->use_ff)
 	{
-	  putc ('\014', output);
+	  pass_char ('\014');
 	  parser_state_tos->use_ff = false;
 	}
       else
-	putc (EOL, output);
+	pass_char (EOL);
 
       ++out_lines;
       if (parser_state_tos->just_saw_decl == 1
@@ -695,12 +719,12 @@ fill_buffer (void)
 	      if (s_com != e_com || s_lab != e_lab || s_code != e_code)
 		dump_line ();
 	      while (q < p)
-		putc (*q++, output);
+		pass_char (*q++);
 
 	      do
 		{
 		  while (*p != '\0' && *p != EOL)
-		    putc (*p++, output);
+		    pass_char (*p++);
 		  if (*p == '\0'
 		      && ((unsigned int) (p - current_input->data) == current_input->size))
 		    {
@@ -711,24 +735,24 @@ fill_buffer (void)
 
 		  if (*p == EOL)
 		    cur_line = p + 1;
-		  putc (*p++, output);
+		  pass_char (*p++);
 		  while (*p == ' ' || *p == TAB)
-		    putc (*p++, output);
+		    pass_char (*p++);
 
 		  if (*p == '/' && (*(p + 1) == '*' || *(p + 1) == '/'))
 		    {
 		      /* We've hit a comment.  See if turns formatting
 			 back on. */
-		      putc (*p++, output);
-		      putc (*p++, output);
+		      pass_char (*p++);
+		      pass_char (*p++);
 		      while (*p == ' ' || *p == TAB)
-			putc (*p++, output);
+			pass_char (*p++);
 		      if (! strncmp (p, "*INDENT-ON*", 11))
 			{
 			  do
 			    {
 			      while (*p != '\0' && *p != EOL)
-				putc (*p++, output);
+				pass_char (*p++);
 			      if (*p == '\0'
 				  && ((unsigned int) (p - current_input->data) == current_input->size))
 				{
@@ -743,7 +767,7 @@ fill_buffer (void)
 				      inhibited = 0;
 				      cur_line = p + 1;
 				    }
-				  putc (*p++, output);
+				  pass_char (*p++);
 				}
 			    }
 			  while (inhibited);
@@ -788,7 +812,7 @@ fill_buffer (void)
 void
 dump_debug_line (void)
 {
-  fprintf (output, "\n*** Debug output marker line ***\n");
+  pass_text ("\n*** Debug output marker line ***\n");
 }
 
 #endif

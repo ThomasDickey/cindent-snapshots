@@ -559,8 +559,6 @@ lexi (void)
 	      buf_ptr++;
 	      if (buf_ptr >= buf_end)
 		fill_buffer ();
-	      if (*buf_ptr == EOL)
-		++line_no;
 	      if (*buf_ptr == 0)
 		break;
 	    }

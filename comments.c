@@ -30,9 +30,6 @@
 	    s_com = combuf + 1; \
 	  }
 
-/* The number of comments handled so far. */
-int out_coms;
-
 /* Output a comment.  `buf_ptr' is pointing to the character after
    the beginning comment delimiter when this is called.  This handles
    both C and C++ comments.
