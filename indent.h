@@ -450,6 +450,7 @@ struct parser_state
   int ind_stmt;			/* set to 1 if next line should have an extra
 				   indentation level because we are in the
 				   middle of a stmt */
+  int inner_stmt;		/* set to true if processing ({statement}) */
   int last_u_d;			/* set to true after scanning a token which
 				   forces a following operator to be unary */
   int p_l_follow;		/* used to remember how to indent following
