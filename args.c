@@ -743,7 +743,7 @@ scan_profile (FILE *f)
 		    i = getc (f);
 		  if (i == EOF)
 		    {
-		      WARNING ("Profile contains unpalatable characters",
+		      message (-1, "Profile contains unpalatable characters",
 			       0, 0);
 		      return;
 		    }
@@ -752,7 +752,7 @@ scan_profile (FILE *f)
 	      continue;
 
 	    default:
-	      WARNING ("Profile contains unpalatable characters", 0, 0);
+	      message (-1, "Profile contains unpalatable characters");
 	      if (i == EOF)
 		return;
 	      continue;

@@ -37,6 +37,8 @@
    indent.h.  */
 char *token;
 char *token_end;
+int token_len;
+char *token_buf;
 
 #define alphanum 1
 #define opchar 3
@@ -180,6 +182,11 @@ is_reserved (char *str, unsigned len)
   return 0;
 }
 
+/* We do not always increment token_len when we increment buf_ptr, but the
+ * reverse is true.  Make the result a little more readable.
+ */
+#define inc_token_len() token_len += (token_buf == cur_line), ++buf_ptr
+
 enum codes
 lexi (void)
 {
@@ -213,6 +220,8 @@ lexi (void)
      to a different buffer.  Thus when `token_end' gets set later, it
      may be pointing into a different buffer than `token'. */
   token = buf_ptr;
+  token_len = 0;
+  token_buf = cur_line;
 
   /* Scan an alphanumeric token */
   if ((! (buf_ptr[0] == 'L' && (buf_ptr[1] == '"' || buf_ptr[1] == '\''))
@@ -230,9 +239,7 @@ lexi (void)
 	    {
 	      buf_ptr += 2;
 	      while (isxdigit (*buf_ptr))
-		{
-		  buf_ptr++;
-		}
+		inc_token_len();
 	    }
 	  else
 	    while (1)
@@ -244,7 +251,7 @@ lexi (void)
 		    else
 		      seendot++;
 		  }
-		buf_ptr++;
+		inc_token_len();
 		if (!isdigit (*buf_ptr) && *buf_ptr != '.')
 		  {
 		    if ((*buf_ptr != 'E' && *buf_ptr != 'e') || seenexp)
@@ -253,30 +260,30 @@ lexi (void)
 		      {
 			seenexp++;
 			seendot++;
-			buf_ptr++;
+			inc_token_len();
 			if (*buf_ptr == '+' || *buf_ptr == '-')
-			  buf_ptr++;
+			  inc_token_len();
 		      }
 		  }
 	      }
 
 	  if (*buf_ptr == 'F' || *buf_ptr == 'f'
 	      || *buf_ptr == 'i' || *buf_ptr == 'j')
-	    buf_ptr++;
+	    inc_token_len();
 	  else
 	    {
 	      if (*buf_ptr == 'U' || *buf_ptr == 'u')
-		buf_ptr++;
+		inc_token_len();
 	      if (*buf_ptr == 'L' || *buf_ptr == 'l')
-		buf_ptr++;
+		inc_token_len();
 	      if (*buf_ptr == 'L' || *buf_ptr == 'l')
-		buf_ptr++;
+		inc_token_len();
 	    }
 	}
       else
 	while (chartype[(int) *buf_ptr] == alphanum)
 	  {			/* copy it over */
-	    buf_ptr++;
+	    inc_token_len();
 	    if (buf_ptr >= buf_end)
 	      fill_buffer ();
 	  }
@@ -540,7 +547,7 @@ lexi (void)
 	}
 
       qchar = buf_ptr[0];
-      buf_ptr++;
+      inc_token_len();
       goto handle_string;
 
     case '\'':			/* start of quoted character */
@@ -556,20 +563,20 @@ lexi (void)
 	{
 	  if (*buf_ptr == '\\')
 	    {
-	      buf_ptr++;
+	      inc_token_len();
 	      if (buf_ptr >= buf_end)
 		fill_buffer ();
 	      if (*buf_ptr == 0)
 		break;
 	    }
-	  buf_ptr++;
+	  inc_token_len();
 	  if (buf_ptr >= buf_end)
 	    fill_buffer ();
 	}
 
       if (*buf_ptr == EOL || *buf_ptr == 0)
 	{
-	  WARNING ((qchar == '\''
+	  message (1, (qchar == '\''
 		    ? "Unterminated character constant"
 		    : "Unterminated string constant"),
 		   0, 0);
@@ -577,7 +584,7 @@ lexi (void)
       else
 	{
 	  /* Advance over end quote char.  */
-	  buf_ptr++;
+	  inc_token_len();
 	  if (buf_ptr >= buf_end)
 	    fill_buffer ();
 	}
@@ -606,7 +613,7 @@ lexi (void)
       if (leave_preproc_space)
 	{
 	  while (*buf_ptr == ' ' && buf_ptr < buf_end)
-	    buf_ptr++;
+	    inc_token_len();
 	  token_end = buf_ptr;
 	}
       break;
@@ -621,7 +628,7 @@ lexi (void)
       if (*buf_ptr == ':')
 	{
 	  code = doublecolon;
-	  buf_ptr++;
+	  inc_token_len();
 	  token_end = buf_ptr;
 	  break;
 	}
@@ -642,7 +649,7 @@ lexi (void)
       code = semicolon;
       break;
 
-    case ('{'):
+    case (L_CURL):
       unary_delim = true;
 
       /* This check is made in the code for '='.  No one who writes
@@ -656,14 +663,14 @@ lexi (void)
          initializations to be treated as parentheses, thus causing
          initializations to line up correctly, e.g. struct foo bar = {{a, b,
          c}, {1, 2}}; If lparen is returned, token can be used to distinguish
-         between '{' and '(' where necessary.  */
+         between left curly-brace and '(' where necessary.  */
 
       code = parser_state_tos->block_init ? lparen : lbrace;
       break;
 
-    case ('}'):
+    case (R_CURL):
       unary_delim = true;
-      /* The following neat hack is explained under '{' above.  */
+      /* The following neat hack is explained under left curly-brace above.  */
       code = parser_state_tos->block_init ? rparen : rbrace;
 
       break;
@@ -693,7 +700,7 @@ lexi (void)
       if (*buf_ptr == token[0])
 	{
 	  /* check for doubled character */
-	  buf_ptr++;
+	  inc_token_len();
 	  /* buffer overflow will be checked at end of loop */
 	  if (last_code == ident || last_code == rparen)
 	    {
@@ -704,11 +711,11 @@ lexi (void)
 	}
       else if (*buf_ptr == '=')
 	/* check for operator += */
-	buf_ptr++;
+	inc_token_len();
       else if (*buf_ptr == '>')
 	{
 	  /* check for operator -> */
-	  buf_ptr++;
+	  inc_token_len();
 	  code = struct_delim;
 	}
 
@@ -722,7 +729,7 @@ lexi (void)
 	parser_state_tos->block_init = 1;
 
       if (*buf_ptr == '=')	/* == */
-	buf_ptr++;
+	inc_token_len();
       else if (*buf_ptr == '-'
 	       || *buf_ptr == '+'
 	       || *buf_ptr == '*'
@@ -735,7 +742,7 @@ lexi (void)
 	     people want to detect and eliminate old style assignments but
 	     they don't want indent to silently change the meaning of their
 	     code).  */
-	  WARNING ("old style assignment ambiguity in \"=%c\".  Assuming \"= %c\"\n",
+	  message (1, "old style assignment ambiguity in \"=%c\".  Assuming \"= %c\"\n",
 		   (int) *buf_ptr, (int) *buf_ptr);
 	}
 
@@ -753,11 +760,13 @@ lexi (void)
          one token, but I don't think that will cause any harm.  */
       while (*buf_ptr == '>' || *buf_ptr == '<' || *buf_ptr == '=')
 	{
-	  if (++buf_ptr >= buf_end)
+	  inc_token_len();
+	  if (buf_ptr >= buf_end)
 	    fill_buffer ();
 	  if (*buf_ptr == '=')
 	    {
-	      if (++buf_ptr >= buf_end)
+	      inc_token_len();
+	      if (buf_ptr >= buf_end)
 		fill_buffer ();
 	    }
 	}
@@ -790,7 +799,8 @@ lexi (void)
 	  else
 	    code = cplus_comment;
 
-	  if (++buf_ptr >= buf_end)
+	  inc_token_len();
+	  if (buf_ptr >= buf_end)
 	    fill_buffer ();
 
 	  unary_delim = parser_state_tos->last_u_d;
@@ -806,7 +816,8 @@ lexi (void)
 	  while (*(buf_ptr - 1) == *buf_ptr || *buf_ptr == '=')
 	    {
 	      /* handle ||, &&, etc, and also things as in int *****i */
-	      if (++buf_ptr >= buf_end)
+	      inc_token_len();
+	      if (buf_ptr >= buf_end)
 		fill_buffer ();
 	    }
 	  code = (parser_state_tos->last_u_d ? unary_op : binary_op);

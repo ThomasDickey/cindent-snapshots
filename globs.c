@@ -63,18 +63,27 @@ xrealloc (char *ptr, unsigned size)
 }
 
 void
-message (char *kind, char *string, ...)
+message (int warnings, char *string, ...)
 {
-  va_list ap;
+  if (((warnings > 0) && verbose) || (warnings <= 0))
+    {
+      va_list ap;
 
-  if (kind)
-    fprintf (stderr, "%s:%d: %s:", in_name, line_no, kind);
+      if (warnings >= 0)
+	{
+	  fprintf (stderr, "%s:%d", in_name, in_line_no);
+	  if (warnings > 1)
+	    fprintf (stderr, ":%d", warnings);	/* column for broken-line */
+	  fprintf (stderr, ": ");
+	}
+      fprintf (stderr, "%s: ", warnings ? "Warning" : "Error");
 
-  va_start (ap, string);
-  vfprintf (stderr, string, ap);
-  va_end (ap);
+      va_start (ap, string);
+      vfprintf (stderr, string, ap);
+      va_end (ap);
 
-  fprintf (stderr, "\n");
+      fprintf (stderr, "\n");
+    }
 }
 
 /* Print a fatal error message and exit, or, if compiled with

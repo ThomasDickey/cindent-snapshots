@@ -122,6 +122,9 @@ enum rwcodes
 #define false 0
 #define true  1
 
+#define L_CURL '{'
+#define R_CURL '}'
+
 #define DEFAULT_RIGHT_MARGIN 78
 
 #define DEFAULT_RIGHT_COMMENT_MARGIN 78
@@ -174,6 +177,9 @@ extern int  break_line;		/* Whether or not we should break the line. */
 extern char *token;
 /* points to the first char after the end of token */
 extern char *token_end;
+
+extern int token_len;
+extern char *token_buf;
 
 /* Functions from lexi.c */
 extern enum codes lexi (void);
@@ -250,7 +256,8 @@ extern int com_lines;		/* the number of lines with comments, set by
 
 
 extern int had_eof;		/* set to true when input is exhausted */
-extern int line_no;		/* the current output line number. */
+extern int in_line_no;		/* the current input line number. */
+extern int out_line_no;		/* the current output line number. */
 
 extern int max_col;		/* the maximum allowable line length */
 extern int verbose;		/* when true, non-essential error messages
@@ -490,14 +497,8 @@ extern int else_endif_col;
 /* Declared in globs.c */
 extern char *xmalloc (unsigned);
 extern char *xrealloc (char *, unsigned);
-extern void message (char *, char *, ...);
+extern void message (int, char *, ...);
 extern void fatal (char *, ...);
-
-/* Warning messages:  indent continues */
-#define WARNING(s,a,b) message ("Warning", s, a, b)
-
-/* Error messages: indent stops processing the current file. */
-#define ERROR(s,a,b) message ("Error", s, a, b)
 
 /* Declared in args.c */
 extern char * set_profile (void);
@@ -522,6 +523,7 @@ extern void dump_line (void);
 extern void fill_buffer (void);
 
 /* Declared in parse.c */
+extern char *parsecode2s (enum codes);
 extern enum exit_values parse (enum codes);
 extern int inc_pstack (void);
 extern void init_parser (void);
