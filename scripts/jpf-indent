@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: jpf-indent,v 1.1 2004/02/21 17:04:27 tom Exp $
+# $Id: jpf-indent,v 1.2 2004/05/08 19:28:21 tom Exp $
 # indent ncurses source written by Juergen Pfeifer
 NOOP=no
 OPTS='
@@ -18,6 +18,8 @@ OPTS='
 --tab-size8
 -T FIELDTYPE
 -T FIELD
+-T FORM
+-T TypeArgument 
 -T va_list
 '
 for name in $*
