@@ -1,0 +1,12 @@
+#! /bin/sh
+# prerm script for indent
+
+set -e
+
+if [ $1 != "upgrade" ]; then
+	update-alternatives --remove indent /usr/bin/indent-cur
+fi
+
+#DEBHELPER#
+
+exit 0

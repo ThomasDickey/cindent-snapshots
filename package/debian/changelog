@@ -1,0 +1,5 @@
+indent-cur (2.0.20101004) unstable; urgency=low
+
+  * Add package scripts, for test-builds.
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Mon, 04 Oct 2010 20:05:06 -0400

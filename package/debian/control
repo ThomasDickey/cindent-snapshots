@@ -1,0 +1,19 @@
+Source: indent-cur
+Maintainer: Thomas E. Dickey <dickey@invisible-island.net>
+Section: utils
+Priority: optional
+Standards-Version: 3.8.4
+Build-Depends: debhelper (>= 5)
+Homepage: http://invisible-island.net/gnu-patches/
+
+Package: indent-cur
+Architecture: any
+Description: pattern scanning and text processing language
+ The `indent' program changes the appearance of a C program by
+ inserting or deleting whitespace.
+ .
+ This is a stable version of indent, used in most programs at
+     http://invisible-island.net/
+ .
+ It has some feature enhancements required by those programs,
+ not found in other versions of indent.
