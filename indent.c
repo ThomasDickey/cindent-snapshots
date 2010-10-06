@@ -77,9 +77,9 @@ int break_comma;
 #endif
 
 static void
-need_chars (struct buf *bp, int needed)
+need_chars (struct buf *bp, size_t needed)
 {
-  int current_size = (bp->end - bp->ptr);
+  size_t current_size = (size_t) (bp->end - bp->ptr);
 
   if ((current_size + needed) >= bp->size)
     {
@@ -100,7 +100,7 @@ int else_or_endif;
 int *di_stack;
 
 /* Currently allocated size of di_stack.  */
-int di_stack_alloc;
+size_t di_stack_alloc;
 
 /* when this is positive, we have seen a ? without
    the matching : in a <c>?<s>:<s> construct */
@@ -108,7 +108,7 @@ int squest;
 
 #define CHECK_CODE_SIZE \
 	if (e_code >= l_code) { \
-	    unsigned nsize = (l_code - s_code + 400); \
+	    size_t nsize = (size_t) (l_code - s_code + 400); \
 	    codebuf = xrealloc (codebuf, nsize); \
 	    e_code = codebuf + (e_code - s_code) + 1; \
 	    l_code = codebuf + nsize - 5; \
@@ -117,7 +117,7 @@ int squest;
 
 #define CHECK_LAB_SIZE \
 	if (e_lab >= l_lab) { \
-	    unsigned nsize = (l_lab - s_lab + 400); \
+	    size_t nsize = (size_t) (l_lab - s_lab + 400); \
 	    labbuf = xrealloc (labbuf, nsize); \
 	    e_lab = labbuf + (e_lab - s_lab) + 1; \
 	    l_lab = labbuf + nsize - 5; \
@@ -164,7 +164,7 @@ warn_broken_line(int which)
 {
   int col = token_col();
   int len = token_len ? token_len : 1;
-  char *s = token;
+  const char *s = token;
 
   if (!isgraph(*s))
     {
@@ -189,7 +189,7 @@ warn_broken_line(int which)
 	    s = "nonprinting character";
 	    break;
 	}
-	len = strlen(s);
+	len = (int) strlen(s);
     }
   message (col, "Line split #%d at %.*s", which, len, s);
 }
@@ -372,7 +372,7 @@ indent (
 	      if ((last_code != rparen || parser_state_tos->paren_depth != 0)
 	       && (!flushed_nl || save_com.end != save_com.ptr))
 		{
-		  need_chars (&save_com, 10);
+		  need_chars (&save_com, (size_t) 10);
 		  if (save_com.end == save_com.ptr)
 		    {		/* if this is the first comment, we must set
 				   up the buffer */
@@ -397,7 +397,7 @@ indent (
 		      /* make sure there is room for this character and
 		         (while we're at it) the '/' we might add at the end
 		         of the loop. */
-		      need_chars (&save_com, 2);
+		      need_chars (&save_com, (size_t) 2);
 		      *save_com.end = *buf_ptr++;
 		      save_com.len++;
 		      if (buf_ptr >= buf_end)
@@ -448,7 +448,7 @@ indent (
 	      if (force_nl)
 		{
 		  force_nl = false;
-		  need_chars (&save_com, 2);
+		  need_chars (&save_com, (size_t) 2);
 		  *save_com.end++ = EOL;
 		  save_com.len++;
 		  if (!flushed_nl)
@@ -474,7 +474,7 @@ indent (
 	      bp_save = buf_ptr;
 	      be_save = buf_end;
 	      buf_ptr = save_com.ptr;
-	      need_chars (&save_com, 1);
+	      need_chars (&save_com, (size_t) 1);
 	      buf_end = save_com.end;
 	      save_com.end = save_com.ptr;	/* make save_com empty */
 	      break;
@@ -688,13 +688,13 @@ indent (
 
 	  /* Count parens so we know how deep we are.  */
 	  if (++parser_state_tos->p_l_follow
-	      >= parser_state_tos->paren_indents_size)
+	      >= (int) parser_state_tos->paren_indents_size)
 	    {
 	      parser_state_tos->paren_indents_size *= 2;
-	      parser_state_tos->paren_indents = (short *)
+	      parser_state_tos->paren_indents = (int *)
 		xrealloc ((char *) parser_state_tos->paren_indents,
 			  parser_state_tos->paren_indents_size
-			  * sizeof (short));
+			  * sizeof (int));
 	    }
 	  parser_state_tos->paren_depth++;
 	  if (parser_state_tos->want_blank && *token != '['
@@ -1096,7 +1096,7 @@ indent (
 	  if (parser_state_tos->in_decl && parser_state_tos->in_or_st)
 	    {
 	      /* This is a structure declaration.  */
-	      if (parser_state_tos->dec_nest >= di_stack_alloc)
+	      if (parser_state_tos->dec_nest >= (int) di_stack_alloc)
 		{
 		  di_stack_alloc *= 2;
 		  di_stack = (int *)
@@ -1524,20 +1524,22 @@ indent (
 
 	    if (e_lab - s_lab == com_end && bp_save == 0)
 	      {			/* comment on preprocessor line */
+	        size_t added;
+
 		if (save_com.end != save_com.ptr)
 		  {
-		    need_chars (&save_com, 2);
+		    need_chars (&save_com, (size_t) 2);
 		    *save_com.end++ = EOL;	/* add newline between
 						   comments */
 		    *save_com.end++ = ' ';
 		    save_com.len += 2;
 		  }
-		need_chars (&save_com, com_end - com_start + 1);
-		strncpy (save_com.end, s_lab + com_start,
-			 (unsigned) (com_end - com_start));
-		save_com.end[com_end - com_start] = '\0';
-		save_com.end += com_end - com_start;
-		save_com.len += com_end - com_start;
+		added = (size_t) (com_end - com_start);
+		need_chars (&save_com, added + 1);
+		strncpy (save_com.end, s_lab + com_start, added);
+		save_com.end[added] = '\0';
+		save_com.end += added;
+		save_com.len += added;
 
 		e_lab = s_lab + com_start;
 		while (e_lab > s_lab
@@ -1549,7 +1551,7 @@ indent (
 		bp_save = buf_ptr;
 		be_save = buf_end;
 		buf_ptr = save_com.ptr;
-		need_chars (&save_com, 1);
+		need_chars (&save_com, (size_t) 1);
 		buf_end = save_com.end;
 		save_com.end = save_com.ptr;	/* make save_com empty */
 	      }
@@ -1597,12 +1599,12 @@ indent (
 		(void) memcpy (new->cstk, parser_state_tos->cstk,
 			       parser_state_tos->p_stack_size * sizeof (int));
 
-		new->paren_indents = (short *) xmalloc
-		  (parser_state_tos->paren_indents_size * sizeof (short));
+		new->paren_indents = (int *) xmalloc
+		  (parser_state_tos->paren_indents_size * sizeof (int));
 		(void) memcpy (new->paren_indents,
 			       parser_state_tos->paren_indents,
 			       (parser_state_tos->paren_indents_size
-				* sizeof (short)));
+				* sizeof (int)));
 
 		new->next = parser_state_tos;
 		parser_state_tos = new;
@@ -1624,7 +1626,7 @@ indent (
 		  enum codes *tos_p_stack = parser_state_tos->p_stack;
 		  int *tos_il = parser_state_tos->il;
 		  int *tos_cstk = parser_state_tos->cstk;
-		  short *tos_paren_indents =
+		  int *tos_paren_indents =
 		  parser_state_tos->paren_indents;
 		  struct parser_state *second =
 		  parser_state_tos->next;
@@ -1660,7 +1662,7 @@ indent (
 		  (void) memcpy (parser_state_tos->paren_indents,
 				 parser_state_tos->next->paren_indents,
 				 (parser_state_tos->paren_indents_size
-				  * sizeof (short)));
+				  * sizeof (int)));
 		}
 	      else
 		{
@@ -1770,22 +1772,22 @@ indent (
 }
 
 /* Points to current input file name */
-char *in_name = 0;
+const char *in_name = 0;
 
 /* Points to the current input buffer */
 struct file_buffer *current_input = 0;
 
 /* Points to the name of the output file */
-char *out_name = 0;
+static const char *out_name = 0;
 
 /* How many input files were specified */
-int input_files;
+static size_t input_files;
 
 /* Names of all input files */
-char **in_file_names;
+static const char **in_file_names;
 
 /* Initial number of input filenames to allocate. */
-int max_input_files = 128;
+static size_t max_input_files = 128;
 
 #ifdef DEBUG
 int debug = 1;
@@ -1807,7 +1809,7 @@ main (int argc, char **argv)
 
   output = 0;
   input_files = 0;
-  in_file_names = (char **) xmalloc (max_input_files * sizeof (char *));
+  in_file_names = (const char **) xmalloc (max_input_files * sizeof (char *));
 
   set_defaults ();
   for (i = 1; i < argc; ++i)
@@ -1873,9 +1875,9 @@ main (int argc, char **argv)
 		    {
 		      max_input_files = 2 * max_input_files;
 		      in_file_names
-			= (char **) xrealloc ((char *) in_file_names,
-					      (max_input_files
-					       * sizeof (char *)));
+			= (const char **) xrealloc ((char *) in_file_names,
+						    (max_input_files
+						     * sizeof (char *)));
 		    }
 		}
 

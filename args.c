@@ -163,7 +163,7 @@ int expect_output_file;
    last default value is the one actually assigned. */
 struct pro
 {
-  char *p_name;			/* option name, e.g. "-bl", "-cli" */
+  const char *p_name;		/* option name, e.g. "-bl", "-cli" */
   enum profile p_type;
   int p_default;		/* the default value (if int) */
 
@@ -396,8 +396,8 @@ struct pro pro[] =
 
 struct long_option_conversion
 {
-  char *long_name;
-  char *short_name;
+  const char *long_name;
+  const char *short_name;
 };
 
 struct long_option_conversion option_conversions[] =
@@ -498,9 +498,9 @@ struct long_option_conversion option_conversions[] =
 
 static int
 eqin (
-     char *s1,
-     char *s2,
-     char **start_param)
+     const char *s1,
+     const char *s2,
+     const char **start_param)
 {
   while (*s1)
     {
@@ -523,7 +523,7 @@ set_defaults (void)
 }
 
 /* Stings which can prefix an option, longest first. */
-static char *option_prefixes[] =
+static const char *option_prefixes[] =
 {
   "--",
   "-",
@@ -534,8 +534,9 @@ static char *option_prefixes[] =
 static int
 option_prefix (char *arg)
 {
-  char **prefixes = option_prefixes;
-  char *this_prefix, *argp;
+  const char **prefixes = option_prefixes;
+  const char *this_prefix;
+  char *argp;
 
   do
     {
@@ -567,7 +568,7 @@ int
 set_option (char *option, char *param, int explicit)
 {
   struct pro *p = pro;
-  char *param_start;
+  const char *param_start;
   int option_length, val;
 
   val = 0;
@@ -722,7 +723,7 @@ scan_profile (FILE *f)
   while (1)
     {
       for (p = next; ((i = getc (f)) != EOF
-		      && (*p = i) > ' '
+		      && (*p = (char) i) > ' '
 		      && i != '/'
 		      && p < next + BUFSIZ);
 	   ++p);

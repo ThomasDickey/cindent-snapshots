@@ -39,14 +39,6 @@ extern int exp_D;
 # endif
 #endif /* VMS */
 
-#ifdef __MSDOS__
-# define ONE_DOT_PER_FILENAME 1
-# ifndef __GNUC__
-# define USG   1
-# endif
-# define NODIR 1
-#endif /* __MSDOS__ */
-
 /* Contributed by Beverly Brown, <beverly@norton.datacube.com> */
 #ifdef _WIN32
 # define USG 1
@@ -60,5 +52,5 @@ struct file_buffer
   char *data;
 };
 
-extern struct file_buffer *read_file (char *);
+extern struct file_buffer *read_file (const char *);
 extern struct file_buffer *read_stdin (void);

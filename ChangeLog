@@ -1,4 +1,12 @@
--- $Id: ChangeLog,v 1.15 2010/10/05 08:45:44 tom Exp $
+-- $Id: ChangeLog,v 1.17 2010/10/05 21:48:33 tom Exp $
+
+2010-10-05
+	+ fix most strict gcc warnings, e.g., type-conversions and writable
+	  strings.
+
+	+ remove MS-DOS (16-bit) code.
+
+	+ add test scripts and data, for "make check"
 
 2010-10-04
 	+ modifiy configure script and makefile to support --program-suffix,

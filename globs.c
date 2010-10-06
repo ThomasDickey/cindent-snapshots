@@ -29,7 +29,7 @@
    MS-DOS.  */
 
 char *
-xmalloc (unsigned size)
+xmalloc (size_t size)
 {
   char *val = (char *) malloc (size);
   if (!val)
@@ -50,7 +50,7 @@ xmalloc (unsigned size)
 /* Like realloc but get error if no storage available.  */
 
 char *
-xrealloc (char *ptr, unsigned size)
+xrealloc (char *ptr, size_t size)
 {
   char *val = (char *) realloc (ptr, size);
   if (!val)
@@ -63,7 +63,7 @@ xrealloc (char *ptr, unsigned size)
 }
 
 void
-message (int warnings, char *string, ...)
+message (int warnings, const char *string, ...)
 {
   if (((warnings > 0) && verbose) || (warnings <= 0))
     {
@@ -92,7 +92,7 @@ message (int warnings, char *string, ...)
    "DEBUG" defined, abort (). */
 
 void
-fatal (char *string, ...)
+fatal (const char *string, ...)
 {
   va_list ap;
 

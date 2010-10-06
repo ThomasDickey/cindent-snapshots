@@ -115,7 +115,7 @@
 #endif
 
 /* Default backup file suffix to use */
-static char *simple_backup_suffix = BACKUP_SUFFIX_STR;
+static const char *simple_backup_suffix = BACKUP_SUFFIX_STR;
 
 /* What kinds of backup files to make -- see
    table `version_control_values' below. */
@@ -141,10 +141,10 @@ simple_backup_name (char *pathname)
    that number.  BASE_LENGTH is the string length of BASE. */
 
 static int
-version_number (char *base, char *direntry, unsigned base_length)
+version_number (const char *base, const char *direntry, unsigned base_length)
 {
   int version;
-  char *p;
+  const char *p;
 
   version = 0;
   if (!strncmp (base, direntry, base_length)
@@ -164,7 +164,7 @@ version_number (char *base, char *direntry, unsigned base_length)
    DIRNAME.  Return 0 if there are no numbered versions. */
 
 static int
-highest_version (char *filename, char *dirname)
+highest_version (const char *filename, const char *dirname)
 {
   DIR *dirp;
   struct dirent *dp;
@@ -202,7 +202,7 @@ max_version (char *pathname)
 {
   char *p;
   char *filename;
-  int pathlen = strlen (pathname);
+  size_t pathlen = strlen (pathname);
   int version;
 
   p = pathname + pathlen - 1;
@@ -343,7 +343,7 @@ make_backup (struct file_buffer *file)
   fd = creat (backup_filename, 0666);
   if (fd < 0)
     fatal ("Can't open backup file %s", backup_filename);
-  size = write (fd, file->data, file->size);
+  size = (unsigned) write (fd, file->data, file->size);
   if (size != file->size)
     fatal ("Can't write to backup file %s", backup_filename);
 

@@ -1,23 +1,91 @@
 #!/bin/sh
-indent \
-	--blank-lines-after-declarations \
-	--blank-lines-after-procedures \
-	--brace-indent8 \
-	--braces-on-if-line  \
-	--cuddle-else  \
-	--case-indentation8  \
-	--space-after-cast  \
-	--blank-before-sizeof  \
-	--declaration-indentation0 \
-	--parameter-indentation8 \
-	--indent-level8   \
-	--no-blank-lines-after-commas  \
-	--dont-format-first-column-comments  \
-	--dont-space-special-semicolon  \
-	--space-after-procedure-calls  \
-	--procnames-start-lines  \
-	--swallow-optional-blank-lines  \
-	--tab-size8  \
-	--dont-format-comments \
-	--leave-preprocessor-space \
-	$*
+# $Id: tin-indent,v 1.3 2010/10/05 10:57:54 tom Exp $
+# use this for indenting with "TIN style"
+NOOP=no
+OPTS='
+--blank-lines-after-declarations
+--blank-lines-after-procedures
+--brace-indent8
+--braces-on-if-line 
+--cuddle-else 
+--case-indentation8 
+--space-after-cast 
+--blank-before-sizeof 
+--declaration-indentation0
+--parameter-indentation8
+--indent-level8  
+--no-blank-lines-after-commas 
+--dont-format-first-column-comments 
+--dont-space-special-semicolon 
+--space-after-procedure-calls 
+--procnames-start-lines 
+--swallow-optional-blank-lines 
+--tab-size8 
+--dont-format-comments
+--leave-preprocessor-space
+'
+for name in $*
+do
+	case $name in
+	-v|-n)
+		NOOP=yes
+		OPTS="$OPTS -v"
+		;;
+	-*)
+		OPTS="$OPTS $name"
+		;;
+	*.[ch]|*.cc|*.cpp)
+		save="${name}".a$$
+		test="${name}".b$$
+		rm -f "$save" "$test"
+		mv "$name" "$save"
+		sed \
+			-e '/EMPTY_MODULE(/s/)$/);/' \
+			-e '/MODULE_ID(/s/)$/);/' \
+			-e 's,\<GCC_NORETURN;,;//GCC_NORETURN;,' \
+			-e 's,\<GCC_PRINTFLIKE(,;//GCC_PRINTFLIKE(,' \
+			-e 's,\<GCC_SCANFLIKE(,;//GCC_SCANFLIKE(,' \
+			-e 's,\(\<NCURSES_EXPORT_VAR\>\),//\1,' \
+			-e 's,\(\<MARK_END_OF_PROLOG\>\),\1;,' \
+			-e 's,\(\<YY_RULE_SETUP\>\),\1;,' \
+			-e 's,\(\<YY_BREAK\>\),\1;,' \
+			"$save" >"$test"
+		cp "$test" "$name"
+		chmod u+w "$name"
+		# ${INDENT_PROG-indent} --version
+		${INDENT_PROG-indent} -npro $OPTS "$name"
+		sed \
+			-e '/EMPTY_MODULE(/s/);$/)/' \
+			-e '/MODULE_ID(/s/);$/)/' \
+			-e 's,;[ 	]*//GCC_NORETURN;, GCC_NORETURN;,' \
+			-e 's,;[ 	]*//GCC_PRINTFLIKE(, GCC_PRINTFLIKE(,' \
+			-e 's,;[ 	]*//GCC_SCANFLIKE(, GCC_SCANFLIKE(,' \
+			-e 's,//\(\<NCURSES_EXPORT_VAR\>\),\1,' \
+			-e 's,\(\<MARK_END_OF_PROLOG\>\);,\1,' \
+			-e 's,\(\<YY_RULE_SETUP\>\);,\1,' \
+			-e 's,\(\<YY_BREAK\>\);,\1,' \
+			"$name" >"$test"
+		mv "$test" "$name"
+		rm -f "${name}~"
+		if test $NOOP = yes ; then
+			if (cmp -s "$name" "$save" ) then
+				echo "** no change: $name"
+			else
+				diff -u "$save" "$name"
+			fi
+			rm -f "$name"
+			mv "$save" "$name"
+		elif ( cmp -s "$name" "$save" ) ; then
+			echo "** unchanged $name"
+			rm -f "${name}"
+			mv "$save" "$name"
+		else
+			echo "** updated $name"
+			rm -f "$save"
+		fi
+		;;
+	*)
+		echo "** ignored:   $name"
+		;;
+	esac
+done

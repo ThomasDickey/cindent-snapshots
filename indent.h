@@ -132,7 +132,7 @@ enum rwcodes
 #define DEFAULT_RIGHT_COMMENT_MARGIN 78
 
 /* Name of input file.  */
-extern char *in_name;
+extern const char *in_name;
 
 extern char *in_prog;		/* pointer to the null-terminated input
 				   program */
@@ -197,8 +197,8 @@ struct buf
   char *end;			/* points to the character beyond the last
 				   one (e.g. is equal to ptr if the buffer is
 				   empty).  */
-  unsigned size;		/* how many chars are currently allocated.  */
-  unsigned len;			/* how many chars we're actually using. */
+  size_t size;			/* how many chars are currently allocated.  */
+  size_t len;			/* how many chars we're actually using. */
   int column;			/* Column we were in when we switched buffers. */
 };
 
@@ -234,7 +234,7 @@ extern int break_comma;		/* when true and not in parens, break after a
 extern int embedded_comment_on_line;
 
 extern int else_or_endif;
-extern int di_stack_alloc;
+extern size_t di_stack_alloc;
 extern int *di_stack;
 
 /* number of spaces to indent braces from the suround if, while, etc. in -bl
@@ -385,7 +385,7 @@ struct parser_state
 
   /* This is the parsers stack, and the current allocated size.  */
   enum codes *p_stack;
-  int p_stack_size;
+  size_t p_stack_size;
 
   /* This stack stores indentation levels */
   /* Currently allocated size is stored in p_stack_size.  */
@@ -464,8 +464,8 @@ struct parser_state
      the actual level of indentation in characters (that is, the indentation
      of the line has been added to the number of characters and the sign has
      been reversed to indicate that this has been done).  */
-  short *paren_indents;		/* column positions of each paren */
-  int paren_indents_size;	/* Currently allocated size.  */
+  int *paren_indents;		/* column positions of each paren */
+  size_t paren_indents_size;	/* Currently allocated size.  */
 
   int pcase;			/* set to 1 if the current line label is a
 				   case.  It is printed differently from a
@@ -482,10 +482,10 @@ struct parser_state
   int sizeof_keyword;
   int dumped_decl_indent;
   int in_parameter_declaration;
-  char *procname;		/* The name of the current procedure */
-  char *procname_end;		/* One char past the last one in procname */
-  char *classname;		/* The name of the current C++ class */
-  char *classname_end;		/* One char past the last one in classname */
+  const char *procname;		/* The name of the current procedure */
+  const char *procname_end;	/* One char past the last one in procname */
+  const char *classname;	/* The name of the current C++ class */
+  const char *classname_end;	/* One char past the last one in classname */
   int just_saw_decl;
 };
 
@@ -501,10 +501,10 @@ extern int else_endif_col;
 
 
 /* Declared in globs.c */
-extern char *xmalloc (unsigned);
-extern char *xrealloc (char *, unsigned);
-extern void message (int, char *, ...);
-extern void fatal (char *, ...);
+extern char *xmalloc (size_t);
+extern char *xrealloc (char *, size_t);
+extern void message (int, const char *, ...);
+extern void fatal (const char *, ...);
 
 /* Declared in args.c */
 extern char * set_profile (void);
@@ -529,7 +529,7 @@ extern void dump_line (void);
 extern void fill_buffer (void);
 
 /* Declared in parse.c */
-extern char *parsecode2s (enum codes);
+extern const char *parsecode2s (enum codes);
 extern enum exit_values parse (enum codes);
 extern int inc_pstack (void);
 extern void init_parser (void);

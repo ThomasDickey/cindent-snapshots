@@ -36,7 +36,7 @@ enum backup_mode
 struct version_control_values
 {
   enum backup_mode value;
-  char *name;
+  const char *name;
 };
 
 /* Determine the value of `version_control' by looking in the

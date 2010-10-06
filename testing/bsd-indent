@@ -1,9 +1,9 @@
 #!/bin/sh
-# $Id: gnu-indent,v 1.2 2010/10/05 10:51:00 tom Exp $
-# use this for indenting with "GNU style"
+# $Id: bsd-indent,v 1.1 2010/10/05 10:54:47 tom Exp $
+# use this for indenting using "Original (Sun) style"
 NOOP=no
 OPTS='
---gnu-style
+--original
 '
 for name in $*
 do
