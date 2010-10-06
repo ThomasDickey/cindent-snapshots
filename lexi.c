@@ -48,7 +48,7 @@ char *token_buf;
 
 struct templ
 {
-  char *rwd;
+  const char *rwd;
   enum rwcodes rwcode;
 };
 
@@ -76,6 +76,7 @@ char chartype[256];
 enum codes
 lexi (void)
 {
+
   int unary_delim;		/* this is set to 1 if the current token
 				   forces a following operator to be unary */
   static enum codes last_code;	/* the last token type returned */
@@ -115,7 +116,7 @@ lexi (void)
       || (buf_ptr[0] == '.' && isdigit (buf_ptr[1])))
     {
       /* we have a character or number */
-      struct templ *p;
+      const struct templ *p;
 
       if (isdigit (*buf_ptr) || (buf_ptr[0] == '.' && isdigit (buf_ptr[1])))
 	{
@@ -771,11 +772,11 @@ addkey (char *key, enum rwcodes val)
 }
 
 static void
-set_chartype(char *list, int code)
+set_chartype(const char *list, int code)
 {
   while (*list != 0)
     {
-      chartype[UChar(*list++)] = code;
+      chartype[UChar(*list++)] = (char) code;
     }
 }
 

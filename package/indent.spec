@@ -1,8 +1,8 @@
 Summary: indent - format C program sources
 %define AppProgram indent
 %define AppVersion 2.0
-%define AppRelease 20101004
-# $XTermId: indent.spec,v 1.1 2010/10/04 23:56:37 tom Exp $
+%define AppRelease 20101005
+# $XTermId: indent.spec,v 1.2 2010/10/05 21:17:45 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: %{AppRelease}

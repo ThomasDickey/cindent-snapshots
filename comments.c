@@ -23,7 +23,7 @@
 #define CHECK_COM_SIZE \
 	if (e_com >= l_com) \
           { \
-	    unsigned nsize = (l_com - s_com + 400); \
+	    size_t nsize = (size_t) (l_com - s_com + 400); \
 	    combuf = (char *) xrealloc (combuf, nsize); \
 	    e_com = combuf + (e_com - s_com) + 1; \
 	    l_com = combuf + nsize - 5; \
@@ -87,9 +87,10 @@ print_comment (void)
   char *save_ptr = 0;
   char *text_on_line = 0;
   char *line_break_ptr = 0;
-  char *start_delim, *end_delim;
+  const char *start_delim;
+  const char *end_delim;
 
-  char *line_preamble;
+  const char *line_preamble;
   int line_preamble_length, visible_preamble;
 
   /* Increment the parser stack, as we will store some things

@@ -24,10 +24,10 @@ struct parser_state *parser_state_tos;
 #define INITIAL_BUFFER_SIZE 1000
 #define INITIAL_STACK_SIZE 2
 
-char *
+const char *
 parsecode2s(enum codes value)
 {
-  char *result = "?";
+  const char *result = "?";
   switch (value)
     {
       case code_eof:
@@ -164,7 +164,7 @@ init_parser (void)
     = (int *) xmalloc (INITIAL_STACK_SIZE * sizeof (int));
   parser_state_tos->cstk
     = (int *) xmalloc (INITIAL_STACK_SIZE * sizeof (int));
-  parser_state_tos->paren_indents = (short *) xmalloc (sizeof (short));
+  parser_state_tos->paren_indents = (int *) xmalloc (sizeof (int));
 
   /* Although these are supposed to grow if we reach the end,
      I can find no place in the code which does this. */
@@ -174,7 +174,8 @@ init_parser (void)
 
   save_com.size = INITIAL_BUFFER_SIZE;
   save_com.end = save_com.ptr = xmalloc (save_com.size);
-  save_com.len = save_com.column = 0;
+  save_com.len = 0;
+  save_com.column = 0;
 
   di_stack_alloc = 2;
   di_stack = (int *) xmalloc (di_stack_alloc * sizeof (*di_stack));
@@ -232,7 +233,8 @@ reset_parser (void)
   parser_state_tos->cstk[0] = 0;
   parser_state_tos->paren_indents[0] = 0;
 
-  save_com.len = save_com.column = 0;
+  save_com.len = 0;
+  save_com.column = 0;
 
   di_stack[parser_state_tos->dec_nest] = 0;
 
@@ -264,7 +266,7 @@ reset_parser (void)
 int
 inc_pstack (void)
 {
-  if (++parser_state_tos->tos >= parser_state_tos->p_stack_size)
+  if (++parser_state_tos->tos >= (int) parser_state_tos->p_stack_size)
     {
       parser_state_tos->p_stack_size *= 2;
       parser_state_tos->p_stack = (enum codes *)

@@ -113,14 +113,14 @@ pass_char(int ch)
 }
 
 static void
-pass_text(char *s)
+pass_text(const char *s)
 {
   while (*s != 0)
     pass_char(*s++);
 }
 
 static void
-pass_n_text(char *s, int n)
+pass_n_text(const char *s, int n)
 {
   while (n-- > 0)
     pass_char(*s++);
@@ -542,12 +542,10 @@ static struct file_buffer fileptr;
 
 struct file_buffer *
 read_file (
-     char *filename)
+     const char *filename)
 {
   int fd;
-  /* Required for MSDOS, in order to read files larger than 32767
-     bytes in a 16-bit world... */
-  unsigned int size;
+  long size;
 
   struct stat file_stats;
   unsigned namelen = strlen (filename);
@@ -562,14 +560,9 @@ read_file (
   if (file_stats.st_size == 0)
     message (-1, "Warning: Zero-length file %s", filename);
 
-#ifdef __MSDOS__
-  if (file_stats.st_size < 0 || file_stats.st_size > (0xffff - 1))
-    fatal ("File %s is too big to read", filename);
-#else
   if (file_stats.st_size < 0)
     fatal ("System problem reading file %s", filename);
-#endif
-  fileptr.size = file_stats.st_size;
+  fileptr.size = (unsigned long) file_stats.st_size;
   if (fileptr.data != 0)
     fileptr.data = (char *) xrealloc (fileptr.data,
 				      (unsigned) file_stats.st_size + 1);
@@ -577,11 +570,7 @@ read_file (
     fileptr.data = (char *) xmalloc ((unsigned) file_stats.st_size + 1);
 
   size = SYS_READ (fd, fileptr.data, fileptr.size);
-#ifdef __MSDOS__
-  if (size == 0xffff) /* -1 = 0xffff in 16-bit world */
-#else
   if (size < 0)
-#endif
     fatal ("Error reading input file %s", filename);
   if (close (fd) < 0)
     fatal ("Error closing input file %s", filename);
@@ -589,8 +578,8 @@ read_file (
   /* Apparently, the DOS stores files using CR-LF for newlines, but
      then the DOS `read' changes them into '\n'.  Thus, the size of the
      file on disc is larger than what is read into memory.  Thanks, Bill. */
-  if (size < fileptr.size)
-    fileptr.size = size;
+  if ((unsigned long) size < fileptr.size)
+    fileptr.size = (unsigned long) size;
 
   if (fileptr.name != 0)
     fileptr.name = (char *) xrealloc (fileptr.name, namelen + 1);
@@ -631,7 +620,7 @@ read_stdin (void)
 	  if (ch == EOF)
 	    break;
 
-	  *p++ = ch;
+	  *p++ = (char) ch;
 	  stdinptr.size++;
 	}
 
