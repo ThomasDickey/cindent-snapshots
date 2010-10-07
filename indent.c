@@ -84,7 +84,7 @@ need_chars (struct buf *bp, size_t needed)
   if ((current_size + needed) >= bp->size)
     {
       bp->size = ROUND_UP (current_size + needed, 1024);
-      bp->ptr = xrealloc (bp->ptr, (unsigned) bp->size);
+      bp->ptr = xrealloc (bp->ptr, bp->size);
       if (bp->ptr == NULL)
 	fatal ("Ran out of memory");
       bp->end = bp->ptr + current_size;
@@ -332,6 +332,7 @@ indent (
 	    {
 	    case newline:
 	      flushed_nl = true;
+	      /* FALLTHRU */
 	    case form_feed:
 	      break;		/* form feeds and newlines found here will be
 				   ignored */
@@ -420,6 +421,7 @@ indent (
 		    fill_buffer ();
 		  break;
 		}
+	      /* FALLTHRU */
 
 	      /* Just some statement. */
 	    default:
@@ -727,7 +729,7 @@ indent (
 	    *e_code++ = token[0];
 
 	  parser_state_tos->paren_indents[parser_state_tos->p_l_follow - 1]
-	    = e_code - s_code;
+	    = (int) (e_code - s_code);
 	  if (sp_sw && parser_state_tos->p_l_follow == 1
 	      && extra_expression_indent
 	      && parser_state_tos->paren_indents[0] < 2 * ind_size)
@@ -1264,7 +1266,7 @@ indent (
 	     by ignoring "const" just after a parameter list */
 	  if (parser_state_tos->last_token == rparen
 	      && parser_state_tos->in_parameter_declaration 
-	      && !strncmp (token, "const", 5))
+	      && !strncmp (token, "const", (size_t) 5))
 	    {
 	      buf_break = e_code;
 	      *e_code++ = ' ';
@@ -1316,7 +1318,7 @@ indent (
 		  || e_lab != s_lab
 		  || e_com != s_com))
 	    prefix_blankline_requested = 0;
-	  i = token_end - token + 1;	/* get length of token plus 1 */
+	  i = (int) (token_end - token + 1);	/* get length of token plus 1 */
 
 	  /* dec_ind = e_code - s_code + (parser_state_tos->decl_indent>i ?
 	     parser_state_tos->decl_indent : i); */
@@ -1390,7 +1392,7 @@ indent (
 	  /* If the token is va_dcl, it appears without a semicolon, so we
 	     need to pretend that one was there.  */
 	  if ((token_end - token) == 6
-	      && strncmp (token, "va_dcl", 6) == 0)
+	      && strncmp (token, "va_dcl", (size_t) 6) == 0)
 	    {
 	      parser_state_tos->in_or_st = false;
 	      parser_state_tos->just_saw_decl--;
@@ -1488,7 +1490,7 @@ indent (
 			else
 			  in_comment = 1;
 			*e_lab++ = *buf_ptr++;
-			com_start = e_lab - s_lab - 2;
+			com_start = (int) (e_lab - s_lab - 2);
 		      }
 		    break;
 
@@ -1506,7 +1508,7 @@ indent (
 		      {
 			in_comment = 0;
 			*e_lab++ = *buf_ptr++;
-			com_end = e_lab - s_lab;
+			com_end = (int) (e_lab - s_lab);
 		      }
 		    break;
 		  }
@@ -1519,7 +1521,7 @@ indent (
 	      {
 		in_cplus_comment = 0;
 		*e_lab++ = *buf_ptr++;
-		com_end = e_lab - s_lab;
+		com_end = (int) (e_lab - s_lab);
 	      }
 
 	    if (e_lab - s_lab == com_end && bp_save == 0)
@@ -1559,7 +1561,7 @@ indent (
 	    parser_state_tos->pcase = false;
 	  }
 
-	  if (strncmp (s_lab + 1, "if", 2) == 0)
+	  if (strncmp (s_lab + 1, "if", (size_t) 2) == 0)
 	    {
 	      if (blanklines_around_conditional_compilation)
 		{
@@ -1610,7 +1612,7 @@ indent (
 		parser_state_tos = new;
 	      }
 	    }
-	  else if (strncmp (s_lab + 1, "else", 4) == 0)
+	  else if (strncmp (s_lab + 1, "else", (size_t) 4) == 0)
 	    {
 	      /* When we get #else, we want to restore the parser state to
 	         what it was before the matching #if, so that things get
@@ -1670,7 +1672,7 @@ indent (
 		  file_exit_value = indent_error;
 		}
 	    }
-	  else if (strncmp (s_lab + 1, "endif", 5) == 0)
+	  else if (strncmp (s_lab + 1, "endif", (size_t) 5) == 0)
 	    {
 	      else_or_endif = true;
 	      /* We want to remove the second to top elt on the stack, which

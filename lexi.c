@@ -210,8 +210,8 @@ lexi (void)
 	       p < &user_specials[0] + user_specials_idx;
 	       p++)
 	    {
-	      char *q = token;
-	      char *r = p->rwd;
+	      const char *q = token;
+	      const char *r = p->rwd;
 
 	      /* This string compare is a little nonstandard because token
 	         ends at the character before token_end and p->rwd is
@@ -276,6 +276,7 @@ lexi (void)
 		  break;
 		}
 	      l_struct = true;
+	      /* FALLTHRU */
 
 	      /* Next time around, we will want to know that we have had a
 	         'struct' */
@@ -324,7 +325,7 @@ lexi (void)
 	  {
 	    /* We have found something which might be the name in a function
 	       definition.  */
-	    char *tp;
+	    const char *tp;
 	    int paren_count = 1;
 
 	    /* Skip to the matching ')'.  */
@@ -743,12 +744,12 @@ token_col (void)
    the keyword type */
 
 void
-addkey (char *key, enum rwcodes val)
+addkey (const char *key, enum rwcodes val)
 {
   struct templ *p;
 
   /* Check to see whether key is a reserved word or not. */
-  if (is_reserved (key, strlen (key)) != 0)
+  if (is_reserved (key, (unsigned) strlen (key)) != 0)
     return;
 
   if (user_specials == 0)

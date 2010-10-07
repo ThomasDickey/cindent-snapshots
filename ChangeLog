@@ -1,7 +1,7 @@
--- $Id: ChangeLog,v 1.17 2010/10/05 21:48:33 tom Exp $
+-- $Id: ChangeLog,v 1.18 2010/10/06 08:53:23 tom Exp $
 
 2010-10-05
-	+ fix most strict gcc warnings, e.g., type-conversions and writable
+	+ fix strict gcc warnings, e.g., type-conversions and writable
 	  strings.
 
 	+ remove MS-DOS (16-bit) code.

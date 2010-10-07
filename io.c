@@ -307,8 +307,8 @@ dump_line (void)
 	  while (e_lab > s_lab && (e_lab[-1] == ' ' || e_lab[-1] == TAB))
 	    e_lab--;
 	  cur_col = pad_output (1, compute_label_target ());
-	  if (s_lab[0] == '#' && (strncmp (s_lab, "#else", 5) == 0
-				  || strncmp (s_lab, "#endif", 6) == 0))
+	  if (s_lab[0] == '#' && (strncmp (s_lab, "#else", (size_t) 5) == 0
+				  || strncmp (s_lab, "#endif", (size_t) 6) == 0))
 	    {
 	      /* Treat #else and #endif as a special case because any text
 	         after #else or #endif should be converted to a comment.  */
@@ -325,18 +325,18 @@ dump_line (void)
 		  pass_char((tabsize > 1) ? '\t' : ' ');
 		  if (s[0] == '/' && (s[1] == '*' || s[1] == '/'))
 		    {
-		      pass_n_text (s, e_lab - s);
+		      pass_n_text (s, (int) (e_lab - s));
 		    }
 		  else
 		    {
 		      pass_text("/* ");
-		      pass_n_text (s, e_lab - s);
+		      pass_n_text (s, (int) (e_lab - s));
 		      pass_text(" */");
 		    }
 		}
 	    }
 	  else
-	    pass_n_text (s_lab, e_lab - s_lab);
+	    pass_n_text (s_lab, (int)(e_lab - s_lab));
 	  cur_col = count_columns (cur_col, s_lab, NULL_CHAR);
 	}
       else
@@ -386,7 +386,7 @@ dump_line (void)
 	      && s_com == e_com
 	      && buf_break > s_code && buf_break < e_code - 1)
 	    {
-	      int len;
+	      size_t len;
 
 	      for (p = s_code; p < buf_break; p++)
 		pass_char (*p);
@@ -395,8 +395,8 @@ dump_line (void)
 	      cur_col = count_columns (cur_col, s_code, NULL_CHAR);
 
 	      not_truncated = 0;
-	      len = (e_code - buf_break - 1);
-	      memmove (s_code, buf_break + 1, (unsigned) len);
+	      len = (size_t) (e_code - buf_break - 1);
+	      memmove (s_code, buf_break + 1, len);
 	      e_code = s_code + len;
 	      buf_break = e_code;
 	      *e_code = '\0';
@@ -426,8 +426,8 @@ dump_line (void)
 		}
 
 	      cur_col = pad_output (cur_col, target);
-	      pass_n_text (com_st, e_com - com_st);
-	      cur_col += e_com - com_st;
+	      pass_n_text (com_st, (int)(e_com - com_st));
+	      cur_col += (int)(e_com - com_st);
 	      com_lines++;
 	    }
 	}
@@ -541,14 +541,13 @@ compute_label_target (void)
 static struct file_buffer fileptr;
 
 struct file_buffer *
-read_file (
-     const char *filename)
+read_file (const char *filename)
 {
   int fd;
   long size;
 
   struct stat file_stats;
-  unsigned namelen = strlen (filename);
+  size_t namelen = strlen (filename);
 
   fd = open (filename, O_RDONLY, 0777);
   if (fd < 0)
@@ -565,9 +564,9 @@ read_file (
   fileptr.size = (unsigned long) file_stats.st_size;
   if (fileptr.data != 0)
     fileptr.data = (char *) xrealloc (fileptr.data,
-				      (unsigned) file_stats.st_size + 1);
+				      (size_t) file_stats.st_size + 1);
   else
-    fileptr.data = (char *) xmalloc ((unsigned) file_stats.st_size + 1);
+    fileptr.data = (char *) xmalloc ((size_t) file_stats.st_size + 1);
 
   size = SYS_READ (fd, fileptr.data, fileptr.size);
   if (size < 0)
@@ -578,8 +577,8 @@ read_file (
   /* Apparently, the DOS stores files using CR-LF for newlines, but
      then the DOS `read' changes them into '\n'.  Thus, the size of the
      file on disc is larger than what is read into memory.  Thanks, Bill. */
-  if ((unsigned long) size < fileptr.size)
-    fileptr.size = (unsigned long) size;
+  if ((size_t) size < fileptr.size)
+    fileptr.size = (size_t) size;
 
   if (fileptr.name != 0)
     fileptr.name = (char *) xrealloc (fileptr.name, namelen + 1);
@@ -602,7 +601,7 @@ struct file_buffer *
 read_stdin (void)
 {
   /* This should be some system-optimal number */
-  unsigned int size = 15 * BUFSIZ;
+  size_t size = 15 * BUFSIZ;
   int ch = EOF;
   char *p;
 
@@ -627,13 +626,13 @@ read_stdin (void)
       if (ch != EOF)
 	{
 	  size += (2 * BUFSIZ);
-	  stdinptr.data = xrealloc (stdinptr.data, (unsigned) size);
+	  stdinptr.data = xrealloc (stdinptr.data, size);
 	  p = stdinptr.data + stdinptr.size;
 	}
     }
   while (ch != EOF);
 
-  stdinptr.name = "Standard Input";
+  stdinptr.name = xstrdup("Standard Input");
 
   stdinptr.data[stdinptr.size] = '\0';
 
@@ -700,7 +699,7 @@ fill_buffer (void)
 	    p++;
 
 	  /* Skip all lines between the indent off and on directives. */
-	  if (! strncmp (p, "*INDENT-OFF*", 12))
+	  if (! strncmp (p, "*INDENT-OFF*", (size_t) 12))
 	    {
 	      char *q = cur_line;
 	      int inhibited = 1;
@@ -739,7 +738,7 @@ fill_buffer (void)
 		      pass_char (*p++);
 		      while (*p == ' ' || *p == TAB)
 			pass_char (*p++);
-		      if (! strncmp (p, "*INDENT-ON*", 11))
+		      if (! strncmp (p, "*INDENT-ON*", (size_t) 11))
 			{
 			  do
 			    {
