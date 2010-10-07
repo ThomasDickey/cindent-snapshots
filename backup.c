@@ -141,7 +141,7 @@ simple_backup_name (char *pathname)
    that number.  BASE_LENGTH is the string length of BASE. */
 
 static int
-version_number (const char *base, const char *direntry, unsigned base_length)
+version_number (const char *base, const char *direntry, size_t base_length)
 {
   int version;
   const char *p;
@@ -170,7 +170,7 @@ highest_version (const char *filename, const char *dirname)
   struct dirent *dp;
   int the_highest;
   int this_version;
-  unsigned file_name_length;
+  size_t file_name_length;
 
   dirp = opendir (dirname);
   if (!dirp)
@@ -211,7 +211,7 @@ max_version (char *pathname)
 
   if (*p == '/')
     {
-      unsigned dirlen = (unsigned)(p - pathname);
+      size_t dirlen = (size_t) (p - pathname);
       char *dirname;
 
       filename = p + 1;

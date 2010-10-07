@@ -22,11 +22,9 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 
-/* Like malloc but get error if no storage available.  size really should be
-   size_t, but not all systems have size_t, so I hope "unsigned" will work.
-   It works for GNU style machines, where it is 32 bits, and works on
-   MS-DOS.  */
+/* Like malloc but get error if no storage available. */
 
 char *
 xmalloc (size_t size)
@@ -59,6 +57,14 @@ xrealloc (char *ptr, size_t size)
       exit (system_error);
     }
 
+  return val;
+}
+
+char *
+xstrdup (const char *ptr)
+{
+  char *val = xmalloc(strlen(ptr) + 1);
+  strcpy (val, ptr);
   return val;
 }
 

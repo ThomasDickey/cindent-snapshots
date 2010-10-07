@@ -91,7 +91,8 @@ print_comment (void)
   const char *end_delim;
 
   const char *line_preamble;
-  int line_preamble_length, visible_preamble;
+  int line_preamble_length;
+  int visible_preamble;
 
   /* Increment the parser stack, as we will store some things
      there for dump_line to use. */
@@ -531,6 +532,7 @@ print_comment (void)
 		      break;
 		    }
 		}
+	      /* FALLTHRU */
 	      /* If it was not the end of the comment, drop through
 	         and insert the star on the line. */
 
@@ -554,7 +556,7 @@ print_comment (void)
 		{
 		  *line_break_ptr = '\0';
 		  save_ptr = line_break_ptr + 1;
-		  save_length = e_com - save_ptr;
+		  save_length = (int) (e_com - save_ptr);
 		  e_com = line_break_ptr;
 
 		  /* If we had to go past `right_margin' to print stuff out,
@@ -633,7 +635,7 @@ print_comment (void)
 	 user specified -sc. */
       if (line_preamble)
 	{
-	  (void) memcpy (e_com, line_preamble, (unsigned) line_preamble_length);
+	  (void) memcpy (e_com, line_preamble, (size_t) line_preamble_length);
 	  e_com += line_preamble_length;
 	  column = start_column + line_preamble_length;
 	}
@@ -651,7 +653,7 @@ print_comment (void)
 	      save_ptr++;
 	      save_length--;
 	    }
-	  (void) memcpy (e_com, save_ptr, (unsigned) save_length);
+	  (void) memcpy (e_com, save_ptr, (size_t) save_length);
 	  text_on_line = e_com;
 	  e_com += save_length;
 	  /* We only break if formatting, in which cases there

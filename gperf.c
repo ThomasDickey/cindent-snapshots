@@ -79,7 +79,7 @@ hash (register const char *str, register unsigned int len)
       37, 37, 37, 37, 37, 37, 37, 37, 37, 37,
       37, 37, 37, 37, 37, 37
     };
-  register int hval = len;
+  register unsigned hval = len;
 
   switch (hval)
     {
@@ -92,7 +92,7 @@ hash (register const char *str, register unsigned int len)
     }
   return hval;
 }
-
+static
 #ifdef __GNUC__
 __inline
 #if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
@@ -104,7 +104,7 @@ is_reserved (register const char *str, register unsigned int len)
 {
   static const struct templ wordlist[] =
     {
-      {""}, {""}, {""},
+      {"",rw_none}, {"",rw_none}, {"",rw_none},
 #line 11 "indent.gperf"
       {"do", rw_sp_nparen,},
 #line 13 "indent.gperf"
@@ -165,20 +165,20 @@ is_reserved (register const char *str, register unsigned int len)
       {"register", rw_decl,},
 #line 33 "indent.gperf"
       {"va_dcl", rw_decl,},
-      {""}, {""}, {""},
+      {"",rw_none}, {"",rw_none}, {"",rw_none},
 #line 10 "indent.gperf"
       {"default", rw_case,}
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {
-      register int key = hash (str, len);
+      register int key = (int) hash (str, len);
 
-      if (key <= MAX_HASH_VALUE && key >= 0)
+      if (key <= (int) MAX_HASH_VALUE && key >= 0)
         {
           register const char *s = wordlist[key].rwd;
 
-          if (*str == *s && !strncmp (str + 1, s + 1, len - 1) && s[len] == '\0')
+          if (*str == *s && !strncmp (str + 1, s + 1, (size_t) len - 1) && s[len] == '\0')
             return &wordlist[key];
         }
     }

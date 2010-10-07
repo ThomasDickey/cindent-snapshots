@@ -21,7 +21,7 @@
 
 struct parser_state *parser_state_tos;
 
-#define INITIAL_BUFFER_SIZE 1000
+#define INITIAL_BUFFER_SIZE ((size_t) 1000)
 #define INITIAL_STACK_SIZE 2
 
 const char *
@@ -368,7 +368,9 @@ parse (
 	  && else_if)		/* "else if ..." */
 	parser_state_tos->i_l_follow
 	  = parser_state_tos->il[parser_state_tos->tos];
+      /* FALLTHRU */
     case dolit:			/* 'do' */
+      /* FALLTHRU */
     case forstmt:		/* for (...) */
       inc_pstack ();
       parser_state_tos->p_stack[parser_state_tos->tos] = tk;

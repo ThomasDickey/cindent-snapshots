@@ -187,7 +187,7 @@ extern char *token_buf;
 /* Functions from lexi.c */
 extern enum codes lexi (void);
 extern int token_col (void);
-extern void addkey (char *, enum rwcodes);
+extern void addkey (const char *, enum rwcodes);
 extern void init_lexi (void);
 
 /* Used to keep track of buffers.  */
@@ -503,12 +503,13 @@ extern int else_endif_col;
 /* Declared in globs.c */
 extern char *xmalloc (size_t);
 extern char *xrealloc (char *, size_t);
+extern char *xstrdup (const char *);
 extern void message (int, const char *, ...);
 extern void fatal (const char *, ...);
 
 /* Declared in args.c */
 extern char * set_profile (void);
-extern int set_option (char *, char *, int);
+extern int set_option (const char *, const char *, int);
 extern void set_defaults (void);
 
 /* Declared in comment.c */

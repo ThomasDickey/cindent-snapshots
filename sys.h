@@ -48,7 +48,7 @@ extern int exp_D;
 struct file_buffer
 {
   char *name;
-  unsigned long size;
+  size_t size;
   char *data;
 };
 
