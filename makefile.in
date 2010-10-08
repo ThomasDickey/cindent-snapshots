@@ -1,5 +1,5 @@
 # Makefile template for GNU indent
-# $Id: makefile.in,v 1.13 2010/10/06 21:46:42 tom Exp $
+# $Id: makefile.in,v 1.14 2010/10/07 09:17:24 tom Exp $
 # Copyright (C) 1994, Joseph Arceneaux.  All rights reserved
 # Copyright (C) 1992, Free Software Foundation, Inc.
 #
@@ -119,7 +119,7 @@ memcpy.o: memcpy.c indent.h sys.h makefile
 gperf.c : indent.gperf
 	gperf -LANSI-C -C -c -p -t -T -g -j1 -o -K rwd -N is_reserved indent.gperf  >$@
 
-indent.1 : indent.1.in indent.info
+indent.1 : indent.info
 	perl make-man.pl indent.info >$@
 
 # Build tag tables
