@@ -5,7 +5,7 @@ set -e
 
 PRI=50
 ALT=indent
-PKG=indent-cur
+PKG=cindent
 
 BINDIR=/usr/bin
 MANDIR=/usr/share/man/man1

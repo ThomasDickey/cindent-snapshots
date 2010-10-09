@@ -33,7 +33,7 @@ configure-stamp:
 		--prefix=/usr \
 		--mandir=\$${prefix}/share/man \
 		--sysconfdir=/etc \
-		--program-suffix=-cur
+		--program-prefix=c
 
 	touch configure-stamp
 
@@ -65,7 +65,7 @@ install-stamp: build-stamp
 	dh_clean -k
 	dh_installdirs
 
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/indent-cur
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/cindent
 
 	touch install-stamp
 
@@ -78,6 +78,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
+	dh_installman
 	dh_installexamples
 	dh_installchangelogs
 	dh_strip

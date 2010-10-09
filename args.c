@@ -35,26 +35,26 @@ int else_endif_col;
 
 /* profile types */
 enum profile
-{
-  PRO_BOOL,			/* boolean */
-  PRO_INT,			/* integer */
-  PRO_FONT,			/* troff font */
-  PRO_IGN,			/* ignore it */
-  PRO_KEY,			/* -T switch */
-  PRO_SETTINGS,			/* bundled set of settings */
-  PRO_PRSTRING,			/* Print string and exit */
-  PRO_FUNCTION			/* Call the associated function. */
-};
+  {
+    PRO_BOOL,			/* boolean */
+    PRO_INT,			/* integer */
+    PRO_FONT,			/* troff font */
+    PRO_IGN,			/* ignore it */
+    PRO_KEY,			/* -T switch */
+    PRO_SETTINGS,		/* bundled set of settings */
+    PRO_PRSTRING,		/* Print string and exit */
+    PRO_FUNCTION		/* Call the associated function. */
+  };
 
 /* profile specials for booleans */
 enum on_or_off
-{
-  ONOFF_NA,			/* Not applicable.  Used in table for
+  {
+    ONOFF_NA,			/* Not applicable.  Used in table for
 				   non-booleans.  */
-  OFF,				/* This option turns on the boolean variable
+    OFF,			/* This option turns on the boolean variable
 				   in question.  */
-  ON				/* it turns it off */
-};
+    ON				/* it turns it off */
+  };
 
 /* Explicit flags for each option.  */
 static int exp_T = 0;
@@ -166,30 +166,30 @@ int expect_output_file;
    -lp must be first.  Also, while (most) booleans occur more than once, the
    last default value is the one actually assigned. */
 struct pro
-{
-  const char *p_name;		/* option name, e.g. "-bl", "-cli" */
-  enum profile p_type;
-  int p_default;		/* the default value (if int) */
+  {
+    const char *p_name;		/* option name, e.g. "-bl", "-cli" */
+    enum profile p_type;
+    int p_default;		/* the default value (if int) */
 
-  /* If p_type == PRO_BOOL, ON or OFF to tell how this switch affects the
-     variable. Not used for other p_type's.  */
-  enum on_or_off p_special;
+    /* If p_type == PRO_BOOL, ON or OFF to tell how this switch affects the
+       variable. Not used for other p_type's.  */
+    enum on_or_off p_special;
 
-  /* if p_type == PRO_SETTINGS, a (char *) pointing to a list of the switches
-     to set, separated by NULs, terminated by 2 NULs. if p_type == PRO_BOOL,
-     PRO_INT, or PRO_FONT, address of the variable that gets set by the
-     option. if p_type == PRO_PRSTRING, a (char *) pointing to the string.
-     if p_type == PRO_FUNCTION, a pointer to a function to be called. */
-  int *d_number;
-  const char *d_string;
-  void (*d_functn)(void);
+    /* if p_type == PRO_SETTINGS, a (char *) pointing to a list of the switches
+       to set, separated by NULs, terminated by 2 NULs. if p_type == PRO_BOOL,
+       PRO_INT, or PRO_FONT, address of the variable that gets set by the
+       option. if p_type == PRO_PRSTRING, a (char *) pointing to the string.
+       if p_type == PRO_FUNCTION, a pointer to a function to be called. */
+    int *d_number;
+    const char *d_string;
+    void (*d_functn) (void);
 
-  /* Points to a nonzero value (allocated statically for all options) if the
-     option has been specified explicitly.  This is necessary because for
-     boolean options, the options to set and reset the variable must share
-     the explicit flag.  */
-  int *p_explicit;
-};
+    /* Points to a nonzero value (allocated statically for all options) if the
+       option has been specified explicitly.  This is necessary because for
+       boolean options, the options to set and reset the variable must share
+       the explicit flag.  */
+    int *p_explicit;
+  };
 
 #define INIT_BOOL(name, dft, subtype, obj, flag) \
   {name, PRO_BOOL, dft, subtype, obj,0,0, flag}
@@ -220,213 +220,213 @@ struct pro
 struct pro pro[] =
 {
 #ifdef DEBUG
-  INIT_BOOL("D", false, ON, &debug, &exp_D),
+  INIT_BOOL ("D", false, ON, &debug, &exp_D),
 #endif
-  INIT_KEY("T", 0, ONOFF_NA, 0, &exp_T),
-  INIT_BOOL("bacc", false, ON,
-   &blanklines_around_conditional_compilation, &exp_bacc),
-  INIT_BOOL("badp", false, ON,
-   &blanklines_after_declarations_at_proctop, &exp_badp),
-  INIT_BOOL("bad", false, ON, &blanklines_after_declarations, &exp_bad),
-  INIT_BOOL("bap", false, ON, &blanklines_after_procs, &exp_bap),
-  INIT_BOOL("bbb", false, ON, &blanklines_before_blockcomments, &exp_bbb),
-  INIT_BOOL("bc", true, OFF, &leave_comma, &exp_bc),
-  INIT_INT("bli", 0, ONOFF_NA, &brace_indent, &exp_bli),
-  INIT_BOOL("bl", true, OFF, &btype_2, &exp_bl),
-  INIT_BOOL("br", true, ON, &btype_2, &exp_bl),
-  INIT_BOOL("bs", false, ON, &blank_after_sizeof, &exp_bs),
-  INIT_BOOL("cdb", true, ON, &comment_delimiter_on_blankline, &exp_cdb),
-  INIT_INT("cd", 33, ONOFF_NA, &decl_com_ind, &exp_cd),
-  INIT_BOOL("ce", true, ON, &cuddle_else, &exp_ce),
-  INIT_INT("ci", 4, ONOFF_NA, &continuation_indent, &exp_ci),
-  INIT_INT("cli", 0, ONOFF_NA, &case_indent, &exp_cli),
-  INIT_INT("cp", 33, ONOFF_NA, &else_endif_col, &exp_cp),
-  INIT_BOOL("cs", true, ON, &cast_space, &exp_cs),
-  INIT_INT("c", 33, ONOFF_NA, &com_ind, &exp_c),
-  INIT_INT("di", 16, ONOFF_NA, &decl_indent, &exp_di),
-  INIT_BOOL("dj", false, ON, &ljust_decl, &exp_dj),
-  INIT_INT("d", 0, ONOFF_NA, &unindent_displace, &exp_d),
-  INIT_BOOL("eei", false, ON, &extra_expression_indent, &exp_eei),
-  INIT_BOOL("ei", true, ON, &else_if, &exp_ei),
-  INIT_FONT("fbc", 0, ONOFF_NA, (int *) &blkcomf, &exp_fbc),
-  INIT_FONT("fbx", 0, ONOFF_NA, (int *) &boxcomf, &exp_fbx),
-  INIT_FONT("fb", 0, ONOFF_NA, (int *) &bodyf, &exp_fb),
-  INIT_BOOL("fc1", true, ON, &format_col1_comments, &exp_fc1),
-  INIT_BOOL("fca", true, ON, &format_comments, &exp_fca),
-  INIT_FONT("fc", 0, ONOFF_NA, (int *) &scomf, &exp_fc),
-  INIT_FONT("fk", 0, ONOFF_NA, (int *) &keywordf, &exp_fk),
-  INIT_FONT("fs", 0, ONOFF_NA, (int *) &stringf, &exp_fs),
-  INIT_SETTINGS("gnu", 0, ONOFF_NA,
-   "-nbad\0-bap\0-nbc\0-bl\0-ncdb\0-cs\0-nce\0-di2\0-ndj\0\
+  INIT_KEY ("T", 0, ONOFF_NA, 0, &exp_T),
+  INIT_BOOL ("bacc", false, ON,
+	     &blanklines_around_conditional_compilation, &exp_bacc),
+  INIT_BOOL ("badp", false, ON,
+	     &blanklines_after_declarations_at_proctop, &exp_badp),
+  INIT_BOOL ("bad", false, ON, &blanklines_after_declarations, &exp_bad),
+  INIT_BOOL ("bap", false, ON, &blanklines_after_procs, &exp_bap),
+  INIT_BOOL ("bbb", false, ON, &blanklines_before_blockcomments, &exp_bbb),
+  INIT_BOOL ("bc", true, OFF, &leave_comma, &exp_bc),
+  INIT_INT ("bli", 0, ONOFF_NA, &brace_indent, &exp_bli),
+  INIT_BOOL ("bl", true, OFF, &btype_2, &exp_bl),
+  INIT_BOOL ("br", true, ON, &btype_2, &exp_bl),
+  INIT_BOOL ("bs", false, ON, &blank_after_sizeof, &exp_bs),
+  INIT_BOOL ("cdb", true, ON, &comment_delimiter_on_blankline, &exp_cdb),
+  INIT_INT ("cd", 33, ONOFF_NA, &decl_com_ind, &exp_cd),
+  INIT_BOOL ("ce", true, ON, &cuddle_else, &exp_ce),
+  INIT_INT ("ci", 4, ONOFF_NA, &continuation_indent, &exp_ci),
+  INIT_INT ("cli", 0, ONOFF_NA, &case_indent, &exp_cli),
+  INIT_INT ("cp", 33, ONOFF_NA, &else_endif_col, &exp_cp),
+  INIT_BOOL ("cs", true, ON, &cast_space, &exp_cs),
+  INIT_INT ("c", 33, ONOFF_NA, &com_ind, &exp_c),
+  INIT_INT ("di", 16, ONOFF_NA, &decl_indent, &exp_di),
+  INIT_BOOL ("dj", false, ON, &ljust_decl, &exp_dj),
+  INIT_INT ("d", 0, ONOFF_NA, &unindent_displace, &exp_d),
+  INIT_BOOL ("eei", false, ON, &extra_expression_indent, &exp_eei),
+  INIT_BOOL ("ei", true, ON, &else_if, &exp_ei),
+  INIT_FONT ("fbc", 0, ONOFF_NA, (int *) &blkcomf, &exp_fbc),
+  INIT_FONT ("fbx", 0, ONOFF_NA, (int *) &boxcomf, &exp_fbx),
+  INIT_FONT ("fb", 0, ONOFF_NA, (int *) &bodyf, &exp_fb),
+  INIT_BOOL ("fc1", true, ON, &format_col1_comments, &exp_fc1),
+  INIT_BOOL ("fca", true, ON, &format_comments, &exp_fca),
+  INIT_FONT ("fc", 0, ONOFF_NA, (int *) &scomf, &exp_fc),
+  INIT_FONT ("fk", 0, ONOFF_NA, (int *) &keywordf, &exp_fk),
+  INIT_FONT ("fs", 0, ONOFF_NA, (int *) &stringf, &exp_fs),
+  INIT_SETTINGS ("gnu", 0, ONOFF_NA,
+		 "-nbad\0-bap\0-nbc\0-bl\0-ncdb\0-cs\0-nce\0-di2\0-ndj\0\
 -ei\0-nfc1\0-i2\0-ip5\0-lp\0-pcs\0-npsl\0-psl\0-nsc\0-nsob\0-bli2\0\
 -cp1\0-nfca\0", &exp_gnu),
-  INIT_FUNCTION("h", 0, ONOFF_NA, usage, &exp_version),
-  INIT_INT("ip", 4, ON, &indent_parameters, &exp_ip),
-  INIT_INT("i", 4, ONOFF_NA, &ind_size, &exp_i),
-  INIT_SETTINGS("kr", 0, ONOFF_NA,
-   "-nbad\0-bap\0-nbc\0-br\0-c33\0-cd33\0-ncdb\0-ce\0\
+  INIT_FUNCTION ("h", 0, ONOFF_NA, usage, &exp_version),
+  INIT_INT ("ip", 4, ON, &indent_parameters, &exp_ip),
+  INIT_INT ("i", 4, ONOFF_NA, &ind_size, &exp_i),
+  INIT_SETTINGS ("kr", 0, ONOFF_NA,
+		 "-nbad\0-bap\0-nbc\0-br\0-c33\0-cd33\0-ncdb\0-ce\0\
 -ci4\0-cli0\0-d0\0-di1\0-nfc1\0-i4\0-ip0\0-l75\0-lp\0-npcs\0-npsl\0-cs\0\
 -nsc\0-nsc\0-nsob\0-nfca\0-cp33\0-nss\0", &exp_kr),
-  INIT_INT("lc", DEFAULT_RIGHT_COMMENT_MARGIN,
-     ONOFF_NA, &comment_max_col, &exp_lc),
-  INIT_BOOL("lps", false, ON, &leave_preproc_space, &exp_lps),
-  INIT_BOOL("lp", true, ON, &lineup_to_parens, &exp_lp),
-  INIT_INT("l", DEFAULT_RIGHT_MARGIN, ONOFF_NA, &max_col, &exp_l),
-  INIT_BOOL("nbacc", false, OFF,
-   &blanklines_around_conditional_compilation, &exp_bacc),
-  INIT_BOOL("nbadp", false, OFF,
-   &blanklines_after_declarations_at_proctop, &exp_badp),
-  INIT_BOOL("nbad", false, OFF, &blanklines_after_declarations, &exp_bad),
-  INIT_BOOL("nbap", false, OFF, &blanklines_after_procs, &exp_bap),
-  INIT_BOOL("nbbb", false, OFF, &blanklines_before_blockcomments, &exp_bbb),
-  INIT_BOOL("nbc", true, ON, &leave_comma, &exp_bc),
-  INIT_BOOL("nbs", false, OFF, &blank_after_sizeof, &exp_bs),
-  INIT_BOOL("ncdb", true, OFF, &comment_delimiter_on_blankline, &exp_cdb),
-  INIT_BOOL("nce", true, OFF, &cuddle_else, &exp_ce),
-  INIT_BOOL("ncs", true, OFF, &cast_space, &exp_cs),
-  INIT_BOOL("ndj", false, OFF, &ljust_decl, &exp_dj),
-  INIT_BOOL("neei", false, OFF, &extra_expression_indent, &exp_eei),
-  INIT_BOOL("nei", true, OFF, &else_if, &exp_ei),
-  INIT_BOOL("nfc1", true, OFF, &format_col1_comments, &exp_fc1),
-  INIT_BOOL("nfca", true, OFF, &format_comments, &exp_fca),
-  INIT_SETTINGS("nip", 0, ONOFF_NA, "-ip0", &exp_nip),
-  INIT_BOOL("nlp", true, OFF, &lineup_to_parens, &exp_lp),
-  INIT_BOOL("nlps", false, OFF, &leave_preproc_space, &exp_lps),
-  INIT_BOOL("npcs", false, OFF, &proc_calls_space, &exp_pcs),
-  INIT_IGN("npro", 0, ONOFF_NA, 0, &exp_pro),
-  INIT_BOOL("npsl", true, OFF, &procnames_start_line, &exp_psl),
-  INIT_BOOL("nsc", true, OFF, &star_comment_cont, &exp_sc),
-  INIT_BOOL("nsob", false, OFF, &swallow_optional_blanklines, &exp_sob),
-  INIT_BOOL("nss", false, OFF, &space_sp_semicolon, &exp_ss),
-  INIT_BOOL("nv", false, OFF, &verbose, &exp_v),
+  INIT_INT ("lc", DEFAULT_RIGHT_COMMENT_MARGIN,
+	    ONOFF_NA, &comment_max_col, &exp_lc),
+  INIT_BOOL ("lps", false, ON, &leave_preproc_space, &exp_lps),
+  INIT_BOOL ("lp", true, ON, &lineup_to_parens, &exp_lp),
+  INIT_INT ("l", DEFAULT_RIGHT_MARGIN, ONOFF_NA, &max_col, &exp_l),
+  INIT_BOOL ("nbacc", false, OFF,
+	     &blanklines_around_conditional_compilation, &exp_bacc),
+  INIT_BOOL ("nbadp", false, OFF,
+	     &blanklines_after_declarations_at_proctop, &exp_badp),
+  INIT_BOOL ("nbad", false, OFF, &blanklines_after_declarations, &exp_bad),
+  INIT_BOOL ("nbap", false, OFF, &blanklines_after_procs, &exp_bap),
+  INIT_BOOL ("nbbb", false, OFF, &blanklines_before_blockcomments, &exp_bbb),
+  INIT_BOOL ("nbc", true, ON, &leave_comma, &exp_bc),
+  INIT_BOOL ("nbs", false, OFF, &blank_after_sizeof, &exp_bs),
+  INIT_BOOL ("ncdb", true, OFF, &comment_delimiter_on_blankline, &exp_cdb),
+  INIT_BOOL ("nce", true, OFF, &cuddle_else, &exp_ce),
+  INIT_BOOL ("ncs", true, OFF, &cast_space, &exp_cs),
+  INIT_BOOL ("ndj", false, OFF, &ljust_decl, &exp_dj),
+  INIT_BOOL ("neei", false, OFF, &extra_expression_indent, &exp_eei),
+  INIT_BOOL ("nei", true, OFF, &else_if, &exp_ei),
+  INIT_BOOL ("nfc1", true, OFF, &format_col1_comments, &exp_fc1),
+  INIT_BOOL ("nfca", true, OFF, &format_comments, &exp_fca),
+  INIT_SETTINGS ("nip", 0, ONOFF_NA, "-ip0", &exp_nip),
+  INIT_BOOL ("nlp", true, OFF, &lineup_to_parens, &exp_lp),
+  INIT_BOOL ("nlps", false, OFF, &leave_preproc_space, &exp_lps),
+  INIT_BOOL ("npcs", false, OFF, &proc_calls_space, &exp_pcs),
+  INIT_IGN ("npro", 0, ONOFF_NA, 0, &exp_pro),
+  INIT_BOOL ("npsl", true, OFF, &procnames_start_line, &exp_psl),
+  INIT_BOOL ("nsc", true, OFF, &star_comment_cont, &exp_sc),
+  INIT_BOOL ("nsob", false, OFF, &swallow_optional_blanklines, &exp_sob),
+  INIT_BOOL ("nss", false, OFF, &space_sp_semicolon, &exp_ss),
+  INIT_BOOL ("nv", false, OFF, &verbose, &exp_v),
 
-  INIT_BOOL("o", false, ON, &expect_output_file, &expect_output_file),
+  INIT_BOOL ("o", false, ON, &expect_output_file, &expect_output_file),
 
-  INIT_BOOL("pcs", false, ON, &proc_calls_space, &exp_pcs),
-  INIT_BOOL("psl", true, ON, &procnames_start_line, &exp_psl),
-  INIT_BOOL("sc", true, ON, &star_comment_cont, &exp_sc),
-  INIT_BOOL("sob", false, ON, &swallow_optional_blanklines, &exp_sob),
-  INIT_BOOL("ss", false, ON, &space_sp_semicolon, &exp_ss),
-  INIT_BOOL("st", false, ON, &use_stdout, &exp_st),
-  INIT_INT("ts", 8, ONOFF_NA, &tabsize, &exp_ts),
-  INIT_PRSTRING("version", 0, ONOFF_NA, VERSION_STRING, &exp_version),
-  INIT_BOOL("v", false, ON, &verbose, &exp_v),
+  INIT_BOOL ("pcs", false, ON, &proc_calls_space, &exp_pcs),
+  INIT_BOOL ("psl", true, ON, &procnames_start_line, &exp_psl),
+  INIT_BOOL ("sc", true, ON, &star_comment_cont, &exp_sc),
+  INIT_BOOL ("sob", false, ON, &swallow_optional_blanklines, &exp_sob),
+  INIT_BOOL ("ss", false, ON, &space_sp_semicolon, &exp_ss),
+  INIT_BOOL ("st", false, ON, &use_stdout, &exp_st),
+  INIT_INT ("ts", 8, ONOFF_NA, &tabsize, &exp_ts),
+  INIT_PRSTRING ("version", 0, ONOFF_NA, VERSION_STRING, &exp_version),
+  INIT_BOOL ("v", false, ON, &verbose, &exp_v),
 
 /* Signify end of structure.  */
-  INIT_IGN(0, 0, ONOFF_NA, 0, 0)
+  INIT_IGN (0, 0, ONOFF_NA, 0, 0)
 };
 #else /* Default to GNU style */
 
 /* Changed to make GNU style the default. */
 struct pro pro[] =
 {
-  INIT_KEY("T", 0, ONOFF_NA, 0, &exp_T),
-  INIT_BOOL("bacc", false, ON,
-   &blanklines_around_conditional_compilation, &exp_bacc),
-  INIT_BOOL("badp", false, ON,
-   &blanklines_after_declarations_at_proctop, &exp_badp),
-  INIT_BOOL("bad", false, ON, &blanklines_after_declarations, &exp_bad),
-  INIT_BOOL("bap", true, ON, &blanklines_after_procs, &exp_bap),
-  INIT_BOOL("bbb", false, ON, &blanklines_before_blockcomments, &exp_bbb),
-  INIT_BOOL("bc", true, OFF, &leave_comma, &exp_bc),
-  INIT_INT("bli", 2, ONOFF_NA, &brace_indent, &exp_bli),
-  INIT_BOOL("bl", true, OFF, &btype_2, &exp_bl),
-  INIT_BOOL("br", false, ON, &btype_2, &exp_bl),
-  INIT_BOOL("bs", false, ON, &blank_after_sizeof, &exp_bs),
-  INIT_BOOL("cdb", false, ON, &comment_delimiter_on_blankline, &exp_cdb),
-  INIT_INT("cd", 33, ONOFF_NA, &decl_com_ind, &exp_cd),
-  INIT_BOOL("ce", false, ON, &cuddle_else, &exp_ce),
-  INIT_INT("ci", 0, ONOFF_NA, &continuation_indent, &exp_ci),
-  INIT_INT("cli", 0, ONOFF_NA, &case_indent, &exp_cli),
-  INIT_INT("cp", 1, ONOFF_NA, &else_endif_col, &exp_cp),
-  INIT_BOOL("cs", true, ON, &cast_space, &exp_cs),
-  INIT_INT("c", 33, ONOFF_NA, &com_ind, &exp_c),
-  INIT_INT("di", 2, ONOFF_NA, &decl_indent, &exp_di),
-  INIT_BOOL("dj", false, ON, &ljust_decl, &exp_dj),
-  INIT_INT("d", 0, ONOFF_NA, &unindent_displace, &exp_d),
-  INIT_BOOL("eei", false, ON, &extra_expression_indent, &exp_eei),
-  INIT_BOOL("ei", true, ON, &else_if, &exp_ei),
-  INIT_FONT("fbc", 0, ONOFF_NA, (int *) &blkcomf, &exp_fbc),
-  INIT_FONT("fbx", 0, ONOFF_NA, (int *) &boxcomf, &exp_fbx),
-  INIT_FONT("fb", 0, ONOFF_NA, (int *) &bodyf, &exp_fb),
-  INIT_BOOL("fc1", false, ON, &format_col1_comments, &exp_fc1),
-  INIT_BOOL("fca", false, ON, &format_comments, &exp_fca),
-  INIT_FONT("fc", 0, ONOFF_NA, (int *) &scomf, &exp_fc),
-  INIT_FONT("fk", 0, ONOFF_NA, (int *) &keywordf, &exp_fk),
-  INIT_FONT("fs", 0, ONOFF_NA, (int *) &stringf, &exp_fs),
+  INIT_KEY ("T", 0, ONOFF_NA, 0, &exp_T),
+  INIT_BOOL ("bacc", false, ON,
+	     &blanklines_around_conditional_compilation, &exp_bacc),
+  INIT_BOOL ("badp", false, ON,
+	     &blanklines_after_declarations_at_proctop, &exp_badp),
+  INIT_BOOL ("bad", false, ON, &blanklines_after_declarations, &exp_bad),
+  INIT_BOOL ("bap", true, ON, &blanklines_after_procs, &exp_bap),
+  INIT_BOOL ("bbb", false, ON, &blanklines_before_blockcomments, &exp_bbb),
+  INIT_BOOL ("bc", true, OFF, &leave_comma, &exp_bc),
+  INIT_INT ("bli", 2, ONOFF_NA, &brace_indent, &exp_bli),
+  INIT_BOOL ("bl", true, OFF, &btype_2, &exp_bl),
+  INIT_BOOL ("br", false, ON, &btype_2, &exp_bl),
+  INIT_BOOL ("bs", false, ON, &blank_after_sizeof, &exp_bs),
+  INIT_BOOL ("cdb", false, ON, &comment_delimiter_on_blankline, &exp_cdb),
+  INIT_INT ("cd", 33, ONOFF_NA, &decl_com_ind, &exp_cd),
+  INIT_BOOL ("ce", false, ON, &cuddle_else, &exp_ce),
+  INIT_INT ("ci", 0, ONOFF_NA, &continuation_indent, &exp_ci),
+  INIT_INT ("cli", 0, ONOFF_NA, &case_indent, &exp_cli),
+  INIT_INT ("cp", 1, ONOFF_NA, &else_endif_col, &exp_cp),
+  INIT_BOOL ("cs", true, ON, &cast_space, &exp_cs),
+  INIT_INT ("c", 33, ONOFF_NA, &com_ind, &exp_c),
+  INIT_INT ("di", 2, ONOFF_NA, &decl_indent, &exp_di),
+  INIT_BOOL ("dj", false, ON, &ljust_decl, &exp_dj),
+  INIT_INT ("d", 0, ONOFF_NA, &unindent_displace, &exp_d),
+  INIT_BOOL ("eei", false, ON, &extra_expression_indent, &exp_eei),
+  INIT_BOOL ("ei", true, ON, &else_if, &exp_ei),
+  INIT_FONT ("fbc", 0, ONOFF_NA, (int *) &blkcomf, &exp_fbc),
+  INIT_FONT ("fbx", 0, ONOFF_NA, (int *) &boxcomf, &exp_fbx),
+  INIT_FONT ("fb", 0, ONOFF_NA, (int *) &bodyf, &exp_fb),
+  INIT_BOOL ("fc1", false, ON, &format_col1_comments, &exp_fc1),
+  INIT_BOOL ("fca", false, ON, &format_comments, &exp_fca),
+  INIT_FONT ("fc", 0, ONOFF_NA, (int *) &scomf, &exp_fc),
+  INIT_FONT ("fk", 0, ONOFF_NA, (int *) &keywordf, &exp_fk),
+  INIT_FONT ("fs", 0, ONOFF_NA, (int *) &stringf, &exp_fs),
 
 /* This is now the default. */
-  INIT_SETTINGS("gnu", 0, ONOFF_NA,
-   "-nbad\0-bap\0-nbc\0-bl\0-ncdb\0-cs\0-nce\0-di2\0-ndj\0\
+  INIT_SETTINGS ("gnu", 0, ONOFF_NA,
+		 "-nbad\0-bap\0-nbc\0-bl\0-ncdb\0-cs\0-nce\0-di2\0-ndj\0\
 -ei\0-nfc1\0-i2\0-ip5\0-lp\0-pcs\0-npsl\0-psl\0-nsc\0-nsob\0-bli2\0\
 -cp1\0-nfca\0", &exp_gnu),
 
-  INIT_FUNCTION("h", 0, ONOFF_NA, usage, &exp_version),
-  INIT_INT("ip", 5, ON, &indent_parameters, &exp_ip),
-  INIT_INT("i", 2, ONOFF_NA, &ind_size, &exp_i),
-  INIT_SETTINGS("kr", 0, ONOFF_NA,
-   "-nbad\0-bap\0-nbc\0-br\0-c33\0-cd33\0-ncdb\0-ce\0\
+  INIT_FUNCTION ("h", 0, ONOFF_NA, usage, &exp_version),
+  INIT_INT ("ip", 5, ON, &indent_parameters, &exp_ip),
+  INIT_INT ("i", 2, ONOFF_NA, &ind_size, &exp_i),
+  INIT_SETTINGS ("kr", 0, ONOFF_NA,
+		 "-nbad\0-bap\0-nbc\0-br\0-c33\0-cd33\0-ncdb\0-ce\0\
 -ci4\0-cli0\0-d0\0-di1\0-nfc1\0-i4\0-ip0\0-l75\0-lp\0-npcs\0-npsl\0-cs\0\
 -nsc\0-nsob\0-nfca\0-cp33\0-nss\0", &exp_kr),
-  INIT_INT("lc", DEFAULT_RIGHT_COMMENT_MARGIN,
-     ONOFF_NA, &comment_max_col, &exp_lc),
-  INIT_BOOL("lps", false, ON, &leave_preproc_space, &exp_lps),
-  INIT_BOOL("lp", true, ON, &lineup_to_parens, &exp_lp),
-  INIT_INT("l", DEFAULT_RIGHT_MARGIN, ONOFF_NA, &max_col, &exp_l),
-  INIT_BOOL("nbacc", false, OFF,
-   &blanklines_around_conditional_compilation, &exp_bacc),
-  INIT_BOOL("nbadp", false, OFF,
-   &blanklines_after_declarations_at_proctop, &exp_badp),
-  INIT_BOOL("nbad", false, OFF, &blanklines_after_declarations, &exp_bad),
-  INIT_BOOL("nbap", true, OFF, &blanklines_after_procs, &exp_bap),
-  INIT_BOOL("nbbb", false, OFF, &blanklines_before_blockcomments, &exp_bbb),
-  INIT_BOOL("nbc", true, ON, &leave_comma, &exp_bc),
-  INIT_BOOL("nbs", false, OFF, &blank_after_sizeof, &exp_bs),
-  INIT_BOOL("ncdb", false, OFF, &comment_delimiter_on_blankline, &exp_cdb),
-  INIT_BOOL("nce", false, OFF, &cuddle_else, &exp_ce),
-  INIT_BOOL("ncs", true, OFF, &cast_space, &exp_cs),
-  INIT_BOOL("ndj", false, OFF, &ljust_decl, &exp_dj),
-  INIT_BOOL("neei", false, OFF, &extra_expression_indent, &exp_eei),
-  INIT_BOOL("nei", true, OFF, &else_if, &exp_ei),
-  INIT_BOOL("nfc1", false, OFF, &format_col1_comments, &exp_fc1),
-  INIT_BOOL("nfca", false, OFF, &format_comments, &exp_fca),
-  INIT_SETTINGS("nip", 0, ONOFF_NA, "-ip0\0", &exp_nip),
-  INIT_BOOL("nlp", true, OFF, &lineup_to_parens, &exp_lp),
-  INIT_BOOL("nlps", false, OFF, &leave_preproc_space, &exp_lps),
-  INIT_BOOL("npcs", true, OFF, &proc_calls_space, &exp_pcs),
-  INIT_IGN("npro", 0, ONOFF_NA, 0, &exp_pro),
-  INIT_BOOL("npsl", true, OFF, &procnames_start_line, &exp_psl),
-  INIT_BOOL("nsc", false, OFF, &star_comment_cont, &exp_sc),
-  INIT_BOOL("nsob", false, OFF, &swallow_optional_blanklines, &exp_sob),
-  INIT_BOOL("nss", false, OFF, &space_sp_semicolon, &exp_ss),
-  INIT_BOOL("nv", false, OFF, &verbose, &exp_v),
-  INIT_SETTINGS("orig", 0, ONOFF_NA,
-   "-nbap\0-nbad\0-bc\0-br\0-c33\0-cd33\0-cdb\0-ce\0-ci4\0\
+  INIT_INT ("lc", DEFAULT_RIGHT_COMMENT_MARGIN,
+	    ONOFF_NA, &comment_max_col, &exp_lc),
+  INIT_BOOL ("lps", false, ON, &leave_preproc_space, &exp_lps),
+  INIT_BOOL ("lp", true, ON, &lineup_to_parens, &exp_lp),
+  INIT_INT ("l", DEFAULT_RIGHT_MARGIN, ONOFF_NA, &max_col, &exp_l),
+  INIT_BOOL ("nbacc", false, OFF,
+	     &blanklines_around_conditional_compilation, &exp_bacc),
+  INIT_BOOL ("nbadp", false, OFF,
+	     &blanklines_after_declarations_at_proctop, &exp_badp),
+  INIT_BOOL ("nbad", false, OFF, &blanklines_after_declarations, &exp_bad),
+  INIT_BOOL ("nbap", true, OFF, &blanklines_after_procs, &exp_bap),
+  INIT_BOOL ("nbbb", false, OFF, &blanklines_before_blockcomments, &exp_bbb),
+  INIT_BOOL ("nbc", true, ON, &leave_comma, &exp_bc),
+  INIT_BOOL ("nbs", false, OFF, &blank_after_sizeof, &exp_bs),
+  INIT_BOOL ("ncdb", false, OFF, &comment_delimiter_on_blankline, &exp_cdb),
+  INIT_BOOL ("nce", false, OFF, &cuddle_else, &exp_ce),
+  INIT_BOOL ("ncs", true, OFF, &cast_space, &exp_cs),
+  INIT_BOOL ("ndj", false, OFF, &ljust_decl, &exp_dj),
+  INIT_BOOL ("neei", false, OFF, &extra_expression_indent, &exp_eei),
+  INIT_BOOL ("nei", true, OFF, &else_if, &exp_ei),
+  INIT_BOOL ("nfc1", false, OFF, &format_col1_comments, &exp_fc1),
+  INIT_BOOL ("nfca", false, OFF, &format_comments, &exp_fca),
+  INIT_SETTINGS ("nip", 0, ONOFF_NA, "-ip0\0", &exp_nip),
+  INIT_BOOL ("nlp", true, OFF, &lineup_to_parens, &exp_lp),
+  INIT_BOOL ("nlps", false, OFF, &leave_preproc_space, &exp_lps),
+  INIT_BOOL ("npcs", true, OFF, &proc_calls_space, &exp_pcs),
+  INIT_IGN ("npro", 0, ONOFF_NA, 0, &exp_pro),
+  INIT_BOOL ("npsl", true, OFF, &procnames_start_line, &exp_psl),
+  INIT_BOOL ("nsc", false, OFF, &star_comment_cont, &exp_sc),
+  INIT_BOOL ("nsob", false, OFF, &swallow_optional_blanklines, &exp_sob),
+  INIT_BOOL ("nss", false, OFF, &space_sp_semicolon, &exp_ss),
+  INIT_BOOL ("nv", false, OFF, &verbose, &exp_v),
+  INIT_SETTINGS ("orig", 0, ONOFF_NA,
+		 "-nbap\0-nbad\0-bc\0-br\0-c33\0-cd33\0-cdb\0-ce\0-ci4\0\
 -cli0\0-cp33\0-di16\0-fc1\0-fca\0-i4\0-ip4\0-l75\0-lp\0\
 -npcs\0-psl\0-sc\0-nsob\0-nss\0-ts8\0", &exp_orig),
 
-  INIT_BOOL("o", false, ON, &expect_output_file, &expect_output_file),
+  INIT_BOOL ("o", false, ON, &expect_output_file, &expect_output_file),
 
-  INIT_BOOL("pcs", true, ON, &proc_calls_space, &exp_pcs),
-  INIT_BOOL("psl", true, ON, &procnames_start_line, &exp_psl),
-  INIT_BOOL("sc", false, ON, &star_comment_cont, &exp_sc),
-  INIT_BOOL("sob", false, ON, &swallow_optional_blanklines, &exp_sob),
-  INIT_BOOL("ss", false, ON, &space_sp_semicolon, &exp_ss),
-  INIT_BOOL("st", false, ON, &use_stdout, &exp_st),
-  INIT_INT("ts", 8, ONOFF_NA, &tabsize, &exp_ts),
-  INIT_PRSTRING("version", 0, ONOFF_NA, VERSION_STRING, &exp_version),
-  INIT_BOOL("v", false, ON, &verbose, &exp_v),
+  INIT_BOOL ("pcs", true, ON, &proc_calls_space, &exp_pcs),
+  INIT_BOOL ("psl", true, ON, &procnames_start_line, &exp_psl),
+  INIT_BOOL ("sc", false, ON, &star_comment_cont, &exp_sc),
+  INIT_BOOL ("sob", false, ON, &swallow_optional_blanklines, &exp_sob),
+  INIT_BOOL ("ss", false, ON, &space_sp_semicolon, &exp_ss),
+  INIT_BOOL ("st", false, ON, &use_stdout, &exp_st),
+  INIT_INT ("ts", 8, ONOFF_NA, &tabsize, &exp_ts),
+  INIT_PRSTRING ("version", 0, ONOFF_NA, VERSION_STRING, &exp_version),
+  INIT_BOOL ("v", false, ON, &verbose, &exp_v),
 
 /* Signify end of structure.  */
-  INIT_IGN(0, 0, ONOFF_NA, 0, 0)
+  INIT_IGN (0, 0, ONOFF_NA, 0, 0)
 };
 #endif /* GNU defaults */
 
 struct long_option_conversion
-{
-  const char *long_name;
-  const char *short_name;
-};
+  {
+    const char *long_name;
+    const char *short_name;
+  };
 
 struct long_option_conversion option_conversions[] =
 {
@@ -526,9 +526,9 @@ struct long_option_conversion option_conversions[] =
 
 static int
 eqin (
-     const char *s1,
-     const char *s2,
-     const char **start_param)
+       const char *s1,
+       const char *s2,
+       const char **start_param)
 {
   while (*s1)
     {
@@ -547,7 +547,7 @@ set_defaults (void)
 
   for (p = pro; p->p_name; p++)
     if (p->p_type == PRO_BOOL || p->p_type == PRO_INT)
-      *NumberData(p) = p->p_default;
+      *NumberData (p) = p->p_default;
 }
 
 /* Stings which can prefix an option, longest first. */
@@ -576,7 +576,7 @@ option_prefix (const char *arg)
 	  argp++;
 	}
       if (*this_prefix == '\0')
-	return (int)(this_prefix - *prefixes);
+	return (int) (this_prefix - *prefixes);
     }
   while (*++prefixes);
 
@@ -632,11 +632,11 @@ set_option (const char *option, const char *param, int explicit)
 	}
     }
 
-  fprintf (stderr, "indent: unknown option \"%s\"\n", option - 1);
+  fprintf (stderr, "%s: unknown option \"%s\"\n", progname, option - 1);
   exit (invocation_error);
 
 arg_missing:
-  fprintf (stderr, "indent: missing argument to parameter %s\n", option);
+  fprintf (stderr, "%s: missing argument to parameter %s\n", progname, option);
   exit (invocation_error);
 
 found:
@@ -656,19 +656,19 @@ found:
 	case PRO_PRSTRING:
 	  /* This is not really an error, but zero exit values are
 	     returned only when code has been successfully formatted. */
-	  puts (StringData(p));
+	  puts (StringData (p));
 	  exit (invocation_error);
 	  /* NOTREACHED */
 
 	case PRO_FUNCTION:
-	  FunctnData(p) ();
+	  FunctnData (p) ();
 	  break;
 
 	case PRO_SETTINGS:
 	  {
 	    const char *t;	/* current position */
 
-	    t = StringData(p);
+	    t = StringData (p);
 	    do
 	      {
 		set_option (t, 0, 0);
@@ -701,9 +701,9 @@ found:
 
 	case PRO_BOOL:
 	  if (p->p_special == OFF)
-	    *NumberData(p) = false;
+	    *NumberData (p) = false;
 	  else
-	    *NumberData(p) = true;
+	    *NumberData (p) = true;
 	  break;
 
 	case PRO_INT:
@@ -718,16 +718,16 @@ found:
 	  if (!isdigit (*param_start))
 	    {
 	      fprintf (stderr,
-		     "indent: option ``%s'' requires a numeric parameter\n",
-		       option - 1);
+		       "%s: option ``%s'' requires a numeric parameter\n",
+		       progname, option - 1);
 	      exit (invocation_error);
 	    }
-	  *NumberData(p) = atoi (param_start);
+	  *NumberData (p) = atoi (param_start);
 	  break;
 
 	default:
-	  fprintf (stderr, "indent: set_option: internal error: p_type %d\n",
-		   (int) p->p_type);
+	  fprintf (stderr, "%s: set_option: internal error: p_type %d\n",
+		   progname, (int) p->p_type);
 	  exit (invocation_error);
 	}
     }
@@ -739,7 +739,7 @@ found:
 /* Scan the options in the file F. */
 
 static void
-scan_profile (FILE *f)
+scan_profile (FILE * f)
 {
   int i;
   char *p, *this, *next, *temp;
@@ -762,7 +762,9 @@ scan_profile (FILE *f)
 	  switch (i)
 	    {
 	    case '/':
-	      do i = getc (f); while (i != EOF && i != EOL);
+	      do
+		i = getc (f);
+	      while (i != EOF && i != EOL);
 	      if (i == EOF)
 		return;
 	      continue;
@@ -770,7 +772,9 @@ scan_profile (FILE *f)
 	    case '*':
 	      do
 		{
-		  do i = getc (f); while (i != EOF && i != '*');
+		  do
+		    i = getc (f);
+		  while (i != EOF && i != '*');
 		  if (i == '*')
 		    i = getc (f);
 		  if (i == EOF)
@@ -822,42 +826,33 @@ scan_profile (FILE *f)
     }
 }
 
-
-/* Some operating systems don't allow more than one dot in a filename.  */
-#if defined (ONE_DOT_PER_FILENAME)
-#define INDENT_PROFILE "indent.pro"
-#else
-#define INDENT_PROFILE ".indent.pro"
-#endif
-
 #ifndef PROFILE_FORMAT
 #define PROFILE_FORMAT "%s/%s"
 #endif
 
-/* set_profile looks for ./.indent.pro or $HOME/.indent.pro, in
-   that order, and reads the options given in that file.  Return the
-   path of the file read.
+/* set_profile looks for the given profile (usually .indent.pro) in the
+   current directory, or in $HOME in that order, and reads the options
+   given in that file.  Return the path of the file read.
 
    Note that as of version 1.3, indent only reads one file. */
 
 char *
-set_profile (void)
+set_profile (const char *given)
 {
   FILE *f;
   char *fname;
-  static char prof[] = INDENT_PROFILE;
   char *homedir;
 
-  if ((f = fopen (INDENT_PROFILE, "r")) != NULL)
+  if ((f = fopen (given, "r")) != NULL)
     {
-      size_t len = strlen (INDENT_PROFILE) + 3;
+      size_t len = strlen (given) + 3;
 
       scan_profile (f);
       (void) fclose (f);
       fname = xmalloc (len);
       fname[0] = '.';
       fname[1] = '/';
-      (void) memcpy (&fname[2], INDENT_PROFILE, len - 3);
+      (void) memcpy (&fname[2], given, len - 3);
       fname[len - 1] = '\0';
       return fname;
     }
@@ -865,8 +860,8 @@ set_profile (void)
   homedir = getenv ("HOME");
   if (homedir)
     {
-      fname = xmalloc (strlen (homedir) + 10 + sizeof prof);
-      sprintf (fname, PROFILE_FORMAT, homedir, prof);
+      fname = xmalloc (strlen (homedir) + 10 + strlen (given) + 1);
+      sprintf (fname, PROFILE_FORMAT, homedir, given);
 
       if ((f = fopen (fname, "r")) != NULL)
 	{

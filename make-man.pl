@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: make-man.pl,v 1.8 2010/10/07 23:45:32 tom Exp $
+# $Id: make-man.pl,v 1.13 2010/10/08 00:58:48 tom Exp $
 #------------------------------------------------------------------------------
 # Copyright:  2010 by Thomas E. Dickey
 #
@@ -218,7 +218,7 @@ sub do_file($) {
 							for $k ($n + 2..$hang - 1) {
 								$markup[$k] .= ".br";
 							}
-							$markup[$hang] .= ".RS 0";
+							$markup[$hang] .= ".RS 5";
 							$markup[$n] .= ".PP";
 							$RS = 1;
 						}
@@ -237,9 +237,14 @@ sub do_file($) {
 			}
 		} else {
 			if ( $n < $#input ) {
-				if ( $DS eq 0 and $RS eq 0 and &is_display($text) ) {
-					$markup[$n] .= ".NS";
-					$DS = 1;
+				if ( &is_display($text) ) {
+					if ( $RS ne 0 ) {
+						$input[$n] = &format_display($text);
+						next;
+					} elsif ( $DS eq 0 ) {
+						$markup[$n] .= ".NS";
+						$DS = 1;
+					}
 				}
 				if ( $DS ne 0 ) {
 					$input[$n] = &format_display($text);
@@ -265,6 +270,37 @@ sub do_file($) {
 	}
 
 	for $n (0..$#input) {
+		$input[$n] =~ s/``([^`']+)``([^`']+)''([^`']+)''/\\fB$1$2$3\\fP/g;
+		$input[$n] =~ s/`([^`']+)`([^`']+)'([^`']+)'/\\fB$1$2$3\\fP/g;
+		$input[$n] =~ s/``([^']+)''/\\fB$1\\fR/g;
+		$input[$n] =~ s/`([^']+)'/\\fB$1\\fR/g;
+		$input[$n] =~ s/-/\\-/g;
+		$input[$n] =~ s/\*Note (.*)::/(see \\fB$1\\fR)/g;
+	}
+
+	my $rootname = $name;
+	$rootname =~ s/\..*//;
+	my $ROOTNAME = uc($rootname);
+printf "'\\\" t
+.TH $ROOTNAME 1
+.de NS
+.sp
+.in +4
+.nf
+.ft C
+..
+.de NE
+.fi
+.ft P
+.br
+.in -4
+..
+.SH Summary
+$rootname \- $name
+.PP
+";
+
+	for $n (0..$#input) {
 		if ( $input[$n] ne $ignore ) {
 			if ( $markup[$n] =~ /^\.TS/ ) {
 				printf "%s\n", $markup[$n];
@@ -283,25 +319,6 @@ sub do_file($) {
 		}
 	}
 }
-
-printf "'\\\" t
-.TH FOOBAR
-.de NS
-.sp
-.in +4
-.nf
-.ft C
-..
-.de NE
-.fi
-.ft P
-.br
-.in -4
-..
-.SH Summary
-foobar \- foo bar
-.PP
-";
 
 while ( $#ARGV >= 0 ) {
 	&do_file ( shift @ARGV );

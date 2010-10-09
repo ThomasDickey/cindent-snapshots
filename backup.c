@@ -234,8 +234,8 @@ max_version (char *pathname)
 
 static char *
 generate_backup_filename (
-     enum backup_mode the_mode,
-     char *pathname)
+			   enum backup_mode the_mode,
+			   char *pathname)
 {
   int last_numbered_version;
   char *backup_name;
@@ -315,8 +315,8 @@ initialize_backups (void)
   version_control = version_control_value ();
   if (version_control == unknown)
     {
-      fprintf (stderr, "indent:  Strange version-control value\n");
-      fprintf (stderr, "indent:  Using numbered-existing\n");
+      fprintf (stderr, "%s:  Strange version-control value\n", progname);
+      fprintf (stderr, "%s:  Using numbered-existing\n", progname);
       version_control = numbered_existing;
     }
 #endif /* !NODIR */
@@ -336,7 +336,7 @@ make_backup (struct file_buffer *file)
   backup_filename = generate_backup_filename (version_control, file->name);
   if (!backup_filename)
     {
-      fprintf (stderr, "indent: Can't make backup filename of %s", file->name);
+      fprintf (stderr, "%s: Can't make backup filename of %s", progname, file->name);
       exit (system_error);
     }
 

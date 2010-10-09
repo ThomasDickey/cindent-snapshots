@@ -1,4 +1,4 @@
-Source: indent-cur
+Source: cindent
 Maintainer: Thomas E. Dickey <dickey@invisible-island.net>
 Section: utils
 Priority: optional
@@ -6,7 +6,7 @@ Standards-Version: 3.8.4
 Build-Depends: debhelper (>= 5)
 Homepage: http://invisible-island.net/gnu-patches/
 
-Package: indent-cur
+Package: cindent
 Architecture: any
 Description: pattern scanning and text processing language
  The `indent' program changes the appearance of a C program by

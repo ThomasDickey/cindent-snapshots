@@ -1,9 +1,10 @@
-Summary: indent - format C program sources
 %define AppProgram indent
 %define AppVersion 2.0
-%define AppRelease 20101005
-# $XTermId: indent.spec,v 1.2 2010/10/05 21:17:45 tom Exp $
-Name: %{AppProgram}
+%define AppRelease 20101008
+%define ActualProg c%{AppProgram}
+# $Id: indent.spec,v 1.4 2010/10/08 09:55:05 tom Exp $
+Summary: %{ActualProg} - format C program sources
+Name: c%{AppProgram}
 Version: %{AppVersion}
 Release: %{AppRelease}
 License: GPLv2
@@ -13,7 +14,7 @@ Source0: %{AppProgram}-%{AppVersion}-%{AppRelease}.tgz
 Packager: Thomas Dickey <dickey@invisible-island.net>
 
 %description
-The `indent' program changes the appearance of a C program by
+The `%{ActualProg}' program changes the appearance of a C program by
 inserting or deleting whitespace.
 
 This is a stable version of indent, used in most programs at
@@ -34,7 +35,8 @@ INSTALL_PROGRAM='${INSTALL}' \
 		--prefix=%{_prefix} \
 		--bindir=%{_bindir} \
 		--infodir=%{_infodir} \
-		--mandir=%{_mandir}
+		--mandir=%{_mandir} \
+		--program-prefix=c
 
 make
 
@@ -43,15 +45,15 @@ make
 
 make install                    DESTDIR=$RPM_BUILD_ROOT
 
-strip $RPM_BUILD_ROOT%{_bindir}/%{AppProgram}
+strip $RPM_BUILD_ROOT%{_bindir}/%{ActualProg}
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%{_bindir}/%{AppProgram}
-%{_infodir}/%{AppProgram}.*
+%{_bindir}/%{ActualProg}
+%{_infodir}/%{ActualProg}.*
 
 %changelog
 # each patch should add its ChangeLog entries here

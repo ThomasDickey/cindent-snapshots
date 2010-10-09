@@ -4,31 +4,32 @@
 
 #include <stdlib.h>
 
-char * memmove(s1, s2, n)
-	char * s1;
-	char * s2;
-	int n;
+char *
+memmove (char *s1, char *s2, int n)
 {
-	if (n != 0) {
-		if ((s1+n > s2) && (s2+n > s1)) {
-			static	char	*bfr;
-			static	int	length;
-			size_t	j;
-			if (length < n) {
-				length = (n * 3) / 2;
-				bfr = (bfr != 0)
-					? (char *)realloc(bfr, length)
-					: (char *)malloc(length);
-				if (bfr == 0)
-				    return 0;
-			}
-			for (j = 0; j < n; j++)
-				bfr[j] = s2[j];
-			s2 = bfr;
-		}
-		while (n-- != 0)
-			s1[n] = s2[n];
+  if (n != 0)
+    {
+      if ((s1 + n > s2) && (s2 + n > s1))
+	{
+	  static char *bfr;
+	  static int length;
+	  size_t j;
+	  if (length < n)
+	    {
+	      length = (n * 3) / 2;
+	      bfr = (bfr != 0)
+		? (char *) realloc (bfr, length)
+		: (char *) malloc (length);
+	      if (bfr == 0)
+		return 0;
+	    }
+	  for (j = 0; j < n; j++)
+	    bfr[j] = s2[j];
+	  s2 = bfr;
 	}
-	return s1;
+      while (n-- != 0)
+	s1[n] = s2[n];
+    }
+  return s1;
 }
 #endif /* HAVE_MEMMOVE */

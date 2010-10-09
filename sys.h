@@ -46,11 +46,11 @@ extern int exp_D;
 #endif /* _WIN32 */
 
 struct file_buffer
-{
-  char *name;
-  size_t size;
-  char *data;
-};
+  {
+    char *name;
+    size_t size;
+    char *data;
+  };
 
 extern struct file_buffer *read_file (const char *);
 extern struct file_buffer *read_stdin (void);

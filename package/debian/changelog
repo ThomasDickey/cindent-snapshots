@@ -1,4 +1,4 @@
-indent-cur (2.0.20101005) unstable; urgency=low
+cindent (2.0.20101008) unstable; urgency=low
 
   * Add package scripts, for test-builds.
 

@@ -15,29 +15,29 @@
 /* When to make backup files.  Analagous to 'version-control'
    in Emacs. */
 enum backup_mode
-{
-  /* Uninitialized or indeterminate value */
-  unknown,
+  {
+    /* Uninitialized or indeterminate value */
+    unknown,
 
-  /* Never make backups. */
-  none,
+    /* Never make backups. */
+    none,
 
-  /* Make simple backups of every file. */
-  simple,
+    /* Make simple backups of every file. */
+    simple,
 
-  /* Make numbered backups of files that already have numbered backups,
-     and simple backups of the others. */
-  numbered_existing,
+    /* Make numbered backups of files that already have numbered backups,
+       and simple backups of the others. */
+    numbered_existing,
 
-  /* Make numbered backups of every file. */
-  numbered
-};
+    /* Make numbered backups of every file. */
+    numbered
+  };
 
 struct version_control_values
-{
-  enum backup_mode value;
-  const char *name;
-};
+  {
+    enum backup_mode value;
+    const char *name;
+  };
 
 /* Determine the value of `version_control' by looking in the
    environment variable "VERSION_CONTROL".  Defaults to
