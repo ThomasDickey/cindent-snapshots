@@ -1,5 +1,5 @@
 # Makefile template for GNU indent
-# $Id: makefile.in,v 1.14 2010/10/07 09:17:24 tom Exp $
+# $Id: makefile.in,v 1.20 2010/10/08 23:26:53 tom Exp $
 # Copyright (C) 1994, Joseph Arceneaux.  All rights reserved
 # Copyright (C) 1992, Free Software Foundation, Inc.
 #
@@ -41,6 +41,7 @@ CC		= @CC@
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+INSTALL_SCRIPT	= @INSTALL_SCRIPT@
 INSTALL_DATA	= @INSTALL_DATA@
 
 AWK		= @AWK@
@@ -62,13 +63,18 @@ LDFLAGS		= @LDFLAGS@
 DEFS		= @DEFS@
 
 # Where to install indent and its documentation.
+manext		= 1
 bindir		= @bindir@
+datadir		= @datadir@/tdindent
 infodir		= @infodir@
+mandir		= @mandir@/man$(manext)
 
 #### End of system configuration section. ####
 
 BINDIR		= $(DESTDIR)$(bindir)
+DATADIR		= $(DESTDIR)$(datadir)
 INFODIR		= $(DESTDIR)$(infodir)
+MANDIR		= $(DESTDIR)$(mandir)
 
 SRC =	  indent.c io.c lexi.c parse.c comments.c args.c globs.c \
 	  backup.c memcpy.c memmove.c
@@ -147,19 +153,49 @@ indent.html: indent.texinfo
 
 # Installation of indent
 #
-install:: $(BINDIR) $(PROG)
+install \
+install-bin :: $(BINDIR) $(PROG)
 	${INSTALL_PROGRAM} $(PROG) $(BINDIR)/$(actual_PROG)
 
-install:: $(INFODIR)
+install \
+install-info :: $(INFODIR)
 	${INSTALL_DATA} ${srcdir}/indent.info $(INFODIR)/$(actual_PROG).info
 
+install \
+install-man :: $(MANDIR)
+	${INSTALL_DATA} ${srcdir}/indent.1 $(MANDIR)/$(actual_PROG).1
+
+install \
+install-scripts :: $(BINDIR) $(DATADIR)
+	sed -e s",=indent},=$(actual_PROG)}," -e s",=\.},=$(datadir)}," $(srcdir)/scripts/tdindent >tdindent.tmp
+	$(INSTALL_SCRIPT) tdindent.tmp $(BINDIR)/tdindent
+	rm -f tdindent.tmp
+	$(INSTALL_SCRIPT) $(srcdir)/scripts/*-indent $(BINDIR)
+	$(INSTALL_DATA) $(srcdir)/scripts/*profile $(DATADIR)
+
 $(BINDIR) \
-$(INFODIR) :
+$(DATADIR) \
+$(INFODIR) \
+$(MANDIR) :
 	mkdir -p $@
 
-uninstall:
+uninstall \
+uninstall-bin ::
 	rm -f $(BINDIR)/$(actual_PROG)
+
+uninstall \
+uninstall-info ::
 	rm -f $(INFODIR)/$(actual_PROG).info
+
+uninstall \
+uninstall-man ::
+	rm -f $(MANDIR)/$(actual_PROG).1
+
+uninstall \
+uninstall-scripts ::
+	rm -f $(BINDIR)/tdindent
+	$(SHELL) -c 'for name in $(srcdir)/scripts/*-indent; do rm -f $(BINDIR)/`basename $$name`; done'
+	$(SHELL) -c 'for name in $(srcdir)/scripts/*-profile; do rm -f $(DATADIR)/`basename $$name`; done'
 
 # Cleaning up
 #

@@ -41,83 +41,83 @@
       have not been processed. */
 
 enum exit_values
-{
-  total_success = 0,
-  invocation_error = 1,
-  indent_error = 2,
-  indent_punt = 3,
-  indent_fatal = 4,
-  system_error = 5
-};
+  {
+    total_success = 0,
+    invocation_error = 1,
+    indent_error = 2,
+    indent_punt = 3,
+    indent_fatal = 4,
+    system_error = 5
+  };
 
 enum codes
-{
-  code_eof = 0,			/* end of file */
-  newline,
-  lparen,			/* '(' or '['.  Also '{' in an
+  {
+    code_eof = 0,		/* end of file */
+    newline,
+    lparen,			/* '(' or '['.  Also '{' in an
 				   initialization.  */
-  rparen,			/* ')' or ']'.  Also '}' in an
+    rparen,			/* ')' or ']'.  Also '}' in an
 				   initialization.  */
-  start_token,
-  unary_op,
-  binary_op,
-  postop,
+    start_token,
+    unary_op,
+    binary_op,
+    postop,
 
-  question,
-  casestmt,
-  colon,
-  doublecolon,			/* For C++ class methods. */
-  semicolon,
-  lbrace,
-  rbrace,
+    question,
+    casestmt,
+    colon,
+    doublecolon,		/* For C++ class methods. */
+    semicolon,
+    lbrace,
+    rbrace,
 
-  ident,			/* string or char literal,
+    ident,			/* string or char literal,
 				   identifier, number */
 
-  overloaded,			/* For C++ overloaded operators (like +) */
-  cpp_operator,
+    overloaded,			/* For C++ overloaded operators (like +) */
+    cpp_operator,
 
-  comma,
-  comment,			/* A "slash-star" comment */
-  cplus_comment,		/* A C++ "slash-slash" */
-  swstmt,
-  preesc,			/* '#'.  */
+    comma,
+    comment,			/* A "slash-star" comment */
+    cplus_comment,		/* A C++ "slash-slash" */
+    swstmt,
+    preesc,			/* '#'.  */
 
-  form_feed,
-  decl,
+    form_feed,
+    decl,
 
-  sp_paren,			/* if, for, or while token */
-  sp_nparen,
-  ifstmt,
-  whilestmt,
+    sp_paren,			/* if, for, or while token */
+    sp_nparen,
+    ifstmt,
+    whilestmt,
 
-  forstmt,
-  stmt,
-  stmtl,
-  elselit,
-  dolit,
-  dohead,
-  dostmt,
-  ifhead,
+    forstmt,
+    stmt,
+    stmtl,
+    elselit,
+    dolit,
+    dohead,
+    dostmt,
+    ifhead,
 
-  elsehead,
-  struct_delim			/* '.' or "->" */
-};
+    elsehead,
+    struct_delim		/* '.' or "->" */
+  };
 
 enum rwcodes
-{
-  rw_none,
-  rw_operator,			/* For C++ operator overloading. */
-  rw_break,
-  rw_switch,
-  rw_case,
-  rw_struct_like,		/* struct, enum, union */
-  rw_decl,
-  rw_sp_paren,			/* if, while, for */
-  rw_sp_nparen,			/* do, else */
-  rw_sizeof,
-  rw_return
-};
+  {
+    rw_none,
+    rw_operator,		/* For C++ operator overloading. */
+    rw_break,
+    rw_switch,
+    rw_case,
+    rw_struct_like,		/* struct, enum, union */
+    rw_decl,
+    rw_sp_paren,		/* if, while, for */
+    rw_sp_nparen,		/* do, else */
+    rw_sizeof,
+    rw_return
+  };
 
 #define false 0
 #define true  1
@@ -131,8 +131,9 @@ enum rwcodes
 
 #define DEFAULT_RIGHT_COMMENT_MARGIN 78
 
-/* Name of input file.  */
-extern const char *in_name;
+extern const char *progname;	/* actual name of this program */
+
+extern const char *in_name;	/* Name of input file.  */
 
 extern char *in_prog;		/* pointer to the null-terminated input
 				   program */
@@ -173,7 +174,7 @@ extern char *buf_ptr;		/* ptr to next character to be taken from
 extern char *buf_end;		/* ptr to first after last char in in_buffer */
 
 extern char *buf_break;		/* Where we can break the line. */
-extern int  break_line;		/* Whether or not we should break the line. */
+extern int break_line;		/* Whether or not we should break the line. */
 
 /* pointer to the token that lexi() has just found */
 extern char *token;
@@ -192,15 +193,15 @@ extern void init_lexi (void);
 
 /* Used to keep track of buffers.  */
 struct buf
-{
-  char *ptr;			/* points to the start of the buffer */
-  char *end;			/* points to the character beyond the last
+  {
+    char *ptr;			/* points to the start of the buffer */
+    char *end;			/* points to the character beyond the last
 				   one (e.g. is equal to ptr if the buffer is
 				   empty).  */
-  size_t size;			/* how many chars are currently allocated.  */
-  size_t len;			/* how many chars we're actually using. */
-  int column;			/* Column we were in when we switched buffers. */
-};
+    size_t size;		/* how many chars are currently allocated.  */
+    size_t len;			/* how many chars we're actually using. */
+    int column;			/* Column we were in when we switched buffers. */
+  };
 
 /* Buffer in which to save a comment which occurs between an if(), while(),
    etc., and the statement following it.  Note: the fact that we point into
@@ -272,14 +273,14 @@ extern int star_comment_cont;	/* true iff comment continuation lines should
 				   have stars at the beginning of each line. */
 extern int comment_delimiter_on_blankline;
 extern int troff;		/* true iff were generating troff input */
-extern int procnames_start_line;/* if true, the names of procedures being
-				   defined get placed in column 1 (ie. a
-				   newline is placed between the type of the
-				   procedure and its name) */
+extern int procnames_start_line;	/* if true, the names of procedures being
+					   defined get placed in column 1 (ie. a
+					   newline is placed between the type of the
+					   procedure and its name) */
 extern int expect_output_file;	/* Means "-o" was specified. */
 extern int proc_calls_space;	/* If true, procedure calls look like:
 				   foo (bar) rather than foo(bar) */
-extern int cast_space;		/* If true, casts look like: r				 *
+extern int cast_space;		/* If true, casts look like: r                           *
 				   (char *) bar rather than (char *)bar */
 
 /* If comments which start in column 1 are to be magically reformatted */
@@ -358,11 +359,11 @@ extern int use_stdinout;
 /* -troff font state information */
 
 struct fstate
-{
-  char font[4];
-  char size;
-  unsigned char allcaps;
-};
+  {
+    char font[4];
+    char size;
+    unsigned char allcaps;
+  };
 
 extern char *chfont (struct fstate *, struct fstate *, char *);
 
@@ -378,116 +379,116 @@ extern struct fstate
    code.  The difference is that the state is saved on #if and restored on
    #else.  */
 struct parser_state
-{
-  struct parser_state *next;
-  enum codes last_token;
-  struct fstate cfont;		/* Current font */
+  {
+    struct parser_state *next;
+    enum codes last_token;
+    struct fstate cfont;	/* Current font */
 
-  /* This is the parsers stack, and the current allocated size.  */
-  enum codes *p_stack;
-  size_t p_stack_size;
+    /* This is the parsers stack, and the current allocated size.  */
+    enum codes *p_stack;
+    size_t p_stack_size;
 
-  /* This stack stores indentation levels */
-  /* Currently allocated size is stored in p_stack_size.  */
-  int *il;
+    /* This stack stores indentation levels */
+    /* Currently allocated size is stored in p_stack_size.  */
+    int *il;
 
-  /* If the last token was an ident and is a reserved word,
-     remember the type. */
-  enum rwcodes last_rw;
+    /* If the last token was an ident and is a reserved word,
+       remember the type. */
+    enum rwcodes last_rw;
 
-  /* also, remember its depth in parentheses */
-  int last_rw_depth;
+    /* also, remember its depth in parentheses */
+    int last_rw_depth;
 
-  /* Used to store case stmt indentation levels.  */
-  /* Currently allocated size is stored in p_stack_size.  */
-  int *cstk;
+    /* Used to store case stmt indentation levels.  */
+    /* Currently allocated size is stored in p_stack_size.  */
+    int *cstk;
 
-  /* Pointer to the top of stack of the p_stack, il and cstk arrays. */
-  int tos;
+    /* Pointer to the top of stack of the p_stack, il and cstk arrays. */
+    int tos;
 
-  int box_com;			/* set to true when we are in a
+    int box_com;		/* set to true when we are in a
 				   "boxed" comment. In that case, the
 				   first non-blank char should be
 				   lined up with the / in the comment
 				   closing delimiter */
 
-  int cast_mask;		/* indicates which close parens close off
+    int cast_mask;		/* indicates which close parens close off
 				   casts */
-  /* A bit for each paren level, set if the open paren was in a context which
-     indicates that this pair of parentheses is not a cast.  */
-  int noncast_mask;
+    /* A bit for each paren level, set if the open paren was in a context which
+       indicates that this pair of parentheses is not a cast.  */
+    int noncast_mask;
 
-  int sizeof_mask;		/* indicates which close parens close off
+    int sizeof_mask;		/* indicates which close parens close off
 				   sizeof''s */
-  int block_init;		/* true iff inside a block initialization */
-  int block_init_level;		/* The level of brace nesting in an
+    int block_init;		/* true iff inside a block initialization */
+    int block_init_level;	/* The level of brace nesting in an
 				   initialization */
-  int last_nl;			/* this is true if the last thing scanned was
+    int last_nl;		/* this is true if the last thing scanned was
 				   a newline */
-  int in_or_st;			/* Will be true iff there has been a
+    int in_or_st;		/* Will be true iff there has been a
 				   declarator (e.g. int or char) and no left
 				   paren since the last semicolon. When true,
 				   a '{' is starting a structure definition
 				   or an initialization list */
-  int bl_line;			/* set to 1 by dump_line if the line is
+    int bl_line;		/* set to 1 by dump_line if the line is
 				   blank */
-  int col_1;			/* set to true if the last token started in
+    int col_1;			/* set to true if the last token started in
 				   column 1 */
-  int com_col;			/* this is the column in which the current
+    int com_col;		/* this is the column in which the current
 				   coment should start */
-  int dec_nest;			/* current nesting level for structure or
+    int dec_nest;		/* current nesting level for structure or
 				   init */
-  int decl_on_line;		/* set to true if this line of code has part
+    int decl_on_line;		/* set to true if this line of code has part
 				   of a declaration on it */
-  int i_l_follow;		/* the level in spaces to which ind_level
+    int i_l_follow;		/* the level in spaces to which ind_level
 				   should be set after the current line is
 				   printed */
-  int in_decl;			/* set to true when we are in a declaration
+    int in_decl;		/* set to true when we are in a declaration
 				   stmt.  The processing of braces is then
 				   slightly different */
-  int in_stmt;			/* set to 1 while in a stmt */
-  int ind_level;		/* the current indentation level in spaces */
-  int ind_stmt;			/* set to 1 if next line should have an extra
+    int in_stmt;		/* set to 1 while in a stmt */
+    int ind_level;		/* the current indentation level in spaces */
+    int ind_stmt;		/* set to 1 if next line should have an extra
 				   indentation level because we are in the
 				   middle of a stmt */
-  int inner_stmt;		/* set to true if processing ({statement}) */
-  int last_u_d;			/* set to true after scanning a token which
+    int inner_stmt;		/* set to true if processing ({statement}) */
+    int last_u_d;		/* set to true after scanning a token which
 				   forces a following operator to be unary */
-  int p_l_follow;		/* used to remember how to indent following
+    int p_l_follow;		/* used to remember how to indent following
 				   statement */
-  int paren_level;		/* parenthesization level. used to indent
+    int paren_level;		/* parenthesization level. used to indent
 				   within stmts */
-  int paren_depth;		/* Depth of paren nesting anywhere. */
-  /* Column positions of paren at each level.  If positive, it contains just
-     the number of characters of code on the line up to and including the
-     right parenthesis character.  If negative, it contains the opposite of
-     the actual level of indentation in characters (that is, the indentation
-     of the line has been added to the number of characters and the sign has
-     been reversed to indicate that this has been done).  */
-  int *paren_indents;		/* column positions of each paren */
-  size_t paren_indents_size;	/* Currently allocated size.  */
+    int paren_depth;		/* Depth of paren nesting anywhere. */
+    /* Column positions of paren at each level.  If positive, it contains just
+       the number of characters of code on the line up to and including the
+       right parenthesis character.  If negative, it contains the opposite of
+       the actual level of indentation in characters (that is, the indentation
+       of the line has been added to the number of characters and the sign has
+       been reversed to indicate that this has been done).  */
+    int *paren_indents;		/* column positions of each paren */
+    size_t paren_indents_size;	/* Currently allocated size.  */
 
-  int pcase;			/* set to 1 if the current line label is a
+    int pcase;			/* set to 1 if the current line label is a
 				   case.  It is printed differently from a
 				   regular label */
-  int search_brace;		/* set to true by parse when it is necessary
+    int search_brace;		/* set to true by parse when it is necessary
 				   to buffer up all info up to the start of a
 				   stmt after an if, while, etc */
-  int use_ff;			/* set to one if the current line should be
+    int use_ff;			/* set to one if the current line should be
 				   terminated with a form feed */
-  int want_blank;		/* set to true when the following token
+    int want_blank;		/* set to true when the following token
 				   should be prefixed by a blank. (Said
 				   prefixing is ignored in some cases.) */
-  int its_a_keyword;
-  int sizeof_keyword;
-  int dumped_decl_indent;
-  int in_parameter_declaration;
-  const char *procname;		/* The name of the current procedure */
-  const char *procname_end;	/* One char past the last one in procname */
-  const char *classname;	/* The name of the current C++ class */
-  const char *classname_end;	/* One char past the last one in classname */
-  int just_saw_decl;
-};
+    int its_a_keyword;
+    int sizeof_keyword;
+    int dumped_decl_indent;
+    int in_parameter_declaration;
+    const char *procname;	/* The name of the current procedure */
+    const char *procname_end;	/* One char past the last one in procname */
+    const char *classname;	/* The name of the current C++ class */
+    const char *classname_end;	/* One char past the last one in classname */
+    int just_saw_decl;
+  };
 
 /* All manipulations of the parser state occur at the top of stack (tos). A
    stack is kept for conditional compilation (unrelated to the p_stack, il, &
@@ -504,11 +505,11 @@ extern int else_endif_col;
 extern char *xmalloc (size_t);
 extern char *xrealloc (char *, size_t);
 extern char *xstrdup (const char *);
-extern void message (int, const char *, ...);
-extern void fatal (const char *, ...);
+extern void message (int, const char *,...);
+extern void fatal (const char *,...);
 
 /* Declared in args.c */
-extern char * set_profile (void);
+extern char *set_profile (const char *);
 extern int set_option (const char *, const char *, int);
 extern void set_defaults (void);
 

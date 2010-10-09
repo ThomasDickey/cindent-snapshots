@@ -35,7 +35,7 @@
 #   include <file.h>
 #   include <types.h>
 #   include <stat.h>
-#else  /* not VMS */
+#else /* not VMS */
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -62,7 +62,7 @@ FILE *output;
 char *buf_ptr;
 char *buf_end;
 char *buf_break;
-int  break_line;
+int break_line;
 int had_eof;
 int out_lines;
 int com_lines;
@@ -83,29 +83,29 @@ int paren_target;
 int
 vms_read (int file_desc, char *buffer, int nbytes)
 {
-    char *bufp;
-    int nread, nleft;
+  char *bufp;
+  int nread, nleft;
 
-    bufp  = buffer;
-    nread = 0;
-    nleft = nbytes;
+  bufp = buffer;
+  nread = 0;
+  nleft = nbytes;
 
-    nread = read (file_desc, bufp, nleft);
-    while (nread > 0)
-      {
-        bufp += nread;
-        nleft -= nread;
-        if (nleft < 0)
-	  fatal ("Internal buffering error");
-	nread = read (file_desc, bufp, nleft);
-      }
+  nread = read (file_desc, bufp, nleft);
+  while (nread > 0)
+    {
+      bufp += nread;
+      nleft -= nread;
+      if (nleft < 0)
+	fatal ("Internal buffering error");
+      nread = read (file_desc, bufp, nleft);
+    }
 
-    return nbytes - nleft;
+  return nbytes - nleft;
 }
 #endif /* VMS */
 
 static void
-pass_char(int ch)
+pass_char (int ch)
 {
   if (ch == '\n')
     ++out_line_no;
@@ -113,24 +113,24 @@ pass_char(int ch)
 }
 
 static void
-pass_text(const char *s)
+pass_text (const char *s)
 {
   while (*s != 0)
-    pass_char(*s++);
+    pass_char (*s++);
 }
 
 static void
-pass_n_text(const char *s, int n)
+pass_n_text (const char *s, int n)
 {
   while (n-- > 0)
-    pass_char(*s++);
+    pass_char (*s++);
 }
 
 int
 count_columns (
-     int column,
-     char *bp,
-     int stop_char)
+		int column,
+		char *bp,
+		int stop_char)
 {
   while (*bp != stop_char && *bp != NULL_CHAR)
     {
@@ -208,8 +208,8 @@ current_column (void)
 
 static int
 pad_output (
-  int my_current_col,
-  int target_column)
+	     int my_current_col,
+	     int target_column)
 {
   if (my_current_col >= target_column)
     return my_current_col;
@@ -290,9 +290,9 @@ dump_line (void)
 	pass_char (EOL);
       n_real_blanklines = 0;
       if (parser_state_tos->ind_level == 0)
-	parser_state_tos->ind_stmt = 0;	/* This is a class A kludge. Don't do
-					   additional statement indentation
-					   if we are at bracket level 0 */
+	parser_state_tos->ind_stmt = 0;		/* This is a class A kludge. Don't do
+						   additional statement indentation
+						   if we are at bracket level 0 */
 
       if (e_lab != s_lab || e_code != s_code)
 	++code_lines;		/* keep count of lines with code */
@@ -307,8 +307,9 @@ dump_line (void)
 	  while (e_lab > s_lab && (e_lab[-1] == ' ' || e_lab[-1] == TAB))
 	    e_lab--;
 	  cur_col = pad_output (1, compute_label_target ());
-	  if (s_lab[0] == '#' && (strncmp (s_lab, "#else", (size_t) 5) == 0
-				  || strncmp (s_lab, "#endif", (size_t) 6) == 0))
+	  if (s_lab[0] == '#'
+	      && (strncmp (s_lab, "#else", (size_t) 5) == 0
+		  || strncmp (s_lab, "#endif", (size_t) 6) == 0))
 	    {
 	      /* Treat #else and #endif as a special case because any text
 	         after #else or #endif should be converted to a comment.  */
@@ -322,21 +323,21 @@ dump_line (void)
 		s++;
 	      if (s < e_lab)
 		{
-		  pass_char((tabsize > 1) ? '\t' : ' ');
+		  pass_char ((tabsize > 1) ? '\t' : ' ');
 		  if (s[0] == '/' && (s[1] == '*' || s[1] == '/'))
 		    {
 		      pass_n_text (s, (int) (e_lab - s));
 		    }
 		  else
 		    {
-		      pass_text("/* ");
+		      pass_text ("/* ");
 		      pass_n_text (s, (int) (e_lab - s));
-		      pass_text(" */");
+		      pass_text (" */");
 		    }
 		}
 	    }
 	  else
-	    pass_n_text (s_lab, (int)(e_lab - s_lab));
+	    pass_n_text (s_lab, (int) (e_lab - s_lab));
 	  cur_col = count_columns (cur_col, s_lab, NULL_CHAR);
 	}
       else
@@ -412,24 +413,24 @@ dump_line (void)
 
       if (s_com != e_com)
 	{
-	    {
-	      /* Here for comment printing.  This code is new as of
-	         version 1.8 */
-	      int target = parser_state_tos->com_col;
-	      char *com_st = s_com;
+	  {
+	    /* Here for comment printing.  This code is new as of
+	       version 1.8 */
+	    int target = parser_state_tos->com_col;
+	    char *com_st = s_com;
 
-	      if (cur_col > target)
-		{
-		  pass_char (EOL);
-		  cur_col = 1;
-		  ++out_lines;
-		}
+	    if (cur_col > target)
+	      {
+		pass_char (EOL);
+		cur_col = 1;
+		++out_lines;
+	      }
 
-	      cur_col = pad_output (cur_col, target);
-	      pass_n_text (com_st, (int)(e_com - com_st));
-	      cur_col += (int)(e_com - com_st);
-	      com_lines++;
-	    }
+	    cur_col = pad_output (cur_col, target);
+	    pass_n_text (com_st, (int) (e_com - com_st));
+	    cur_col += (int) (e_com - com_st);
+	    com_lines++;
+	  }
 	}
       else if (embedded_comment_on_line)
 	com_lines++;
@@ -465,7 +466,7 @@ dump_line (void)
 				& ~parser_state_tos->in_decl);
 
   parser_state_tos->dumped_decl_indent = 0;
-  *(e_lab  = s_lab) = '\0';	/* reset buffers */
+  *(e_lab = s_lab) = '\0';	/* reset buffers */
   if (not_truncated)
     {
       *(e_code = s_code) = '\0';
@@ -474,24 +475,27 @@ dump_line (void)
   break_line = 0;
   buf_break = NULL;
 
-  *(e_com  = s_com) = '\0';
+  *(e_com = s_com) = '\0';
   parser_state_tos->ind_level = parser_state_tos->i_l_follow;
   parser_state_tos->paren_level = parser_state_tos->p_l_follow;
   if (parser_state_tos->paren_level > 0)
     {
       /* If we broke the line and the following line will
-	 begin with a rparen, the indentation is set for
-	 the column of the rparen *before* the break - reset
-	 the column to the position after the break. */
-      if (! not_truncated && *s_code == '('
+         begin with a rparen, the indentation is set for
+         the column of the rparen *before* the break - reset
+         the column to the position after the break. */
+      if (!not_truncated && *s_code == '('
 	  && parser_state_tos->paren_level >= 2)
 	{
-	  paren_target = -parser_state_tos->paren_indents[parser_state_tos->paren_level - 2];
+	  paren_target =
+	    -parser_state_tos->paren_indents[parser_state_tos->paren_level - 2];
 	  parser_state_tos->paren_indents[parser_state_tos->paren_level - 1]
-	    = parser_state_tos->paren_indents[parser_state_tos->paren_level - 2] - 1;
+	    = parser_state_tos->paren_indents[parser_state_tos->paren_level
+					      - 2] - 1;
 	}
       else
-	paren_target = -parser_state_tos->paren_indents[parser_state_tos->paren_level - 1];
+	paren_target =
+	  -parser_state_tos->paren_indents[parser_state_tos->paren_level - 1];
     }
   else
     paren_target = 0;
@@ -507,14 +511,14 @@ compute_code_target (void)
 {
   int target_col = parser_state_tos->ind_level + 1;
 
-  if (! parser_state_tos->paren_level)
+  if (!parser_state_tos->paren_level)
     {
       if (parser_state_tos->ind_stmt)
 	target_col += continuation_indent;
       return target_col;
     }
 
-  if (! lineup_to_parens)
+  if (!lineup_to_parens)
     return target_col + (continuation_indent * parser_state_tos->paren_level);
   return paren_target;
 }
@@ -632,7 +636,7 @@ read_stdin (void)
     }
   while (ch != EOF);
 
-  stdinptr.name = xstrdup("Standard Input");
+  stdinptr.name = xstrdup ("Standard Input");
 
   stdinptr.data[stdinptr.size] = '\0';
 
@@ -691,7 +695,7 @@ fill_buffer (void)
 	p++;
 
       /* If we are looking at the beginning of a comment, see
-	 if it turns off formatting with off-on directives. */
+         if it turns off formatting with off-on directives. */
       if (*p == '/' && (*(p + 1) == '*' || *(p + 1) == '/'))
 	{
 	  p += 2;
@@ -699,7 +703,7 @@ fill_buffer (void)
 	    p++;
 
 	  /* Skip all lines between the indent off and on directives. */
-	  if (! strncmp (p, "*INDENT-OFF*", (size_t) 12))
+	  if (!strncmp (p, "*INDENT-OFF*", (size_t) 12))
 	    {
 	      char *q = cur_line;
 	      int inhibited = 1;
@@ -733,19 +737,21 @@ fill_buffer (void)
 		  if (*p == '/' && (*(p + 1) == '*' || *(p + 1) == '/'))
 		    {
 		      /* We've hit a comment.  See if turns formatting
-			 back on. */
+		         back on. */
 		      pass_char (*p++);
 		      pass_char (*p++);
 		      while (*p == ' ' || *p == TAB)
 			pass_char (*p++);
-		      if (! strncmp (p, "*INDENT-ON*", (size_t) 11))
+		      if (!strncmp (p, "*INDENT-ON*", (size_t) 11))
 			{
 			  do
 			    {
 			      while (*p != '\0' && *p != EOL)
 				pass_char (*p++);
 			      if (*p == '\0'
-				  && ((unsigned int) (p - current_input->data) == current_input->size))
+				  && ((unsigned int) (p -
+						      current_input->data)
+				      == current_input->size))
 				{
 				  buf_ptr = buf_end = in_prog_pos = p;
 				  had_eof = 1;
@@ -801,7 +807,7 @@ fill_buffer (void)
   buf_break = NULL;
 #ifdef DEBUG
   if (debug)
-    printf("%6d: %.*s", in_line_no, buf_end - buf_ptr, buf_ptr);
+    printf ("%6d: %.*s", in_line_no, buf_end - buf_ptr, buf_ptr);
 #endif
 }
 

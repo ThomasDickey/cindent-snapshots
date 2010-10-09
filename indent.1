@@ -1,5 +1,5 @@
 '\" t
-.TH FOOBAR
+.TH INDENT 1
 .de NS
 .sp
 .in +4
@@ -13,7 +13,7 @@
 .in -4
 ..
 .SH Summary
-foobar - foo bar
+indent - indent.info
 .PP
 This is Info file indent.info, produced by Makeinfo version 1.68 from
 the input file ./indent.texinfo.
@@ -21,33 +21,33 @@ the input file ./indent.texinfo.
 Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software
 Foundation, Inc.  Copyright (C) 1995, 1996 Joseph Arceneaux
 .PP
-This is Edition 2.0, January, 1996, of `The `indent' Manual', for
+This is Edition 2.0, January, 1996, of \fBThe indent Manual\fP, for
 Indent Version 2.0
 .PP
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
 preserved on all copies.
-.SH `indent':  Indent and Format C Program Source
+.SH \fBindent\fR:  Indent and Format C Program Source
 .PP
-The `indent' program changes the appearance of a C program by
+The \fBindent\fR program changes the appearance of a C program by
 inserting or deleting whitespace.
 .PP
-This is Edition 2.0, January 1996, of `The `indent' Manual', for
+This is Edition 2.0, January 1996, of \fBThe indent Manual\fP, for
 Indent Version 2.0
 .TS
 l l
 l l .
 Menu:
-Indent Program	see \fBThe `indent' Program\fR
+Indent Program	see \fBThe \fBindent\fR Program\fR
 Option Summary	see \fBOption Summary\fR
 Index	see \fBIndex\fR
 .TE
-.SH The `indent' Program
+.SH The \fBindent\fR Program
 .PP
-The `indent' program can be used to make code easier to read.  It
+The \fBindent\fR program can be used to make code easier to read.  It
 can also convert from one style of writing C to another.
 .PP
-`indent' understands a substantial amount about the syntax of C, but
+\fBindent\fR understands a substantial amount about the syntax of C, but
 it also attempts to cope with incomplete and misformed syntax.
 .PP
 In version 1.2 and more recent versions, the GNU style of indenting
@@ -56,7 +56,7 @@ is the default.
 l l
 l l .
 Menu:
-Invoking indent	see \fBInvoking `indent'\fR
+Invoking indent	see \fBInvoking \fBindent\fR\fR
 Backup files	see \fBBackup Files\fR
 Common styles	see \fBCommon styles\fR
 Blank lines	see \fBBlank lines\fR
@@ -69,130 +69,130 @@ Miscellaneous options	see \fBMiscellaneous options\fR
 Bugs	see \fBBugs\fR
 Copyright	see \fBCopyright\fR
 .TE
-.SH Invoking `indent'
+.SH Invoking \fBindent\fR
 .PP
-As of version 1.3, the format of the `indent' command is:
+As of version 1.3, the format of the \fBindent\fR command is:
 .NS
-indent [OPTIONS] [INPUT-FILES]
+indent [OPTIONS] [INPUT\-FILES]
 .sp
-indent [OPTIONS] [SINGLE-INPUT-FILE] [-o OUTPUT-FILE]
+indent [OPTIONS] [SINGLE\-INPUT\-FILE] [\-o OUTPUT\-FILE]
 .NE
 .PP
 This format is different from earlier versions and other versions of
-`indent'.
+\fBindent\fR.
 .PP
-In the first form, one or more input files are specified.  `indent'
+In the first form, one or more input files are specified.  \fBindent\fR
 makes a backup copy of each file, and the original file is replaced with
-its indented version.  *Note Backup files::, for an explanation of how
+its indented version.  (see \fBBackup files\fR), for an explanation of how
 backups are made.
 .PP
 In the second form, only one input file is specified.  In this case,
 or when the standard input is used, you may specify an output file after
-the `-o' option.
+the \fB\-o\fR option.
 .PP
-To cause `indent' to write to standard output, use the `-st' option.
+To cause \fBindent\fR to write to standard output, use the \fB\-st\fR option.
 This is only allowed when there is only one input file, or when the
 standard input is used.
 .PP
 If no input files are named, the standard input is read for input.
-Also, if a filename named `-' is specified, then the standard input is
+Also, if a filename named \fB\-\fR is specified, then the standard input is
 read.
 .PP
 As an example, each of the following commands will input the program
-`slithy_toves.c' and write its indented text to `slithy_toves.out':
+\fBslithy_toves.c\fR and write its indented text to \fBslithy_toves.out\fR:
 .NS
-indent slithy_toves.c -o slithy_toves.out
+indent slithy_toves.c \-o slithy_toves.out
 .sp
-indent -st slithy_toves.c > slithy_toves.out
+indent \-st slithy_toves.c > slithy_toves.out
 .sp
-cat slithy_toves.c | indent -o slithy_toves.out
+cat slithy_toves.c | indent \-o slithy_toves.out
 .NE
 .PP
-Most other options to `indent' control how programs are formatted.
-As of version 1.2, `indent' also recognizes a long name for each option
-name.  Long options are prefixed by either `--' or `+'.(1) In most of
+Most other options to \fBindent\fR control how programs are formatted.
+As of version 1.2, \fBindent\fR also recognizes a long name for each option
+name.  Long options are prefixed by either \fB\-\-\fR or \fB+\fR.(1) In most of
 this document, the traditional, short names are used for the sake of
-brevity.  *Note Option Summary::, for a list of options, including both
+brevity.  (see \fBOption Summary\fR), for a list of options, including both
 long and short names.
 .PP
 Here is another example:
 .NS
-indent -br test/metabolism.c -l85
+indent \-br test/metabolism.c \-l85
 .NE
 .PP
-This will indent the program `test/metabolism.c' using the `-br' and
-`-l85' options, write the output back to `test/metabolism.c', and write
-the original contents of `test/metabolism.c' to a backup file in the
-directory `test'.
+This will indent the program \fBtest/metabolism.c\fR using the \fB\-br\fR and
+\fB\-l85\fR options, write the output back to \fBtest/metabolism.c\fR, and write
+the original contents of \fBtest/metabolism.c\fR to a backup file in the
+directory \fBtest\fR.
 .PP
 Equivalent invocations using long option names for this example would
 be:
 .NS
-indent --braces-on-if-line --line-length185 test/metabolism.c
+indent \-\-braces\-on\-if\-line \-\-line\-length185 test/metabolism.c
 .sp
-indent +braces-on-if-line +line-length185 test/metabolism.c
+indent +braces\-on\-if\-line +line\-length185 test/metabolism.c
 .NE
 .PP
-If you find that you often use `indent' with the same options, you
-may put those options into a file named `.indent.pro'.  `indent' will
-first look for `.indent.pro' in the current directory and use that if
-found.  Otherwise, `indent' will search your home directory for
-`.indent.pro' and use that file if it is found.  This behaviour is
-different from that of other versions of `indent', which load both
+If you find that you often use \fBindent\fR with the same options, you
+may put those options into a file named \fB.indent.pro\fR.  \fBindent\fR will
+first look for \fB.indent.pro\fR in the current directory and use that if
+found.  Otherwise, \fBindent\fR will search your home directory for
+\fB.indent.pro\fR and use that file if it is found.  This behaviour is
+different from that of other versions of \fBindent\fR, which load both
 files if they both exist.
 .PP
-The format of `.indent.pro' is simply a list of options, just as
+The format of \fB.indent.pro\fR is simply a list of options, just as
 they would appear on the command line, separated by white space (tabs,
-spaces, and newlines).  Options in `.indent.pro' may be surrounded by C
+spaces, and newlines).  Options in \fB.indent.pro\fR may be surrounded by C
 or C++ comments, in which case they are ignored.
 .PP
-Command line switches are handled *after* processing `.indent.pro'.
+Command line switches are handled *after* processing \fB.indent.pro\fR.
 Options specified later override arguments specified earlier, with one
 exception: Explicitly specified options always override background
-options (*note Common styles::.).  You can prevent `indent' from
-reading an `.indent.pro' file by specifying the `-npro' option.
+options (*note Common styles::.).  You can prevent \fBindent\fR from
+reading an \fB.indent.pro\fR file by specifying the \fB\-npro\fR option.
 .PP
----------- Footnotes ----------
+\-\-\-\-\-\-\-\-\-\- Footnotes \-\-\-\-\-\-\-\-\-\-
 .PP
-(1)  `+' is being superseded by `--' to maintain consistency with
+(1)  \fB+\fR is being superseded by \fB\-\-\fR to maintain consistency with
 the POSIX standard.
 .SH Backup Files
 .PP
-As of version 1.3, GNU `indent' makes GNU-style backup files, the
+As of version 1.3, GNU \fBindent\fR makes GNU\-style backup files, the
 same way GNU Emacs does.  This means that either "simple" or "numbered"
 backup filenames may be made.
 .PP
 Simple backup file names are generated by appending a suffix to the
 original file name.  The default for the this suffix is the
-one-character string `~' (tilde).  Thus, the backup file for `python.c'
-would be `python.c~'.
+one\-character string \fB~\fR (tilde).  Thus, the backup file for \fBpython.c\fR
+would be \fBpython.c~\fR.
 .PP
 Instead of the default, you may specify any string as a suffix by
-setting the environment variable `SIMPLE_BACKUP_SUFFIX' to your
+setting the environment variable \fBSIMPLE_BACKUP_SUFFIX\fR to your
 preferred suffix.
 .PP
-Numbered backup versions of a file `momewraths' look like
-`momewraths.c.~23~', where 23 is the version of this particular backup.
-When making a numbered backup of the file `src/momewrath.c', the
-backup file will be named `src/momewrath.c.~V~', where V is one greater
-than the highest version currently existing in the directory `src'.
+Numbered backup versions of a file \fBmomewraths\fR look like
+\fBmomewraths.c.~23~\fR, where 23 is the version of this particular backup.
+When making a numbered backup of the file \fBsrc/momewrath.c\fR, the
+backup file will be named \fBsrc/momewrath.c.~V~\fR, where V is one greater
+than the highest version currently existing in the directory \fBsrc\fR.
 .PP
 The type of backup file made is controlled by the value of the
-environment variable `VERSION_CONTROL'.  If it is the string `simple',
+environment variable \fBVERSION_CONTROL\fR.  If it is the string \fBsimple\fR,
 then only simple backups will be made.  If its value is the string
-`numbered', then numbered backups will be made.  If its value is
-`numbered-existing', then numbered backups will be made if there
+\fBnumbered\fR, then numbered backups will be made.  If its value is
+\fBnumbered\-existing\fR, then numbered backups will be made if there
 *already exist* numbered backups for the file being indented;
-otherwise, a simple backup is made.  If `VERSION_CONTROL' is not set,
-then `indent' assumes the behaviour of `numbered-existing'.
+otherwise, a simple backup is made.  If \fBVERSION_CONTROL\fR is not set,
+then \fBindent\fR assumes the behaviour of \fBnumbered\-existing\fR.
 .PP
-Other versions of `indent' use the suffix `.BAK' in naming backup
+Other versions of \fBindent\fR use the suffix \fB.BAK\fR in naming backup
 files.  This behaviour can be emulated by setting
-`SIMPLE_BACKUP_SUFFIX' to `.BAK'.
+\fBSIMPLE_BACKUP_SUFFIX\fR to \fB.BAK\fR.
 .PP
-Note also that other versions of `indent' make backups in the
+Note also that other versions of \fBindent\fR make backups in the
 current directory, rather than in the directory of the source file as
-GNU `indent' now does.
+GNU \fBindent\fR now does.
 .SH Common styles
 .PP
 There are several common styles of C code, including the GNU style,
@@ -202,78 +202,78 @@ specifies a set of values for all other options.  However, explicitly
 specified options always override options implied by a background
 option.
 .PP
-As of version 1.2, the default style of GNU `indent' is the GNU
-style.  Thus, it is no longer neccessary to specify the option `-gnu'
+As of version 1.2, the default style of GNU \fBindent\fR is the GNU
+style.  Thus, it is no longer neccessary to specify the option \fB\-gnu\fR
 to obtain this format, although doing so will not cause an error.
 Option settings which correspond to the GNU style are:
 .NS
--nbad -bap -nbc -bl -ncdb -cs -nce -di2 -ndj
--ei -nfc1 -i2 -ip5 -lp -pcs -npsl -psl -nsc -nsob -bli2
--cp1 -nfca
+\-nbad \-bap \-nbc \-bl \-ncdb \-cs \-nce \-di2 \-ndj
+\-ei \-nfc1 \-i2 \-ip5 \-lp \-pcs \-npsl \-psl \-nsc \-nsob \-bli2
+\-cp1 \-nfca
 .NE
 .PP
 The GNU coding style is that preferred by the GNU project.  It is the
 style that the GNU Emacs C mode encourages and which is used in the C
 portions of GNU Emacs.  (People interested in writing programs for
-Project GNU should get a copy of `The GNU Coding Standards', which also
+Project GNU should get a copy of \fBThe GNU Coding Standards\fR, which also
 covers semantic and portability issues such as memory usage, the size
 of integers, etc.)
 .PP
-The Kernighan & Ritchie style is used throughout their well-known
-book `The C Programming Language'.  It is enabled with the `-kr'
+The Kernighan & Ritchie style is used throughout their well\-known
+book \fBThe C Programming Language\fR.  It is enabled with the \fB\-kr\fR
 option.  The Kernighan & Ritchie style corresponds to the following set
 of options:
 .NS
--nbad -bap -nbc -br -c33 -cd33 -ncdb -ce -ci4
--cli0 -cp33 -d0 -di1 -nfc1 -nfca -i4 -ip0 -l75 -lp
--npcs -npsl -nsc -nsob -nss -cs
+\-nbad \-bap \-nbc \-br \-c33 \-cd33 \-ncdb \-ce \-ci4
+\-cli0 \-cp33 \-d0 \-di1 \-nfc1 \-nfca \-i4 \-ip0 \-l75 \-lp
+\-npcs \-npsl \-nsc \-nsob \-nss \-cs
 .NE
 .PP
 Kernighan & Ritchie style does not put comments to the right of code in
 the same column at all times (nor does it use only one space to the
-right of the code), so for this style `indent' has arbitrarily chosen
+right of the code), so for this style \fBindent\fR has arbitrarily chosen
 column 33.
 .PP
-The style of the original Berkeley `indent' may be obtained by
-specifying `-orig' (or by specifyfying `--original', using the long
+The style of the original Berkeley \fBindent\fR may be obtained by
+specifying \fB\-orig\fR (or by specifyfying \fB\-\-original\fR, using the long
 option name).  This style is equivalent to the following settings:
 .NS
--nbap -nbad -bc -br -c33 -cd33 -cdb -ce -ci4
--cli0 -cp33 -di16 -fc1 -fca -i4 -ip4 -l75 -lp
--npcs -psl -sc -nsob -nss -ts8
+\-nbap \-nbad \-bc \-br \-c33 \-cd33 \-cdb \-ce \-ci4
+\-cli0 \-cp33 \-di16 \-fc1 \-fca \-i4 \-ip4 \-l75 \-lp
+\-npcs \-psl \-sc \-nsob \-nss \-ts8
 .NE
 .PP
 .SH Blank lines
 .PP
 Various programming styles use blank lines in different places.
-`indent' has a number of options to insert or delete blank lines in
+\fBindent\fR has a number of options to insert or delete blank lines in
 specific places.
 .PP
-The `-bad' option causes `indent' to force a blank line after every
-block of declarations.  The `-nbad' option causes `indent' not to force
+The \fB\-bad\fR option causes \fBindent\fR to force a blank line after every
+block of declarations.  The \fB\-nbad\fR option causes \fBindent\fR not to force
 such blank lines.
 .PP
-The `-bap' option forces a blank line after every procedure body.
-The `-nbap' option forces no such blank line.
+The \fB\-bap\fR option forces a blank line after every procedure body.
+The \fB\-nbap\fR option forces no such blank line.
 .PP
-The `-bbb' option forces a blank line before every boxed comment.
-(*Note Comments::) The `-nbbb' option does not force such blank lines.
+The \fB\-bbb\fR option forces a blank line before every boxed comment.
+((see \fBComments\fR)) The \fB\-nbbb\fR option does not force such blank lines.
 .PP
-The `-sob' option causes `indent' to swallow optional blank lines
+The \fB\-sob\fR option causes \fBindent\fR to swallow optional blank lines
 (that is, any optional blank lines present in the input will be removed
-from the output).  If the `-nsob' is specified, any blank lines present
+from the output).  If the \fB\-nsob\fR is specified, any blank lines present
 in the input file will be copied to the output file.
 .TS
 l l
 l l .
 Menu:
--bad	see \fBMore on the `-bad' option.\fR
--bap	see \fBMore on the `-bap' option.\fR
+\-bad	see \fBMore on the \fB\-bad\fR option.\fR
+\-bap	see \fBMore on the \fB\-bap\fR option.\fR
 .TE
-.SS -blank-lines-after-declarations
+.SS \-blank\-lines\-after\-declarations
 .PP
-The `-bad' option forces a blank line after every block of
-declarations.  The `-nbad' option does not add any such blank lines.
+The \fB\-bad\fR option forces a blank line after every block of
+declarations.  The \fB\-nbad\fR option does not add any such blank lines.
 .PP
 For example, given the input
 .NS
@@ -283,7 +283,7 @@ char *bar;
 int baz;
 .NE
 .PP
-`indent -bad' produces
+\fBindent \-bad\fR produces
 .NS
 char *foo;
 char *bar;
@@ -292,7 +292,7 @@ char *bar;
 int baz;
 .NE
 .PP
-and `indent -nbad' produces
+and \fBindent \-nbad\fR produces
 .NS
 char *foo;
 char *bar;
@@ -300,9 +300,9 @@ char *bar;
 int baz;
 .NE
 .PP
-.SS -blank-lines-after-procedures
+.SS \-blank\-lines\-after\-procedures
 .PP
-The `-bap' option forces a blank line after every procedure body.
+The \fB\-bap\fR option forces a blank line after every procedure body.
 .PP
 For example, given the input
 .NS
@@ -319,7 +319,7 @@ bar ()
 }
 .NE
 .PP
-`indent -bap' produces
+\fBindent \-bap\fR produces
 .NS
 int
 foo ()
@@ -335,7 +335,7 @@ bar ()
 }
 .NE
 .PP
-and `indent -nbap' produces
+and \fBindent \-nbap\fR produces
 .NS
 int
 foo ()
@@ -350,34 +350,34 @@ bar ()
 }
 .NE
 .PP
-No blank line will be added after the procedure `foo'.
+No blank line will be added after the procedure \fBfoo\fR.
 .SH Comments
 .PP
-`indent' formats both C and C++ comments. C comments are begun with
-`/*', terminated with `*/' and may contain newline characters.  C++
-comments begin with the delimiter `//' and end at the newline.
+\fBindent\fR formats both C and C++ comments. C comments are begun with
+\fB/*\fR, terminated with \fB*/\fR and may contain newline characters.  C++
+comments begin with the delimiter \fB//\fR and end at the newline.
 .PP
-`indent' handles comments differently depending upon their context.
-`indent' attempts to distinguish amongst comments which follow
+\fBindent\fR handles comments differently depending upon their context.
+\fBindent\fR attempts to distinguish amongst comments which follow
 statements, comments which follow declarations, comments following
 preprocessor directives, and comments which are not preceded by code of
 any sort, i.e., they begin the text of the line (although not
 neccessarily in column 1).
 .PP
-`indent' further distinguishes between comments found outside of
+\fBindent\fR further distinguishes between comments found outside of
 procecures and aggregates, and those found within them.  In particular,
 comments beginning a line found within a procedure will be indented to
 the column at which code is currently indented.  The exception to this a
 comment beginning in the leftmost column;  such a comment is output at
 that column.
 .PP
-`indent' attempts to leave "boxed comments" unmodified.  The general
+\fBindent\fR attempts to leave "boxed comments" unmodified.  The general
 idea of such a comment is that it is enclosed in a rectangle or "box"
 of stars or dashes to visually set it apart.  More precisely, boxed
-comments are defined as those in which the initial `/*' is followed
-immediately by the character `*', `=', `_', or `-', or those in which
-the beginning comment delimiter (`/*') is on a line by itself, and the
-following line begins with a `*' in the same column as the star of the
+comments are defined as those in which the initial \fB/*\fR is followed
+immediately by the character \fB*\fR, \fB=\fR, \fB_\fR, or \fB\-\fR, or those in which
+the beginning comment delimiter (\fB/*\fR) is on a line by itself, and the
+following line begins with a \fB*\fR in the same column as the star of the
 opening delimiter.
 .PP
 Examples of boxed comments are:
@@ -392,25 +392,25 @@ Examples of boxed comments are:
         */
 .NE
 .PP
-`indent' attempts to leave boxed comments exactly as they are found
+\fBindent\fR attempts to leave boxed comments exactly as they are found
 in the source file.  Thus the indentation of the comment is unchanged,
 and its length is not checked in any way.  The only alteration made is
 that an embedded tab character may be converted into the appropriate
 number of spaces.
 .PP
-If the `-bbb' option is specified, all such boxed comments will be
+If the \fB\-bbb\fR option is specified, all such boxed comments will be
 preceded by a blank line, unless such a comment is preceded by code.
 .PP
 Comments which are not boxed comments may be formatted, which means
-that the line is broken to fit within a right margin and left-filled
+that the line is broken to fit within a right margin and left\-filled
 with whitespace.  Single newlines are equivalent to a space, but blank
 lines (two or more newlines in a row) are taken to mean a paragraph
 break.  Formatting of comments which begin after the first column is
-enabled with the `-fca' option.  To format those beginning in column
-one, specify `-fc1'.  Such formatting is disabled by default.
+enabled with the \fB\-fca\fR option.  To format those beginning in column
+one, specify \fB\-fc1\fR.  Such formatting is disabled by default.
 .PP
 The right margin for formatting defaults to 78, but may be changed
-with the `-lc' option.  If the margin specified does not allow the
+with the \fB\-lc\fR option.  If the margin specified does not allow the
 comment to be printed, the margin will be automatically extended for the
 duration of that comment.  The margin is not respected if the comment is
 not being formatted.
@@ -419,18 +419,18 @@ If the comment begins a line (i.e., there is no program text to its
 left), it will be indented to the column it was found in unless the
 comment is within a block of code.  In that case, such a comment will be
 aligned with the indented code of that block (unless the comment began
-in the first column).  This alignment may be affected by the `-d'
+in the first column).  This alignment may be affected by the \fB\-d\fR
 option, which specifies an amount by which such comments are moved to
-the *left*, or unindented.  For example, `-d2' places comments two
+the *left*, or unindented.  For example, \fB\-d2\fR places comments two
 spaces to the left of code.  By default, comments are aligned with
 code, unless they begin in the first column, in which case they are left
-there by default - to get them aligned with the code, specify `-fc1'.
+there by default \- to get them aligned with the code, specify \fB\-fc1\fR.
 .PP
 Comments to the right of code will appear by default in column 33.
-This may be changed with one of three options.  `-c' will specify the
-column for comments following code, `-cd' specifies the column for
-comments following declarations, and `-cp' specifies the column for
-comments following preprocessor directives `#else' and `#endif'.
+This may be changed with one of three options.  \fB\-c\fR will specify the
+column for comments following code, \fB\-cd\fR specifies the column for
+comments following declarations, and \fB\-cp\fR specifies the column for
+comments following preprocessor directives \fB#else\fR and \fB#endif\fR.
 .PP
 If the code to the left of the comment exceeds the beginning column,
 the comment column will be extended to the next tabstop column past the
@@ -438,8 +438,8 @@ end of the code, or in the case of preprocessor directives, to one
 space past the end of the directive.  This extension lasts only for the
 output of that particular comment.
 .PP
-The `-cdb' option places the comment delimiters on blank lines.
-Thus, a single line comment like `/* Claustrophobia */' can be
+The \fB\-cdb\fR option places the comment delimiters on blank lines.
+Thus, a single line comment like \fB/* Claustrophobia */\fR can be
 transformed into:
 .NS
 /*
@@ -447,9 +447,9 @@ transformed into:
  */
 .NE
 .PP
-Stars can be placed at the beginning of multi-line comments with the
-`-sc' option.  Thus, the single-line comment above can be transformed
-(with `-cdb -sc') into:
+Stars can be placed at the beginning of multi\-line comments with the
+\fB\-sc\fR option.  Thus, the single\-line comment above can be transformed
+(with \fB\-cdb \-sc\fR) into:
 .NS
 /*
  * Claustrophobia
@@ -458,25 +458,25 @@ Stars can be placed at the beginning of multi-line comments with the
 .PP
 .SH Statements
 .PP
-The `-br' or `-bl' option specifies how to format braces.
+The \fB\-br\fR or \fB\-bl\fR option specifies how to format braces.
 .PP
-The `-br' option formats statement braces like this:
+The \fB\-br\fR option formats statement braces like this:
 .NS
 if (x > 0) {
-  x--;
+  x\-\-;
 }
 .NE
 .PP
-The `-bl' option formats them like this:
+The \fB\-bl\fR option formats them like this:
 .NS
 if (x > 0)
   {
-    x--;
+    x\-\-;
   }
 .NE
 .PP
 These options also affect structure and enumeration declarations.
-The `-br' option produces structure declarations like the following:
+The \fB\-br\fR option produces structure declarations like the following:
 .NS
 struct Sname {
     int i;
@@ -484,7 +484,7 @@ struct Sname {
 } Vname;
 .NE
 .PP
-The default behaviour, also obtained by specifying `-bl', would
+The default behaviour, also obtained by specifying \fB\-bl\fR, would
 yield the following format for the same declaration:
 .NS
 struct Sname
@@ -495,69 +495,69 @@ struct Sname
 Vname;
 .NE
 .PP
-If you use the `-bl' option, you may also want to specify the `-bli'
+If you use the \fB\-bl\fR option, you may also want to specify the \fB\-bli\fR
 option.  This option specifies the number of spaces by which braces are
-indented.  `-bli2', the default, gives the result shown above.  `-bli0'
+indented.  \fB\-bli2\fR, the default, gives the result shown above.  \fB\-bli0\fR
 results in the following:
 .NS
 if (x > 0)
 {
-  x--;
+  x\-\-;
 }
 .NE
 .PP
-If you are using the `-br' option, you probably want to also use the
-`-ce' option.  This causes the `else' in an if-then-else construct to
-cuddle up to the immediately preceding `}'.  For example, with `-br
--ce' you get the following:
+If you are using the \fB\-br\fR option, you probably want to also use the
+\fB\-ce\fR option.  This causes the \fBelse\fR in an if\-then\-else construct to
+cuddle up to the immediately preceding \fB}\fR.  For example, with `\-br
+\-ce' you get the following:
 .NS
 if (x > 0) {
-  x--;
+  x\-\-;
 } else {
   fprintf (stderr, "...something wrong?\n");
 }
 .NE
 .PP
-With `-br -nce' that code would appear as
+With \fB\-br \-nce\fR that code would appear as
 .NS
 if (x > 0) {
-  x--;
+  x\-\-;
 }
 else {
   fprintf (stderr, "...something wrong?\n");
 }
 .NE
 .PP
-The `-cli' option specifies the number of spaces that case labels
-should be indented to the right of the containing `switch' statement.
+The \fB\-cli\fR option specifies the number of spaces that case labels
+should be indented to the right of the containing \fBswitch\fR statement.
 .PP
-If a semicolon is on the same line as a `for' or `while' statement,
-the `-ss' option will cause a space to be placed before the semicolon.
+If a semicolon is on the same line as a \fBfor\fR or \fBwhile\fR statement,
+the \fB\-ss\fR option will cause a space to be placed before the semicolon.
 This emphasizes the semicolon, making it clear that the body of the
-`for' or `while' statement is an empty statement.  `-nss' disables this
+\fBfor\fR or \fBwhile\fR statement is an empty statement.  \fB\-nss\fR disables this
 feature.
 .PP
-The `-pcs' option causes a space to be placed between the name of
-the procedure being called and the `(' (for example, `puts ("Hi");'.
-The `-npcs' option would give `puts("Hi");').
+The \fB\-pcs\fR option causes a space to be placed between the name of
+the procedure being called and the \fB(\fR (for example, \fBputs ("Hi");\fR.
+The \fB\-npcs\fR option would give \fBputs("Hi");\fR).
 .PP
-If the `-cs' option is specified, `indent' puts a space after a cast
+If the \fB\-cs\fR option is specified, \fBindent\fR puts a space after a cast
 operator.
 .PP
-The `-bs' option ensures that there is a space between the keyword
-`sizeof' and its argument.  In some versions, this is known as the
-`Bill_Shannon' option.
+The \fB\-bs\fR option ensures that there is a space between the keyword
+\fBsizeof\fR and its argument.  In some versions, this is known as the
+\fBBill_Shannon\fR option.
 .SH Declarations
 .PP
-By default `indent' will line up identifiers, in the column
-specified by the `-di' option.  For example, `-di16' makes things look
+By default \fBindent\fR will line up identifiers, in the column
+specified by the \fB\-di\fR option.  For example, \fB\-di16\fR makes things look
 like:
 .NS
 int             foo;
 char           *bar;
 .NE
 .PP
-Using a small value (such as one or two) for the `-di' option can be
+Using a small value (such as one or two) for the \fB\-di\fR option can be
 used to cause the indentifiers to be placed in the first available
 position, for example
 .NS
@@ -565,15 +565,15 @@ int foo;
 char *bar;
 .NE
 .PP
-The value given to the `-di' option will still affect variables
-which are put on separate lines from their types, for example `-di2'
+The value given to the \fB\-di\fR option will still affect variables
+which are put on separate lines from their types, for example \fB\-di2\fR
 will lead to
 .NS
 int
   foo;
 .NE
 .PP
-If the `-bc' option is specified, a newline is forced after each
+If the \fB\-bc\fR option is specified, a newline is forced after each
 comma in a declaration.  For example,
 .NS
 int a,
@@ -581,18 +581,18 @@ int a,
   c;
 .NE
 .PP
-With the `-nbc' option this would look like
+With the \fB\-nbc\fR option this would look like
 .NS
 int a, b, c;
 .NE
 .PP
-The `-psl' option causes the type of a procedure being defined to be
+The \fB\-psl\fR option causes the type of a procedure being defined to be
 placed on the line before the name of the procedure.  This style is
-required for the `etags' program to work correctly, as well as some of
-the `c-mode' functions of Emacs.
+required for the \fBetags\fR program to work correctly, as well as some of
+the \fBc\-mode\fR functions of Emacs.
 .PP
-You must use the `-T' option to tell `indent' the name of all the
-typenames in your program that are defined by `typedef'.  `-T' can be
+You must use the \fB\-T\fR option to tell \fBindent\fR the name of all the
+typenames in your program that are defined by \fBtypedef\fR.  \fB\-T\fR can be
 specified more than once, and all names specified are used.  For
 example, if your program contains
 .NS
@@ -600,43 +600,43 @@ typedef unsigned long CODE_ADDR;
 typedef enum {red, blue, green} COLOR;
 .NE
 .PP
-you would use the options `-T CODE_ADDR -T COLOR'.
+you would use the options \fB\-T CODE_ADDR \-T COLOR\fR.
 .SH Indentation
 .PP
 One issue in the formatting of code is how far each line should be
 indented from the left margin.  When the beginning of a statement such
-as `if' or `for' is encountered, the indentation level is increased by
-the value specified by the `-i' option.  For example, use `-i8' to
+as \fBif\fR or \fBfor\fR is encountered, the indentation level is increased by
+the value specified by the \fB\-i\fR option.  For example, use \fB\-i8\fR to
 specify an eight character indentation for each level.  When a
 statement is broken across two lines, the second line is indented by a
-number of additional spaces specified by the `-ci' option.  `-ci'
-defaults to 0.  However, if the `-lp' option is specified, and a line
+number of additional spaces specified by the \fB\-ci\fR option.  \fB\-ci\fR
+defaults to 0.  However, if the \fB\-lp\fR option is specified, and a line
 has a left parenthesis which is not closed on that line, then
 continuation lines will be lined up to start at the character position
-just after the left parenthesis.  This processing also applies to `['
-and applies to `{' when it occurs in initialization lists.  For
-example, a piece of continued code might look like this with `-nlp
--ci3' in effect:
+just after the left parenthesis.  This processing also applies to \fB[\fR
+and applies to \fB{\fR when it occurs in initialization lists.  For
+example, a piece of continued code might look like this with `\-nlp
+\-ci3' in effect:
 .NS
   p1 = first_procedure (second_procedure (p2, p3),
      third_procedure (p4, p5));
 .NE
 .PP
-With `-lp' in effect the code looks somewhat clearer:
+With \fB\-lp\fR in effect the code looks somewhat clearer:
 .NS
   p1 = first_procedure (second_procedure (p2, p3),
                         third_procedure (p4, p5));
 .NE
 .PP
-`indent' assumes that tabs are placed at regular intervals of both
+\fBindent\fR assumes that tabs are placed at regular intervals of both
 input and output character streams.  These intervals are by default 8
-columns wide, but (as of version 1.2) may be changed by the `-ts'
+columns wide, but (as of version 1.2) may be changed by the \fB\-ts\fR
 option.  Tabs are treated as the equivalent number of spaces.
 .PP
-The indentation of type declarations in old-style function
-definitions is controlled by the `-ip' parameter.  This is a numeric
+The indentation of type declarations in old\-style function
+definitions is controlled by the \fB\-ip\fR parameter.  This is a numeric
 parameter specifying how many spaces to indent type declarations.  For
-example, the default `-ip5' makes definitions look like this:
+example, the default \fB\-ip5\fR makes definitions look like this:
 .NS
 char *
 create_world (x, y, scale)
@@ -648,62 +648,62 @@ create_world (x, y, scale)
 }
 .NE
 .PP
-For compatibility with other versions of indent, the option `-nip'
-is provided, which is equivalent to `-ip0'.
+For compatibility with other versions of indent, the option \fB\-nip\fR
+is provided, which is equivalent to \fB\-ip0\fR.
 .PP
 ASCII C allows white space to be placed on preprocessor command lines
-between the character `#' and the command name.  By default, `indent'
-removes this space, but specifying the `-lps' option directs `indent'
+between the character \fB#\fR and the command name.  By default, \fBindent\fR
+removes this space, but specifying the \fB\-lps\fR option directs \fBindent\fR
 to leave this space unmodified.
 .SH Disabling Formatting
 .PP
 Formatting of C code may be disabled for portions of a program by
 embedding special "control comments" in the program.  To turn off
 formatting for a section of a program, place the disabling control
-comment `/* *INDENT-OFF* */' on a line by itself just before that
+comment \fB/* *INDENT\-OFF* */\fR on a line by itself just before that
 section.  Program text scanned after this control comment is output
 precisely as input with no modifications until the corresponding
 enabling comment is scanned on a line by itself.  The disabling control
-comment is `/* *INDENT-ON* */', and any text following the comment on
+comment is \fB/* *INDENT\-ON* */\fR, and any text following the comment on
 the line is also output unformatted.  Formatting begins again with the
 input line following the enabling control comment.
 .PP
-More precisely, `indent' does not attempt to verify the closing
-delimiter (`*/') for these C comments, and any whitespace on the line
+More precisely, \fBindent\fR does not attempt to verify the closing
+delimiter (\fB*/\fR) for these C comments, and any whitespace on the line
 is totally transparent.
 .PP
 These control comments also function in their C++ formats, namely
-`// *INDENT-OFF*' and `// *INDENT-ON*'.
+\fB// *INDENT\-OFF*\fR and \fB// *INDENT\-ON*\fR.
 .PP
-It should be noted that the internal state of `indent' remains
+It should be noted that the internal state of \fBindent\fR remains
 unchanged over the course of the unformatted section.  Thus, for
 example, turning off formatting in the middle of a function and
 continuing it after the end of the function may lead to bizarre
 results.  It is therefore wise to be somewhat modular in selecting code
 to be left unformatted.
 .PP
-As a historical note, some earlier versions of `indent' produced
-error messages beginning with `*INDENT**'.  These versions of `indent'
+As a historical note, some earlier versions of \fBindent\fR produced
+error messages beginning with \fB*INDENT**\fR.  These versions of \fBindent\fR
 were written to ignore any input text lines which began with such error
-messages.  I have removed this incestuous feature from `GNU indent'.
+messages.  I have removed this incestuous feature from \fBGNU indent\fR.
 .SH Miscellaneous options
 .PP
-To find out what version of `indent' you have, use the command
-`indent -version'.  This will report the version number of `indent',
+To find out what version of \fBindent\fR you have, use the command
+\fBindent \-version\fR.  This will report the version number of \fBindent\fR,
 without doing any of the normal processing.
 .PP
-The `-v' option can be used to turn on verbose mode.  When in
-verbose mode, `indent' reports when it splits one line of input into
+The \fB\-v\fR option can be used to turn on verbose mode.  When in
+verbose mode, \fBindent\fR reports when it splits one line of input into
 two more more lines of output, and gives some size statistics at
 completion.
 .SH Bugs
 .PP
-The "-troff" option is strongly deprecated, and is not supported.  A
-good thing for someone to do is to rewrite `indent' to generate TeX
+The "\-troff" option is strongly deprecated, and is not supported.  A
+good thing for someone to do is to rewrite \fBindent\fR to generate TeX
 source as a hardcopy output option, amoung other things.
 .SH Copyright
 .PP
-The following copyright notice applies to the `indent' program.  The
+The following copyright notice applies to the \fBindent\fR program.  The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 .NS
@@ -723,7 +723,7 @@ by the University of California, Berkeley, the University of Illinois,
 Urbana, and Sun Microsystems, Inc.  The name of either University
 or Sun Microsystems may not be used to endorse or promote products
 derived from this software without specific prior written permission.
-THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+THIS SOFTWARE IS PROVIDED \fBAS IS\fR AND WITHOUT ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR
 PURPOSE.
@@ -731,480 +731,480 @@ PURPOSE.
 .PP
 .SH Option Summary
 .PP
-Here is a list of all the options for `indent', alphabetized by
+Here is a list of all the options for \fBindent\fR, alphabetized by
 short option.  It is followed by a cross key alphabetized by long
 option.
 .PP
-`-bad'
+\fB\-bad\fR
 .br
-`--blank-lines-after-declarations'
-.RS 0
-     Force blank lines after the declarations.
-     *Note Blank lines::.
+\fB\-\-blank\-lines\-after\-declarations\fR
+.RS 5
+Force blank lines after the declarations.
+(see \fBBlank lines\fR).
 .RE
 .PP
-`-bap'
+\fB\-bap\fR
 .br
-`--blank-lines-after-procedures'
-.RS 0
-     Force blank lines after procedure bodies.
-     *Note Blank lines::.
+\fB\-\-blank\-lines\-after\-procedures\fR
+.RS 5
+Force blank lines after procedure bodies.
+(see \fBBlank lines\fR).
 .RE
 .PP
-`-bbb'
+\fB\-bbb\fR
 .br
-`--blank-lines-after-block-comments'
-.RS 0
-     Force blank lines after block comments.
-     *Note Blank lines::.
+\fB\-\-blank\-lines\-after\-block\-comments\fR
+.RS 5
+Force blank lines after block comments.
+(see \fBBlank lines\fR).
 .RE
 .PP
-`-bc'
+\fB\-bc\fR
 .br
-`--blank-lines-after-commas'
-.RS 0
-     Force newline after comma in declaration.
-     *Note Declarations::.
+\fB\-\-blank\-lines\-after\-commas\fR
+.RS 5
+Force newline after comma in declaration.
+(see \fBDeclarations\fR).
 .RE
 .PP
-`-bl'
+\fB\-bl\fR
 .br
-`--braces-after-if-line'
-.RS 0
-     Put braces on line after `if', etc.
-     *Note Statements::.
+\fB\-\-braces\-after\-if\-line\fR
+.RS 5
+Put braces on line after \fBif\fR, etc.
+(see \fBStatements\fR).
 .RE
-`-bliN'
+\fB\-bliN\fR
 .PP
-`--brace-indentN'
-.RS 0
-     Indent braces N spaces.
-     *Note Statements::.
+\fB\-\-brace\-indentN\fR
+.RS 5
+Indent braces N spaces.
+(see \fBStatements\fR).
 .RE
 .PP
-`-br'
+\fB\-br\fR
 .br
-`--braces-on-if-line'
-.RS 0
-     Put braces on line with `if', etc. and structure declarations
-     *Note Statements::.
+\fB\-\-braces\-on\-if\-line\fR
+.RS 5
+Put braces on line with \fBif\fR, etc. and structure declarations
+(see \fBStatements\fR).
 .RE
 .PP
-`-bs'
+\fB\-bs\fR
 .br
-`--Bill-Shannon'
+\fB\-\-Bill\-Shannon\fR
 .br
-`--blank-before-sizeof'
-.RS 0
-     Put a space between `sizeof' and its argument.
-     *Note Statements::
+\fB\-\-blank\-before\-sizeof\fR
+.RS 5
+Put a space between \fBsizeof\fR and its argument.
+(see \fBStatements\fR)
 .RE
 .PP
-`-cN'
+\fB\-cN\fR
 .br
-`--comment-indentationN'
-.RS 0
-     Put comments to the right of code in column N.
-     *Note Comments::.
+\fB\-\-comment\-indentationN\fR
+.RS 5
+Put comments to the right of code in column N.
+(see \fBComments\fR).
 .RE
 .PP
-`-cdN'
+\fB\-cdN\fR
 .br
-`--declaration-comment-columnN'
-.RS 0
-     Put comments to the right of the declarations in column N.
-     *Note Comments::.
+\fB\-\-declaration\-comment\-columnN\fR
+.RS 5
+Put comments to the right of the declarations in column N.
+(see \fBComments\fR).
 .RE
 .PP
-`-cdb'
+\fB\-cdb\fR
 .br
-`--comment-delimiters-on-blank-lines'
-.RS 0
-     Put comment delimiters on blank lines.
-     *Note Comments::.
+\fB\-\-comment\-delimiters\-on\-blank\-lines\fR
+.RS 5
+Put comment delimiters on blank lines.
+(see \fBComments\fR).
 .RE
 .PP
-`-ce'
+\fB\-ce\fR
 .br
-`--cuddle-else'
-.RS 0
-     Cuddle else and preceeding `}'.
-     *Note Comments::.
+\fB\-\-cuddle\-else\fR
+.RS 5
+Cuddle else and preceeding \fB}\fR.
+(see \fBComments\fR).
 .RE
 .PP
-`-ciN'
+\fB\-ciN\fR
 .br
-`--continuation-indentationN'
-.RS 0
-     Continuation indent of N spaces.
-     *Note Statements::.
+\fB\-\-continuation\-indentationN\fR
+.RS 5
+Continuation indent of N spaces.
+(see \fBStatements\fR).
 .RE
 .PP
-`-cliN'
+\fB\-cliN\fR
 .br
-`--case-indentationN'
-.RS 0
-     Case label indent of N spaces.
-     *Note Statements::.
+\fB\-\-case\-indentationN\fR
+.RS 5
+Case label indent of N spaces.
+(see \fBStatements\fR).
 .RE
-`-cpN'
+\fB\-cpN\fR
 .PP
-`--else-endif-columnN'
-.RS 0
-     Put comments to the right of `#else' and `#endif' statements in
-     column N.
-     *Note Comments::.
+\fB\-\-else\-endif\-columnN\fR
+.RS 5
+Put comments to the right of \fB#else\fR and \fB#endif\fR statements in
+column N.
+(see \fBComments\fR).
 .RE
 .PP
-`-cs'
+\fB\-cs\fR
 .br
-`--space-after-cast'
-.RS 0
-     Put a space after a cast operator.
-     *Note Statements::.
+\fB\-\-space\-after\-cast\fR
+.RS 5
+Put a space after a cast operator.
+(see \fBStatements\fR).
 .RE
 .PP
-`-dN'
+\fB\-dN\fR
 .br
-`--line-comments-indentationN'
-.RS 0
-     Set indentation of comments not to the right of code to N spaces.
-     *Note Comments::.
+\fB\-\-line\-comments\-indentationN\fR
+.RS 5
+Set indentation of comments not to the right of code to N spaces.
+(see \fBComments\fR).
 .RE
 .PP
-`-diN'
+\fB\-diN\fR
 .br
-`--declaration-indentationN'
-.RS 0
-     Put variables in column N.
-     *Note Declarations::.
+\fB\-\-declaration\-indentationN\fR
+.RS 5
+Put variables in column N.
+(see \fBDeclarations\fR).
 .RE
 .PP
-`-fc1'
+\fB\-fc1\fR
 .br
-`--format-first-column-comments'
-.RS 0
-     Format comments in the first column.
-     *Note Comments::.
+\fB\-\-format\-first\-column\-comments\fR
+.RS 5
+Format comments in the first column.
+(see \fBComments\fR).
 .RE
 .PP
-`-fca'
+\fB\-fca\fR
 .br
-`--format-all-comments'
-.RS 0
-     Do not disable all formatting of comments.
-     *Note Comments::
+\fB\-\-format\-all\-comments\fR
+.RS 5
+Do not disable all formatting of comments.
+(see \fBComments\fR)
 .RE
 .PP
-`-gnu'
+\fB\-gnu\fR
 .br
-`--gnu-style'
-.RS 0
-     Use GNU coding style.  This is the default.
-     *Note Common styles::.
+\fB\-\-gnu\-style\fR
+.RS 5
+Use GNU coding style.  This is the default.
+(see \fBCommon styles\fR).
 .RE
 .PP
-`-iN'
+\fB\-iN\fR
 .br
-`--indent-levelN'
-.RS 0
-     Set indentation level to N spaces.
-     *Note Indentation::.
+\fB\-\-indent\-levelN\fR
+.RS 5
+Set indentation level to N spaces.
+(see \fBIndentation\fR).
 .RE
 .PP
-`-ipN'
+\fB\-ipN\fR
 .br
-`--parameter-indentationN'
-.RS 0
-     Indent parameter types in old-style function definitions by N
-     spaces.
-     *Note Indentation::.
+\fB\-\-parameter\-indentationN\fR
+.RS 5
+Indent parameter types in old\-style function definitions by N
+spaces.
+(see \fBIndentation\fR).
 .RE
 .PP
-`-kr'
+\fB\-kr\fR
 .br
-`--k-and-r-style'
-.RS 0
-     Use Kernighan & Ritchie coding style.
-     *Note Common styles::.
+\fB\-\-k\-and\-r\-style\fR
+.RS 5
+Use Kernighan & Ritchie coding style.
+(see \fBCommon styles\fR).
 .RE
 .PP
-`-lN'
+\fB\-lN\fR
 .br
-`--line-lengthN'
-.RS 0
-     Set maximum line length for non-comment lines to N.
-     *Note Comments::.
+\fB\-\-line\-lengthN\fR
+.RS 5
+Set maximum line length for non\-comment lines to N.
+(see \fBComments\fR).
 .RE
 .PP
-`-lcN'
+\fB\-lcN\fR
 .br
-`--comment-line-lengthN'
-.RS 0
-     Set maximum line length for comment formatting to N.
-     *Note Comments::.
+\fB\-\-comment\-line\-lengthN\fR
+.RS 5
+Set maximum line length for comment formatting to N.
+(see \fBComments\fR).
 .RE
 .PP
-`-lp'
+\fB\-lp\fR
 .br
-`--continue-at-parentheses'
-.RS 0
-     Line up continued lines at parentheses.
-     *Note Indentation::.
+\fB\-\-continue\-at\-parentheses\fR
+.RS 5
+Line up continued lines at parentheses.
+(see \fBIndentation\fR).
 .RE
 .PP
-`-lps'
+\fB\-lps\fR
 .br
-`--leave-preprocessor-space'
-.RS 0
-     Leave space between `#' and preprocessor directive.  *Note
-     Indentation::.
+\fB\-\-leave\-preprocessor\-space\fR
+.RS 5
+Leave space between \fB#\fR and preprocessor directive.  *Note
+Indentation::.
 .RE
 .PP
-`-nbad'
+\fB\-nbad\fR
 .br
-`--no-blank-lines-after-declarations'
-.RS 0
-     Do not force blank lines after declarations.
-     *Note Blank lines::.
+\fB\-\-no\-blank\-lines\-after\-declarations\fR
+.RS 5
+Do not force blank lines after declarations.
+(see \fBBlank lines\fR).
 .RE
 .PP
-`-nbap'
+\fB\-nbap\fR
 .br
-`--no-blank-lines-after-procedures'
-.RS 0
-     Do not force blank lines after procedure bodies.
-     *Note Blank lines::.
+\fB\-\-no\-blank\-lines\-after\-procedures\fR
+.RS 5
+Do not force blank lines after procedure bodies.
+(see \fBBlank lines\fR).
 .RE
 .PP
-`-nbc'
+\fB\-nbc\fR
 .br
-`--no-blank-lines-after-commas'
-.RS 0
-     Do not force newlines after commas in declarations.
-     *Note Declarations::.
+\fB\-\-no\-blank\-lines\-after\-commas\fR
+.RS 5
+Do not force newlines after commas in declarations.
+(see \fBDeclarations\fR).
 .RE
 .PP
-`-ncdb'
+\fB\-ncdb\fR
 .br
-`--no-comment-delimiters-on-blank-lines'
-.RS 0
-     Do not put comment delimiters on blank lines.
-     *Note Comments::.
+\fB\-\-no\-comment\-delimiters\-on\-blank\-lines\fR
+.RS 5
+Do not put comment delimiters on blank lines.
+(see \fBComments\fR).
 .RE
 .PP
-`-nce'
+\fB\-nce\fR
 .br
-`--dont-cuddle-else'
-.RS 0
-     Do not cuddle `}' and `else'.
-     *Note Statements::.
+\fB\-\-dont\-cuddle\-else\fR
+.RS 5
+Do not cuddle \fB}\fR and \fBelse\fR.
+(see \fBStatements\fR).
 .RE
 .PP
-`-ncs'
+\fB\-ncs\fR
 .br
-`--no-space-after-casts'
-.RS 0
-     Do not put a space after cast operators.
-     *Note Statements::.
+\fB\-\-no\-space\-after\-casts\fR
+.RS 5
+Do not put a space after cast operators.
+(see \fBStatements\fR).
 .RE
 .PP
-`-nfc1'
+\fB\-nfc1\fR
 .br
-`--dont-format-first-column-comments'
-.RS 0
-     Do not format comments in the first column as normal.
-     *Note Comments::.
+\fB\-\-dont\-format\-first\-column\-comments\fR
+.RS 5
+Do not format comments in the first column as normal.
+(see \fBComments\fR).
 .RE
 .PP
-`-nfca'
+\fB\-nfca\fR
 .br
-`--dont-format-comments'
-.RS 0
-     Do not format any comments.
-     *Note Comments::.
+\fB\-\-dont\-format\-comments\fR
+.RS 5
+Do not format any comments.
+(see \fBComments\fR).
 .RE
 .PP
-`-nip'
+\fB\-nip\fR
 .br
-`--no-parameter-indentation'
-.RS 0
-     Zero width indentation for parameters.
-     *Note Indentation::
+\fB\-\-no\-parameter\-indentation\fR
+.RS 5
+Zero width indentation for parameters.
+(see \fBIndentation\fR)
 .RE
 .PP
-`-nlp'
+\fB\-nlp\fR
 .br
-`--dont-line-up-parentheses'
-.RS 0
-     Do not line up parentheses.
-     *Note Statements::.
+\fB\-\-dont\-line\-up\-parentheses\fR
+.RS 5
+Do not line up parentheses.
+(see \fBStatements\fR).
 .RE
 .PP
-`-npcs'
+\fB\-npcs\fR
 .br
-`--no-space-after-function-call-names'
-.RS 0
-     Do not put space after the function in function calls.
-     *Note Statements::.
+\fB\-\-no\-space\-after\-function\-call\-names\fR
+.RS 5
+Do not put space after the function in function calls.
+(see \fBStatements\fR).
 .RE
 .PP
-`-npsl'
+\fB\-npsl\fR
 .br
-`--dont-break-procedure-type'
-.RS 0
-     Put the type of a procedure on the same line as its name.
-     *Note Declarations::.
+\fB\-\-dont\-break\-procedure\-type\fR
+.RS 5
+Put the type of a procedure on the same line as its name.
+(see \fBDeclarations\fR).
 .RE
 .PP
-`-nsc'
+\fB\-nsc\fR
 .br
-`--dont-star-comments'
-.RS 0
-     Do not put the `*' character at the left of comments.
-     *Note Comments::.
+\fB\-\-dont\-star\-comments\fR
+.RS 5
+Do not put the \fB*\fR character at the left of comments.
+(see \fBComments\fR).
 .RE
 .PP
-`-nsob'
+\fB\-nsob\fR
 .br
-`--leave-optional-blank-lines'
-.RS 0
-     Do not swallow optional blank lines.
-     *Note Blank lines::.
+\fB\-\-leave\-optional\-blank\-lines\fR
+.RS 5
+Do not swallow optional blank lines.
+(see \fBBlank lines\fR).
 .RE
-`-nss'
+\fB\-nss\fR
 .PP
-`--dont-space-special-semicolon'
-.RS 0
-     Do not force a space before the semicolon after certain statements.
-     Disables `-ss'.
-     *Note Statements::.
+\fB\-\-dont\-space\-special\-semicolon\fR
+.RS 5
+Do not force a space before the semicolon after certain statements.
+Disables \fB\-ss\fR.
+(see \fBStatements\fR).
 .RE
 .PP
-`-nv'
+\fB\-nv\fR
 .br
-`--no-verbosity'
-.RS 0
-     Disable verbose mode. *Note Miscellaneous options::.
+\fB\-\-no\-verbosity\fR
+.RS 5
+Disable verbose mode. (see \fBMiscellaneous options\fR).
 .RE
 .PP
-`-orig'
+\fB\-orig\fR
 .br
-`--original'
-.RS 0
-     Use the original Berkeley coding style.
-     *Note Common styles::.
+\fB\-\-original\fR
+.RS 5
+Use the original Berkeley coding style.
+(see \fBCommon styles\fR).
 .RE
 .PP
-`-npro'
+\fB\-npro\fR
 .br
-`--ignore-profile'
-.RS 0
-     Do not read `.indent.pro' files.
-     *Note Invoking indent::.
+\fB\-\-ignore\-profile\fR
+.RS 5
+Do not read \fB.indent.pro\fR files.
+(see \fBInvoking indent\fR).
 .RE
 .PP
-`-pcs'
+\fB\-pcs\fR
 .br
-`--space-after-procedure-calls'
-.RS 0
-     Insert a space between the name of the procedure being called and
-     the `('.
-     *Note Statements::.
+\fB\-\-space\-after\-procedure\-calls\fR
+.RS 5
+Insert a space between the name of the procedure being called and
+the \fB(\fR.
+(see \fBStatements\fR).
 .RE
 .PP
-`-psl'
+\fB\-psl\fR
 .br
-`--procnames-start-lines'
-.RS 0
-     Put the type of a procedure on the line before its name.
-     *Note Declarations::.
+\fB\-\-procnames\-start\-lines\fR
+.RS 5
+Put the type of a procedure on the line before its name.
+(see \fBDeclarations\fR).
 .RE
 .PP
-`-sc'
+\fB\-sc\fR
 .br
-`--start-left-side-of-comments'
-.RS 0
-     Put the `*' character at the left of comments.
-     *Note Comments::.
+\fB\-\-start\-left\-side\-of\-comments\fR
+.RS 5
+Put the \fB*\fR character at the left of comments.
+(see \fBComments\fR).
 .RE
 .PP
-`-sob'
+\fB\-sob\fR
 .br
-`--swallow-optional-blank-lines'
-.RS 0
-     Swallow optional blank lines.
-     *Note Blank lines::.
+\fB\-\-swallow\-optional\-blank\-lines\fR
+.RS 5
+Swallow optional blank lines.
+(see \fBBlank lines\fR).
 .RE
 .PP
-`-ss'
+\fB\-ss\fR
 .br
-`--space-special-semicolon'
-.RS 0
-     On one-line `for' and `while' statments, force a blank before the
-     semicolon.
-     *Note Statements::.
+\fB\-\-space\-special\-semicolon\fR
+.RS 5
+On one\-line \fBfor\fR and \fBwhile\fR statments, force a blank before the
+semicolon.
+(see \fBStatements\fR).
 .RE
 .PP
-`-st'
+\fB\-st\fR
 .br
-`--standard-output'
-.RS 0
-     Write to standard output.
-     *Note Invoking indent::.
+\fB\-\-standard\-output\fR
+.RS 5
+Write to standard output.
+(see \fBInvoking indent\fR).
 .RE
 .PP
-`-T'
-.RS 0
-     Tell `indent' the name of typenames.
-     *Note Declarations::.
+\fB\-T\fR
+.RS 5
+Tell \fBindent\fR the name of typenames.
+(see \fBDeclarations\fR).
 .RE
 .PP
-`-tsN'
+\fB\-tsN\fR
 .br
-`--tab-sizeN'
-.RS 0
-     Set tab size to N spaces.
-     *Note Indentation::.
+\fB\-\-tab\-sizeN\fR
+.RS 5
+Set tab size to N spaces.
+(see \fBIndentation\fR).
 .RE
 .PP
-`-v'
+\fB\-v\fR
 .br
-`--verbose'
-.RS 0
-     Enable verbose mode.
-     *Note Miscellaneous options::.
+\fB\-\-verbose\fR
+.RS 5
+Enable verbose mode.
+(see \fBMiscellaneous options\fR).
 .RE
 .PP
-`-version'
-.RS 0
-     Output the version number of `indent'.
-     *Note Miscellaneous options::.
+\fB\-version\fR
+.RS 5
+Output the version number of \fBindent\fR.
+(see \fBMiscellaneous options\fR).
 .RE
 .SS Options' Cross Key
 .PP
 Here is a list of options alphabetized by long option, to help you
 find the corresponding short option.
 .NS
---no-blank-lines-after-commas                   -nbc
---no-blank-lines-after-declarations             -nbad
---no-blank-lines-after-procedures               -nbap
---no-comment-delimiters-on-blank-lines          -ncdb
---no-space-after-casts                          -ncs
---no-parameter-indentation                      -nip
---no-space-after-function-call-names            -npcs
---no-verbosity                                  -nv
---original                                      -orig
---parameter-indentation                         -ipN
---procnames-start-lines                         -psl
---space-after-cast                              -cs
---space-after-procedure-calls                   -pcs
---space-special-semicolon                       -ss
---standard-output                               -st
---start-left-side-of-comments                   -sc
---swallow-optional-blank-lines                  -sob
---tab-size                                      -tsN
---verbose                                       -v
+\-\-no\-blank\-lines\-after\-commas                   \-nbc
+\-\-no\-blank\-lines\-after\-declarations             \-nbad
+\-\-no\-blank\-lines\-after\-procedures               \-nbap
+\-\-no\-comment\-delimiters\-on\-blank\-lines          \-ncdb
+\-\-no\-space\-after\-casts                          \-ncs
+\-\-no\-parameter\-indentation                      \-nip
+\-\-no\-space\-after\-function\-call\-names            \-npcs
+\-\-no\-verbosity                                  \-nv
+\-\-original                                      \-orig
+\-\-parameter\-indentation                         \-ipN
+\-\-procnames\-start\-lines                         \-psl
+\-\-space\-after\-cast                              \-cs
+\-\-space\-after\-procedure\-calls                   \-pcs
+\-\-space\-special\-semicolon                       \-ss
+\-\-standard\-output                               \-st
+\-\-start\-left\-side\-of\-comments                   \-sc
+\-\-swallow\-optional\-blank\-lines                  \-sob
+\-\-tab\-size                                      \-tsN
+\-\-verbose                                       \-v
 .NE
 .PP
 .SH Index
@@ -1212,124 +1212,124 @@ find the corresponding short option.
 l l
 l l .
 Menu:
---blank-after-sizeof	Statements.
---blank-lines-after-block-comments	Blank lines.
---blank-lines-after-commas	Declarations.
---blank-lines-after-declarations	-bad.
---blank-lines-after-procedures	-bap.
---brace-indentN	Statements.
---braces-after-if-line	Statements.
---braces-on-if-line	Statements.
---case-indentationN	Statements.
---comment-delimiters-on-blank-lines	Comments.
---comment-indentationN	Comments.
---continuation-indentationN	Indentation.
---continue-at-parentheses	Indentation.
---cuddle-else	Statements.
---declaration-comment-columnN	Comments.
---declaration-indentationN	Declarations.
---dont-break-procedure-type	Declarations.
---dont-cuddle-else	Statements.
---dont-format-comments	Comments.
---dont-format-first-column-comments	Comments.
---dont-line-up-parentheses	Indentation.
---dont-space-special-semicolon	Statements.
---dont-star-comments	Comments.
---else-endif-columnN	Comments.
---format-all-comments	Comments.
---format-first-column-comments	Comments.
---gnu-style	Common styles.
---ignore-profile	Invoking indent.
---indent-levelN	Indentation.
---k-and-r-style	Common styles.
---leave-optional-blank-lines	Blank lines.
---leave-preprocessor-space	Indentation.
---line-comments-indentationN	Comments.
---no-blank-lines-after-block-comments	Blank lines.
---no-blank-lines-after-commas	Declarations.
---no-blank-lines-after-declarations	-bad.
---no-blank-lines-after-procedures	-bap.
---no-comment-delimiters-on-blank-lines	Comments.
---no-parameter-indentation	Indentation.
---no-space-after-casts	Statements.
---no-space-after-function-call-names	Statements.
---no-verbosity	Miscellaneous options.
---original	Common styles.
---output-file	Invoking indent.
---parameter-indentationN	Indentation.
---procnames-start-lines	Declarations.
---remove-preprocessor-space	Indentation.
---space-after-cast	Statements.
---space-after-procedure-calls	Statements.
---space-special-semicolon	Statements.
---standard-output	Invoking indent.
---star-left-side-of-comments	Comments.
---swallow-optional-blank-lines	Blank lines.
---tab-sizeN	Indentation.
---verbose	Miscellaneous options.
--bad	-bad.
--bap	-bap.
--bbb	Blank lines.
--bc	Declarations.
--bl	Statements.
--bliN	Statements.
--br	Statements.
--bs	Statements.
--cdb	Comments.
--cdN	Comments.
--ce	Statements.
--ciN	Indentation.
--cliN	Statements.
--cN	Comments.
--cpN	Comments.
--cs	Statements.
--dce	Statements.
--diN	Declarations.
--dN	Comments.
--fc1	Comments.
--fca	Comments.
--gnu	Common styles.
--iN	Indentation.
--ipN	Indentation.
--kr	Common styles.
--lp	Indentation.
--lps	Indentation.
--nbad	-bad.
--nbap	-bap.
--nbbb	Blank lines.
--nbc	Declarations.
--ncdb	Comments.
--ncs	Statements.
--nfc1	Comments.
--nfca	Comments.
--nip	Indentation.
--nlp	Indentation.
--nlps	Indentation.
--npcs	Statements.
--npro	Invoking indent.
--npsl	Declarations.
--nsc	Comments.
--nsob	Blank lines.
--nss	Statements.
--nv	Miscellaneous options.
--o	Invoking indent.
--orig	Common styles.
--pcs	Statements.
--psl	Declarations.
--sc	Comments.
--sob	Blank lines.
--ss	Statements.
--st	Invoking indent.
--T	Declarations.
--tsN	Indentation.
--v	Miscellaneous options.
--version	Miscellaneous options.
+\-\-blank\-after\-sizeof	Statements.
+\-\-blank\-lines\-after\-block\-comments	Blank lines.
+\-\-blank\-lines\-after\-commas	Declarations.
+\-\-blank\-lines\-after\-declarations	\-bad.
+\-\-blank\-lines\-after\-procedures	\-bap.
+\-\-brace\-indentN	Statements.
+\-\-braces\-after\-if\-line	Statements.
+\-\-braces\-on\-if\-line	Statements.
+\-\-case\-indentationN	Statements.
+\-\-comment\-delimiters\-on\-blank\-lines	Comments.
+\-\-comment\-indentationN	Comments.
+\-\-continuation\-indentationN	Indentation.
+\-\-continue\-at\-parentheses	Indentation.
+\-\-cuddle\-else	Statements.
+\-\-declaration\-comment\-columnN	Comments.
+\-\-declaration\-indentationN	Declarations.
+\-\-dont\-break\-procedure\-type	Declarations.
+\-\-dont\-cuddle\-else	Statements.
+\-\-dont\-format\-comments	Comments.
+\-\-dont\-format\-first\-column\-comments	Comments.
+\-\-dont\-line\-up\-parentheses	Indentation.
+\-\-dont\-space\-special\-semicolon	Statements.
+\-\-dont\-star\-comments	Comments.
+\-\-else\-endif\-columnN	Comments.
+\-\-format\-all\-comments	Comments.
+\-\-format\-first\-column\-comments	Comments.
+\-\-gnu\-style	Common styles.
+\-\-ignore\-profile	Invoking indent.
+\-\-indent\-levelN	Indentation.
+\-\-k\-and\-r\-style	Common styles.
+\-\-leave\-optional\-blank\-lines	Blank lines.
+\-\-leave\-preprocessor\-space	Indentation.
+\-\-line\-comments\-indentationN	Comments.
+\-\-no\-blank\-lines\-after\-block\-comments	Blank lines.
+\-\-no\-blank\-lines\-after\-commas	Declarations.
+\-\-no\-blank\-lines\-after\-declarations	\-bad.
+\-\-no\-blank\-lines\-after\-procedures	\-bap.
+\-\-no\-comment\-delimiters\-on\-blank\-lines	Comments.
+\-\-no\-parameter\-indentation	Indentation.
+\-\-no\-space\-after\-casts	Statements.
+\-\-no\-space\-after\-function\-call\-names	Statements.
+\-\-no\-verbosity	Miscellaneous options.
+\-\-original	Common styles.
+\-\-output\-file	Invoking indent.
+\-\-parameter\-indentationN	Indentation.
+\-\-procnames\-start\-lines	Declarations.
+\-\-remove\-preprocessor\-space	Indentation.
+\-\-space\-after\-cast	Statements.
+\-\-space\-after\-procedure\-calls	Statements.
+\-\-space\-special\-semicolon	Statements.
+\-\-standard\-output	Invoking indent.
+\-\-star\-left\-side\-of\-comments	Comments.
+\-\-swallow\-optional\-blank\-lines	Blank lines.
+\-\-tab\-sizeN	Indentation.
+\-\-verbose	Miscellaneous options.
+\-bad	\-bad.
+\-bap	\-bap.
+\-bbb	Blank lines.
+\-bc	Declarations.
+\-bl	Statements.
+\-bliN	Statements.
+\-br	Statements.
+\-bs	Statements.
+\-cdb	Comments.
+\-cdN	Comments.
+\-ce	Statements.
+\-ciN	Indentation.
+\-cliN	Statements.
+\-cN	Comments.
+\-cpN	Comments.
+\-cs	Statements.
+\-dce	Statements.
+\-diN	Declarations.
+\-dN	Comments.
+\-fc1	Comments.
+\-fca	Comments.
+\-gnu	Common styles.
+\-iN	Indentation.
+\-ipN	Indentation.
+\-kr	Common styles.
+\-lp	Indentation.
+\-lps	Indentation.
+\-nbad	\-bad.
+\-nbap	\-bap.
+\-nbbb	Blank lines.
+\-nbc	Declarations.
+\-ncdb	Comments.
+\-ncs	Statements.
+\-nfc1	Comments.
+\-nfca	Comments.
+\-nip	Indentation.
+\-nlp	Indentation.
+\-nlps	Indentation.
+\-npcs	Statements.
+\-npro	Invoking indent.
+\-npsl	Declarations.
+\-nsc	Comments.
+\-nsob	Blank lines.
+\-nss	Statements.
+\-nv	Miscellaneous options.
+\-o	Invoking indent.
+\-orig	Common styles.
+\-pcs	Statements.
+\-psl	Declarations.
+\-sc	Comments.
+\-sob	Blank lines.
+\-ss	Statements.
+\-st	Invoking indent.
+\-T	Declarations.
+\-tsN	Indentation.
+\-v	Miscellaneous options.
+\-version	Miscellaneous options.
 \.indent.pro file	Invoking indent.
 Beginning indent	Invoking indent.
 Berkeley style	Common styles.
 Blank lines	Blank lines.
 Comments	Comments.
-etags requires -psl	Declarations.
+etags requires \-psl	Declarations.
 GNU style	Common styles.
 Initialization file	Invoking indent.
 Invoking indent	Invoking indent.

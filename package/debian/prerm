@@ -3,8 +3,12 @@
 
 set -e
 
+ALT=cindent
+PKG=indent
+
 if [ $1 != "upgrade" ]; then
-	update-alternatives --remove indent /usr/bin/indent-cur
+	update-alternatives --remove $PKG /usr/bin/$ALT
+	update-alternatives --remove $PKG /usr/share/man/man1/$ALT.1.gz
 fi
 
 #DEBHELPER#

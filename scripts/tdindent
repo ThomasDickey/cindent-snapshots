@@ -1,0 +1,122 @@
+#!/bin/sh
+# $Id: tdindent,v 1.7 2010/10/08 23:46:18 tom Exp $
+#****************************************************************************
+#* Copyright (c) 2010 Thomas E. Dickey                                      *
+#*                                                                          *
+#* Permission is hereby granted, free of charge, to any person obtaining a  *
+#* copy of this software and associated documentation files (the            *
+#* "Software"), to deal in the Software without restriction, including      *
+#* without limitation the rights to use, copy, modify, merge, publish,      *
+#* distribute, distribute with modifications, sublicense, and/or sell       *
+#* copies of the Software, and to permit persons to whom the Software is    *
+#* furnished to do so, subject to the following conditions:                 *
+#*                                                                          *
+#* The above copyright notice and this permission notice shall be included  *
+#* in all copies or substantial portions of the Software.                   *
+#*                                                                          *
+#* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+#* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+#* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+#* IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+#* DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+#* OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+#* THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+#*                                                                          *
+#* Except as contained in this notice, the name(s) of the above copyright   *
+#* holders shall not be used in advertising or otherwise to promote the     *
+#* sale, use or other dealings in this Software without prior written       *
+#* authorization.                                                           *
+#****************************************************************************/
+# this was ncu-indent, before integrating with cindent package in 2010.
+
+: ${INDENT_PROG=indent}
+: ${INDENT_DATA=.}
+
+NOOP=no
+OPTS=
+
+while test $# != 0
+do
+	name="$1"
+	shift
+
+	case $name in
+	-n)
+		NOOP=yes
+		OPTS="$OPTS -v"
+		;;
+	-h|-help|--help)
+		cat <<-EOF
+		This is a wrapper for $INDENT_PROG, which adds options.
+		Unrecognized options are passed to $INDENT_PROG.
+
+		Options:
+		  -h  help (shows this message)
+		  -n  no-op (performs the indent and shows difference without saving)
+EOF
+		;;
+	-version|--version)
+		cat <<-EOF
+		This is a wrapper for `$INDENT_PROG -version`
+EOF
+		;;
+	--profile)
+		shift
+		OPTS="$OPTS -profile $INDENT_DATA/$1"
+		;;
+	-*)
+		OPTS="$OPTS $name"
+		;;
+	*.[ch]|*.cc|*.cpp)
+		save="${name}".a$$
+		test="${name}".b$$
+		rm -f "$save" "$test"
+		mv "$name" "$save"
+		sed \
+			-e '/EMPTY_MODULE(/s/)$/);/' \
+			-e 's,\(MODULEID(\),//\1,' \
+			-e '/MODULE_ID(/s/)$/);/' \
+			-e 's,\<GCC_NORETURN\(.*\);,;//GCC_NORETURN\1,' \
+			-e 's,\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,' \
+			-e 's,\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,' \
+			-e 's,\(\<NCURSES_EXPORT_VAR\>.*;\),//\1,' \
+			"$save" >"$test"
+		cp "$test" "$name"
+		chmod u+w "$name"
+		$INDENT_PROG -npro $OPTS "$name"
+		sed \
+			-e '/EMPTY_MODULE(/s/);$/)/' \
+			-e 's,//\(MODULEID(\),\1,' \
+			-e '/MODULE_ID(/s/);$/)/' \
+			-e 's,;[ 	]*//GCC_NORETURN\(.*\);, GCC_NORETURN\1;,' \
+			-e 's,;[ 	]*//GCC_PRINTFLIKE(\(.*\);, GCC_PRINTFLIKE(\1;,' \
+			-e 's,;[ 	]*//GCC_SCANFLIKE(\(.*\);, GCC_SCANFLIKE(\1;,' \
+			-e 's,;[	]*//\(.*\), \1;,' \
+			-e 's,[ 	][	]*\<GCC_, GCC_,g' \
+			-e 's,//\(\<NCURSES_EXPORT_VAR\>[ ]*\),\1,' \
+			"$name" >"$test"
+		mv "$test" "$name"
+		rm -f "${name}~"
+		if test $NOOP = yes ; then
+			if (cmp -s "$name" "$save" ) then
+				echo "** no change: $name"
+			else
+				diff -u "$save" "$name"
+			fi
+			rm -f "$name"
+			mv "$save" "$name"
+		elif ( cmp -s "$name" "$save" ) ; then
+			echo "** unchanged $name"
+			rm -f "${name}"
+			mv "$save" "$name"
+		else
+			echo "** updated $name"
+			rm -f "$save"
+		fi
+		;;
+	*)
+		echo "** ignored:   $name"
+		;;
+	esac
+done
+# vi:ts=4 sw=4

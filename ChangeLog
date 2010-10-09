@@ -1,4 +1,14 @@
--- $Id: ChangeLog,v 1.18 2010/10/06 08:53:23 tom Exp $
+-- $Id: ChangeLog,v 1.23 2010/10/08 23:19:05 tom Exp $
+
+2010-10-08
+	+ add tdindent and wrapper-scripts to incorporate ncu-indent, etc.
+
+	+ add command-line "-profile" option to indent program to override the
+	  ".indent.pro" profile.
+
+	+ reindent all C files except gperf.c using -gnu option.
+
+	+ add manpage, generated from info file.
 
 2010-10-05
 	+ fix strict gcc warnings, e.g., type-conversions and writable
@@ -9,7 +19,7 @@
 	+ add test scripts and data, for "make check"
 
 2010-10-04
-	+ modifiy configure script and makefile to support --program-suffix,
+	+ modify configure script and makefile to support --program-suffix,
 	  etc.
 
 	+ add configure check for ctags, needed for some BSD ports.

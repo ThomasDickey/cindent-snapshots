@@ -47,10 +47,10 @@ char *token_buf;
 #define opchar 3
 
 struct templ
-{
-  const char *rwd;
-  enum rwcodes rwcode;
-};
+  {
+    const char *rwd;
+    enum rwcodes rwcode;
+  };
 
 /* Pointer to a vector of keywords specified by the user.  */
 static struct templ *user_specials = 0;
@@ -93,7 +93,7 @@ lexi (void)
   parser_state_tos->col_1 = parser_state_tos->last_nl;
   parser_state_tos->last_nl = false;
 
-  if  (*buf_ptr == ' ' || *buf_ptr == TAB)
+  if (*buf_ptr == ' ' || *buf_ptr == TAB)
     {
       parser_state_tos->col_1 = false;
       while (*buf_ptr == ' ' || *buf_ptr == TAB)
@@ -111,8 +111,8 @@ lexi (void)
   token_buf = cur_line;
 
   /* Scan an alphanumeric token */
-  if ((! (buf_ptr[0] == 'L' && (buf_ptr[1] == '"' || buf_ptr[1] == '\''))
-          && chartype[UChar(*buf_ptr)] == alphanum)
+  if ((!(buf_ptr[0] == 'L' && (buf_ptr[1] == '"' || buf_ptr[1] == '\''))
+       && chartype[UChar (*buf_ptr)] == alphanum)
       || (buf_ptr[0] == '.' && isdigit (buf_ptr[1])))
     {
       /* we have a character or number */
@@ -126,7 +126,7 @@ lexi (void)
 	    {
 	      buf_ptr += 2;
 	      while (isxdigit (*buf_ptr))
-		inc_token_len();
+		inc_token_len ();
 	    }
 	  else
 	    while (1)
@@ -138,7 +138,7 @@ lexi (void)
 		    else
 		      seendot++;
 		  }
-		inc_token_len();
+		inc_token_len ();
 		if (!isdigit (*buf_ptr) && *buf_ptr != '.')
 		  {
 		    if ((*buf_ptr != 'E' && *buf_ptr != 'e') || seenexp)
@@ -147,30 +147,30 @@ lexi (void)
 		      {
 			seenexp++;
 			seendot++;
-			inc_token_len();
+			inc_token_len ();
 			if (*buf_ptr == '+' || *buf_ptr == '-')
-			  inc_token_len();
+			  inc_token_len ();
 		      }
 		  }
 	      }
 
 	  if (*buf_ptr == 'F' || *buf_ptr == 'f'
 	      || *buf_ptr == 'i' || *buf_ptr == 'j')
-	    inc_token_len();
+	    inc_token_len ();
 	  else
 	    {
 	      if (*buf_ptr == 'U' || *buf_ptr == 'u')
-		inc_token_len();
+		inc_token_len ();
 	      if (*buf_ptr == 'L' || *buf_ptr == 'l')
-		inc_token_len();
+		inc_token_len ();
 	      if (*buf_ptr == 'L' || *buf_ptr == 'l')
-		inc_token_len();
+		inc_token_len ();
 	    }
 	}
       else
-	while (chartype[UChar(*buf_ptr)] == alphanum)
+	while (chartype[UChar (*buf_ptr)] == alphanum)
 	  {			/* copy it over */
-	    inc_token_len();
+	    inc_token_len ();
 	    if (buf_ptr >= buf_end)
 	      fill_buffer ();
 	  }
@@ -186,7 +186,7 @@ lexi (void)
       parser_state_tos->sizeof_keyword = false;
 
       /* if last token was 'struct', then this token should be treated
-	 as a declaration */
+         as a declaration */
       if (l_struct)
 	{
 	  l_struct = false;
@@ -245,7 +245,7 @@ lexi (void)
 	found_keyword:
 #ifdef DEBUG
 	  if (debug)
-	    printf("keyword \"%.*s\"\n", token_len, token);
+	    printf ("keyword \"%.*s\"\n", token_len, token);
 #endif
 	  value = ident;
 	  parser_state_tos->its_a_keyword = true;
@@ -322,59 +322,59 @@ lexi (void)
 	       && parser_state_tos->tos <= 1
 	       && parser_state_tos->ind_level == 0
 	       && parser_state_tos->paren_depth == 0)
-	  {
-	    /* We have found something which might be the name in a function
-	       definition.  */
-	    const char *tp;
-	    int paren_count = 1;
+	{
+	  /* We have found something which might be the name in a function
+	     definition.  */
+	  const char *tp;
+	  int paren_count = 1;
 
-	    /* Skip to the matching ')'.  */
-	    for (tp = buf_ptr + 1;
-		 paren_count > 0 && tp < in_prog + in_prog_size;
-		 tp++)
-	      {
-		if (*tp == '(')
-		  paren_count++;
-		if (*tp == ')')
-		  paren_count--;
-		/* Can't occur in parameter list; this way we don't search the
-		   whole file in the case of unbalanced parens.  */
-		if (*tp == ';')
-		  goto not_proc;
-	      }
+	  /* Skip to the matching ')'.  */
+	  for (tp = buf_ptr + 1;
+	       paren_count > 0 && tp < in_prog + in_prog_size;
+	       tp++)
+	    {
+	      if (*tp == '(')
+		paren_count++;
+	      if (*tp == ')')
+		paren_count--;
+	      /* Can't occur in parameter list; this way we don't search the
+	         whole file in the case of unbalanced parens.  */
+	      if (*tp == ';')
+		goto not_proc;
+	    }
 
-	    if (paren_count == 0)
-	      {
-		parser_state_tos->procname = token;
-		parser_state_tos->procname_end = token_end;
+	  if (paren_count == 0)
+	    {
+	      parser_state_tos->procname = token;
+	      parser_state_tos->procname_end = token_end;
 
-		while (isspace (*tp))
-		  tp++;
+	      while (isspace (*tp))
+		tp++;
 
-		/* If the next char is ';' or ',' or '(' we have a function
-		   declaration, not a definition.
+	      /* If the next char is ';' or ',' or '(' we have a function
+	         declaration, not a definition.
 
-		   I've added '=' to this list to keep from breaking
-		   a non-valid C macro from libc.  -jla */
-		if (*tp != ';' && *tp != ',' && *tp != '(' && *tp != '=')
-		  {
-		    parser_state_tos->in_parameter_declaration = 1;
-		  }
-	      }
+	         I've added '=' to this list to keep from breaking
+	         a non-valid C macro from libc.  -jla */
+	      if (*tp != ';' && *tp != ',' && *tp != '(' && *tp != '=')
+		{
+		  parser_state_tos->in_parameter_declaration = 1;
+		}
+	    }
 
-	  not_proc:;
-	  }
+	not_proc:;
+	}
       else if (*buf_ptr == ':' && *(buf_ptr + 1) == ':'
 	       && parser_state_tos->tos <= 1
 	       && parser_state_tos->ind_level == 0
 	       && parser_state_tos->paren_depth == 0)
-	  {
-	    parser_state_tos->classname = token;
-	    parser_state_tos->classname_end = token_end;
-	  }
+	{
+	  parser_state_tos->classname = token;
+	  parser_state_tos->classname_end = token_end;
+	}
       /* The following hack attempts to guess whether or not the
-	 current token is in fact a declaration keyword -- one that
-	 has been typedef'd */
+         current token is in fact a declaration keyword -- one that
+         has been typedef'd */
       else if (((*buf_ptr == '*' && buf_ptr[1] != '=')
 		|| isalpha (*buf_ptr) || *buf_ptr == '_')
 	       && !parser_state_tos->p_l_follow
@@ -385,15 +385,15 @@ lexi (void)
 		   || parser_state_tos->last_token == decl
 		   || parser_state_tos->last_token == lbrace
 		   || parser_state_tos->last_token == start_token))
-	  {
-	      parser_state_tos->its_a_keyword = true;
-	      parser_state_tos->last_u_d = true;
-	      last_code = decl;
-	      if (parser_state_tos->last_token == cpp_operator)
-		  return overloaded;
+	{
+	  parser_state_tos->its_a_keyword = true;
+	  parser_state_tos->last_u_d = true;
+	  last_code = decl;
+	  if (parser_state_tos->last_token == cpp_operator)
+	    return overloaded;
 
-	      return decl;
-	  }
+	  return decl;
+	}
 
       if (last_code == decl)	/* if this is a declared variable, then
 				   following sign is unary */
@@ -429,7 +429,7 @@ lexi (void)
       code = newline;
       break;
 
-    /* Handle wide strings and chars. */
+      /* Handle wide strings and chars. */
     case 'L':
       if (buf_ptr[0] != '"' && buf_ptr[0] != '\'')
 	{
@@ -439,7 +439,7 @@ lexi (void)
 	}
 
       qchar = buf_ptr[0];
-      inc_token_len();
+      inc_token_len ();
       goto handle_string;
 
     case '\'':			/* start of quoted character */
@@ -455,13 +455,13 @@ lexi (void)
 	{
 	  if (*buf_ptr == '\\')
 	    {
-	      inc_token_len();
+	      inc_token_len ();
 	      if (buf_ptr >= buf_end)
 		fill_buffer ();
 	      if (*buf_ptr == 0)
 		break;
 	    }
-	  inc_token_len();
+	  inc_token_len ();
 	  if (buf_ptr >= buf_end)
 	    fill_buffer ();
 	}
@@ -469,14 +469,14 @@ lexi (void)
       if (*buf_ptr == EOL || *buf_ptr == 0)
 	{
 	  message (1, (qchar == '\''
-		    ? "Unterminated character constant"
-		    : "Unterminated string constant"),
+		       ? "Unterminated character constant"
+		       : "Unterminated string constant"),
 		   0, 0);
 	}
       else
 	{
 	  /* Advance over end quote char.  */
-	  inc_token_len();
+	  inc_token_len ();
 	  if (buf_ptr >= buf_end)
 	    fill_buffer ();
 	}
@@ -501,11 +501,11 @@ lexi (void)
       code = preesc;
 
       /* Make spaces between '#' and the directive be part of
-	 the token if user specified "-lps" */
+         the token if user specified "-lps" */
       if (leave_preproc_space)
 	{
 	  while (*buf_ptr == ' ' && buf_ptr < buf_end)
-	    inc_token_len();
+	    inc_token_len ();
 	  token_end = buf_ptr;
 	}
       break;
@@ -520,7 +520,7 @@ lexi (void)
       if (*buf_ptr == ':')
 	{
 	  code = doublecolon;
-	  inc_token_len();
+	  inc_token_len ();
 	  token_end = buf_ptr;
 	  break;
 	}
@@ -569,8 +569,8 @@ lexi (void)
 
     case 014:			/* a form feed */
       unary_delim = parser_state_tos->last_u_d;
-      parser_state_tos->last_nl = true;	/* remember this so we can set
-					   'parser_state_tos->col_1' right */
+      parser_state_tos->last_nl = true;		/* remember this so we can set
+						   'parser_state_tos->col_1' right */
       code = form_feed;
       break;
 
@@ -592,7 +592,7 @@ lexi (void)
       if (*buf_ptr == token[0])
 	{
 	  /* check for doubled character */
-	  inc_token_len();
+	  inc_token_len ();
 	  /* buffer overflow will be checked at end of loop */
 	  if (last_code == ident || last_code == rparen)
 	    {
@@ -603,11 +603,11 @@ lexi (void)
 	}
       else if (*buf_ptr == '=')
 	/* check for operator += */
-	inc_token_len();
+	inc_token_len ();
       else if (*buf_ptr == '>')
 	{
 	  /* check for operator -> */
-	  inc_token_len();
+	  inc_token_len ();
 	  code = struct_delim;
 	}
 
@@ -621,7 +621,7 @@ lexi (void)
 	parser_state_tos->block_init = true;
 
       if (*buf_ptr == '=')	/* == */
-	inc_token_len();
+	inc_token_len ();
       else if (*buf_ptr == '-'
 	       || *buf_ptr == '+'
 	       || *buf_ptr == '*'
@@ -634,7 +634,8 @@ lexi (void)
 	     people want to detect and eliminate old style assignments but
 	     they don't want indent to silently change the meaning of their
 	     code).  */
-	  message (1, "old style assignment ambiguity in \"=%c\".  Assuming \"= %c\"\n",
+	  message (1,
+		   "old style assignment ambiguity in \"=%c\".  Assuming \"= %c\"\n",
 		   (int) *buf_ptr, (int) *buf_ptr);
 	}
 
@@ -652,12 +653,12 @@ lexi (void)
          one token, but I don't think that will cause any harm.  */
       while (*buf_ptr == '>' || *buf_ptr == '<' || *buf_ptr == '=')
 	{
-	  inc_token_len();
+	  inc_token_len ();
 	  if (buf_ptr >= buf_end)
 	    fill_buffer ();
 	  if (*buf_ptr == '=')
 	    {
-	      inc_token_len();
+	      inc_token_len ();
 	      if (buf_ptr >= buf_end)
 		fill_buffer ();
 	    }
@@ -678,7 +679,7 @@ lexi (void)
 	  else
 	    code = cplus_comment;
 
-	  inc_token_len();
+	  inc_token_len ();
 	  if (buf_ptr >= buf_end)
 	    fill_buffer ();
 
@@ -695,7 +696,7 @@ lexi (void)
 	  while (*(buf_ptr - 1) == *buf_ptr || *buf_ptr == '=')
 	    {
 	      /* handle ||, &&, etc, and also things as in int *****i */
-	      inc_token_len();
+	      inc_token_len ();
 	      if (buf_ptr >= buf_end)
 		fill_buffer ();
 	    }
@@ -773,11 +774,11 @@ addkey (const char *key, enum rwcodes val)
 }
 
 static void
-set_chartype(const char *list, int code)
+set_chartype (const char *list, int code)
 {
   while (*list != 0)
     {
-      chartype[UChar(*list++)] = (char) code;
+      chartype[UChar (*list++)] = (char) code;
     }
 }
 
@@ -787,11 +788,11 @@ set_chartype(const char *list, int code)
  * runtime.  The latter is not much overhead, and is more easily maintained.
  */
 void
-init_lexi(void)
+init_lexi (void)
 {
-  memset(chartype, 0, sizeof(chartype));
-  set_chartype("$_0123456789", alphanum);
-  set_chartype("abcdefghijklmnopqrstuvwxyz", alphanum);
-  set_chartype("ABCDEFGHIJKLMNOPQRSTUVWXYZ", alphanum);
-  set_chartype("!%&*+-/<=>?^|~", opchar);
+  memset (chartype, 0, sizeof (chartype));
+  set_chartype ("$_0123456789", alphanum);
+  set_chartype ("abcdefghijklmnopqrstuvwxyz", alphanum);
+  set_chartype ("ABCDEFGHIJKLMNOPQRSTUVWXYZ", alphanum);
+  set_chartype ("!%&*+-/<=>?^|~", opchar);
 }

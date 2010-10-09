@@ -32,7 +32,7 @@ xmalloc (size_t size)
   char *val = (char *) malloc (size);
   if (!val)
     {
-      fprintf (stderr, "indent: Virtual memory exhausted.\n");
+      fprintf (stderr, "%s: Virtual memory exhausted.\n", progname);
       exit (system_error);
     }
 
@@ -53,7 +53,7 @@ xrealloc (char *ptr, size_t size)
   char *val = (char *) realloc (ptr, size);
   if (!val)
     {
-      fprintf (stderr, "indent: Virtual memory exhausted.\n");
+      fprintf (stderr, "%s: Virtual memory exhausted.\n", progname);
       exit (system_error);
     }
 
@@ -63,19 +63,19 @@ xrealloc (char *ptr, size_t size)
 char *
 xstrdup (const char *ptr)
 {
-  char *val = xmalloc(strlen(ptr) + 1);
+  char *val = xmalloc (strlen (ptr) + 1);
   strcpy (val, ptr);
   return val;
 }
 
 void
-message (int warnings, const char *string, ...)
+message (int warnings, const char *string,...)
 {
   if (((warnings > 0) && verbose) || (warnings <= 0))
     {
       va_list ap;
 
-      fflush(stdout);
+      fflush (stdout);
       if (warnings >= 0)
 	{
 	  fprintf (stderr, "%s:%d", in_name, in_line_no);
@@ -90,7 +90,7 @@ message (int warnings, const char *string, ...)
       va_end (ap);
 
       fprintf (stderr, "\n");
-      fflush(stderr);
+      fflush (stderr);
     }
 }
 
@@ -98,11 +98,11 @@ message (int warnings, const char *string, ...)
    "DEBUG" defined, abort (). */
 
 void
-fatal (const char *string, ...)
+fatal (const char *string,...)
 {
   va_list ap;
 
-  fprintf (stderr, "indent: Fatal Error: ");
+  fprintf (stderr, "%s: Fatal Error: ", progname);
 
   va_start (ap, string);
   vfprintf (stderr, string, ap);
@@ -116,7 +116,7 @@ fatal (const char *string, ...)
 
   if (errno)
     {
-      fprintf (stderr, "indent: System Error: ");
+      fprintf (stderr, "%s: System Error: ", progname);
       perror (0);
     }
 

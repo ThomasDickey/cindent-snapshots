@@ -34,8 +34,8 @@
 void
 usage (void)
 {
-  fprintf (stderr, "usage: indent file [-o outfile ] [ options ]\n");
-  fprintf (stderr, "       indent file1 file2 ... fileN [ options ]\n");
+  fprintf (stderr, "usage: %s file [-o outfile ] [ options ]\n", progname);
+  fprintf (stderr, "       %s file1 file2 ... fileN [ options ]\n", progname);
   exit (invocation_error);
 }
 
@@ -131,7 +131,7 @@ output_line_length (void)
 {
   int lab_length = 0;
   int code_length = 0;
-  int com_length =0;
+  int com_length = 0;
   int length;
 
   if (s_lab != e_lab)
@@ -160,36 +160,36 @@ output_line_length (void)
  * be broken.
  */
 static void
-warn_broken_line(int which)
+warn_broken_line (int which)
 {
-  int col = token_col();
+  int col = token_col ();
   int len = token_len ? token_len : 1;
   const char *s = token;
 
-  if (!isgraph(*s))
+  if (!isgraph (*s))
     {
       switch (*s)
 	{
-	  case ' ':
-	    s = "space";
-	    break;
-	  case '\r':
-	    s = "carriage return";
-	    break;
-	  case '\n':
-	    s = "newline";
-	    break;
-	  case '\t':
-	    s = "tab";
-	    break;
-	  case '\f':
-	    s = "form feed";
-	    break;
-	  default:
-	    s = "nonprinting character";
-	    break;
+	case ' ':
+	  s = "space";
+	  break;
+	case '\r':
+	  s = "carriage return";
+	  break;
+	case '\n':
+	  s = "newline";
+	  break;
+	case '\t':
+	  s = "tab";
+	  break;
+	case '\f':
+	  s = "form feed";
+	  break;
+	default:
+	  s = "nonprinting character";
+	  break;
 	}
-	len = (int) strlen(s);
+      len = (int) strlen (s);
     }
   message (col, "Line split #%d at %.*s", which, len, s);
 }
@@ -201,7 +201,7 @@ warn_broken_line(int which)
 
 static enum exit_values
 indent (
-     struct file_buffer *this_file)
+	 struct file_buffer *this_file)
 {
   int i;
   enum codes hd_type;
@@ -287,11 +287,11 @@ indent (
 				   indicating the type of token */
 
       /* If the last time around we output an identifier or
-	 a paren, then consider breaking the line here if it's
-	 too long.
+         a paren, then consider breaking the line here if it's
+         too long.
 
-	 A similar check is performed at the end of the loop, after
-	 we've put the token on the line. */
+         A similar check is performed at the end of the loop, after
+         we've put the token on the line. */
       if (max_col > 0 && buf_break != NULL
 	  && ((parser_state_tos->last_token == ident
 	       && type_code != comma
@@ -326,7 +326,7 @@ indent (
 	     statement which follows.  Use save_com to do so.  */
 #ifdef DEBUG
 	  if (debug > 1)
-	    printf("token %s\n", parsecode2s(type_code));
+	    printf ("token %s\n", parsecode2s (type_code));
 #endif
 	  switch (type_code)
 	    {
@@ -348,7 +348,7 @@ indent (
 	      /* We need to put the left curly-brace back into save_com somewhere.  */
 	      if (btype_2)
 		{
-		  /* Put the brace at the beginning of the saved buffer*/
+		  /* Put the brace at the beginning of the saved buffer */
 		  save_com.ptr[0] = L_CURL;
 		  save_com.len = 1;
 		  save_com.column = current_column ();
@@ -368,10 +368,10 @@ indent (
 	      goto sw_buffer;
 
 	      /* Save this comment in the `save_com' buffer, for
-		 possible re-insertion in the output stream later. */
+	         possible re-insertion in the output stream later. */
 	    case comment:
 	      if ((last_code != rparen || parser_state_tos->paren_depth != 0)
-	       && (!flushed_nl || save_com.end != save_com.ptr))
+		  && (!flushed_nl || save_com.end != save_com.ptr))
 		{
 		  need_chars (&save_com, (size_t) 10);
 		  if (save_com.end == save_com.ptr)
@@ -426,14 +426,14 @@ indent (
 	      /* Just some statement. */
 	    default:
 	      /* Some statement.  Unless it's special, arrange
-		 to break the line. */
+	         to break the line. */
 	      if ((type_code == sp_paren
-		   && *token == 'i'             /* "if" statement */
+		   && *token == 'i'	/* "if" statement */
 		   && last_else
 		   && else_if)
 		  ||
 		  (type_code == sp_nparen
-		   && *token == 'e'		/* "else" statement */
+		   && *token == 'e'	/* "else" statement */
 		   && e_code != s_code
 		   && e_code[-1] == R_CURL))	/* The "else" follows right curly-brace */
 		force_nl = false;
@@ -470,7 +470,7 @@ indent (
 	      parser_state_tos->classname_end = "\0";
 
 	      /* Switch input buffers so that calls to lexi() will
-		 read from our save buffer. */
+	         read from our save buffer. */
 	    sw_buffer:
 	      parser_state_tos->search_brace = false;
 	      bp_save = buf_ptr;
@@ -505,7 +505,7 @@ indent (
 	      && parser_state_tos->in_decl
 	      && parser_state_tos->procname[0] != '\0')
 	    flushed_nl = 0;
-	} /* end of while (search_brace) */
+	}			/* end of while (search_brace) */
 
       last_else = 0;
 
@@ -513,7 +513,7 @@ indent (
       if (type_code == code_eof)
 	{			/* we got eof */
 	  if (s_lab != e_lab || s_code != e_code
-	      || s_com != e_com)/* must dump end of line */
+	      || s_com != e_com)	/* must dump end of line */
 	    dump_line ();
 	  if (parser_state_tos->tos > 1)	/* check for balanced braces */
 	    {
@@ -602,13 +602,14 @@ indent (
       else if (type_code != comment
 	       && type_code != cplus_comment
 	       && !(parser_state_tos->last_token == comma &&
-		    !leave_comma)) {
-	/* preserve force_nl thru a comment but
-	   cancel forced newline after newline, form feed, etc.
-	   however, don't cancel if last thing seen was comma-newline
-	   and -bc flag is on. */
-	force_nl = false;
-      }
+		    !leave_comma))
+	{
+	  /* preserve force_nl thru a comment but
+	     cancel forced newline after newline, form feed, etc.
+	     however, don't cancel if last thing seen was comma-newline
+	     and -bc flag is on. */
+	  force_nl = false;
+	}
 
 
 
@@ -633,29 +634,29 @@ indent (
 		parser_state_tos->want_blank = false;
 	    }
 	  else if (((parser_state_tos->last_token != comma
-		|| !leave_comma || !break_comma
-		|| parser_state_tos->p_l_follow > 0
-		|| parser_state_tos->block_init
-		|| s_com != e_com)
-	       && ((parser_state_tos->last_token != rbrace || !btype_2
-		    || ! parser_state_tos->in_decl))))
+		     || !leave_comma || !break_comma
+		     || parser_state_tos->p_l_follow > 0
+		     || parser_state_tos->block_init
+		     || s_com != e_com)
+		    && ((parser_state_tos->last_token != rbrace || !btype_2
+			 || !parser_state_tos->in_decl))))
 	    {
 	      /* Attempt to detect the newline before a procedure name,
-		 and if e.g., K&R style, leave the procedure on the
-		 same line as the type. */
-	      if (! procnames_start_line
+	         and if e.g., K&R style, leave the procedure on the
+	         same line as the type. */
+	      if (!procnames_start_line
 		  && parser_state_tos->last_token != semicolon
 		  && parser_state_tos->last_rw == rw_decl
 		  && parser_state_tos->last_rw_depth == 0
-		  && ! parser_state_tos->block_init
+		  && !parser_state_tos->block_init
 		  && parser_state_tos->in_decl)
 		{
 		  /* Put a space between the type and the procedure name,
 		     unless it was a pointer type and the user doesn't
 		     want such spaces after '*'. */
-		  if (! (! space_after_pointer_type
-			 && e_code > s_code
-			 && e_code[-1] == '*'))
+		  if (!(!space_after_pointer_type
+			&& e_code > s_code
+			&& e_code[-1] == '*'))
 		    parser_state_tos->want_blank = true;
 		}
 	      else
@@ -677,7 +678,7 @@ indent (
 	     because we are trying to line the strings up with the
 	     parentheses, and those that are too long are moved to the right
 	     an ugly amount.
-	
+
 	     However, if the current line is empty, the left brace is
 	     already on a new line, so don't molest it.  */
 	  if (token[0] == L_CURL
@@ -779,7 +780,7 @@ indent (
 		parser_state_tos->want_blank = false;
 	    }
 	  else if (parser_state_tos->in_decl
-		   && ! parser_state_tos->block_init
+		   && !parser_state_tos->block_init
 		   && parser_state_tos->paren_depth == 0)
 	    parser_state_tos->want_blank = true;
 
@@ -789,7 +790,7 @@ indent (
 	    {
 	      parser_state_tos->p_l_follow = 0;
 	      if (!parser_state_tos->inner_stmt)
-		message (token_col(), "Extra %c", (int) *token);
+		message (token_col (), "Extra %c", (int) *token);
 	    }
 
 	  /* if the paren starts the line, then indent it */
@@ -805,7 +806,7 @@ indent (
 	  *e_code++ = token[0];
 
 	  if (parser_state_tos->inner_stmt != 0
-	   && parser_state_tos->inner_stmt > parser_state_tos->paren_depth)
+	      && parser_state_tos->inner_stmt > parser_state_tos->paren_depth)
 	    {
 	      parser_state_tos->inner_stmt = 0;
 	      sp_sw = false;
@@ -843,7 +844,7 @@ indent (
 	  break;
 
 	case unary_op:		/* this could be any unary operation */
-	  
+
 	  if (parser_state_tos->want_blank)
 
 	    {
@@ -852,32 +853,32 @@ indent (
 	      *e_code = '\0';	/* null terminate code sect */
 	    }
 
-	    {
-	      char *res = token;
-	      char *res_end = token_end;
+	  {
+	    char *res = token;
+	    char *res_end = token_end;
 
-	      /* if this is a unary op in a declaration, we should
-		 indent this token */
-	      if (parser_state_tos->paren_depth == 0
-		  && parser_state_tos->in_decl
-		  && !parser_state_tos->block_init)
-		{
-		  while ((e_code - s_code) < (dec_ind - (token_end - token)))
-		    {
-		      CHECK_CODE_SIZE;
-		      buf_break = e_code;
-		      *e_code++ = ' ';
-		    }
-		}
+	    /* if this is a unary op in a declaration, we should
+	       indent this token */
+	    if (parser_state_tos->paren_depth == 0
+		&& parser_state_tos->in_decl
+		&& !parser_state_tos->block_init)
+	      {
+		while ((e_code - s_code) < (dec_ind - (token_end - token)))
+		  {
+		    CHECK_CODE_SIZE;
+		    buf_break = e_code;
+		    *e_code++ = ' ';
+		  }
+	      }
 
-	      for (t_ptr = res; t_ptr < res_end; ++t_ptr)
-		{
-		  CHECK_CODE_SIZE;
-		  *e_code++ = *t_ptr;
-		}
+	    for (t_ptr = res; t_ptr < res_end; ++t_ptr)
+	      {
+		CHECK_CODE_SIZE;
+		*e_code++ = *t_ptr;
+	      }
 
-	      *e_code = '\0';	/* null terminate code sect */
-	    }
+	    *e_code = '\0';	/* null terminate code sect */
+	  }
 
 	  parser_state_tos->want_blank = false;
 	  break;
@@ -1036,29 +1037,29 @@ indent (
 
 	case lbrace:		/* got a left curly-brace */
 	  if (parser_state_tos->paren_depth > 0)
-	  {
-	    /* FIXME: make this handle nested inner statements.  That would
-	     * probably require saving the paren_depth values on a stack.
-	     * For now, just detect/warn about this.
-	     */
-	    if (parser_state_tos->inner_stmt > 0
-	     && parser_state_tos->inner_stmt > parser_state_tos->paren_depth)
-	      message(token_col(), "Nested inner statement");
-	    parser_state_tos->inner_stmt = parser_state_tos->paren_depth;
+	    {
+	      /* FIXME: make this handle nested inner statements.  That would
+	       * probably require saving the paren_depth values on a stack.
+	       * For now, just detect/warn about this.
+	       */
+	      if (parser_state_tos->inner_stmt > 0
+		  && parser_state_tos->inner_stmt > parser_state_tos->paren_depth)
+		message (token_col (), "Nested inner statement");
+	      parser_state_tos->inner_stmt = parser_state_tos->paren_depth;
 
-	    /*
-	     * Reset, so we'll format statement fragments within the curly
-	     * braces.  But limit it to the following:
-	     *		foo({statement})
-	     *		foo(param,{statement})
-	     * Otherwise we'll get into trouble with things like
-	     *		foo(if(){something})
-	     * by splitting the line at odd points.
-	     */
-	    if (last_code == lparen
-	     || last_code == comma)
-	    parser_state_tos->p_l_follow = 0;
-	  }
+	      /*
+	       * Reset, so we'll format statement fragments within the curly
+	       * braces.  But limit it to the following:
+	       *          foo({statement})
+	       *          foo(param,{statement})
+	       * Otherwise we'll get into trouble with things like
+	       *          foo(if(){something})
+	       * by splitting the line at odd points.
+	       */
+	      if (last_code == lparen
+		  || last_code == comma)
+		parser_state_tos->p_l_follow = 0;
+	    }
 
 	  parser_state_tos->in_stmt = false;	/* dont indent the {} */
 	  if (!parser_state_tos->block_init)
@@ -1093,8 +1094,8 @@ indent (
 	    prefix_blankline_requested = 0;
 
 	  if (s_code == e_code)
-	    parser_state_tos->ind_stmt = false;	/* dont put extra indentation
-						   on line with left curly-brace */
+	    parser_state_tos->ind_stmt = false;		/* dont put extra indentation
+							   on line with left curly-brace */
 	  if (parser_state_tos->in_decl && parser_state_tos->in_or_st)
 	    {
 	      /* This is a structure declaration.  */
@@ -1106,7 +1107,7 @@ indent (
 			      di_stack_alloc * sizeof (*di_stack));
 		}
 	      di_stack[parser_state_tos->dec_nest++] = dec_ind;
-	      /* ?		dec_ind = 0; */
+	      /* ?              dec_ind = 0; */
 	    }
 	  else
 	    {
@@ -1129,13 +1130,13 @@ indent (
 
 	  PARSE (lbrace);
 	  if (last_code != lparen)
-	  if (parser_state_tos->want_blank)	/* put a blank before left curly-brace if
+	    if (parser_state_tos->want_blank)	/* put a blank before left curly-brace if
 						   left curly-brace is not at start of
 						   line */
-	    {
-	      buf_break = e_code;
-	      *e_code++ = ' ';
-	    }
+	      {
+		buf_break = e_code;
+		*e_code++ = ' ';
+	      }
 
 	  parser_state_tos->want_blank = false;
 	  *e_code++ = L_CURL;
@@ -1172,12 +1173,12 @@ indent (
 	  PARSE (rbrace);
 	  parser_state_tos->search_brace
 	    = (cuddle_else
-	     && parser_state_tos->p_stack[parser_state_tos->tos] == ifhead);
+	       && parser_state_tos->p_stack[parser_state_tos->tos] == ifhead);
 
 	  if ((parser_state_tos->p_stack[parser_state_tos->tos] == stmtl
 	       && ((parser_state_tos->last_rw != rw_struct_like
 		    && parser_state_tos->last_rw != rw_decl)
-		   || ! btype_2))
+		   || !btype_2))
 	      || (parser_state_tos->p_stack[parser_state_tos->tos] == ifhead)
 	      || (parser_state_tos->p_stack[parser_state_tos->tos] == dohead
 		  && !btype_2))
@@ -1236,10 +1237,10 @@ indent (
 
 	  /* Handle C++ operator overloading like:
 
-	        Class foo::operator = ()"
+	     Class foo::operator = ()"
 
 	     This is just like a decl, but we need to remember this
-	     token type.*/
+	     token type. */
 	case overloaded:
 	  if (parser_state_tos->want_blank)
 	    {
@@ -1261,11 +1262,11 @@ indent (
 	  /* handle C++ const function declarations like
 	     const MediaDomainList PVR::get_itsMediaDomainList() const
 	     {
-	       return itsMediaDomainList;
+	     return itsMediaDomainList;
 	     }
 	     by ignoring "const" just after a parameter list */
 	  if (parser_state_tos->last_token == rparen
-	      && parser_state_tos->in_parameter_declaration 
+	      && parser_state_tos->in_parameter_declaration
 	      && !strncmp (token, "const", (size_t) 5))
 	    {
 	      buf_break = e_code;
@@ -1277,9 +1278,9 @@ indent (
 		}
 	      *e_code = '\0';	/* null terminate code sect */
 	      break;
-	    }	    
+	    }
 
-	  if (! parser_state_tos->sizeof_mask)
+	  if (!parser_state_tos->sizeof_mask)
 	    PARSE (decl);
 
 	  if (parser_state_tos->last_token == rparen
@@ -1409,8 +1410,8 @@ indent (
 	      *e_code++ = *t_ptr;
 	    }
 
-	  parser_state_tos->want_blank = false;	/* dont put a blank after a
-						   period */
+	  parser_state_tos->want_blank = false;		/* dont put a blank after a
+							   period */
 	  break;
 
 	case comma:
@@ -1462,7 +1463,7 @@ indent (
 		*e_lab++ = *t_ptr;
 	      }
 
-	    while (! had_eof && (*buf_ptr != EOL || in_comment))
+	    while (!had_eof && (*buf_ptr != EOL || in_comment))
 	      {
 		CHECK_LAB_SIZE;
 		*e_lab = *buf_ptr++;
@@ -1498,9 +1499,8 @@ indent (
 		  case '\'':
 		    if (!quote)
 		      quote = e_lab[-1];
-		    else
-		      if (e_lab[-1] == quote)
-			quote = 0;
+		    else if (e_lab[-1] == quote)
+		      quote = 0;
 		    break;
 
 		  case '*':
@@ -1517,7 +1517,7 @@ indent (
 	    while (e_lab > s_lab && (e_lab[-1] == ' ' || e_lab[-1] == TAB))
 	      e_lab--;
 
-	    if (in_cplus_comment) /* Should we also check in_comment? -jla */
+	    if (in_cplus_comment)	/* Should we also check in_comment? -jla */
 	      {
 		in_cplus_comment = 0;
 		*e_lab++ = *buf_ptr++;
@@ -1526,7 +1526,7 @@ indent (
 
 	    if (e_lab - s_lab == com_end && bp_save == 0)
 	      {			/* comment on preprocessor line */
-	        size_t added;
+		size_t added;
 
 		if (save_com.end != save_com.ptr)
 		  {
@@ -1703,7 +1703,7 @@ indent (
 		  n_real_blanklines = 0;
 		}
 	      else
-	          prefix_blankline_requested = 0;
+		prefix_blankline_requested = 0;
 	    }
 	  /* fprintf(stderr, "[%d]:%s\n", out_line_no, s_lab + 1); */
 
@@ -1747,18 +1747,18 @@ indent (
 	parser_state_tos->last_token = type_code;
 
       /*  Now that we've put the token on the line (in most cases),
-	  consider breaking the line because it's too long.
+         consider breaking the line because it's too long.
 
-	  Don't consider the cases of `unary_op', newlines,
-	  declaration types (int, etc.), if, while, for,
-	  identifiers (handled at the beginning of the loop),
-	  periods, or preprocessor commands.*/
+         Don't consider the cases of `unary_op', newlines,
+         declaration types (int, etc.), if, while, for,
+         identifiers (handled at the beginning of the loop),
+         periods, or preprocessor commands. */
       if (max_col > 0 && buf_break != 0)
 	{
 	  if (((type_code == binary_op)
 	       || (type_code == postop)
 	       || (type_code == question)
-	       || (type_code == colon  && (scase || squest <= 0))
+	       || (type_code == colon && (scase || squest <= 0))
 	       || (type_code == semicolon)
 	       || (type_code == sp_nparen)
 	       || (type_code == ident && *token == '\"')
@@ -1772,6 +1772,8 @@ indent (
 
     }				/* end of main while (1) loop */
 }
+
+const char *progname = 0;	/* actual name of this program */
 
 /* Points to current input file name */
 const char *in_name = 0;
@@ -1796,6 +1798,13 @@ int debug = 1;
 int exp_D = 0;
 #endif
 
+/* Some operating systems don't allow more than one dot in a filename.  */
+#if defined (ONE_DOT_PER_FILENAME)
+#define INDENT_PROFILE "indent.pro"
+#else
+#define INDENT_PROFILE ".indent.pro"
+#endif
+
 int
 main (int argc, char **argv)
 {
@@ -1803,6 +1812,12 @@ main (int argc, char **argv)
   char *profile_pathname = 0;
   int using_stdin = false;
   enum exit_values exit_status;
+  const char *profile_filename = INDENT_PROFILE;
+
+  if ((progname = strrchr (argv[0], '/')) != 0)
+    ++progname;
+  else
+    progname = argv[0];
 
   init_lexi ();
   init_parser ();
@@ -1824,9 +1839,15 @@ main (int argc, char **argv)
 	  || strcmp (argv[i], "--ignore-profile") == 0
 	  || strcmp (argv[i], "+ignore-profile") == 0)
 	break;
+      if (strcmp (argv[i], "--profile") == 0)
+	{
+	  profile_filename = argv[++i];
+	  if (profile_filename == 0)
+	    usage ();
+	}
     }
   if (i >= argc)
-    profile_pathname = set_profile ();
+    profile_pathname = set_profile (profile_filename);
 
   for (i = 1; i < argc; ++i)
     {
@@ -1836,13 +1857,18 @@ main (int argc, char **argv)
 	    {
 	      if (out_name != 0)
 		{
-		  fprintf (stderr, "indent: only one output file (2nd was %s)\n", argv[i]);
+		  fprintf (stderr,
+			   "%s: only one output file (2nd was %s)\n",
+			   progname,
+			   argv[i]);
 		  exit (invocation_error);
 		}
 
 	      if (input_files > 1)
 		{
-		  fprintf (stderr, "indent: only one input file when output file is specified\n");
+		  fprintf (stderr,
+			   "%s: only one input file when output file is specified\n",
+			   progname);
 		  exit (invocation_error);
 		}
 
@@ -1854,7 +1880,9 @@ main (int argc, char **argv)
 	    {
 	      if (using_stdin)
 		{
-		  fprintf (stderr, "indent: can't have filenames when specifying standard input\n");
+		  fprintf (stderr,
+			   "%s: can't have filenames when specifying standard input\n",
+			   progname);
 		  exit (invocation_error);
 		}
 
@@ -1863,13 +1891,17 @@ main (int argc, char **argv)
 		{
 		  if (out_name != 0)
 		    {
-		      fprintf (stderr, "indent: only one input file when output file is specified\n");
+		      fprintf (stderr,
+			       "%s: only one input file when output file is specified\n",
+			       progname);
 		      exit (invocation_error);
 		    }
 
 		  if (use_stdout != 0)
 		    {
-		      fprintf (stderr, "indent: only one input file when stdout is used\n");
+		      fprintf (stderr,
+			       "%s: only one input file when stdout is used\n",
+			       progname);
 		      exit (invocation_error);
 		    }
 
@@ -1893,11 +1925,17 @@ main (int argc, char **argv)
 	    {
 	      if (input_files > 0)
 		{
-		  fprintf (stderr, "indent: can't have filenames when specifying standard input\n");
+		  fprintf (stderr,
+			   "%s: can't have filenames when specifying standard input\n",
+			   progname);
 		  exit (invocation_error);
 		}
 
 	      using_stdin = true;
+	    }
+	  else if (strcmp (argv[i], "-profile") == 0)
+	    {
+	      ++i;
 	    }
 	  else
 	    i += set_option (argv[i], (i < argc ? argv[i + 1] : 0), 1);
@@ -1910,7 +1948,7 @@ main (int argc, char **argv)
   if (input_files > 1)
     {
       /* When multiple input files are specified, make a backup copy
-	 and then output the indented code into the same filename. */
+         and then output the indented code into the same filename. */
 
       for (i = 0; input_files; i++, input_files--)
 	{
@@ -1921,7 +1959,7 @@ main (int argc, char **argv)
 	  output = fopen (out_name, "w");
 	  if (output == 0)
 	    {
-	      fprintf (stderr, "indent: can't create %s\n", out_name);
+	      fprintf (stderr, "%s: can't create %s\n", progname, out_name);
 	      exit (indent_fatal);
 	    }
 
@@ -1929,7 +1967,7 @@ main (int argc, char **argv)
 	  reset_parser ();
 	  status = indent (current_input);
 	  if (status > exit_status)
-	      exit_status = status;
+	    exit_status = status;
 	  if (fclose (output) != 0)
 	    fatal ("Can't close output file %s", out_name);
 	}
@@ -1966,7 +2004,7 @@ main (int argc, char **argv)
 	  output = fopen (out_name, "w");
 	  if (output == 0)
 	    {
-	      fprintf (stderr, "indent: can't create %s\n", out_name);
+	      fprintf (stderr, "%s: can't create %s\n", progname, out_name);
 	      exit (invocation_error);
 	    }
 	}
@@ -1975,7 +2013,7 @@ main (int argc, char **argv)
       exit_status = indent (current_input);
     }
 
-  exit ((int)exit_status);
+  exit ((int) exit_status);
 
 #ifdef _WIN32
   return 0;
