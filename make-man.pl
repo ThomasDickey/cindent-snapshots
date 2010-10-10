@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: make-man.pl,v 1.13 2010/10/08 00:58:48 tom Exp $
+# $Id: make-man.pl,v 1.17 2010/10/09 13:26:41 tom Exp $
 #------------------------------------------------------------------------------
 # Copyright:  2010 by Thomas E. Dickey
 #
@@ -51,6 +51,10 @@ sub is_empty($) {
 	return $result;
 }
 
+sub is_ignored($) {
+	return ( $_[0] eq $ignore );
+}
+
 sub is_menu_head($) {
 	my $result = 0;
 	if ($_[0] eq "* Menu:" ) {
@@ -63,6 +67,8 @@ sub is_menu_body($) {
 	my $result = 0;
 	if ($_[0] =~ /^\* .*:/ ) {
 		$result = 1;
+	} elsif ( $_[0] =~ /\s+\(line\s+\d+\)$/ ) {
+		$result = 1;
 	}
 	return $result;
 }
@@ -70,6 +76,7 @@ sub is_menu_body($) {
 sub format_menu($) {
 	my $result = $_[0];
 
+	$result =~ s/\s+\(line\s+\d+\)$//;
 	$result =~ s/^\*\s+//;
 	if ( $result =~ /::\s/ ) {
 		$result =~ s/::\s+/\tsee \\fB/;
@@ -149,6 +156,9 @@ sub do_file($) {
 		$input[$n] =~ s/\s+$//;
 		$input[$n] = &no_leading_dot($input[$n]);
 		$markup[$n] = "";
+		if ( $input[$n] =~ /^\000\010/ ) {
+			$input[$n] = $ignore;
+		}
 	}
 
 	for $n (0..$#input) {
@@ -158,9 +168,7 @@ sub do_file($) {
 		} else {
 			$next = "";
 		}
-		if ( $text eq $ignore ) {
-			next;
-		} elsif ( $text =~ /^\037/ ) {
+		if ( $text =~ /^\037/ ) {
 			if ( $n eq $#input ) {
 				$k = $n;
 			} elsif ( $next =~ /^Tag Table:$/ ) {
@@ -171,7 +179,7 @@ sub do_file($) {
 			for $k ($n..$k) {
 				$input[$k] = $ignore;
 			}
-		} elsif ( &is_empty($text) ) {
+		} elsif ( &is_empty($text) or &is_ignored($text) ) {
 			if ( $n < $#input ) {
 				if ( $RS ne 0 ) {
 					$markup[$n] .= ".RE";
@@ -201,6 +209,8 @@ sub do_file($) {
 						$markup[$n] .= ".NE";
 						$markup[$n] .= ".PP";
 						$DS = 0;
+					} elsif ( $TS ne 0 ) {
+						# skip
 					} elsif ( length($text) < $margin ) {
 						my $hang = 0;
 
@@ -237,7 +247,7 @@ sub do_file($) {
 			}
 		} else {
 			if ( $n < $#input ) {
-				if ( &is_display($text) ) {
+				if ( $TS eq 0 and &is_display($text) ) {
 					if ( $RS ne 0 ) {
 						$input[$n] = &format_display($text);
 						next;
@@ -275,6 +285,7 @@ sub do_file($) {
 		$input[$n] =~ s/``([^']+)''/\\fB$1\\fR/g;
 		$input[$n] =~ s/`([^']+)'/\\fB$1\\fR/g;
 		$input[$n] =~ s/-/\\-/g;
+		$input[$n] =~ s/\(\*note (.*)::\)/(see \\fB$1\\fR)/g;
 		$input[$n] =~ s/\*Note (.*)::/(see \\fB$1\\fR)/g;
 	}
 
@@ -301,18 +312,18 @@ $rootname \- $name
 ";
 
 	for $n (0..$#input) {
-		if ( $input[$n] ne $ignore ) {
-			if ( $markup[$n] =~ /^\.TS/ ) {
-				printf "%s\n", $markup[$n];
-				printf "l l\n";
-				printf "l l .\n";
-			} elsif ( $markup[$n] =~ /^\./ ) {
-				foreach $k ( split /\./, $markup[$n] ) {
-					if ( $k ne "" ) {
-						printf ".%s\n", $k;
-					}
+		if ( $markup[$n] =~ /^\.TS/ ) {
+			printf "%s\n", $markup[$n];
+			printf "l l\n";
+			printf "l l .\n";
+		} elsif ( $markup[$n] =~ /^\./ ) {
+			foreach $k ( split /\./, $markup[$n] ) {
+				if ( $k ne "" ) {
+					printf ".%s\n", $k;
 				}
 			}
+		}
+		if ( not &is_ignored($input[$n]) ) {
 			if ( $input[$n] ne "" ) {
 				printf "%s\n", $input[$n];
 			}

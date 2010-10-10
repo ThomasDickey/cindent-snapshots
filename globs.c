@@ -19,7 +19,6 @@
 #include "indent.h"
 
 #include <errno.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>

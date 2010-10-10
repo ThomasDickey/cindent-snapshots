@@ -243,12 +243,23 @@ they would appear on the command line, separated by white space (tabs,
 spaces, and newlines).  Options in @code{.indent.pro} may be surrounded by C
 or C++ comments, in which case they are ignored.
 
-Command line switches are handled @emph{after} processing
+Most command line switches are handled @emph{after} processing
 @file{.indent.pro}.  Options specified later override arguments
 specified earlier, with one exception: Explicitly specified options
-always override background options (@pxref{Common styles}).  You can
+always override background options (@pxref{Common styles}).
+
+You can
 prevent @code{indent} from reading an @file{.indent.pro} file by
-specifying the @samp{-npro} option.@refill
+specifying the @samp{-npro} option.
+
+Alternatively, you can tell @code{indent} to read a profile
+from any file using the @samp{--profile} option.
+The option accepts a parameter which can be either an absolute pathname
+(beginning with a `/'), or relative.
+If the pathname is relative, @code{indent} searches in the current
+and home directories just like the @file{.indent.pro} file.
+The @samp{-npro} option overrides this, as well.
+@refill
 
 @node Backup files, Common styles, Invoking indent, Indent Program
 @comment  node-name,  next,  previous,  up
@@ -279,7 +290,7 @@ environment variable @code{VERSION_CONTROL}.  If it is the string
 @samp{simple}, then only simple backups will be made.  If its value is
 the string @samp{numbered}, then numbered backups will be made.  If its
 value is @samp{numbered-existing}, then numbered backups will be made if
-there @emph{already exist} numbered backups for the file being indented;
+there @strong{already exist} numbered backups for the file being indented;
 otherwise, a simple backup is made.  If @code{VERSION_CONTROL} is not
 set, then @code{indent} assumes the behaviour of
 @samp{numbered-existing}.
@@ -386,7 +397,7 @@ The @samp{-nbap} option forces no such blank line.
 @kindex -nbbb
 @kindex --no-blank-lines-after-block-comments
 The @samp{-bbb} option forces a blank line before every boxed comment.
-(@xref{Comments}) The @samp{-nbbb}
+(@pxref{Comments}) The @samp{-nbbb}
 option does not force such blank lines.
 
 @kindex -sob
@@ -611,7 +622,7 @@ comment is within a block of code.  In that case, such a comment will be
 aligned with the indented code of that block (unless the comment began
 in the first column).  This alignment may be affected by the @samp{-d}
 option, which specifies an amount by which such comments are moved to
-the @emph{left}, or unindented.  For example, @samp{-d2} places comments
+the @strong{left}, or unindented.  For example, @samp{-d2} places comments
 two spaces to the left of code.  By default, comments are aligned with
 code, unless they begin in the first column, in which case they are left
 there by default -- to get them aligned with the code, specify @samp{-fc1}.
@@ -1143,7 +1154,7 @@ Put braces on line with @code{if}, etc. and structure declarations@*
 @itemx --Bill-Shannon
 @itemx --blank-before-sizeof
 Put a space between @code{sizeof} and its argument.@*
-@xref{Statements}
+@xref{Statements}.
 
 @item -c@var{n}
 @itemx --comment-indentation@var{n}
@@ -1205,7 +1216,7 @@ Format comments in the first column.@*
 @item -fca
 @itemx --format-all-comments
 Do not disable all formatting of comments.@*
-@xref{Comments}
+@xref{Comments}.
 
 @item -gnu
 @itemx --gnu-style
@@ -1299,7 +1310,7 @@ Do not format any comments.@*
 @item -nip
 @itemx --no-parameter-indentation
 Zero width indentation for parameters.@*
-@xref{Indentation}
+@xref{Indentation}.
 
 @item -nlp
 @itemx --dont-line-up-parentheses

@@ -1,7 +1,7 @@
-This is Info file indent.info, produced by Makeinfo version 1.68 from
-the input file ./indent.texinfo.
+This is indent.info, produced by makeinfo version 4.13 from
+./indent.texinfo.
 
-   Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software
+Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software
 Foundation, Inc.  Copyright (C) 1995, 1996 Joseph Arceneaux
 
    This is Edition 2.0, January, 1996, of `The `indent' Manual', for
@@ -17,8 +17,8 @@ File: indent.info,  Node: Top,  Next: Indent Program,  Prev: (dir),  Up: (dir)
 `indent':  Indent and Format C Program Source
 *********************************************
 
-   The `indent' program changes the appearance of a C program by
-inserting or deleting whitespace.
+The `indent' program changes the appearance of a C program by inserting
+or deleting whitespace.
 
    This is Edition 2.0, January 1996, of `The `indent' Manual', for
 Indent Version 2.0
@@ -35,11 +35,11 @@ File: indent.info,  Node: Indent Program,  Next: Option Summary,  Prev: Top,  Up
 The `indent' Program
 ********************
 
-   The `indent' program can be used to make code easier to read.  It
-can also convert from one style of writing C to another.
+The `indent' program can be used to make code easier to read.  It can
+also convert from one style of writing C to another.
 
-   `indent' understands a substantial amount about the syntax of C, but
-it also attempts to cope with incomplete and misformed syntax.
+`indent' understands a substantial amount about the syntax of C, but it
+also attempts to cope with incomplete and misformed syntax.
 
    In version 1.2 and more recent versions, the GNU style of indenting
 is the default.
@@ -65,10 +65,10 @@ File: indent.info,  Node: Invoking indent,  Next: Backup files,  Up: Indent Prog
 Invoking `indent'
 =================
 
-   As of version 1.3, the format of the `indent' command is:
+As of version 1.3, the format of the `indent' command is:
 
      indent [OPTIONS] [INPUT-FILES]
-     
+
      indent [OPTIONS] [SINGLE-INPUT-FILE] [-o OUTPUT-FILE]
 
    This format is different from earlier versions and other versions of
@@ -95,14 +95,14 @@ read.
 `slithy_toves.c' and write its indented text to `slithy_toves.out':
 
      indent slithy_toves.c -o slithy_toves.out
-     
+
      indent -st slithy_toves.c > slithy_toves.out
-     
+
      cat slithy_toves.c | indent -o slithy_toves.out
 
    Most other options to `indent' control how programs are formatted.
 As of version 1.2, `indent' also recognizes a long name for each option
-name.  Long options are prefixed by either `--' or `+'.(1) In most of
+name.  Long options are prefixed by either `--' or `+'.(*) In most of
 this document, the traditional, short names are used for the sake of
 brevity.  *Note Option Summary::, for a list of options, including both
 long and short names.
@@ -120,7 +120,7 @@ directory `test'.
 be:
 
      indent --braces-on-if-line --line-length185 test/metabolism.c
-     
+
      indent +braces-on-if-line +line-length185 test/metabolism.c
 
    If you find that you often use `indent' with the same options, you
@@ -136,15 +136,24 @@ they would appear on the command line, separated by white space (tabs,
 spaces, and newlines).  Options in `.indent.pro' may be surrounded by C
 or C++ comments, in which case they are ignored.
 
-   Command line switches are handled *after* processing `.indent.pro'.
-Options specified later override arguments specified earlier, with one
-exception: Explicitly specified options always override background
-options (*note Common styles::.).  You can prevent `indent' from
-reading an `.indent.pro' file by specifying the `-npro' option.
+   Most command line switches are handled _after_ processing
+`.indent.pro'.  Options specified later override arguments specified
+earlier, with one exception: Explicitly specified options always
+override background options (*note Common styles::).
+
+   You can prevent `indent' from reading an `.indent.pro' file by
+specifying the `-npro' option.
+
+   Alternatively, you can tell `indent' to read a profile from any file
+using the `--profile' option.  The option accepts a parameter which can
+be either an absolute pathname (beginning with a `/'), or relative.  If
+the pathname is relative, `indent' searches in the current and home
+directories just like the `.indent.pro' file.  The `-npro' option
+overrides this, as well.
 
    ---------- Footnotes ----------
 
-   (1)  `+' is being superseded by `--' to maintain consistency with
+   (*)  `+' is being superseded by `--' to maintain consistency with
 the POSIX standard.
 
 
@@ -153,8 +162,8 @@ File: indent.info,  Node: Backup files,  Next: Common styles,  Prev: Invoking in
 Backup Files
 ============
 
-   As of version 1.3, GNU `indent' makes GNU-style backup files, the
-same way GNU Emacs does.  This means that either "simple" or "numbered"
+As of version 1.3, GNU `indent' makes GNU-style backup files, the same
+way GNU Emacs does.  This means that either "simple" or "numbered"
 backup filenames may be made.
 
    Simple backup file names are generated by appending a suffix to the
@@ -168,9 +177,9 @@ preferred suffix.
 
    Numbered backup versions of a file `momewraths' look like
 `momewraths.c.~23~', where 23 is the version of this particular backup.
-When making a numbered backup of the file `src/momewrath.c', the
-backup file will be named `src/momewrath.c.~V~', where V is one greater
-than the highest version currently existing in the directory `src'.
+When making a numbered backup of the file `src/momewrath.c', the backup
+file will be named `src/momewrath.c.~V~', where V is one greater than
+the highest version currently existing in the directory `src'.
 
    The type of backup file made is controlled by the value of the
 environment variable `VERSION_CONTROL'.  If it is the string `simple',
@@ -195,12 +204,11 @@ File: indent.info,  Node: Common styles,  Next: Blank lines,  Prev: Backup files
 Common styles
 =============
 
-   There are several common styles of C code, including the GNU style,
-the Kernighan & Ritchie style, and the original Berkeley style.  A
-style may be selected with a single "background" option, which
-specifies a set of values for all other options.  However, explicitly
-specified options always override options implied by a background
-option.
+There are several common styles of C code, including the GNU style, the
+Kernighan & Ritchie style, and the original Berkeley style.  A style may
+be selected with a single "background" option, which specifies a set of
+values for all other options.  However, explicitly specified options
+always override options implied by a background option.
 
    As of version 1.2, the default style of GNU `indent' is the GNU
 style.  Thus, it is no longer neccessary to specify the option `-gnu'
@@ -246,7 +254,7 @@ File: indent.info,  Node: Blank lines,  Next: Comments,  Prev: Common styles,  U
 Blank lines
 ===========
 
-   Various programming styles use blank lines in different places.
+Various programming styles use blank lines in different places.
 `indent' has a number of options to insert or delete blank lines in
 specific places.
 
@@ -258,7 +266,7 @@ such blank lines.
 The `-nbap' option forces no such blank line.
 
    The `-bbb' option forces a blank line before every boxed comment.
-(*Note Comments::) The `-nbbb' option does not force such blank lines.
+(*note Comments::) The `-nbbb' option does not force such blank lines.
 
    The `-sob' option causes `indent' to swallow optional blank lines
 (that is, any optional blank lines present in the input will be removed
@@ -276,7 +284,7 @@ File: indent.info,  Node: -bad,  Next: -bap,  Up: Blank lines
 -blank-lines-after-declarations
 -------------------------------
 
-   The `-bad' option forces a blank line after every block of
+The `-bad' option forces a blank line after every block of
 declarations.  The `-nbad' option does not add any such blank lines.
 
    For example, given the input
@@ -289,7 +297,7 @@ declarations.  The `-nbad' option does not add any such blank lines.
 
      char *foo;
      char *bar;
-     
+
      /* This separates blocks of declarations.  */
      int baz;
 
@@ -329,7 +337,7 @@ File: indent.info,  Node: -bap,  Prev: -bad,  Up: Blank lines
      {
        puts ("Hi");
      }
-     
+
      /* The procedure bar is even less interesting.  */
      char *
      bar ()
@@ -359,7 +367,7 @@ File: indent.info,  Node: Comments,  Next: Statements,  Prev: Blank lines,  Up: 
 Comments
 ========
 
-   `indent' formats both C and C++ comments. C comments are begun with
+`indent' formats both C and C++ comments. C comments are begun with
 `/*', terminated with `*/' and may contain newline characters.  C++
 comments begin with the delimiter `//' and end at the newline.
 
@@ -391,7 +399,7 @@ opening delimiter.
      /**********************
       * Comment in a box!! *
       **********************/
-     
+
             /*
              * A different kind of scent,
              * for a different kind of comment.
@@ -465,7 +473,7 @@ File: indent.info,  Node: Statements,  Next: Declarations,  Prev: Comments,  Up:
 Statements
 ==========
 
-   The `-br' or `-bl' option specifies how to format braces.
+The `-br' or `-bl' option specifies how to format braces.
 
    The `-br' option formats statement braces like this:
 
@@ -554,9 +562,8 @@ File: indent.info,  Node: Declarations,  Next: Indentation,  Prev: Statements,  
 Declarations
 ============
 
-   By default `indent' will line up identifiers, in the column
-specified by the `-di' option.  For example, `-di16' makes things look
-like:
+By default `indent' will line up identifiers, in the column specified
+by the `-di' option.  For example, `-di16' makes things look like:
 
      int             foo;
      char           *bar;
@@ -607,7 +614,7 @@ File: indent.info,  Node: Indentation,  Next: Disabling Formatting,  Prev: Decla
 Indentation
 ===========
 
-   One issue in the formatting of code is how far each line should be
+One issue in the formatting of code is how far each line should be
 indented from the left margin.  When the beginning of a statement such
 as `if' or `for' is encountered, the indentation level is increased by
 the value specified by the `-i' option.  For example, use `-i8' to
@@ -663,7 +670,7 @@ File: indent.info,  Node: Disabling Formatting,  Next: Miscellaneous options,  P
 Disabling Formatting
 ====================
 
-   Formatting of C code may be disabled for portions of a program by
+Formatting of C code may be disabled for portions of a program by
 embedding special "control comments" in the program.  To turn off
 formatting for a section of a program, place the disabling control
 comment `/* *INDENT-OFF* */' on a line by itself just before that
@@ -699,9 +706,9 @@ File: indent.info,  Node: Miscellaneous options,  Next: Bugs,  Prev: Disabling F
 Miscellaneous options
 =====================
 
-   To find out what version of `indent' you have, use the command
-`indent -version'.  This will report the version number of `indent',
-without doing any of the normal processing.
+To find out what version of `indent' you have, use the command `indent
+-version'.  This will report the version number of `indent', without
+doing any of the normal processing.
 
    The `-v' option can be used to turn on verbose mode.  When in
 verbose mode, `indent' reports when it splits one line of input into
@@ -714,7 +721,7 @@ File: indent.info,  Node: Bugs,  Next: Copyright,  Prev: Miscellaneous options, 
 Bugs
 ====
 
-   The "-troff" option is strongly deprecated, and is not supported.  A
+The "-troff" option is strongly deprecated, and is not supported.  A
 good thing for someone to do is to rewrite `indent' to generate TeX
 source as a hardcopy output option, amoung other things.
 
@@ -724,7 +731,7 @@ File: indent.info,  Node: Copyright,  Prev: Bugs,  Up: Indent Program
 Copyright
 =========
 
-   The following copyright notice applies to the `indent' program.  The
+The following copyright notice applies to the `indent' program.  The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 
@@ -734,7 +741,7 @@ beginning of this document.
      Copyright (c) 1980 The Regents of the University of California.
      Copyright (c) 1976 Board of Trustees of the University of Illinois.
      All rights reserved.
-     
+
      Redistribution and use in source and binary forms are permitted
      provided that the above copyright notice and this paragraph are
      duplicated in all such forms and that any documentation,
@@ -744,7 +751,7 @@ beginning of this document.
      Urbana, and Sun Microsystems, Inc.  The name of either University
      or Sun Microsystems may not be used to endorse or promote products
      derived from this software without specific prior written permission.
-     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+     THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
      IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
      WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR
      PURPOSE.
@@ -755,9 +762,8 @@ File: indent.info,  Node: Option Summary,  Next: Index,  Prev: Indent Program,  
 Option Summary
 **************
 
-   Here is a list of all the options for `indent', alphabetized by
-short option.  It is followed by a cross key alphabetized by long
-option.
+Here is a list of all the options for `indent', alphabetized by short
+option.  It is followed by a cross key alphabetized by long option.
 
 `-bad'
 `--blank-lines-after-declarations'
@@ -799,7 +805,7 @@ option.
 `--Bill-Shannon'
 `--blank-before-sizeof'
      Put a space between `sizeof' and its argument.
-     *Note Statements::
+     *Note Statements::.
 
 `-cN'
 `--comment-indentationN'
@@ -861,7 +867,7 @@ option.
 `-fca'
 `--format-all-comments'
      Do not disable all formatting of comments.
-     *Note Comments::
+     *Note Comments::.
 
 `-gnu'
 `--gnu-style'
@@ -947,7 +953,7 @@ option.
 `-nip'
 `--no-parameter-indentation'
      Zero width indentation for parameters.
-     *Note Indentation::
+     *Note Indentation::.
 
 `-nlp'
 `--dont-line-up-parentheses'
@@ -1048,8 +1054,8 @@ option.
 Options' Cross Key
 ------------------
 
-   Here is a list of options alphabetized by long option, to help you
-find the corresponding short option.
+Here is a list of options alphabetized by long option, to help you find
+the corresponding short option.
 
      --no-blank-lines-after-commas                   -nbc
      --no-blank-lines-after-declarations             -nbad
@@ -1077,158 +1083,165 @@ File: indent.info,  Node: Index,  Prev: Option Summary,  Up: Top
 Index
 *****
 
+ [index ]
 * Menu:
 
-* --blank-after-sizeof:                  Statements.
-* --blank-lines-after-block-comments:    Blank lines.
-* --blank-lines-after-commas:            Declarations.
-* --blank-lines-after-declarations:      -bad.
-* --blank-lines-after-procedures:        -bap.
-* --brace-indentN:                       Statements.
-* --braces-after-if-line:                Statements.
-* --braces-on-if-line:                   Statements.
-* --case-indentationN:                   Statements.
-* --comment-delimiters-on-blank-lines:   Comments.
-* --comment-indentationN:                Comments.
-* --continuation-indentationN:           Indentation.
-* --continue-at-parentheses:             Indentation.
-* --cuddle-else:                         Statements.
-* --declaration-comment-columnN:         Comments.
-* --declaration-indentationN:            Declarations.
-* --dont-break-procedure-type:           Declarations.
-* --dont-cuddle-else:                    Statements.
-* --dont-format-comments:                Comments.
-* --dont-format-first-column-comments:   Comments.
-* --dont-line-up-parentheses:            Indentation.
-* --dont-space-special-semicolon:        Statements.
-* --dont-star-comments:                  Comments.
-* --else-endif-columnN:                  Comments.
-* --format-all-comments:                 Comments.
-* --format-first-column-comments:        Comments.
-* --gnu-style:                           Common styles.
-* --ignore-profile:                      Invoking indent.
-* --indent-levelN:                       Indentation.
-* --k-and-r-style:                       Common styles.
-* --leave-optional-blank-lines:          Blank lines.
-* --leave-preprocessor-space:            Indentation.
-* --line-comments-indentationN:          Comments.
-* --no-blank-lines-after-block-comments: Blank lines.
-* --no-blank-lines-after-commas:         Declarations.
-* --no-blank-lines-after-declarations:   -bad.
-* --no-blank-lines-after-procedures:     -bap.
-* --no-comment-delimiters-on-blank-lines: Comments.
-* --no-parameter-indentation:            Indentation.
-* --no-space-after-casts:                Statements.
-* --no-space-after-function-call-names:  Statements.
+* --blank-after-sizeof:                  Statements.           (line 85)
+* --blank-lines-after-block-comments:    Blank lines.          (line 17)
+* --blank-lines-after-commas:            Declarations.         (line 26)
+* --blank-lines-after-declarations:      -bad.                 (line 15)
+* --blank-lines-after-procedures:        -bap.                 (line  6)
+* --brace-indentN:                       Statements.           (line 39)
+* --braces-after-if-line:                Statements.           (line  6)
+* --braces-on-if-line:                   Statements.           (line  6)
+* --case-indentationN:                   Statements.           (line 69)
+* --comment-delimiters-on-blank-lines:   Comments.             (line 90)
+* --comment-indentationN:                Comments.             (line 78)
+* --continuation-indentationN:           Indentation.          (line  6)
+* --continue-at-parentheses:             Indentation.          (line  6)
+* --cuddle-else:                         Statements.           (line 49)
+* --declaration-comment-columnN:         Comments.             (line 78)
+* --declaration-indentationN:            Declarations.         (line  6)
+* --dont-break-procedure-type:           Declarations.         (line 37)
+* --dont-cuddle-else:                    Statements.           (line 49)
+* --dont-format-comments:                Comments.             (line 53)
+* --dont-format-first-column-comments:   Comments.             (line 53)
+* --dont-line-up-parentheses:            Indentation.          (line  6)
+* --dont-space-special-semicolon:        Statements.           (line 72)
+* --dont-star-comments:                  Comments.             (line 98)
+* --else-endif-columnN:                  Comments.             (line 78)
+* --format-all-comments:                 Comments.             (line 53)
+* --format-first-column-comments:        Comments.             (line 53)
+* --gnu-style:                           Common styles.        (line 12)
+* --ignore-profile:                      Invoking indent.      (line 64)
+* --indent-levelN:                       Indentation.          (line  6)
+* --k-and-r-style:                       Common styles.        (line 28)
+* --leave-optional-blank-lines:          Blank lines.          (line 20)
+* --leave-preprocessor-space:            Indentation.          (line 51)
+* --line-comments-indentationN:          Comments.             (line 67)
+* --no-blank-lines-after-block-comments: Blank lines.          (line 17)
+* --no-blank-lines-after-commas:         Declarations.         (line 26)
+* --no-blank-lines-after-declarations:   -bad.                 (line 15)
+* --no-blank-lines-after-procedures:     -bap.                 (line  6)
+* --no-comment-delimiters-on-blank-lines: Comments.            (line 90)
+* --no-parameter-indentation:            Indentation.          (line 34)
+* --no-space-after-casts:                Statements.           (line 82)
+* --no-space-after-function-call-names:  Statements.           (line 78)
 * --no-verbosity:                        Miscellaneous options.
-* --original:                            Common styles.
-* --output-file:                         Invoking indent.
-* --parameter-indentationN:              Indentation.
-* --procnames-start-lines:               Declarations.
-* --remove-preprocessor-space:           Indentation.
-* --space-after-cast:                    Statements.
-* --space-after-procedure-calls:         Statements.
-* --space-special-semicolon:             Statements.
-* --standard-output:                     Invoking indent.
-* --star-left-side-of-comments:          Comments.
-* --swallow-optional-blank-lines:        Blank lines.
-* --tab-sizeN:                           Indentation.
+                                                               (line 10)
+* --original:                            Common styles.        (line 42)
+* --output-file:                         Invoking indent.      (line 20)
+* --parameter-indentationN:              Indentation.          (line 34)
+* --procnames-start-lines:               Declarations.         (line 37)
+* --remove-preprocessor-space:           Indentation.          (line 51)
+* --space-after-cast:                    Statements.           (line 82)
+* --space-after-procedure-calls:         Statements.           (line 78)
+* --space-special-semicolon:             Statements.           (line 72)
+* --standard-output:                     Invoking indent.      (line 24)
+* --star-left-side-of-comments:          Comments.             (line 98)
+* --swallow-optional-blank-lines:        Blank lines.          (line 20)
+* --tab-sizeN:                           Indentation.          (line 29)
 * --verbose:                             Miscellaneous options.
-* -bad:                                  -bad.
-* -bap:                                  -bap.
-* -bbb:                                  Blank lines.
-* -bc:                                   Declarations.
-* -bl:                                   Statements.
-* -bliN:                                 Statements.
-* -br:                                   Statements.
-* -bs:                                   Statements.
-* -cdb:                                  Comments.
-* -cdN:                                  Comments.
-* -ce:                                   Statements.
-* -ciN:                                  Indentation.
-* -cliN:                                 Statements.
-* -cN:                                   Comments.
-* -cpN:                                  Comments.
-* -cs:                                   Statements.
-* -dce:                                  Statements.
-* -diN:                                  Declarations.
-* -dN:                                   Comments.
-* -fc1:                                  Comments.
-* -fca:                                  Comments.
-* -gnu:                                  Common styles.
-* -iN:                                   Indentation.
-* -ipN:                                  Indentation.
-* -kr:                                   Common styles.
-* -lp:                                   Indentation.
-* -lps:                                  Indentation.
-* -nbad:                                 -bad.
-* -nbap:                                 -bap.
-* -nbbb:                                 Blank lines.
-* -nbc:                                  Declarations.
-* -ncdb:                                 Comments.
-* -ncs:                                  Statements.
-* -nfc1:                                 Comments.
-* -nfca:                                 Comments.
-* -nip:                                  Indentation.
-* -nlp:                                  Indentation.
-* -nlps:                                 Indentation.
-* -npcs:                                 Statements.
-* -npro:                                 Invoking indent.
-* -npsl:                                 Declarations.
-* -nsc:                                  Comments.
-* -nsob:                                 Blank lines.
-* -nss:                                  Statements.
+                                                               (line 10)
+* -bad:                                  -bad.                 (line 15)
+* -bap:                                  -bap.                 (line  6)
+* -bbb:                                  Blank lines.          (line 17)
+* -bc:                                   Declarations.         (line 26)
+* -bl:                                   Statements.           (line  6)
+* -bliN:                                 Statements.           (line 39)
+* -br:                                   Statements.           (line  6)
+* -bs:                                   Statements.           (line 85)
+* -cdb:                                  Comments.             (line 90)
+* -cdN:                                  Comments.             (line 78)
+* -ce:                                   Statements.           (line 49)
+* -ciN:                                  Indentation.          (line  6)
+* -cliN:                                 Statements.           (line 69)
+* -cN:                                   Comments.             (line 78)
+* -cpN:                                  Comments.             (line 78)
+* -cs:                                   Statements.           (line 82)
+* -dce:                                  Statements.           (line 49)
+* -diN:                                  Declarations.         (line  6)
+* -dN:                                   Comments.             (line 67)
+* -fc1:                                  Comments.             (line 53)
+* -fca:                                  Comments.             (line 53)
+* -gnu:                                  Common styles.        (line 12)
+* -iN:                                   Indentation.          (line  6)
+* -ipN:                                  Indentation.          (line 34)
+* -kr:                                   Common styles.        (line 28)
+* -lp:                                   Indentation.          (line  6)
+* -lps:                                  Indentation.          (line 51)
+* -nbad:                                 -bad.                 (line 15)
+* -nbap:                                 -bap.                 (line  6)
+* -nbbb:                                 Blank lines.          (line 17)
+* -nbc:                                  Declarations.         (line 26)
+* -ncdb:                                 Comments.             (line 90)
+* -ncs:                                  Statements.           (line 82)
+* -nfc1:                                 Comments.             (line 53)
+* -nfca:                                 Comments.             (line 53)
+* -nip:                                  Indentation.          (line 34)
+* -nlp:                                  Indentation.          (line  6)
+* -nlps:                                 Indentation.          (line 51)
+* -npcs:                                 Statements.           (line 78)
+* -npro:                                 Invoking indent.      (line 64)
+* -npsl:                                 Declarations.         (line 37)
+* -nsc:                                  Comments.             (line 98)
+* -nsob:                                 Blank lines.          (line 20)
+* -nss:                                  Statements.           (line 72)
 * -nv:                                   Miscellaneous options.
-* -o:                                    Invoking indent.
-* -orig:                                 Common styles.
-* -pcs:                                  Statements.
-* -psl:                                  Declarations.
-* -sc:                                   Comments.
-* -sob:                                  Blank lines.
-* -ss:                                   Statements.
-* -st:                                   Invoking indent.
-* -T:                                    Declarations.
-* -tsN:                                  Indentation.
+                                                               (line 10)
+* -o:                                    Invoking indent.      (line 20)
+* -orig:                                 Common styles.        (line 42)
+* -pcs:                                  Statements.           (line 78)
+* -psl:                                  Declarations.         (line 37)
+* -sc:                                   Comments.             (line 98)
+* -sob:                                  Blank lines.          (line 20)
+* -ss:                                   Statements.           (line 72)
+* -st:                                   Invoking indent.      (line 24)
+* -T:                                    Declarations.         (line 42)
+* -tsN:                                  Indentation.          (line 29)
 * -v:                                    Miscellaneous options.
+                                                               (line 10)
 * -version:                              Miscellaneous options.
-* .indent.pro file:                      Invoking indent.
-* Beginning indent:                      Invoking indent.
-* Berkeley style:                        Common styles.
-* Blank lines:                           Blank lines.
-* Comments:                              Comments.
-* etags requires -psl:                   Declarations.
-* GNU style:                             Common styles.
-* Initialization file:                   Invoking indent.
-* Invoking indent:                       Invoking indent.
-* Kernighan & Ritchie style:             Common styles.
-* Long options, use of:                  Invoking indent.
-* Original Berkeley style:               Common styles.
-* Output File Specification:             Invoking indent.
-* Standard Output:                       Invoking indent.
-* Starting indent:                       Invoking indent.
-* Typenames:                             Declarations.
-* Using Standard Input:                  Invoking indent.
+                                                               (line  6)
+* .indent.pro file:                      Invoking indent.      (line 64)
+* Beginning indent:                      Invoking indent.      (line  6)
+* Berkeley style:                        Common styles.        (line 42)
+* Blank lines:                           Blank lines.          (line  6)
+* Comments:                              Comments.             (line  6)
+* etags requires -psl:                   Declarations.         (line 37)
+* GNU style:                             Common styles.        (line 12)
+* Initialization file:                   Invoking indent.      (line 64)
+* Invoking indent:                       Invoking indent.      (line  6)
+* Kernighan & Ritchie style:             Common styles.        (line 28)
+* Long options, use of:                  Invoking indent.      (line 41)
+* Original Berkeley style:               Common styles.        (line 42)
+* Output File Specification:             Invoking indent.      (line 20)
+* Standard Output:                       Invoking indent.      (line 24)
+* Starting indent:                       Invoking indent.      (line  6)
+* Typenames:                             Declarations.         (line 42)
+* Using Standard Input:                  Invoking indent.      (line 28)
 
 
 
 Tag Table:
-Node: Top486
-Node: Indent Program997
-Node: Invoking indent2028
-Node: Backup files5468
-Node: Common styles7333
-Node: Blank lines9498
-Node: -bad10591
-Node: -bap11238
-Node: Comments12099
-Node: Statements16894
-Node: Declarations19318
-Node: Indentation20829
-Node: Disabling Formatting23153
-Node: Miscellaneous options24892
-Node: Bugs25443
-Node: Copyright25755
-Node: Option Summary27206
-Node: Index34838
+Node: Top458
+Node: Indent Program966
+Node: Invoking indent1991
+Ref: Invoking indent-Footnote-15702
+Node: Backup files5792
+Node: Common styles7654
+Node: Blank lines9816
+Node: -bad10906
+Node: -bap11545
+Node: Comments12401
+Node: Statements17188
+Node: Declarations19609
+Node: Indentation21117
+Node: Disabling Formatting23438
+Node: Miscellaneous options25174
+Node: Bugs25722
+Node: Copyright26031
+Node: Option Summary27472
+Node: Index35101
 
 End Tag Table

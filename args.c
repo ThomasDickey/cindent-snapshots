@@ -850,10 +850,15 @@ set_profile (const char *given)
       scan_profile (f);
       (void) fclose (f);
       fname = xmalloc (len);
-      fname[0] = '.';
-      fname[1] = '/';
-      (void) memcpy (&fname[2], given, len - 3);
-      fname[len - 1] = '\0';
+      if (*given != '/')
+	{
+	  fname[0] = '.';
+	  fname[1] = '/';
+	  (void) memcpy (&fname[2], given, len - 3);
+	  fname[len - 1] = '\0';
+	}
+      else
+	strcpy (fname, given);
       return fname;
     }
 

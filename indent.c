@@ -1933,7 +1933,7 @@ main (int argc, char **argv)
 
 	      using_stdin = true;
 	    }
-	  else if (strcmp (argv[i], "-profile") == 0)
+	  else if (strcmp (argv[i], "--profile") == 0)
 	    {
 	      ++i;
 	    }

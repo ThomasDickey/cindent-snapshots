@@ -1,9 +1,12 @@
--- $Id: ChangeLog,v 1.23 2010/10/08 23:19:05 tom Exp $
+-- $Id: ChangeLog,v 1.25 2010/10/09 22:14:34 tom Exp $
 
+2010-10-09
+	+ add manpages for tdindent, regenerate manpage and html documentation.
+	
 2010-10-08
 	+ add tdindent and wrapper-scripts to incorporate ncu-indent, etc.
 
-	+ add command-line "-profile" option to indent program to override the
+	+ add command-line "--profile" option to indent program to override the
 	  ".indent.pro" profile.
 
 	+ reindent all C files except gperf.c using -gnu option.

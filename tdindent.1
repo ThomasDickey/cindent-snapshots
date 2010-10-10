@@ -1,0 +1,85 @@
+.\" $Id: tdindent.1,v 1.2 2010/10/09 21:41:06 tom Exp $
+.TH TDINDENT 1
+.ds n cindent
+.SH NAME
+tdindent \- utility scripts for \fI\*n\fP.
+.SH SYNOPSIS
+.B tdindent [\fIoptions\fP]
+.SH DESCRIPTION
+This is a wrapper for the \fI\*n\fP program, which adds options.
+Unrecognized options are passed to \fI\*n\fP.
+.PP
+Options:
+.TP 5
+\-h
+display a usage message for \fItdindent\fP.
+.TP 5
+\-n
+perform indent and show difference without saving the result.
+This is useful for previewing \fI\*n\fP's splitting of lines.
+.TP 5
+\-\-profile file
+get settings, use those to override \fB.indent.pro\fP.
+The script looks in the current directory,
+the user's home directory,
+or in a configuration-specific location.
+.TP 5
+\-s
+convert tabs to spaces in the updated file.
+The script relies on the settings from the \fB\-\-profile\fP option
+to get the tab-size for expansion.
+.SH OTHER SCRIPTS
+There are several profiles and corresponding wrapper scripts:
+.TP 5
+bsd-indent
+This uses the "original" (Sun) indent settings.
+.TP 5
+cdk-indent
+These are the settings used for the \fICDK\fP (curses development kit).
+.TP 5
+flx-indent
+These are the settings used for \fIreflex\fP's skeleton.
+.TP 5
+gnu-indent
+This uses the GNU indent settings.
+.TP 5
+jpf-indent
+These are the indent settings used by Juergen Pfeifer for ncurses.
+.TP 5
+lnx-indent
+These are the settings used for the \fIlynx\fP web browser.
+.TP 5
+ncu-indent
+These are the indent settings used for \fIncurses\fP, as well as
+other programs such as \fIxterm\fP, \fIvile\fP, \fIdiffstat\fP.
+.TP 5
+tin-indent
+These are the settings used for the \fItin\fP newsreader.
+.TP 5
+vtt-indent
+These are the settings used for \fIvttest\fP.
+.TP 5
+yak-indent
+These are the settings used for \fIbyacc\fP (Berkeley Yacc).
+.SH ENVIRONMENT
+.TP 5
+INDENT_PROG
+Set the name of the \fIindent\fP program.
+The default value is configuration-specific,
+but uses an environment variable to allow temporary customization.
+.TP 5
+INDENT_DATA
+Set the location where profile files are found.
+This is configuration-specific.
+.SH NOTES
+The line numbering presented by GNU indent is generally incorrect.
+Use \*n, at
+.RS
+http://invisible-island.net/gnu-patches/
+.RE
+.PP
+While GNU indent does not support the \fB\-\-profile\fP option,
+\fItdlint\fP checks for this and will attempt to pass the profile's
+contents on the command-line.
+.SH SEE ALSO
+\*n(1).
