@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: vtt-indent,v 1.4 2010/10/08 22:45:19 tom Exp $
+# $Id: vtt-indent,v 1.5 2010/10/09 20:45:47 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2004,2010 Thomas E. Dickey                                 *
 #*                                                                          *
@@ -28,4 +28,4 @@
 #* authorization.                                                           *
 #****************************************************************************/
 # indent vttest
-exec tdindent -profile vtt-profile "$@"
+exec tdindent -s -profile vtt-profile "$@"

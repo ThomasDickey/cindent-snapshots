@@ -1,8 +1,8 @@
 %define AppProgram indent
 %define AppVersion 2.0
-%define AppRelease 20101008
+%define AppRelease 20101009
 %define ActualProg c%{AppProgram}
-# $Id: indent.spec,v 1.4 2010/10/08 09:55:05 tom Exp $
+# $Id: indent.spec,v 1.6 2010/10/09 22:15:09 tom Exp $
 Summary: %{ActualProg} - format C program sources
 Name: c%{AppProgram}
 Version: %{AppVersion}
@@ -34,6 +34,7 @@ INSTALL_PROGRAM='${INSTALL}' \
 		--target %{_target_platform} \
 		--prefix=%{_prefix} \
 		--bindir=%{_bindir} \
+		--datadir=%{_datadir} \
 		--infodir=%{_infodir} \
 		--mandir=%{_mandir} \
 		--program-prefix=c
@@ -53,6 +54,12 @@ strip $RPM_BUILD_ROOT%{_bindir}/%{ActualProg}
 %files
 %defattr(-,root,root)
 %{_bindir}/%{ActualProg}
+%{_bindir}/tdindent
+%{_bindir}/*-indent
+%{_mandir}/man1/%{ActualProg}.*
+%{_mandir}/man1/tdindent.*
+%{_mandir}/man1/*-indent.*
+%{_datadir}/tdindent/*
 %{_infodir}/%{ActualProg}.*
 
 %changelog

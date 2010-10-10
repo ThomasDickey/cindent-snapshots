@@ -1,7 +1,8 @@
 #!/bin/sh
-# $Id: run_test.sh,v 1.7 2010/10/05 22:51:53 tom Exp $
+# $Id: run_test.sh,v 1.10 2010/10/09 15:24:23 tom Exp $
 # vi:ts=4 sw=4
 CODE=0
+unset CDPATH
 if test $# = 0
 then
 	case $0 in
@@ -13,12 +14,20 @@ then
 		;;
 	esac
 fi
+
+SCRIPTS="$TOP/../scripts"
+PATH=`cd "$SCRIPTS";pwd`:$PATH
+export PATH
+
+INDENT_DATA="$SCRIPTS"
+export INDENT_DATA
+
 for SRC in $TOP/*.in
 do
 	test -f "$SRC" || continue
 
 	name=`basename $SRC .in`
-	for OPT in $TOP/*-indent
+	for OPT in $SCRIPTS/*-indent
 	do
 		test -f "$OPT" || continue
 
@@ -44,7 +53,6 @@ do
 			if cmp -s $REF $TST
 			then
 				echo "... ok $REF"
-				rm -f $TST
 			else
 				diff -u $REF $TST
 				CODE=1
@@ -53,6 +61,7 @@ do
 			echo "... saving $REF"
 			mv $TST $REF
 		fi
+		rm -f $TST
 
 		if test ! -f $ERR
 		then

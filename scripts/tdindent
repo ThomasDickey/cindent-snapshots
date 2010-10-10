@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.7 2010/10/08 23:46:18 tom Exp $
+# $Id: tdindent,v 1.16 2010/10/09 20:56:13 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010 Thomas E. Dickey                                      *
 #*                                                                          *
@@ -33,7 +33,12 @@
 : ${INDENT_DATA=.}
 
 NOOP=no
-OPTS=
+OPTS="-npro"
+SPCS=no
+USED=no
+
+PROFILE=
+EXPAND=cat
 
 while test $# != 0
 do
@@ -45,29 +50,80 @@ do
 		NOOP=yes
 		OPTS="$OPTS -v"
 		;;
+	-s)
+		SPCS=yes
+		;;
 	-h|-help|--help)
 		cat <<-EOF
-		This is a wrapper for $INDENT_PROG, which adds options.
+		This is a wrapper for the $INDENT_PROG program, which adds options.
 		Unrecognized options are passed to $INDENT_PROG.
 
 		Options:
-		  -h  help (shows this message)
-		  -n  no-op (performs the indent and shows difference without saving)
+		  -h             help (shows this message)
+		  -n             no-op (perform indent and show difference without saving)
+		  --profile file get settings (look in current, home or $INDENT_DATA)
+		  -s             convert tabs to spaces in the updated file
 EOF
+		exit
 		;;
 	-version|--version)
 		cat <<-EOF
 		This is a wrapper for `$INDENT_PROG -version`
 EOF
 		;;
-	--profile)
+	-profile|--profile)
+		if test $# = 0
+		then
+			echo "?? missing parameter for $name"
+			$0 -h
+			exit 1
+		fi
+		if test -f "$1"
+		then
+			PROFILE="$1"
+		elif test -f "$HOME/$1"
+		then
+			PROFILE="$HOME/$1"
+		elif test -f "$INDENT_DATA/$1"
+		then
+			PROFILE="$INDENT_DATA/$1"
+		else
+			echo "?? cannot find profile $1"
+			$0 -h
+			exit 1
+		fi
 		shift
-		OPTS="$OPTS -profile $INDENT_DATA/$1"
+		case `$INDENT_PROG -version 2>/dev/null` in
+		*.*-2*)
+			OPTS="--profile $PROFILE"
+			;;
+		*)
+			OPTS=`sed -e '/\/\*/,/\*\//d' $PROFILE | tr '\n' ' '`
+			OPTS="-npro $OPTS"
+			;;
+		esac
+		test "$NOOP" = yes && OPTS="$OPTS -v"
 		;;
 	-*)
 		OPTS="$OPTS $name"
 		;;
 	*.[ch]|*.cc|*.cpp)
+		if test "$SPCS" = yes
+		then
+			if test -n "$PROFILE"
+			then
+				SPCS=`sed -e 's/-/_/g' $PROFILE |fgrep __tab_size|sed -e 's/^__tab_size[ 	]*//' -e 's/[ 	].*//'`
+				if test -z "$SPCS"
+				then
+					SPCS=`sed -e 's/-/_/g' $PROFILE |fgrep __ts|sed -e 's/^__ts[ 	]*//' -e 's/[ 	].*//'`
+				fi
+				test -z "$SPCS" && SPCS=8
+			else
+				SPCS=8
+			fi
+			EXPAND="expand -t $SPCS"
+		fi
+		USED=yes
 		save="${name}".a$$
 		test="${name}".b$$
 		rm -f "$save" "$test"
@@ -80,10 +136,13 @@ EOF
 			-e 's,\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,' \
 			-e 's,\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,' \
 			-e 's,\(\<NCURSES_EXPORT_VAR\>.*;\),//\1,' \
+			-e 's,\(\<MARK_END_OF_PROLOG\>\),\1;,' \
+			-e 's,\(\<YY_RULE_SETUP\>\),\1;,' \
+			-e 's,\(\<YY_BREAK\>\),\1;,' \
 			"$save" >"$test"
 		cp "$test" "$name"
 		chmod u+w "$name"
-		$INDENT_PROG -npro $OPTS "$name"
+		$INDENT_PROG $OPTS "$name"
 		sed \
 			-e '/EMPTY_MODULE(/s/);$/)/' \
 			-e 's,//\(MODULEID(\),\1,' \
@@ -94,7 +153,10 @@ EOF
 			-e 's,;[	]*//\(.*\), \1;,' \
 			-e 's,[ 	][	]*\<GCC_, GCC_,g' \
 			-e 's,//\(\<NCURSES_EXPORT_VAR\>[ ]*\),\1,' \
-			"$name" >"$test"
+			-e 's,\(\<MARK_END_OF_PROLOG\>\);,\1,' \
+			-e 's,\(\<YY_RULE_SETUP\>\);,\1,' \
+			-e 's,\(\<YY_BREAK\>\);,\1,' \
+			"$name" | $EXPAND >"$test"
 		mv "$test" "$name"
 		rm -f "${name}~"
 		if test $NOOP = yes ; then
@@ -115,8 +177,15 @@ EOF
 		fi
 		;;
 	*)
+		USED=yes
 		echo "** ignored:   $name"
 		;;
 	esac
 done
+if test $USED = no
+then
+	echo "?? no filenames given"
+	$0 -h
+	exit 1
+fi
 # vi:ts=4 sw=4

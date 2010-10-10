@@ -1,4 +1,4 @@
-cindent (2.0.20101008) unstable; urgency=low
+cindent (2.0.20101009) unstable; urgency=low
 
   * Add package scripts, for test-builds.
 

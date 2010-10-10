@@ -1,5 +1,5 @@
 # Makefile template for GNU indent
-# $Id: makefile.in,v 1.20 2010/10/08 23:26:53 tom Exp $
+# $Id: makefile.in,v 1.23 2010/10/09 22:02:58 tom Exp $
 # Copyright (C) 1994, Joseph Arceneaux.  All rights reserved
 # Copyright (C) 1992, Free Software Foundation, Inc.
 #
@@ -146,7 +146,7 @@ indent.toc: ${MAN}
 	tex ${srcdir}/indent.texinfo
 
 indent.info: indent.texinfo
-	${MAKEINFO} ${srcdir}/indent.texinfo
+	${MAKEINFO} --no-split --no-number-footnotes --no-number-sections ${srcdir}/indent.texinfo
 
 indent.html: indent.texinfo
 	texi2html ${srcdir}/indent.texinfo
@@ -164,6 +164,8 @@ install-info :: $(INFODIR)
 install \
 install-man :: $(MANDIR)
 	${INSTALL_DATA} ${srcdir}/indent.1 $(MANDIR)/$(actual_PROG).1
+	${INSTALL_DATA} ${srcdir}/tdindent.1 $(MANDIR)/tdindent.1
+	$(SHELL) -c 'aliases=`cd $(srcdir)/scripts;echo *-indent`; cd $(MANDIR); for name in $$aliases; do echo ".so tdindent.1" >$$name.1;done'
 
 install \
 install-scripts :: $(BINDIR) $(DATADIR)
@@ -204,6 +206,7 @@ uninstall-scripts ::
 clean: mostlyclean
 	-rm -f core*
 	-rm -f ${MANJUNK}
+	-rm -f case0*.c case0*.err
 
 # Delete all files created by configuring or building indent
 distclean: clean
