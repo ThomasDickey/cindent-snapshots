@@ -715,7 +715,7 @@ found:
 		val = 1;
 	    }
 
-	  if (!isdigit (*param_start))
+	  if (!isdigit (UChar (*param_start)))
 	    {
 	      fprintf (stderr,
 		       "%s: option ``%s'' requires a numeric parameter\n",

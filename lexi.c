@@ -113,19 +113,20 @@ lexi (void)
   /* Scan an alphanumeric token */
   if ((!(buf_ptr[0] == 'L' && (buf_ptr[1] == '"' || buf_ptr[1] == '\''))
        && chartype[UChar (*buf_ptr)] == alphanum)
-      || (buf_ptr[0] == '.' && isdigit (buf_ptr[1])))
+      || (buf_ptr[0] == '.' && isdigit (UChar (buf_ptr[1]))))
     {
       /* we have a character or number */
       const struct templ *p;
 
-      if (isdigit (*buf_ptr) || (buf_ptr[0] == '.' && isdigit (buf_ptr[1])))
+      if (isdigit (UChar (*buf_ptr))
+	  || (buf_ptr[0] == '.' && isdigit (UChar (buf_ptr[1]))))
 	{
 	  int seendot = 0, seenexp = 0;
 	  if (*buf_ptr == '0' &&
 	      (buf_ptr[1] == 'x' || buf_ptr[1] == 'X'))
 	    {
 	      buf_ptr += 2;
-	      while (isxdigit (*buf_ptr))
+	      while (isxdigit (UChar (*buf_ptr)))
 		inc_token_len ();
 	    }
 	  else
@@ -139,7 +140,7 @@ lexi (void)
 		      seendot++;
 		  }
 		inc_token_len ();
-		if (!isdigit (*buf_ptr) && *buf_ptr != '.')
+		if (!isdigit (UChar (*buf_ptr)) && *buf_ptr != '.')
 		  {
 		    if ((*buf_ptr != 'E' && *buf_ptr != 'e') || seenexp)
 		      break;
@@ -348,7 +349,7 @@ lexi (void)
 	      parser_state_tos->procname = token;
 	      parser_state_tos->procname_end = token_end;
 
-	      while (isspace (*tp))
+	      while (isspace (UChar (*tp)))
 		tp++;
 
 	      /* If the next char is ';' or ',' or '(' we have a function
@@ -376,7 +377,7 @@ lexi (void)
          current token is in fact a declaration keyword -- one that
          has been typedef'd */
       else if (((*buf_ptr == '*' && buf_ptr[1] != '=')
-		|| isalpha (*buf_ptr) || *buf_ptr == '_')
+		|| isalpha (UChar (*buf_ptr)) || *buf_ptr == '_')
 	       && !parser_state_tos->p_l_follow
 	       && !parser_state_tos->block_init
 	       && (parser_state_tos->last_token == rparen

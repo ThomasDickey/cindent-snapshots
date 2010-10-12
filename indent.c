@@ -166,7 +166,7 @@ warn_broken_line (int which)
   int len = token_len ? token_len : 1;
   const char *s = token;
 
-  if (!isgraph (*s))
+  if (!isgraph (UChar (*s)))
     {
       switch (*s)
 	{

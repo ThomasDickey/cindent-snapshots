@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.16 2010/10/09 20:56:13 tom Exp $
+# $Id: tdindent,v 1.17 2010/10/11 22:19:14 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010 Thomas E. Dickey                                      *
 #*                                                                          *
@@ -98,7 +98,7 @@ EOF
 			OPTS="--profile $PROFILE"
 			;;
 		*)
-			OPTS=`sed -e '/\/\*/,/\*\//d' $PROFILE | tr '\n' ' '`
+			OPTS=`sed -e '/\/\*/,/\*\//d' -e 's/[ 	]*\([0-9]\)/\1/g' $PROFILE | tr '\n' ' '`
 			OPTS="-npro $OPTS"
 			;;
 		esac
