@@ -64,9 +64,9 @@
 #include <string.h>
 
 #ifndef isascii
-#define ISDIGIT(c) (isdigit ((unsigned char) (c)))
+#define ISDIGIT(c) (isdigit (UChar(c)))
 #else
-#define ISDIGIT(c) (isascii (c) && isdigit (c))
+#define ISDIGIT(c) (isascii (UChar(c)) && isdigit (UChar(c)))
 #endif
 
 #ifndef NODIR

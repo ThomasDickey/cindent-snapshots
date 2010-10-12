@@ -1,4 +1,11 @@
--- $Id: ChangeLog,v 1.25 2010/10/09 22:14:34 tom Exp $
+-- $Id: ChangeLog,v 1.26 2010/10/11 22:55:15 tom Exp $
+
+2010-10-11
+	+ minor portability fixes for ctype.h usage
+
+	+ minor fix to ensure that options with numeric parameters are kept
+	  with the option when handling older indent's lacking the --profile
+	  option.
 
 2010-10-09
 	+ add manpages for tdindent, regenerate manpage and html documentation.
