@@ -1,4 +1,11 @@
--- $Id: ChangeLog,v 1.26 2010/10/11 22:55:15 tom Exp $
+-- $Id: ChangeLog,v 1.28 2010/10/25 21:35:00 tom Exp $
+
+2010-10-25
+	+ update configure script macros to reduce reliance on an obsolete
+	  shell feature.
+
+	+ provide useful messages for case when INDENT-OFF comment is not
+	  followed by an INDENT-ON comment.
 
 2010-10-11
 	+ minor portability fixes for ctype.h usage

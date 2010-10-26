@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.17 2010/10/11 22:19:14 tom Exp $
+# $Id: tdindent,v 1.18 2010/10/25 21:30:53 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010 Thomas E. Dickey                                      *
 #*                                                                          *
@@ -29,8 +29,8 @@
 #****************************************************************************/
 # this was ncu-indent, before integrating with cindent package in 2010.
 
-: ${INDENT_PROG=indent}
-: ${INDENT_DATA=.}
+: ${INDENT_PROG:=indent}
+: ${INDENT_DATA:=.}
 
 NOOP=no
 OPTS="-npro"
