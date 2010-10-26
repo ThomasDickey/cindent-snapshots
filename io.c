@@ -643,6 +643,15 @@ read_stdin (void)
   return &stdinptr;
 }
 
+static void
+unterminated_inhibit (int start_no)
+{
+  int save_line_no = in_line_no;
+  in_line_no = start_no + 1;
+  message (1, "unterminated INDENT-OFF comment", 0);
+  in_line_no = save_line_no;
+}
+
 /* Advance `buf_ptr' so that it points to the next line of input.
 
    If the next input line contains an indent control comment turning
@@ -707,6 +716,7 @@ fill_buffer (void)
 	    {
 	      char *q = cur_line;
 	      int inhibited = 1;
+	      int starting_no = in_line_no;
 
 	      if (s_com != e_com || s_lab != e_lab || s_code != e_code)
 		dump_line ();
@@ -722,6 +732,7 @@ fill_buffer (void)
 		    {
 		      buf_ptr = buf_end = in_prog_pos = p;
 		      had_eof = 1;
+		      unterminated_inhibit (starting_no);
 		      return;
 		    }
 
@@ -736,7 +747,7 @@ fill_buffer (void)
 
 		  if (*p == '/' && (*(p + 1) == '*' || *(p + 1) == '/'))
 		    {
-		      /* We've hit a comment.  See if turns formatting
+		      /* We've hit a comment.  See if it turns formatting
 		         back on. */
 		      pass_char (*p++);
 		      pass_char (*p++);
@@ -769,6 +780,15 @@ fill_buffer (void)
 				}
 			    }
 			  while (inhibited);
+			}
+		      else if (!strncmp (p, "*INDENT-OFF*", (size_t) 12))
+			{
+			  unterminated_inhibit (starting_no);
+			  starting_no = in_line_no;
+			}
+		      else if (!strncmp (p, "*INDENT-", (size_t) 8))
+			{
+			  message (1, "unexpected INDENT-comment", 0);
 			}
 		    }
 		}

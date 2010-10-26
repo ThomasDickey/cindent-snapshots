@@ -2245,8 +2245,8 @@ fi
   test -n "$ETAGS" && break
 done
 
-# Extract the first word of "${CTAGS-ctags}", so it can be a program name with args.
-set dummy ${CTAGS-ctags}; ac_word=$2
+# Extract the first word of "${CTAGS:-ctags}", so it can be a program name with args.
+set dummy ${CTAGS:-ctags}; ac_word=$2
 echo "$as_me:2250: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_prog_MAKE_LOWER_TAGS+set}" = set; then
@@ -2279,8 +2279,8 @@ echo "${ECHO_T}no" >&6
 fi
 
 if test "$cf_cv_mixedcase" = yes ; then
-	# Extract the first word of "${ETAGS-etags}", so it can be a program name with args.
-set dummy ${ETAGS-etags}; ac_word=$2
+	# Extract the first word of "${ETAGS:-etags}", so it can be a program name with args.
+set dummy ${ETAGS:-etags}; ac_word=$2
 echo "$as_me:2284: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_prog_MAKE_UPPER_TAGS+set}" = set; then
@@ -2412,7 +2412,7 @@ then
 	{ echo "$as_me:2412: checking for $CC __attribute__ directives..." >&5
 echo "$as_me: checking for $CC __attribute__ directives..." >&6;}
 cat > conftest.$ac_ext <<EOF
-#line 2415 "${as_me-configure}"
+#line 2415 "${as_me:-configure}"
 #include "confdefs.h"
 #include "conftest.h"
 #include "conftest.i"
@@ -2555,7 +2555,7 @@ echo "${ECHO_T}$INTEL_COMPILER" >&6
 fi
 
 cat > conftest.$ac_ext <<EOF
-#line 2558 "${as_me-configure}"
+#line 2558 "${as_me:-configure}"
 int main(int argc, char *argv[]) { return (argv[argc-1] == 0) ; }
 EOF
 
@@ -2638,7 +2638,7 @@ echo "${ECHO_T}... -$cf_opt" >&6
 				[34].*)
 					test -n "$verbose" && echo "	feature is broken in gcc $GCC_VERSION" 1>&6
 
-echo "${as_me-configure}:2641: testing feature is broken in gcc $GCC_VERSION ..." 1>&5
+echo "${as_me:-configure}:2641: testing feature is broken in gcc $GCC_VERSION ..." 1>&5
 
 					continue;;
 				esac
@@ -2988,7 +2988,7 @@ if test "${cf_cv_posix_c_source+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
 
-echo "${as_me-configure}:2991: testing if the symbol is already defined go no further ..." 1>&5
+echo "${as_me:-configure}:2991: testing if the symbol is already defined go no further ..." 1>&5
 
 	cat >conftest.$ac_ext <<_ACEOF
 #line 2994 "configure"
@@ -3071,12 +3071,12 @@ fi
 rm -f conftest.$ac_objext conftest.$ac_ext
 	 fi
 
-echo "${as_me-configure}:3074: testing ifdef from value $cf_POSIX_C_SOURCE ..." 1>&5
+echo "${as_me:-configure}:3074: testing ifdef from value $cf_POSIX_C_SOURCE ..." 1>&5
 
 	 CFLAGS="$cf_trim_CFLAGS"
 	 CPPFLAGS="$cf_trim_CPPFLAGS $cf_cv_posix_c_source"
 
-echo "${as_me-configure}:3079: testing if the second compile does not leave our definition intact error ..." 1>&5
+echo "${as_me:-configure}:3079: testing if the second compile does not leave our definition intact error ..." 1>&5
 
 	 cat >conftest.$ac_ext <<_ACEOF
 #line 3082 "configure"

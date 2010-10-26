@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: run_test.sh,v 1.10 2010/10/09 15:24:23 tom Exp $
+# $Id: run_test.sh,v 1.13 2010/10/25 22:27:25 tom Exp $
 # vi:ts=4 sw=4
 CODE=0
 unset CDPATH
@@ -15,7 +15,7 @@ then
 	esac
 fi
 
-SCRIPTS="$TOP/../scripts"
+SCRIPTS=`echo "$TOP/../scripts" | sed -e 's,[^/][^/]*/../,,'`
 PATH=`cd "$SCRIPTS";pwd`:$PATH
 export PATH
 
@@ -42,7 +42,7 @@ do
 		rm -f $TST
 		cp $SRC $TST
 
-		sh -c "./$OPT $TST 2>&1 >$ERR"
+		sh -c "./$OPT -v $TST >$ERR 2>&1"
 		rm -f *~
 
 		if test ! -f $TST

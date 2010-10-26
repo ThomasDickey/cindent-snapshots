@@ -850,7 +850,7 @@ set_profile (const char *given)
       scan_profile (f);
       (void) fclose (f);
       fname = xmalloc (len);
-      if (*given != '/')
+      if (*given != '/' && strncmp (given, "./", (size_t) 2))
 	{
 	  fname[0] = '.';
 	  fname[1] = '/';
