@@ -1,6 +1,14 @@
--- $Id: ChangeLog,v 1.28 2010/10/25 21:35:00 tom Exp $
+-- $Id: ChangeLog,v 1.30 2010/10/26 23:53:36 tom Exp $
 
 2010-10-25
+	+ amend a check for --dont-break-procedure-type option to detect a
+	  newline before a procedure name, to allow for a left-curly brace
+	  to be the previous token.  This can happen with ifdef'd extern "C"
+	  bracketing of C code.
+
+	+ add check for types such as "char" passed as macro parameters, to
+	  avoid indenting as if the statement were a declaration.
+
 	+ update configure script macros to reduce reliance on an obsolete
 	  shell feature.
 

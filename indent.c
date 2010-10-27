@@ -194,14 +194,37 @@ warn_broken_line (int which)
   message (col, "Line split #%d at %.*s", which, len, s);
 }
 
+static void
+not_a_decl (void)
+{
+  int tos = parser_state_tos->tos;
+
+  if (tos
+      && (parser_state_tos->il[tos] >= ind_size))
+    {
+#ifdef DEBUG
+      if (debug > 1)
+	printf ("not_a_decl in_parm %d in_decl %d\n",
+		parser_state_tos->in_parameter_declaration,
+		parser_state_tos->in_decl);
+#endif
+      parser_state_tos->last_token = ident;
+      parser_state_tos->in_decl = 0;
+      parser_state_tos->il[tos] -= ind_size;
+      parser_state_tos->i_l_follow = parser_state_tos->il[tos];
+    }
+}
+#define CHECK_LAST_DECL \
+    if (parser_state_tos->last_token == decl) \
+      not_a_decl()
+
 /* Force a newline at this point in the output stream. */
 
 #define PARSE(token) if (parse (token) != total_success) \
                        file_exit_value = indent_error
 
 static enum exit_values
-indent (
-	 struct file_buffer *this_file)
+indent (struct file_buffer *this_file)
 {
   int i;
   enum codes hd_type;
@@ -645,6 +668,7 @@ indent (
 	         and if e.g., K&R style, leave the procedure on the
 	         same line as the type. */
 	      if (!procnames_start_line
+		  && parser_state_tos->last_token != lbrace
 		  && parser_state_tos->last_token != semicolon
 		  && parser_state_tos->last_rw == rw_decl
 		  && parser_state_tos->last_rw_depth == 0
@@ -1415,6 +1439,8 @@ indent (
 	  break;
 
 	case comma:
+	  /* check for type passed as parameter */
+	  CHECK_LAST_DECL;
 	  /* only put blank after comma if comma does not start the line */
 	  parser_state_tos->want_blank = (s_code != e_code);
 	  if (parser_state_tos->paren_depth == 0
