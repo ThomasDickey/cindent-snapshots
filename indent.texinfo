@@ -87,7 +87,7 @@ by the Foundation.
 @top @code{indent}:  Indent and Format C Program Source
 
 The @code{indent} program changes the appearance of a C program by
-inserting or deleting whitespace.  
+inserting or deleting whitespace.
 
 @comment !!set edition, version, date
 This is Edition 2.0, January 1996, of @cite{The @code{indent} Manual},
@@ -114,7 +114,7 @@ The @code{indent} program
 It
 @end iftex
 can be used to make code easier to read.  It can also convert from one
-style of writing C to another.  
+style of writing C to another.
 
 @code{indent} understands a substantial amount about the syntax of C,
 but it also attempts to cope with incomplete and misformed syntax.
@@ -371,7 +371,7 @@ long option name).  This style is equivalent to the following settings:
 @example
 @group
 -nbap -nbad -bc -br -c33 -cd33 -cdb -ce -ci4
--cli0 -cp33 -di16 -fc1 -fca -i4 -ip4 -l75 -lp 
+-cli0 -cp33 -di16 -fc1 -fca -i4 -ip4 -l75 -lp
 -npcs -psl -sc -nsob -nss -ts8
 @end group
 @end example
@@ -1065,7 +1065,11 @@ in place.
 The @samp{-v} option can be used to turn on verbose mode.  When in
 verbose mode, @code{indent} reports when it splits one line of input
 into two more more lines of output, and gives some size statistics at
-completion. 
+completion.
+
+@kindex -D
+The @samp{-D} option can be used to turn on debugging traces.
+Its parameter gives the debugging level (0 is off, 1 is on, 2 is more verbose).
 
 @node Bugs, Copyright, Miscellaneous options, Indent Program
 @comment  node-name,  next,  previous,  up
@@ -1188,8 +1192,8 @@ Case label indent of @var{n} spaces.@*
 
 @item -cp@var{n}
 @item --else-endif-column@var{n}
-Put comments to the right of @samp{#else} and 
-@samp{#endif} statements in column @var{n}.@* 
+Put comments to the right of @samp{#else} and
+@samp{#endif} statements in column @var{n}.@*
 @xref{Comments}.
 
 @item -cs
@@ -1197,9 +1201,14 @@ Put comments to the right of @samp{#else} and
 Put a space after a cast operator.@*
 @xref{Statements}.
 
+@item -D@var{n}
+@itemx --debug@var{n}
+Enable debugging traces.@*
+@xref{Miscellaneous options}.
+
 @item -d@var{n}
 @itemx --line-comments-indentation@var{n}
-Set indentation of comments not to the right 
+Set indentation of comments not to the right
 of code to @var{n} spaces.@*
 @xref{Comments}.
 
@@ -1230,7 +1239,7 @@ Set indentation level to @var{n} spaces.@*
 
 @item -ip@var{n}
 @itemx --parameter-indentation@var{n}
-Indent parameter types in old-style function 
+Indent parameter types in old-style function
 definitions by @var{n} spaces.@*
 @xref{Indentation}.
 
@@ -1337,7 +1346,7 @@ Do not put the @samp{*} character at the left of comments.@*
 Do not swallow optional blank lines.@*
 @xref{Blank lines}.
 
-@item -nss  
+@item -nss
 @item --dont-space-special-semicolon
 Do not force a space before the semicolon after certain statements.
 Disables @samp{-ss}.@*
@@ -1357,9 +1366,9 @@ Use the original Berkeley coding style.@*
 Do not read @file{.indent.pro} files.@*
 @xref{Invoking indent}.
 
-@item -pcs  
+@item -pcs
 @itemx --space-after-procedure-calls
-Insert a space between the name of the 
+Insert a space between the name of the
 procedure being called and the @samp{(}.@*
 @xref{Statements}.
 
@@ -1380,7 +1389,7 @@ Swallow optional blank lines.@*
 
 @item -ss
 @itemx --space-special-semicolon
-On one-line @code{for} and @code{while} statments, 
+On one-line @code{for} and @code{while} statments,
 force a blank before the semicolon.@*
 @xref{Statements}.
 
@@ -1389,7 +1398,7 @@ force a blank before the semicolon.@*
 Write to standard output.@*
 @xref{Invoking indent}.
 
-@item -T   
+@item -T
 Tell @code{indent} the name of typenames.@*
 @xref{Declarations}.
 
@@ -1400,7 +1409,7 @@ Tell @code{indent} the name of typenames.@*
 @c Format the program for printing with @code{troff}.  Use of this option
 @c is not suggested.
 @c  xref   Miscellaneous options
-@c 
+@c
 @c
 @item -ts@var{n}
 @itemx --tab-size@var{n}
@@ -1432,35 +1441,36 @@ the corresponding short option.
 @ignore
 \line{ --blank-lines-after-block-comments \leaderfill -bbb\ }
 @end ignore
-\line{ --blank-lines-after-commas \leaderfill         -bc\ \ }  
-\line{ --blank-lines-after-declarations \leaderfill   -bad\ } 
-\line{ --blank-lines-after-procedures \leaderfill     -bap\ }  
-\line{ --braces-after-if-line \leaderfill            -bl\ \ } 
+\line{ --blank-lines-after-commas \leaderfill         -bc\ \ }
+\line{ --blank-lines-after-declarations \leaderfill   -bad\ }
+\line{ --blank-lines-after-procedures \leaderfill     -bap\ }
+\line{ --braces-after-if-line \leaderfill            -bl\ \ }
 \line{ --brace-indent \leaderfill                -bli@var{n}}
-\line{ --braces-on-if-line \leaderfill               -br\ \ }      
+\line{ --braces-on-if-line \leaderfill               -br\ \ }
 \line{ --case-indentation \leaderfill            -cli@var{n}}
 \line{ --comment-delimiters-on-blank-lines \leaderfill -cdb\ }
-\line{ --comment-indentation \leaderfill       -c@var{n}\ \ } 
-\line{ --continuation-indentation       \leaderfill -ci@var{n}\ } 
-\line{ --continue-at-parentheses  \leaderfill   -lp\ \ }            
+\line{ --comment-indentation \leaderfill       -c@var{n}\ \ }
+\line{ --continuation-indentation       \leaderfill -ci@var{n}\ }
+\line{ --continue-at-parentheses  \leaderfill   -lp\ \ }
 \line{ --cuddle-else \leaderfill                         -ce\ \ }
-\line{ --declaration-comment-column \leaderfill  -cd@var{n}\ } 
-\line{ --declaration-indentation \leaderfill     -di@var{n}\ } 
-\line{ --dont-break-procedure-type \leaderfill           -npsl} 
-\line{ --dont-cuddle-else \leaderfill                    -nce\ }  
-\line{ --dont-format-comments \leaderfill                -nfca} 
-\line{ --dont-format-first-column-comments \leaderfill   -nfc1} 
-\line{ --dont-line-up-parentheses \leaderfill            -nlp\ }  
+\line{ --debug \leaderfill  -D@var{n}\ }
+\line{ --declaration-comment-column \leaderfill  -cd@var{n}\ }
+\line{ --declaration-indentation \leaderfill     -di@var{n}\ }
+\line{ --dont-break-procedure-type \leaderfill           -npsl}
+\line{ --dont-cuddle-else \leaderfill                    -nce\ }
+\line{ --dont-format-comments \leaderfill                -nfca}
+\line{ --dont-format-first-column-comments \leaderfill   -nfc1}
+\line{ --dont-line-up-parentheses \leaderfill            -nlp\ }
 \line{ --dont-space-special-semicolon \leaderfill        -nss\ }
-\line{ --dont-star-comments \leaderfill                  -nsc\ }  
+\line{ --dont-star-comments \leaderfill                  -nsc\ }
 \line{ --else-endif-column \leaderfill             -cp@var{n}\ }
-\line{ --format-all-comments \leaderfill                 -fca\ }  
-\line{ --format-first-column-comments \leaderfill        -fc1\ }  
-\line{ --gnu-style \leaderfill                           -gnu\ }  
-\line{ --ignore-profile \leaderfill                      -npro} 
+\line{ --format-all-comments \leaderfill                 -fca\ }
+\line{ --format-first-column-comments \leaderfill        -fc1\ }
+\line{ --gnu-style \leaderfill                           -gnu\ }
+\line{ --ignore-profile \leaderfill                      -npro}
 \line{ --indent-level \leaderfill                  -i@var{n}\ \ }
 \line{ --k-and-r-style \leaderfill                       -kr\ \ }
-\line{ --leave-optional-blank-lines \leaderfill          -nsob}    
+\line{ --leave-optional-blank-lines \leaderfill          -nsob}
 \line{ --line-comments-indentation \leaderfill      -d@var{n}\ \ }
 \line{ --leave-preprocessor-space \leaderfill       -lps\ }
 \line{ --line-length \leaderfill                    -l@var{n}\ \ }
@@ -1468,88 +1478,89 @@ the corresponding short option.
 @comment Didn't do anything, so I removed it
 \line{ --no-blank-lines-after-block-comments \leaderfill -nbbb}
 @end ignore
-\line{ --no-blank-lines-after-commas \leaderfill         -nbc\ }   
-\line{ --no-blank-lines-after-declarations \leaderfill   -nbad}  
-\line{ --no-blank-lines-after-procedures \leaderfill     -nbap}  
-\line{ --no-comment-delimiters-on-blank-lines \leaderfill -ncdb}  
-\line{ --no-space-after-casts \leaderfill               -ncs\ }    
-\line{ --no-parameter-indentation \leaderfill               -nip\ }    
-\line{ --no-space-after-function-call-names \leaderfill -npcs}   
+\line{ --no-blank-lines-after-commas \leaderfill         -nbc\ }
+\line{ --no-blank-lines-after-declarations \leaderfill   -nbad}
+\line{ --no-blank-lines-after-procedures \leaderfill     -nbap}
+\line{ --no-comment-delimiters-on-blank-lines \leaderfill -ncdb}
+\line{ --no-space-after-casts \leaderfill               -ncs\ }
+\line{ --no-parameter-indentation \leaderfill               -nip\ }
+\line{ --no-space-after-function-call-names \leaderfill -npcs}
 \line{ --no-verbosity \leaderfill                       -nv\ \ }
 \line{ --original \leaderfill                      -orig}
-\line{ --parameter-indentation \leaderfill         -ip@var{n}\ } 
-\line{ --procnames-start-lines \leaderfill         -psl\ }  
-\line{ --space-after-cast \leaderfill              -cs\ \ } 
-\line{ --space-after-procedure-calls \leaderfill   -pcs\ }  
-\line{ --space-special-semicolon \leaderfill       -ss\ \ } 
-\line{ --standard-output \leaderfill      -st\ \ } 
+\line{ --parameter-indentation \leaderfill         -ip@var{n}\ }
+\line{ --procnames-start-lines \leaderfill         -psl\ }
+\line{ --space-after-cast \leaderfill              -cs\ \ }
+\line{ --space-after-procedure-calls \leaderfill   -pcs\ }
+\line{ --space-special-semicolon \leaderfill       -ss\ \ }
+\line{ --standard-output \leaderfill      -st\ \ }
 \line{ --start-left-side-of-comments \leaderfill   -sc\ \ }
-\line{ --swallow-optional-blank-lines \leaderfill  -sob\ } 
-\line{ --tab-size \leaderfill          -ts@var{n}\ }  
-\line{ --verbose \leaderfill       -v\ \ \ }  
+\line{ --swallow-optional-blank-lines \leaderfill  -sob\ }
+\line{ --tab-size \leaderfill          -ts@var{n}\ }
+\line{ --verbose \leaderfill       -v\ \ \ }
 }
 @end tex
 
 @ifinfo
 @example
 @ignore
---blank-lines-after-block-comments              -bbb            
+--blank-lines-after-block-comments              -bbb
 @endif
---blank-lines-after-commas                      -bc             
---blank-lines-after-declarations                -bad            
---blank-lines-after-procedures                  -bap            
---braces-after-if-line                          -bl             
+--blank-lines-after-commas                      -bc
+--blank-lines-after-declarations                -bad
+--blank-lines-after-procedures                  -bap
+--braces-after-if-line                          -bl
 --brace-indent                                  -bli
---braces-on-if-line                             -br             
---case-indentation                              -cli@var{n}     
---comment-delimiters-on-blank-lines             -cdb            
---comment-indentation                           -c@var{n}       
---continuation-indentation                      -ci@var{n}      
---continue-at-parentheses                       -lp             
---cuddle-else                                   -ce             
---declaration-comment-column                    -cd@var{n}      
---declaration-indentation                       -di@var{n}      
---dont-break-procedure-type                     -npsl           
---dont-cuddle-else                              -nce            
---dont-format-comments                          -nfca           
---dont-format-first-column-comments             -nfc1           
---dont-line-up-parentheses                      -nlp            
+--braces-on-if-line                             -br
+--case-indentation                              -cli@var{n}
+--comment-delimiters-on-blank-lines             -cdb
+--comment-indentation                           -c@var{n}
+--continuation-indentation                      -ci@var{n}
+--continue-at-parentheses                       -lp
+--cuddle-else                                   -ce
+--debug                                         -D@var{n}
+--declaration-comment-column                    -cd@var{n}
+--declaration-indentation                       -di@var{n}
+--dont-break-procedure-type                     -npsl
+--dont-cuddle-else                              -nce
+--dont-format-comments                          -nfca
+--dont-format-first-column-comments             -nfc1
+--dont-line-up-parentheses                      -nlp
 --dont-space-special-semicolon                  -nss
---dont-star-comments                            -nsc            
+--dont-star-comments                            -nsc
 --else-endif-column                             -cp@var{n}
---format-all-comments                           -fca            
---format-first-column-comments                  -fc1            
---gnu-style                                     -gnu            
---ignore-profile                                -npro           
---indent-level                                  -i@var{n}       
---k-and-r-style                                 -kr             
---leave-optional-blank-lines                    -nsob           
+--format-all-comments                           -fca
+--format-first-column-comments                  -fc1
+--gnu-style                                     -gnu
+--ignore-profile                                -npro
+--indent-level                                  -i@var{n}
+--k-and-r-style                                 -kr
+--leave-optional-blank-lines                    -nsob
 --leave-preprocessor-space                      -lps
---line-comments-indentation                     -d@var{n}       
---line-length                                   -l@var{n}       
+--line-comments-indentation                     -d@var{n}
+--line-length                                   -l@var{n}
 @ignore
 @comment Didn't do anything, so I've removed it.
---no-blank-lines-after-block-comments           -nbbb           
+--no-blank-lines-after-block-comments           -nbbb
 @end ignore
---no-blank-lines-after-commas                   -nbc            
---no-blank-lines-after-declarations             -nbad           
---no-blank-lines-after-procedures               -nbap           
---no-comment-delimiters-on-blank-lines          -ncdb           
---no-space-after-casts                          -ncs            
---no-parameter-indentation                      -nip            
---no-space-after-function-call-names            -npcs           
---no-verbosity                                  -nv             
+--no-blank-lines-after-commas                   -nbc
+--no-blank-lines-after-declarations             -nbad
+--no-blank-lines-after-procedures               -nbap
+--no-comment-delimiters-on-blank-lines          -ncdb
+--no-space-after-casts                          -ncs
+--no-parameter-indentation                      -nip
+--no-space-after-function-call-names            -npcs
+--no-verbosity                                  -nv
 --original                                      -orig
---parameter-indentation                         -ip@var{n}      
---procnames-start-lines                         -psl            
---space-after-cast                              -cs             
---space-after-procedure-calls                   -pcs            
---space-special-semicolon                       -ss             
---standard-output                               -st             
---start-left-side-of-comments                   -sc             
---swallow-optional-blank-lines                  -sob            
---tab-size                                      -ts@var{n}      
---verbose                                       -v              
+--parameter-indentation                         -ip@var{n}
+--procnames-start-lines                         -psl
+--space-after-cast                              -cs
+--space-after-procedure-calls                   -pcs
+--space-special-semicolon                       -ss
+--standard-output                               -st
+--start-left-side-of-comments                   -sc
+--swallow-optional-blank-lines                  -sob
+--tab-size                                      -ts@var{n}
+--verbose                                       -v
 @end example
 @end ifinfo
 

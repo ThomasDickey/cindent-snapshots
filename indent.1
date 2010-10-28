@@ -688,6 +688,10 @@ The \fB\-v\fR option can be used to turn on verbose mode.  When in
 verbose mode, \fBindent\fR reports when it splits one line of input into
 two more more lines of output, and gives some size statistics at
 completion.
+.PP
+The \fB\-D\fR option can be used to turn on debugging traces.  Its
+parameter gives the debugging level (0 is off, 1 is on, 2 is more
+verbose).
 .SH Bugs
 The "\-troff" option is strongly deprecated, and is not supported.  A
 good thing for someone to do is to rewrite \fBindent\fR to generate TeX
@@ -850,6 +854,14 @@ column N.
 .RS 5
 Put a space after a cast operator.
 (see \fBStatements\fR).
+.RE
+.PP
+\fB\-DN\fR
+.br
+\fB\-\-debugN\fR
+.RS 5
+Enable debugging traces.
+(see \fBMiscellaneous options\fR).
 .RE
 .PP
 \fB\-dN\fR
@@ -1270,6 +1282,7 @@ Menu:
 \-cN	Comments.
 \-cpN	Comments.
 \-cs	Statements.
+\-D	Miscellaneous options.
 \-dce	Statements.
 \-diN	Declarations.
 \-dN	Comments.

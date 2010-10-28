@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.18 2010/10/25 21:30:53 tom Exp $
+# $Id: tdindent,v 1.19 2010/10/27 00:05:08 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010 Thomas E. Dickey                                      *
 #*                                                                          *
@@ -132,6 +132,7 @@ EOF
 			-e '/EMPTY_MODULE(/s/)$/);/' \
 			-e 's,\(MODULEID(\),//\1,' \
 			-e '/MODULE_ID(/s/)$/);/' \
+			-e 's,\<GCC_UNUSED\(.*\);,;//GCC_UNUSED\1,' \
 			-e 's,\<GCC_NORETURN\(.*\);,;//GCC_NORETURN\1,' \
 			-e 's,\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,' \
 			-e 's,\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,' \
@@ -147,6 +148,7 @@ EOF
 			-e '/EMPTY_MODULE(/s/);$/)/' \
 			-e 's,//\(MODULEID(\),\1,' \
 			-e '/MODULE_ID(/s/);$/)/' \
+			-e 's,;[ 	]*//GCC_UNUSED\(.*\);, GCC_UNUSED\1;,' \
 			-e 's,;[ 	]*//GCC_NORETURN\(.*\);, GCC_NORETURN\1;,' \
 			-e 's,;[ 	]*//GCC_PRINTFLIKE(\(.*\);, GCC_PRINTFLIKE(\1;,' \
 			-e 's,;[ 	]*//GCC_SCANFLIKE(\(.*\);, GCC_SCANFLIKE(\1;,' \
