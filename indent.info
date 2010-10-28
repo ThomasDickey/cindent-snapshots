@@ -715,6 +715,10 @@ verbose mode, `indent' reports when it splits one line of input into
 two more more lines of output, and gives some size statistics at
 completion.
 
+   The `-D' option can be used to turn on debugging traces.  Its
+parameter gives the debugging level (0 is off, 1 is on, 2 is more
+verbose).
+
 
 File: indent.info,  Node: Bugs,  Next: Copyright,  Prev: Miscellaneous options,  Up: Indent Program
 
@@ -848,6 +852,11 @@ option.  It is followed by a cross key alphabetized by long option.
 `--space-after-cast'
      Put a space after a cast operator.
      *Note Statements::.
+
+`-DN'
+`--debugN'
+     Enable debugging traces.
+     *Note Miscellaneous options::.
 
 `-dN'
 `--line-comments-indentationN'
@@ -1159,6 +1168,8 @@ Index
 * -cN:                                   Comments.             (line 78)
 * -cpN:                                  Comments.             (line 78)
 * -cs:                                   Statements.           (line 82)
+* -D:                                    Miscellaneous options.
+                                                               (line 15)
 * -dce:                                  Statements.           (line 49)
 * -diN:                                  Declarations.         (line  6)
 * -dN:                                   Comments.             (line 67)
@@ -1239,9 +1250,9 @@ Node: Declarations19609
 Node: Indentation21117
 Node: Disabling Formatting23438
 Node: Miscellaneous options25174
-Node: Bugs25722
-Node: Copyright26031
-Node: Option Summary27472
-Node: Index35101
+Node: Bugs25864
+Node: Copyright26173
+Node: Option Summary27614
+Node: Index35327
 
 End Tag Table

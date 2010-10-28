@@ -244,10 +244,10 @@ lexi (void)
 	  enum codes value;
 
 	found_keyword:
-#ifdef DEBUG
 	  if (debug)
-	    printf ("keyword \"%.*s\"\n", token_len, token);
-#endif
+	    {
+	      printf ("keyword \"%.*s\"\n", token_len, token);
+	    }
 	  value = ident;
 	  parser_state_tos->its_a_keyword = true;
 	  parser_state_tos->last_u_d = true;

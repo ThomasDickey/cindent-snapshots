@@ -199,15 +199,16 @@ not_a_decl (void)
 {
   int tos = parser_state_tos->tos;
 
-  if (tos
+  if (tos > 1
+      && (parser_state_tos->p_stack[tos - 1] == elsehead)
       && (parser_state_tos->il[tos] >= ind_size))
     {
-#ifdef DEBUG
       if (debug > 1)
-	printf ("not_a_decl in_parm %d in_decl %d\n",
-		parser_state_tos->in_parameter_declaration,
-		parser_state_tos->in_decl);
-#endif
+	{
+	  printf ("not_a_decl in_parm %d in_decl %d\n",
+		  parser_state_tos->in_parameter_declaration,
+		  parser_state_tos->in_decl);
+	}
       parser_state_tos->last_token = ident;
       parser_state_tos->in_decl = 0;
       parser_state_tos->il[tos] -= ind_size;
@@ -347,10 +348,10 @@ indent (struct file_buffer *this_file)
 	  /* After scanning an if(), while (), etc., it might be necessary to
 	     keep track of the text between the if() and the start of the
 	     statement which follows.  Use save_com to do so.  */
-#ifdef DEBUG
 	  if (debug > 1)
-	    printf ("token %s\n", parsecode2s (type_code));
-#endif
+	    {
+	      printf ("token %s\n", parsecode2s (type_code));
+	    }
 	  switch (type_code)
 	    {
 	    case newline:
@@ -1283,6 +1284,23 @@ indent (struct file_buffer *this_file)
 	case decl:		/* we have a declaration type (int, register,
 				   etc.) */
 
+	  /*
+	   * This special case is related to the comma after a decl.
+	   */
+	  if (parser_state_tos->last_token == lparen
+	      && (parser_state_tos->p_stack[parser_state_tos->tos] == elsehead)
+	      && hd_type == ifstmt)
+	    {
+	      type_code = ident;
+	      for (t_ptr = token; t_ptr < token_end; ++t_ptr)
+		{
+		  CHECK_CODE_SIZE;
+		  *e_code++ = *t_ptr;
+		}
+	      *e_code = '\0';	/* null terminate code sect */
+	      break;
+	    }
+
 	  /* handle C++ const function declarations like
 	     const MediaDomainList PVR::get_itsMediaDomainList() const
 	     {
@@ -1291,6 +1309,7 @@ indent (struct file_buffer *this_file)
 	     by ignoring "const" just after a parameter list */
 	  if (parser_state_tos->last_token == rparen
 	      && parser_state_tos->in_parameter_declaration
+	      && (token_end - token) == 5
 	      && !strncmp (token, "const", (size_t) 5))
 	    {
 	      buf_break = e_code;
@@ -1819,10 +1838,8 @@ static const char **in_file_names;
 /* Initial number of input filenames to allocate. */
 static size_t max_input_files = 128;
 
-#ifdef DEBUG
-int debug = 1;
+int debug = 0;
 int exp_D = 0;
-#endif
 
 /* Some operating systems don't allow more than one dot in a filename.  */
 #if defined (ONE_DOT_PER_FILENAME)

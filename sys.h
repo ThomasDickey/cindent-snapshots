@@ -19,10 +19,8 @@
 #define BACKSLASH '\\'
 #define NULL_CHAR '\0'
 
-#ifdef DEBUG
 extern int debug;
 extern int exp_D;
-#endif
 
 #define INLINE
 

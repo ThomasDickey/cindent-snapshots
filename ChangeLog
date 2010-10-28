@@ -1,6 +1,10 @@
--- $Id: ChangeLog,v 1.30 2010/10/26 23:53:36 tom Exp $
+-- $Id: ChangeLog,v 1.32 2010/10/27 23:28:58 tom Exp $
 
 2010-10-25
+	+ enable the -D option all the time, without ifdef'ing for DEBUG.
+
+	+ add GCC_UNUSED to tdlint filtering.
+
 	+ amend a check for --dont-break-procedure-type option to detect a
 	  newline before a procedure name, to allow for a left-curly brace
 	  to be the previous token.  This can happen with ifdef'd extern "C"

@@ -285,7 +285,6 @@ inc_pstack (void)
   return parser_state_tos->tos;
 }
 
-#ifdef DEBUG
 static void
 show_pstack (void)
 {
@@ -303,25 +302,19 @@ show_pstack (void)
       printf ("\n");
     }
 }
-#else
-#define show_pstack()		/* nothing */
-#endif
 
 enum exit_values
-parse (
-	enum codes tk)		/* the code for the construct scanned */
+parse (enum codes tk)		/* the code for the construct scanned */
 {
   int i;
   enum exit_values my_value = total_success;
 
-#ifdef DEBUG
   if (debug)
     {
       if (debug > 1)
 	printf ("%s:%d:%d: ", in_name, in_line_no, token_col ());
       printf ("Parse: %s\n", parsecode2s (tk));
     }
-#endif
 
   while (parser_state_tos->p_stack[parser_state_tos->tos] == ifhead
 	 && tk != elselit)

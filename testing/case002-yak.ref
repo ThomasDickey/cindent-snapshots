@@ -29,3 +29,19 @@ set_envvar(int f GCC_UNUSED, int n GCC_UNUSED)
     return rc;
 }
 #endif
+
+static LINEPTR
+alloc_LINE(BUFFER * bp)
+{
+    LINEPTR lp;
+
+    if ((lp = bp->b_freeLINEs) != NULL)
+    {
+	bp->b_freeLINEs = lp->l_nxtundo;
+    }
+    else if ((lp = typealloc(LINE)) == NULL)
+    {
+	(void)no_memory("LINE");
+    }
+    return lp;
+}

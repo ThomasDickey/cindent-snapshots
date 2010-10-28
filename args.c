@@ -219,9 +219,7 @@ struct pro
 /* Settings for original defaults */
 struct pro pro[] =
 {
-#ifdef DEBUG
-  INIT_BOOL ("D", false, ON, &debug, &exp_D),
-#endif
+  INIT_INT ("D", 0, ONOFF_NA, &debug, &exp_D),
   INIT_KEY ("T", 0, ONOFF_NA, 0, &exp_T),
   INIT_BOOL ("bacc", false, ON,
 	     &blanklines_around_conditional_compilation, &exp_bacc),
@@ -320,6 +318,7 @@ struct pro pro[] =
 /* Changed to make GNU style the default. */
 struct pro pro[] =
 {
+  INIT_INT ("D", 0, ONOFF_NA, &debug, &exp_D),
   INIT_KEY ("T", 0, ONOFF_NA, 0, &exp_T),
   INIT_BOOL ("bacc", false, ON,
 	     &blanklines_around_conditional_compilation, &exp_bacc),
@@ -449,6 +448,7 @@ struct long_option_conversion option_conversions[] =
   {"else-endif-column", "cp"},
   {"space-after-cast", "cs"},
   {"comment-indentation", "c"},
+  {"debug", "D"},
   {"declaration-indentation", "di"},
   {"left-justify-declarations", "dj"},
   {"line-comments-indentation", "d"},
