@@ -1,4 +1,4 @@
-.\" $Id: tdindent.1,v 1.3 2010/10/28 10:46:08 tom Exp $
+.\" $Id: tdindent.1,v 1.4 2010/10/29 10:51:38 tom Exp $
 .\" Copyright:  2010 by Thomas E. Dickey
 .\"
 .\" Permission is hereby granted, free of charge, to any person obtaining a
@@ -53,6 +53,43 @@ or in a configuration-specific location.
 convert tabs to spaces in the updated file.
 The script relies on the settings from the \fB\-\-profile\fP option
 to get the tab-size for expansion.
+.SS FILE TYPES
+The wrapper script checks each file's suffix.
+It accepts these:
+.TP 5
+.B .c .h
+These are the standard C suffixes.
+.TP 5
+.B .cc .cpp .hh 
+These are accepted as "close enough" to C.
+.TP 5
+.B .l .y
+The wrapper adds to \fB\-ly\fP option, telling \fBindent\fP to process
+lex/yacc files.
+.PP
+It ignores other file-suffixes, making it possible to run the \fBindent\fP
+program on all files in a directory.
+.SS FILTERING
+The \fBindent\fP program by itself cannot handle certain commonly-used
+macros, e.g., from \fIncurses\fP and \fIxterm\fP.
+The wrapper script temporarily changes references to these to a form
+that \fBindent\fP can handle:
+.RS
+.sp
+.nf
+EMPTY_MODULE
+GCC_NORETURN
+GCC_PRINTFLIKE
+GCC_SCANFLIKE
+GCC_UNUSED
+MARK_END_OF_PROLOG
+MODULEID
+MODULE_ID
+NCURSES_EXPORT_VAR
+YY_BREAK
+YY_RULE_SETUP
+.fi
+.RE
 .SH OTHER SCRIPTS
 There are several profiles and corresponding wrapper scripts:
 .TP 5
@@ -105,6 +142,7 @@ http://invisible-island.net/gnu-patches/
 .PP
 While GNU indent does not support the \fB\-\-profile\fP option,
 \fItdlint\fP checks for this and will attempt to pass the profile's
-contents on the command-line.
+contents on the command-line,
+making it possible to compare formatting results.
 .SH SEE ALSO
 \*n(1).

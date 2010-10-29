@@ -19,8 +19,9 @@
 @setchapternewpage odd
 
 @ifinfo
-Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
-Copyright (C) 1995, 1996 Joseph Arceneaux
+Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.@*
+Copyright @copyright{} 1995, 1996 Joseph Arceneaux@*
+Copyright @copyright{} 1999-2002, 2010 Thomas E. Dickey
 
 @c !!set edition, date, version
 This is Edition 2.0, January, 1996, of @cite{The @code{indent} Manual},
@@ -134,8 +135,9 @@ the default.
 * Declarations::                Declarations
 * Indentation::                 Indentation
 * Disabling Formatting::        Disabling Formatting
+* Other Languages::             Other Languages
 * Miscellaneous options::       Miscellaneous options
-* Bugs::                 	Bugs
+* Bugs::                        Bugs
 * Copyright::                   Copyright
 @end menu
 
@@ -233,6 +235,7 @@ indent +braces-on-if-line +line-length185 test/metabolism.c
 @cindex Initialization file
 @kindex -npro
 @kindex --ignore-profile
+@kindex +ignore-profile
 If you find that you often use @code{indent} with the same options, you
 may put those options into a file named @file{.indent.pro}.
 @code{indent} will first look for @file{.indent.pro} in the current
@@ -396,6 +399,13 @@ specific places.
 The @samp{-bad} option causes @code{indent} to force a blank line after
 every block of declarations.  The @samp{-nbad} option causes
 @code{indent} not to force such blank lines.
+
+@kindex -bacc
+@kindex --blank-lines-after-ifdefs
+@kindex -nbacc
+@kindex --no-blank-lines-after-ifdefs
+The @samp{-bacc} option forces a blank line after (before) every ifdef group.
+The @samp{-nbacc} option forces no such blank line.
 
 The @samp{-bap} option forces a blank line after every procedure body.
 The @samp{-nbap} option forces no such blank line.
@@ -1002,12 +1012,22 @@ is provided, which is equivalent to @samp{-ip0}.
 @kindex --leave-preprocessor-space
 @kindex -nlps
 @kindex --remove-preprocessor-space
-ASCII C allows white space to be placed on preprocessor command lines
+ANSI C allows white space to be placed on preprocessor command lines
 between the character @samp{#} and the command name.  By default,
 @code{indent} removes this space, but specifying the @samp{-lps} option
 directs @code{indent} to leave this space unmodified.
 
-@node Disabling Formatting, Miscellaneous options, Indentation, Indent Program
+@kindex -eei
+@kindex --extra-expression-indentation
+@kindex -neei
+@kindex --no-extra-expression-indentation
+Use the @samp{-eei} option to tell @code{indent} to improve readability
+of continuation lines from the expression part of
+@code{if(e)}, @code{while(e)}, @code{for(e;e;e)}
+by indenting an extra tab stop
+so that they do not conflict with the code that follows.
+
+@node Disabling Formatting, Other Languages, Indentation, Indent Program
 @comment  node-name,  next,  previous,  up
 @section Disabling Formatting
 
@@ -1039,17 +1059,66 @@ to be left unformatted.
 As a historical note, some earlier versions of @code{indent} produced
 error messages beginning with @code{*INDENT**}.  These versions of
 @code{indent} were written to ignore any input text lines which began
-with such error messages.  I have removed this incestuous feature from
-@code{GNU indent}.
+with such error messages.
 
-@node Miscellaneous options, Bugs, Disabling Formatting, Indent Program
+@node Other Languages, Miscellaneous options, Disabling Formatting, Indent Program
+@comment  node-name,  next,  previous,  up
+@section Other Languages
+
+@kindex -c++
+@kindex --c-plus-plus
+In addition to recognizing C++ comments (which are now standard in C),
+@code{indent} provides limited support for C++ constructs:
+
+@itemize @bullet
+@item
+It deals with C++ Class::Method, by not splitting the double colons.
+@item
+It handles C++ const function declarations like
+@display
+const MediaDomainList PVR::get_itsMediaDomainList() const
+@end display
+by ignoring "const" just after a parameter list */
+@end itemize
+
+It also accepts (and currently ignores) a @samp{-c++} option.
+This would be used with an alternate symbol table for C++.
+
+@kindex -ly
+@kindex --lex-or-yacc
+If you add the @samp{-ly} option,
+@code{indent} also handles for Lex/Yacc scripts,
+by formatting the parts which are passed directly to the output.
+Both lex and yacc use the same file structure:
+@example
+@group
+``definitions''
+%%
+``rules''
+%%
+``literal''
+@end group
+@end example
+Anything in the ``literal'' section is copied to the output,
+and is assumed to be C source.
+Also, within the ``definitions'' and ``rules'' sections,
+lex/yacc pass any lines bracketed with %@{ and %@} to the output.
+
+Other C statements within ``rules'' are not currently formatted.
+
+@node Miscellaneous options, Bugs, Other Languages, Indent Program
 @comment  node-name,  next,  previous,  up
 @section Miscellaneous options
 
-@kindex -version
+@kindex --version
 To find out what version of @code{indent} you have, use the command
-@code{indent -version}.  This will report the version number of
+@code{indent --version}.  This will report the version number of
 @code{indent}, without doing any of the normal processing.
+
+@kindex -h
+@kindex --help
+@kindex --usage
+Use the @code{--help} option to get a usage summary.
 
 @ignore
 This is intentionally undocumented because
@@ -1070,14 +1139,13 @@ in place.
 @kindex --verbose
 @kindex -nv
 @kindex --no-verbosity
-@comment Would --terse be better?  I think not, but perhaps accepting
-@comment --no-verbose would avoid error messages.
 The @samp{-v} option can be used to turn on verbose mode.  When in
 verbose mode, @code{indent} reports when it splits one line of input
 into two more more lines of output, and gives some size statistics at
 completion.
 
 @kindex -D
+@kindex --debug
 The @samp{-D} option can be used to turn on debugging traces.
 Its parameter gives the debugging level (0 is off, 1 is on, 2 is more verbose).
 
@@ -1099,11 +1167,11 @@ beginning of this document.
 
 @display
 Copyright 1999-2002, 2010 Thomas E. Dickey
-Copyright (c) 1995, 1996 Joseph Arceneaux
-Copyright (c) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
-Copyright (c) 1985 Sun Microsystems, Inc.
-Copyright (c) 1980 The Regents of the University of California.
-Copyright (c) 1976 Board of Trustees of the University of Illinois.
+Copyright @copyright{} 1995, 1996 Joseph Arceneaux
+Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
+Copyright @copyright{} 1985 Sun Microsystems, Inc.
+Copyright @copyright{} 1980 The Regents of the University of California.
+Copyright @copyright{} 1976 Board of Trustees of the University of Illinois.
 All rights reserved.
 
 Redistribution and use in source and binary forms are permitted
@@ -1130,6 +1198,11 @@ short option.  It is followed by a cross key alphabetized by long option.
 @c The cross references are all on lines by themselves because this
 @c looks better in both printed output and Info.  4 Feb 1992  --rjc
 @table @samp
+@item -bacc
+@itemx --blank-lines-after-ifdefs
+Force blank lines after (and before) ifdefs.@*
+@xref{Blank lines}.
+
 @item -bad
 @itemx --blank-lines-after-declarations
 Force blank lines after the declarations.@*
@@ -1228,6 +1301,12 @@ of code to @var{n} spaces.@*
 Put variables in column @var{n}.@*
 @xref{Declarations}.
 
+@item -eei
+@itemx --extra-expression-indentation
+Indent continuation lines
+of @code{if}, @code{for} and @code{while} statements.@*
+@xref{Indentation}.
+
 @item -fc1
 @itemx --format-first-column-comments
 Format comments in the first column.@*
@@ -1282,6 +1361,11 @@ Line up continued lines at parentheses.@*
 Leave space between @samp{#} and preprocessor directive.
 @xref{Indentation}.
 
+@item -nbacc
+@itemx --no-blank-lines-after-ifdefs
+Do not force blank lines after (and before) ifdefs.@*
+@xref{Blank lines}.
+
 @item -nbad
 @itemx --no-blank-lines-after-declarations
 Do not force blank lines after declarations.@*
@@ -1292,13 +1376,10 @@ Do not force blank lines after declarations.@*
 Do not force blank lines after procedure bodies.@*
 @xref{Blank lines}.
 
-@ignore
-@comment Didn't do anything, so I removed it
 @item -nbbb
 @itemx --no-blank-lines-after-block-comments
-Do not force blank-lines after block comments.@*
+Do not force blank-lines after (before) block comments.@*
 @xref{Blank lines}.
-@end ignore
 
 @item -nbc
 @itemx --no-blank-lines-after-commas
@@ -1319,6 +1400,12 @@ Do not cuddle @code{@}} and @code{else}.@*
 @itemx --no-space-after-casts
 Do not put a space after cast operators.@*
 @xref{Statements}.
+
+@item -neei
+@itemx --no-extra-expression-indentation
+Do not indent continuation lines
+of @code{if}, @code{for} and @code{while} statements.@*
+@xref{Indentation}.
 
 @item -nfc1
 @itemx --dont-format-first-column-comments
@@ -1380,6 +1467,7 @@ Use the original Berkeley coding style.@*
 
 @item -npro
 @itemx --ignore-profile
+@itemx +ignore-profile
 Do not read @file{.indent.pro} files.@*
 @xref{Invoking indent}.
 
@@ -1461,11 +1549,10 @@ the corresponding short option.
 \def\leaderfill{\leaders\hbox to 1em{\hss.\hss}\hfill}
 
 {\tt
-@ignore
 \line{ --blank-lines-after-block-comments \leaderfill -bbb\ }
-@end ignore
 \line{ --blank-lines-after-commas \leaderfill         -bc\ \ }
 \line{ --blank-lines-after-declarations \leaderfill   -bad\ }
+\line{ --blank-lines-after-ifdefs \leaderfill         -bacc\ }
 \line{ --blank-lines-after-procedures \leaderfill     -bap\ }
 \line{ --braces-after-if-line \leaderfill            -bl\ \ }
 \line{ --brace-indent \leaderfill                -bli@var{n}}
@@ -1487,6 +1574,7 @@ the corresponding short option.
 \line{ --dont-space-special-semicolon \leaderfill        -nss\ }
 \line{ --dont-star-comments \leaderfill                  -nsc\ }
 \line{ --else-endif-column \leaderfill             -cp@var{n}\ }
+\line{ --extra-expression-indentation \leaderfill        -eei\ }
 \line{ --format-all-comments \leaderfill                 -fca\ }
 \line{ --format-first-column-comments \leaderfill        -fc1\ }
 \line{ --gnu-style \leaderfill                           -gnu\ }
@@ -1497,13 +1585,12 @@ the corresponding short option.
 \line{ --line-comments-indentation \leaderfill      -d@var{n}\ \ }
 \line{ --leave-preprocessor-space \leaderfill       -lps\ }
 \line{ --line-length \leaderfill                    -l@var{n}\ \ }
-@ignore
-@comment Didn't do anything, so I removed it
 \line{ --no-blank-lines-after-block-comments \leaderfill -nbbb}
-@end ignore
 \line{ --no-blank-lines-after-commas \leaderfill         -nbc\ }
 \line{ --no-blank-lines-after-declarations \leaderfill   -nbad}
+\line{ --no-blank-lines-after-ifdefs \leaderfill         -nbacc}
 \line{ --no-blank-lines-after-procedures \leaderfill     -nbap}
+\line{ --no-extra-expression-indentation \leaderfill     -neei}
 \line{ --no-comment-delimiters-on-blank-lines \leaderfill -ncdb}
 \line{ --no-space-after-casts \leaderfill               -ncs\ }
 \line{ --no-parameter-indentation \leaderfill               -nip\ }
@@ -1525,9 +1612,7 @@ the corresponding short option.
 
 @ifinfo
 @example
-@ignore
 --blank-lines-after-block-comments              -bbb
-@endif
 --blank-lines-after-commas                      -bc
 --blank-lines-after-declarations                -bad
 --blank-lines-after-procedures                  -bap
@@ -1561,10 +1646,7 @@ the corresponding short option.
 --leave-preprocessor-space                      -lps
 --line-comments-indentation                     -d@var{n}
 --line-length                                   -l@var{n}
-@ignore
-@comment Didn't do anything, so I've removed it.
 --no-blank-lines-after-block-comments           -nbbb
-@end ignore
 --no-blank-lines-after-commas                   -nbc
 --no-blank-lines-after-declarations             -nbad
 --no-blank-lines-after-procedures               -nbap
