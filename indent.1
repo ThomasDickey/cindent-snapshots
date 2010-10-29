@@ -270,7 +270,7 @@ Menu:
 \-bad	see \fBMore on the \fB\-bad\fR option.\fR
 \-bap	see \fBMore on the \fB\-bap\fR option.\fR
 .TE
-.SS \-blank\-lines\-after\-declarations
+.SS \-\-blank\-lines\-after\-declarations
 The \fB\-bad\fR option forces a blank line after every block of
 declarations.  The \fB\-nbad\fR option does not add any such blank lines.
 .PP
@@ -299,7 +299,7 @@ char *bar;
 int baz;
 .NE
 .PP
-.SS \-blank\-lines\-after\-procedures
+.SS \-\-blank\-lines\-after\-procedures
 .PP
 The \fB\-bap\fR option forces a blank line after every procedure body.
 .PP
@@ -701,6 +701,7 @@ The following copyright notice applies to the \fBindent\fR program.  The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 .NS
+Copyright 1999\-2002, 2010 Thomas E. Dickey
 Copyright (c) 1995, 1996 Joseph Arceneaux
 Copyright (c) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright (c) 1985 Sun Microsystems, Inc.
@@ -907,6 +908,8 @@ Use GNU coding style.  This is the default.
 \fB\-iN\fR
 .br
 \fB\-\-indent\-levelN\fR
+.br
+\fB\-\-indentation\-levelN\fR
 .RS 5
 Set indentation level to N spaces.
 (see \fBIndentation\fR).
@@ -924,6 +927,10 @@ spaces.
 \fB\-kr\fR
 .br
 \fB\-\-k\-and\-r\-style\fR
+.br
+\fB\-\-kernighan\-and\-ritchie\fR
+.br
+\fB\-\-kernighan\-and\-ritchie\-style\fR
 .RS 5
 Use Kernighan & Ritchie coding style.
 (see \fBCommon styles\fR).
@@ -1091,6 +1098,12 @@ Disable verbose mode. (see \fBMiscellaneous options\fR).
 \fB\-orig\fR
 .br
 \fB\-\-original\fR
+.br
+\fB\-\-original\-style\fR
+.br
+\fB\-\-berkeley\fR
+.br
+\fB\-\-berkeley\-style\fR
 .RS 5
 Use the original Berkeley coding style.
 (see \fBCommon styles\fR).
@@ -1101,6 +1114,16 @@ Use the original Berkeley coding style.
 \fB\-\-ignore\-profile\fR
 .RS 5
 Do not read \fB.indent.pro\fR files.
+(see \fBInvoking indent\fR).
+.RE
+.PP
+\fB\-o\fR
+.br
+\fB\-\-output\fR
+.br
+\fB\-\-output\-file\fR
+.RS 5
+Write an output file, for the case where only one input is given.
 (see \fBInvoking indent\fR).
 .RE
 .PP
@@ -1211,7 +1234,10 @@ the corresponding short option.
 l l
 l l .
 Menu:
-\-\-blank\-after\-sizeof	Statements.
+\-\-berkeley	Common styles.
+\-\-berkeley\-style	Common styles.
+\-\-Bill\-Shannon	Statements.
+\-\-blank\-before\-sizeof	Statements.
 \-\-blank\-lines\-after\-block\-comments	Blank lines.
 \-\-blank\-lines\-after\-commas	Declarations.
 \-\-blank\-lines\-after\-declarations	\-bad.
@@ -1240,7 +1266,10 @@ Menu:
 \-\-gnu\-style	Common styles.
 \-\-ignore\-profile	Invoking indent.
 \-\-indent\-levelN	Indentation.
+\-\-indentation\-levelN	Indentation.
 \-\-k\-and\-r\-style	Common styles.
+\-\-kernighan\-and\-ritchie	Common styles.
+\-\-kernighan\-and\-ritchie\-style	Common styles.
 \-\-leave\-optional\-blank\-lines	Blank lines.
 \-\-leave\-preprocessor\-space	Indentation.
 \-\-line\-comments\-indentationN	Comments.
@@ -1254,6 +1283,8 @@ Menu:
 \-\-no\-space\-after\-function\-call\-names	Statements.
 \-\-no\-verbosity	Miscellaneous options.
 \-\-original	Common styles.
+\-\-original\-style	Common styles.
+\-\-output	Invoking indent.
 \-\-output\-file	Invoking indent.
 \-\-parameter\-indentationN	Indentation.
 \-\-procnames\-start\-lines	Declarations.
@@ -1262,7 +1293,7 @@ Menu:
 \-\-space\-after\-procedure\-calls	Statements.
 \-\-space\-special\-semicolon	Statements.
 \-\-standard\-output	Invoking indent.
-\-\-star\-left\-side\-of\-comments	Comments.
+\-\-start\-left\-side\-of\-comments	Comments.
 \-\-swallow\-optional\-blank\-lines	Blank lines.
 \-\-tab\-sizeN	Indentation.
 \-\-verbose	Miscellaneous options.
@@ -1283,7 +1314,6 @@ Menu:
 \-cpN	Comments.
 \-cs	Statements.
 \-D	Miscellaneous options.
-\-dce	Statements.
 \-diN	Declarations.
 \-dN	Comments.
 \-fc1	Comments.
@@ -1299,6 +1329,7 @@ Menu:
 \-nbbb	Blank lines.
 \-nbc	Declarations.
 \-ncdb	Comments.
+\-nce	Statements.
 \-ncs	Statements.
 \-nfc1	Comments.
 \-nfca	Comments.

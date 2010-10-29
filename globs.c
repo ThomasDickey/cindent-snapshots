@@ -1,4 +1,7 @@
-/* Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
+/*
+   Copyright 1999-2002,2010, Thomas E. Dickey
+
+   Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
 
    Copyright (C) 1986, 1989, 1992 Free Software Foundation, Inc. All rights
    reserved.

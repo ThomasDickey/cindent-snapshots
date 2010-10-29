@@ -1,6 +1,8 @@
--- $Id: ChangeLog,v 1.32 2010/10/27 23:28:58 tom Exp $
+-- $Id: ChangeLog,v 1.33 2010/10/28 09:46:19 tom Exp $
 
 2010-10-25
+	+ add option -ly, to handle lex/yacc files.
+
 	+ enable the -D option all the time, without ifdef'ing for DEBUG.
 
 	+ add GCC_UNUSED to tdlint filtering.

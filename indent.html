@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
 <html>
-<!-- Created on October 9, 2010 by texi2html 1.82
+<!-- Created on October 28, 2010 by texi2html 1.82
 texi2html was written by: 
             Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -68,7 +68,7 @@ ul.toc {list-style: none}
 <h1 class="chapter">1. The <code>indent</code> Program</h1>
 
 <p>can be used to make code easier to read.  It can also convert from one
-style of writing C to another.  
+style of writing C to another.
 </p>
 <p><code>indent</code> understands a substantial amount about the syntax of C,
 but it also attempts to cope with incomplete and misformed syntax.
@@ -355,7 +355,7 @@ specifying &lsquo;<samp>-orig</samp>&rsquo; (or by specifyfying &lsquo;<samp>--o
 long option name).  This style is equivalent to the following settings:
 </p>
 <table><tr><td>&nbsp;</td><td><pre class="example">-nbap -nbad -bc -br -c33 -cd33 -cdb -ce -ci4
--cli0 -cp33 -di16 -fc1 -fca -i4 -ip4 -l75 -lp 
+-cli0 -cp33 -di16 -fc1 -fca -i4 -ip4 -l75 -lp
 -npcs -psl -sc -nsob -nss -ts8
 </pre></td></tr></table>
 
@@ -1056,7 +1056,11 @@ with such error messages.  I have removed this incestuous feature from
 <p>The &lsquo;<samp>-v</samp>&rsquo; option can be used to turn on verbose mode.  When in
 verbose mode, <code>indent</code> reports when it splits one line of input
 into two more more lines of output, and gives some size statistics at
-completion. 
+completion.
+</p>
+<a name="index-_002dD"></a>
+<p>The &lsquo;<samp>-D</samp>&rsquo; option can be used to turn on debugging traces.
+Its parameter gives the debugging level (0 is off, 1 is on, 2 is more verbose).
 </p>
 <hr size="6">
 <a name="Bugs"></a>
@@ -1108,7 +1112,8 @@ source as a hardcopy output option, amoung other things.
 The copyright and copying permissions for this manual appear near the
 beginning of this document.
 </p>
-<table><tr><td>&nbsp;</td><td><pre class="display">Copyright (c) 1995, 1996 Joseph Arceneaux
+<table><tr><td>&nbsp;</td><td><pre class="display">Copyright 1999-2002, 2010 Thomas E. Dickey
+Copyright (c) 1995, 1996 Joseph Arceneaux
 Copyright (c) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright (c) 1985 Sun Microsystems, Inc.
 Copyright (c) 1980 The Regents of the University of California.
@@ -1242,8 +1247,8 @@ See section <a href="#Statements">Statements</a>.
 </dd>
 <dt> &lsquo;<samp>-cp<var>n</var></samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--else-endif-column<var>n</var></samp>&rsquo;</dt>
-<dd><p>Put comments to the right of &lsquo;<samp>#else</samp>&rsquo; and 
-&lsquo;<samp>#endif</samp>&rsquo; statements in column <var>n</var>.<br> 
+<dd><p>Put comments to the right of &lsquo;<samp>#else</samp>&rsquo; and
+&lsquo;<samp>#endif</samp>&rsquo; statements in column <var>n</var>.<br>
 See section <a href="#Comments">Comments</a>.
 </p>
 </dd>
@@ -1253,9 +1258,15 @@ See section <a href="#Comments">Comments</a>.
 See section <a href="#Statements">Statements</a>.
 </p>
 </dd>
+<dt> &lsquo;<samp>-D<var>n</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--debug<var>n</var></samp>&rsquo;</dt>
+<dd><p>Enable debugging traces.<br>
+See section <a href="#Miscellaneous-options">Miscellaneous options</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-d<var>n</var></samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--line-comments-indentation<var>n</var></samp>&rsquo;</dt>
-<dd><p>Set indentation of comments not to the right 
+<dd><p>Set indentation of comments not to the right
 of code to <var>n</var> spaces.<br>
 See section <a href="#Comments">Comments</a>.
 </p>
@@ -1292,7 +1303,7 @@ See section <a href="#Indentation">Indentation</a>.
 </dd>
 <dt> &lsquo;<samp>-ip<var>n</var></samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--parameter-indentation<var>n</var></samp>&rsquo;</dt>
-<dd><p>Indent parameter types in old-style function 
+<dd><p>Indent parameter types in old-style function
 definitions by <var>n</var> spaces.<br>
 See section <a href="#Indentation">Indentation</a>.
 </p>
@@ -1412,7 +1423,7 @@ See section <a href="#Comments">Comments</a>.
 See section <a href="#Blank-lines">Blank lines</a>.
 </p>
 </dd>
-<dt> &lsquo;<samp>-nss</samp>&rsquo;  </dt>
+<dt> &lsquo;<samp>-nss</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--dont-space-special-semicolon</samp>&rsquo;</dt>
 <dd><p>Do not force a space before the semicolon after certain statements.
 Disables &lsquo;<samp>-ss</samp>&rsquo;.<br>
@@ -1436,9 +1447,9 @@ See section <a href="#Common-styles">Common styles</a>.
 See section <a href="#Invoking-indent">Invoking <code>indent</code></a>.
 </p>
 </dd>
-<dt> &lsquo;<samp>-pcs</samp>&rsquo;  </dt>
+<dt> &lsquo;<samp>-pcs</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--space-after-procedure-calls</samp>&rsquo;</dt>
-<dd><p>Insert a space between the name of the 
+<dd><p>Insert a space between the name of the
 procedure being called and the &lsquo;<samp>(</samp>&rsquo;.<br>
 See section <a href="#Statements">Statements</a>.
 </p>
@@ -1463,7 +1474,7 @@ See section <a href="#Blank-lines">Blank lines</a>.
 </dd>
 <dt> &lsquo;<samp>-ss</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--space-special-semicolon</samp>&rsquo;</dt>
-<dd><p>On one-line <code>for</code> and <code>while</code> statments, 
+<dd><p>On one-line <code>for</code> and <code>while</code> statments,
 force a blank before the semicolon.<br>
 See section <a href="#Statements">Statements</a>.
 </p>
@@ -1474,7 +1485,7 @@ See section <a href="#Statements">Statements</a>.
 See section <a href="#Invoking-indent">Invoking <code>indent</code></a>.
 </p>
 </dd>
-<dt> &lsquo;<samp>-T</samp>&rsquo;   </dt>
+<dt> &lsquo;<samp>-T</samp>&rsquo;</dt>
 <dd><p>Tell <code>indent</code> the name of typenames.<br>
 See section <a href="#Declarations">Declarations</a>.
 </p>
@@ -1588,6 +1599,7 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002dcpn"><code>-cp<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcs"><code>-cs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dcuddle_002delse"><code>--cuddle-else</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dD"><code>-D</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.10 Miscellaneous options</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002ddce"><code>-dce</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddeclaration_002dcomment_002dcolumnn"><code>--declaration-comment-column<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddeclaration_002dindentationn"><code>--declaration-indentation<var>n</var></code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
@@ -1796,7 +1808,7 @@ maintain consistency with the POSIX standard.
 </tr></table>
 <h1>About This Document</h1>
 <p>
-  This document was generated by <em>Thomas Dickey</em> on <em>October 9, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas Dickey</em> on <em>October 28, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
 </p>
 <p>
   The buttons in the navigation panels have the following meaning:
@@ -1898,7 +1910,7 @@ maintain consistency with the POSIX standard.
 <hr size="1">
 <p>
  <font size="-1">
-  This document was generated by <em>Thomas Dickey</em> on <em>October 9, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas Dickey</em> on <em>October 28, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
  </font>
  <br>
 

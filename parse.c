@@ -1,4 +1,7 @@
-/* Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
+/*
+   Copyright 1999-2002,2010, Thomas E. Dickey
+
+   Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
    Copyright (c) 1985 Sun Microsystems, Inc. Copyright (c) 1980 The Regents
    of the University of California. Copyright (c) 1976 Board of Trustees of
@@ -243,6 +246,9 @@ reset_parser (void)
   l_code = codebuf + INITIAL_BUFFER_SIZE - 5;
   combuf[0] = codebuf[0] = labbuf[0] = ' ';
   combuf[1] = codebuf[1] = labbuf[1] = '\0';
+
+  lex_section = 0;
+  next_lexcode = 0;
 
   else_if = 1;
   else_or_endif = false;

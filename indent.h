@@ -1,4 +1,7 @@
-/* Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
+/*
+   Copyright 1999-2002,2010, Thomas E. Dickey
+
+   Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
    Copyright (c) 1992, Free Software Foundation, Inc.  All rights reserved.
 
@@ -154,6 +157,10 @@ extern FILE *output;
 /* True if we're handling C++ code. */
 extern int c_plus_plus;
 
+/* Section if we're handling lex/yacc code. */
+extern int lex_section;
+extern int next_lexcode;
+
 extern char *labbuf;		/* buffer for label */
 extern char *s_lab;		/* start ... */
 extern char *e_lab;		/* .. and end of stored label */
@@ -292,6 +299,7 @@ extern int suppress_blanklines;	/* set iff following blanklines should be
 				   suppressed */
 extern int continuation_indent;	/* set to the indentation between the edge of
 				   code and continuation lines in spaces */
+extern int lex_or_yacc;		/* if true, format lex/yacc source */
 extern int lineup_to_parens;	/* if true, continued code within parens will
 				   be lined up to the open paren */
 extern int leave_preproc_space;	/* if true, leave the spaces between

@@ -1,5 +1,6 @@
 # Makefile template for GNU indent
-# $Id: makefile.in,v 1.23 2010/10/09 22:02:58 tom Exp $
+# $Id: makefile.in,v 1.24 2010/10/28 10:52:44 tom Exp $
+# Copyright 1999-2002,2010, Thomas E. Dickey
 # Copyright (C) 1994, Joseph Arceneaux.  All rights reserved
 # Copyright (C) 1992, Free Software Foundation, Inc.
 #

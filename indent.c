@@ -1,4 +1,7 @@
-/* Copyright (c) 1994,1996,1997, Joseph Arceneaux.  All rights reserved.
+/*
+   Copyright 1999-2002,2010, Thomas E. Dickey
+
+   Copyright (c) 1994,1996,1997, Joseph Arceneaux.  All rights reserved.
 
    Copyright (c) 1992, Free Software Foundation, Inc.  All rights reserved.
 
@@ -42,6 +45,10 @@ usage (void)
 
 /* True if we're handling C++ code. */
 int c_plus_plus = 0;
+
+/* Section if we're handling lex/yacc code. */
+int lex_section = 0;
+int next_lexcode = 0;
 
 /* Stuff that needs to be shared with the rest of indent.
    Documented in indent.h.  */
@@ -1837,9 +1844,6 @@ static const char **in_file_names;
 
 /* Initial number of input filenames to allocate. */
 static size_t max_input_files = 128;
-
-int debug = 0;
-int exp_D = 0;
 
 /* Some operating systems don't allow more than one dot in a filename.  */
 #if defined (ONE_DOT_PER_FILENAME)

@@ -1,15 +1,18 @@
-/*  Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
+/*
+   Copyright 1999-2002,2010, Thomas E. Dickey
 
-    GNU indent is originally based on Berkeley indent 5.11 of
-    Sept. 15, 1988.
+   Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
-    After some independent changes by kingdon, he then merged in more
-    Berkeley code in Sept 1989.  This version extends up to 1.1.3.
+   GNU indent is originally based on Berkeley indent 5.11 of
+   Sept. 15, 1988.
 
-    After many changes by jla, including the switch to making "-gnu"
-    the default, the version numbering was changed and 1.2 released.
+   After some independent changes by kingdon, he then merged in more
+   Berkeley code in Sept 1989.  This version extends up to 1.1.3.
 
-    The number after the base version is my patch date -TD
+   After many changes by jla, including the switch to making "-gnu"
+   the default, the version numbering was changed and 1.2 released.
+
+   The number after the base version is my patch date -TD
 */
 
 #define VERSION_STRING "GNU indent 2.0-20101025"
