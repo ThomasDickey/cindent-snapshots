@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
 <html>
-<!-- Created on October 28, 2010 by texi2html 1.82
+<!-- Created on October 29, 2010 by texi2html 1.82
 texi2html was written by: 
             Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -86,9 +86,10 @@ the default.
 <tr><td align="left" valign="top"><a href="#Declarations">1.7 Declarations</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top"><a href="#Indentation">1.8 Indentation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top"><a href="#Disabling-Formatting">1.9 Disabling Formatting</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top"><a href="#Miscellaneous-options">1.10 Miscellaneous options</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top"><a href="#Bugs">1.11 Bugs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top"><a href="#Copyright">1.12 Copyright</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#Bugs">1.12 Bugs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#Copyright">1.13 Copyright</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
 </table>
 
 <hr size="6">
@@ -132,6 +133,7 @@ backups are made.
 </p>
 <a name="index-Output-File-Specification"></a>
 <a name="index-_002do"></a>
+<a name="index-_002d_002doutput"></a>
 <a name="index-_002d_002doutput_002dfile"></a>
 <p>In the second form, only one input file is specified.  In this case, or
 when the standard input is used, you may specify an output file after
@@ -191,6 +193,7 @@ indent +braces-on-if-line +line-length185 test/metabolism.c
 <a name="index-Initialization-file"></a>
 <a name="index-_002dnpro"></a>
 <a name="index-_002d_002dignore_002dprofile"></a>
+<a name="index-_002bignore_002dprofile"></a>
 <p>If you find that you often use <code>indent</code> with the same options, you
 may put those options into a file named &lsquo;<tt>.indent.pro</tt>&rsquo;.
 <code>indent</code> will first look for &lsquo;<tt>.indent.pro</tt>&rsquo; in the current
@@ -331,6 +334,8 @@ size of integers, etc.)
 <a name="index-Kernighan-_0026-Ritchie-style"></a>
 <a name="index-_002dkr"></a>
 <a name="index-_002d_002dk_002dand_002dr_002dstyle"></a>
+<a name="index-_002d_002dkernighan_002dand_002dritchie"></a>
+<a name="index-_002d_002dkernighan_002dand_002dritchie_002dstyle"></a>
 <p>The Kernighan &amp; Ritchie style is used throughout their well-known book
 <cite>The C Programming Language</cite>.  It is enabled with the &lsquo;<samp>-kr</samp>&rsquo;
 option.  The Kernighan &amp; Ritchie style corresponds to the following set
@@ -350,6 +355,9 @@ chosen column 33.
 <a name="index-Original-Berkeley-style"></a>
 <a name="index-_002dorig"></a>
 <a name="index-_002d_002doriginal"></a>
+<a name="index-_002d_002doriginal_002dstyle"></a>
+<a name="index-_002d_002dberkeley"></a>
+<a name="index-_002d_002dberkeley_002dstyle"></a>
 <p>The style of the original Berkeley <code>indent</code> may be obtained by
 specifying &lsquo;<samp>-orig</samp>&rsquo; (or by specifyfying &lsquo;<samp>--original</samp>&rsquo;, using the
 long option name).  This style is equivalent to the following settings:
@@ -388,6 +396,13 @@ specific places.
 <p>The &lsquo;<samp>-bad</samp>&rsquo; option causes <code>indent</code> to force a blank line after
 every block of declarations.  The &lsquo;<samp>-nbad</samp>&rsquo; option causes
 <code>indent</code> not to force such blank lines.
+</p>
+<a name="index-_002dbacc"></a>
+<a name="index-_002d_002dblank_002dlines_002dafter_002difdefs"></a>
+<a name="index-_002dnbacc"></a>
+<a name="index-_002d_002dno_002dblank_002dlines_002dafter_002difdefs"></a>
+<p>The &lsquo;<samp>-bacc</samp>&rsquo; option forces a blank line after (before) every ifdef group.
+The &lsquo;<samp>-nbacc</samp>&rsquo; option forces no such blank line.
 </p>
 <p>The &lsquo;<samp>-bap</samp>&rsquo; option forces a blank line after every procedure body.
 The &lsquo;<samp>-nbap</samp>&rsquo; option forces no such blank line.
@@ -639,7 +654,7 @@ transformed into:
 </pre></td></tr></table>
 
 <a name="index-_002dsc"></a>
-<a name="index-_002d_002dstar_002dleft_002dside_002dof_002dcomments"></a>
+<a name="index-_002d_002dstart_002dleft_002dside_002dof_002dcomments"></a>
 <a name="index-_002dnsc"></a>
 <a name="index-_002d_002ddont_002dstar_002dcomments"></a>
 <p>Stars can be placed at the beginning of multi-line comments with the
@@ -728,7 +743,7 @@ result shown above.  &lsquo;<samp>-bli0</samp>&rsquo; results in the following:
 
 <a name="index-_002dce"></a>
 <a name="index-_002d_002dcuddle_002delse"></a>
-<a name="index-_002ddce"></a>
+<a name="index-_002dnce"></a>
 <a name="index-_002d_002ddont_002dcuddle_002delse"></a>
 <p>If you are using the &lsquo;<samp>-br</samp>&rsquo; option, you probably want to also use
 the &lsquo;<samp>-ce</samp>&rsquo; option.  This causes the <code>else</code> in an if-then-else
@@ -785,7 +800,8 @@ the procedure being called and the &lsquo;<samp>(</samp>&rsquo; (for example, <c
 a cast operator.
 </p>
 <a name="index-_002dbs"></a>
-<a name="index-_002d_002dblank_002dafter_002dsizeof"></a>
+<a name="index-_002d_002dblank_002dbefore_002dsizeof"></a>
+<a name="index-_002d_002dBill_002dShannon"></a>
 <p>The &lsquo;<samp>-bs</samp>&rsquo; option ensures that there is a space between the
 keyword <code>sizeof</code> and its argument.  In some versions, this is
 known as the &lsquo;<samp>Bill_Shannon</samp>&rsquo; option.
@@ -901,6 +917,7 @@ typedef enum {red, blue, green} COLOR;
 
 <a name="index-_002din"></a>
 <a name="index-_002d_002dindent_002dleveln"></a>
+<a name="index-_002d_002dindentation_002dleveln"></a>
 <a name="index-_002dcin"></a>
 <a name="index-_002d_002dcontinuation_002dindentationn"></a>
 <a name="index-_002dlp"></a>
@@ -965,16 +982,26 @@ is provided, which is equivalent to &lsquo;<samp>-ip0</samp>&rsquo;.
 <a name="index-_002d_002dleave_002dpreprocessor_002dspace"></a>
 <a name="index-_002dnlps"></a>
 <a name="index-_002d_002dremove_002dpreprocessor_002dspace"></a>
-<p>ASCII C allows white space to be placed on preprocessor command lines
+<p>ANSI C allows white space to be placed on preprocessor command lines
 between the character &lsquo;<samp>#</samp>&rsquo; and the command name.  By default,
 <code>indent</code> removes this space, but specifying the &lsquo;<samp>-lps</samp>&rsquo; option
 directs <code>indent</code> to leave this space unmodified.
+</p>
+<a name="index-_002deei"></a>
+<a name="index-_002d_002dextra_002dexpression_002dindentation"></a>
+<a name="index-_002dneei"></a>
+<a name="index-_002d_002dno_002dextra_002dexpression_002dindentation"></a>
+<p>Use the &lsquo;<samp>-eei</samp>&rsquo; option to tell <code>indent</code> to improve readability
+of continuation lines from the expression part of
+<code>if(e)</code>, <code>while(e)</code>, <code>for(e;e;e)</code>
+by indenting an extra tab stop
+so that they do not conflict with the code that follows.
 </p>
 <hr size="6">
 <a name="Disabling-Formatting"></a>
 <table cellpadding="1" cellspacing="1" border="0">
 <tr><td valign="middle" align="left">[<a href="#Indentation" title="Previous section in reading order"> &lt; </a>]</td>
-<td valign="middle" align="left">[<a href="#Miscellaneous-options" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Other-Languages" title="Next section in reading order"> &gt; </a>]</td>
 <td valign="middle" align="left"> &nbsp; </td>
 <td valign="middle" align="left">[<a href="#Indent-Program" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
 <td valign="middle" align="left">[<a href="#Indent-Program" title="Up section"> Up </a>]</td>
@@ -1019,13 +1046,70 @@ to be left unformatted.
 <p>As a historical note, some earlier versions of <code>indent</code> produced
 error messages beginning with <code>*INDENT**</code>.  These versions of
 <code>indent</code> were written to ignore any input text lines which began
-with such error messages.  I have removed this incestuous feature from
-<code>GNU indent</code>.
+with such error messages.
+</p>
+<hr size="6">
+<a name="Other-Languages"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#Disabling-Formatting" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Miscellaneous-options" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Indent-Program" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#Indent-Program" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="#Option-Summary" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#Indent-Program" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="#Index" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<a name="Other-Languages-1"></a>
+<h2 class="section">1.10 Other Languages</h2>
+
+<a name="index-_002dc_002b_002b"></a>
+<a name="index-_002d_002dc_002dplus_002dplus"></a>
+<p>In addition to recognizing C++ comments (which are now standard in C),
+<code>indent</code> provides limited support for C++ constructs:
+</p>
+<ul>
+<li>
+It deals with C++ Class::Method, by not splitting the double colons.
+</li><li>
+It handles C++ const function declarations like
+<table><tr><td>&nbsp;</td><td><pre class="display">const MediaDomainList PVR::get_itsMediaDomainList() const
+</pre></td></tr></table>
+<p>by ignoring &quot;const&quot; just after a parameter list */
+</p></li></ul>
+
+<p>It also accepts (and currently ignores) a &lsquo;<samp>-c++</samp>&rsquo; option.
+This would be used with an alternate symbol table for C++.
+</p>
+<a name="index-_002dly"></a>
+<a name="index-_002d_002dlex_002dor_002dyacc"></a>
+<p>If you add the &lsquo;<samp>-ly</samp>&rsquo; option,
+<code>indent</code> also handles for Lex/Yacc scripts,
+by formatting the parts which are passed directly to the output.
+Both lex and yacc use the same file structure:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">``definitions''
+%%
+``rules''
+%%
+``literal''
+</pre></td></tr></table>
+<p>Anything in the &ldquo;literal&rdquo; section is copied to the output,
+and is assumed to be C source.
+Also, within the &ldquo;definitions&rdquo; and &ldquo;rules&rdquo; sections,
+lex/yacc pass any lines bracketed with %{ and %} to the output.
+</p>
+<p>Other C statements within &ldquo;rules&rdquo; are not currently formatted.
 </p>
 <hr size="6">
 <a name="Miscellaneous-options"></a>
 <table cellpadding="1" cellspacing="1" border="0">
-<tr><td valign="middle" align="left">[<a href="#Disabling-Formatting" title="Previous section in reading order"> &lt; </a>]</td>
+<tr><td valign="middle" align="left">[<a href="#Other-Languages" title="Previous section in reading order"> &lt; </a>]</td>
 <td valign="middle" align="left">[<a href="#Bugs" title="Next section in reading order"> &gt; </a>]</td>
 <td valign="middle" align="left"> &nbsp; </td>
 <td valign="middle" align="left">[<a href="#Indent-Program" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
@@ -1041,12 +1125,17 @@ with such error messages.  I have removed this incestuous feature from
 <td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
 <a name="Miscellaneous-options-1"></a>
-<h2 class="section">1.10 Miscellaneous options</h2>
+<h2 class="section">1.11 Miscellaneous options</h2>
 
-<a name="index-_002dversion"></a>
+<a name="index-_002d_002dversion"></a>
 <p>To find out what version of <code>indent</code> you have, use the command
-<code>indent -version</code>.  This will report the version number of
+<code>indent --version</code>.  This will report the version number of
 <code>indent</code>, without doing any of the normal processing.
+</p>
+<a name="index-_002dh"></a>
+<a name="index-_002d_002dhelp"></a>
+<a name="index-_002d_002dusage"></a>
+<p>Use the <code>--help</code> option to get a usage summary.
 </p>
 
 <a name="index-_002dv"></a>
@@ -1059,6 +1148,7 @@ into two more more lines of output, and gives some size statistics at
 completion.
 </p>
 <a name="index-_002dD"></a>
+<a name="index-_002d_002ddebug"></a>
 <p>The &lsquo;<samp>-D</samp>&rsquo; option can be used to turn on debugging traces.
 Its parameter gives the debugging level (0 is off, 1 is on, 2 is more verbose).
 </p>
@@ -1081,7 +1171,7 @@ Its parameter gives the debugging level (0 is off, 1 is on, 2 is more verbose).
 <td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
 <a name="Bugs-1"></a>
-<h2 class="section">1.11 Bugs</h2>
+<h2 class="section">1.12 Bugs</h2>
 
 <p>The &quot;-troff&quot; option is strongly deprecated, and is not supported.  A
 good thing for someone to do is to rewrite &lsquo;indent&rsquo; to generate TeX
@@ -1106,18 +1196,18 @@ source as a hardcopy output option, amoung other things.
 <td valign="middle" align="left">[<a href="#SEC_About" title="About (help)"> ? </a>]</td>
 </tr></table>
 <a name="Copyright-1"></a>
-<h2 class="section">1.12 Copyright</h2>
+<h2 class="section">1.13 Copyright</h2>
 
 <p>The following copyright notice applies to the <code>indent</code> program.
 The copyright and copying permissions for this manual appear near the
 beginning of this document.
 </p>
 <table><tr><td>&nbsp;</td><td><pre class="display">Copyright 1999-2002, 2010 Thomas E. Dickey
-Copyright (c) 1995, 1996 Joseph Arceneaux
-Copyright (c) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
-Copyright (c) 1985 Sun Microsystems, Inc.
-Copyright (c) 1980 The Regents of the University of California.
-Copyright (c) 1976 Board of Trustees of the University of Illinois.
+Copyright &copy; 1995, 1996 Joseph Arceneaux
+Copyright &copy; 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
+Copyright &copy; 1985 Sun Microsystems, Inc.
+Copyright &copy; 1980 The Regents of the University of California.
+Copyright &copy; 1976 Board of Trustees of the University of Illinois.
 All rights reserved.
 
 Redistribution and use in source and binary forms are permitted
@@ -1160,6 +1250,12 @@ PURPOSE.
 short option.  It is followed by a cross key alphabetized by long option.
 </p>
 <dl compact="compact">
+<dt> &lsquo;<samp>-bacc</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--blank-lines-after-ifdefs</samp>&rsquo;</dt>
+<dd><p>Force blank lines after (and before) ifdefs.<br>
+See section <a href="#Blank-lines">Blank lines</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-bad</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--blank-lines-after-declarations</samp>&rsquo;</dt>
 <dd><p>Force blank lines after the declarations.<br>
@@ -1277,6 +1373,13 @@ See section <a href="#Comments">Comments</a>.
 See section <a href="#Declarations">Declarations</a>.
 </p>
 </dd>
+<dt> &lsquo;<samp>-eei</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--extra-expression-indentation</samp>&rsquo;</dt>
+<dd><p>Indent continuation lines
+of <code>if</code>, <code>for</code> and <code>while</code> statements.<br>
+See section <a href="#Indentation">Indentation</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-fc1</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--format-first-column-comments</samp>&rsquo;</dt>
 <dd><p>Format comments in the first column.<br>
@@ -1297,6 +1400,7 @@ See section <a href="#Common-styles">Common styles</a>.
 </dd>
 <dt> &lsquo;<samp>-i<var>n</var></samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--indent-level<var>n</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--indentation-level<var>n</var></samp>&rsquo;</dt>
 <dd><p>Set indentation level to <var>n</var> spaces.<br>
 See section <a href="#Indentation">Indentation</a>.
 </p>
@@ -1310,6 +1414,8 @@ See section <a href="#Indentation">Indentation</a>.
 </dd>
 <dt> &lsquo;<samp>-kr</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--k-and-r-style</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--kernighan-and-ritchie</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--kernighan-and-ritchie-style</samp>&rsquo;</dt>
 <dd><p>Use Kernighan &amp; Ritchie coding style.<br>
 See section <a href="#Common-styles">Common styles</a>.
 </p>
@@ -1338,6 +1444,12 @@ See section <a href="#Indentation">Indentation</a>.
 See section <a href="#Indentation">Indentation</a>.
 </p>
 </dd>
+<dt> &lsquo;<samp>-nbacc</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--no-blank-lines-after-ifdefs</samp>&rsquo;</dt>
+<dd><p>Do not force blank lines after (and before) ifdefs.<br>
+See section <a href="#Blank-lines">Blank lines</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-nbad</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--no-blank-lines-after-declarations</samp>&rsquo;</dt>
 <dd><p>Do not force blank lines after declarations.<br>
@@ -1349,7 +1461,12 @@ See section <a href="#Blank-lines">Blank lines</a>.
 <dd><p>Do not force blank lines after procedure bodies.<br>
 See section <a href="#Blank-lines">Blank lines</a>.
 </p>
-
+</dd>
+<dt> &lsquo;<samp>-nbbb</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--no-blank-lines-after-block-comments</samp>&rsquo;</dt>
+<dd><p>Do not force blank-lines after (before) block comments.<br>
+See section <a href="#Blank-lines">Blank lines</a>.
+</p>
 </dd>
 <dt> &lsquo;<samp>-nbc</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--no-blank-lines-after-commas</samp>&rsquo;</dt>
@@ -1373,6 +1490,13 @@ See section <a href="#Statements">Statements</a>.
 <dt> &lsquo;<samp>--no-space-after-casts</samp>&rsquo;</dt>
 <dd><p>Do not put a space after cast operators.<br>
 See section <a href="#Statements">Statements</a>.
+</p>
+</dd>
+<dt> &lsquo;<samp>-neei</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--no-extra-expression-indentation</samp>&rsquo;</dt>
+<dd><p>Do not indent continuation lines
+of <code>if</code>, <code>for</code> and <code>while</code> statements.<br>
+See section <a href="#Indentation">Indentation</a>.
 </p>
 </dd>
 <dt> &lsquo;<samp>-nfc1</samp>&rsquo;</dt>
@@ -1437,13 +1561,24 @@ See section <a href="#Statements">Statements</a>.
 </dd>
 <dt> &lsquo;<samp>-orig</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--original</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--original-style</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--berkeley</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--berkeley-style</samp>&rsquo;</dt>
 <dd><p>Use the original Berkeley coding style.<br>
 See section <a href="#Common-styles">Common styles</a>.
 </p>
 </dd>
 <dt> &lsquo;<samp>-npro</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--ignore-profile</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>+ignore-profile</samp>&rsquo;</dt>
 <dd><p>Do not read &lsquo;<tt>.indent.pro</tt>&rsquo; files.<br>
+See section <a href="#Invoking-indent">Invoking <code>indent</code></a>.
+</p>
+</dd>
+<dt> &lsquo;<samp>-o</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--output-file</samp>&rsquo;</dt>
+<dd><p>Write an output file, for the case where only one input is given.<br>
 See section <a href="#Invoking-indent">Invoking <code>indent</code></a>.
 </p>
 </dd>
@@ -1537,9 +1672,11 @@ the corresponding short option.
 <a name="Index-1"></a>
 <h1 class="unnumbered">Index</h1>
 
-<table><tr><th valign="top">Jump to: &nbsp; </th><td><a href="#Index-1_ky_symbol-1" class="summary-letter"><b>-</b></a>
+<table><tr><th valign="top">Jump to: &nbsp; </th><td><a href="#Index-1_ky_symbol-1" class="summary-letter"><b>+</b></a>
  &nbsp; 
-<a href="#Index-1_ky_symbol-2" class="summary-letter"><b>.</b></a>
+<a href="#Index-1_ky_symbol-2" class="summary-letter"><b>-</b></a>
+ &nbsp; 
+<a href="#Index-1_ky_symbol-3" class="summary-letter"><b>.</b></a>
  &nbsp; 
 <br>
 <a href="#Index-1_ky_letter-B" class="summary-letter"><b>B</b></a>
@@ -1568,16 +1705,24 @@ the corresponding short option.
 <table border="0" class="index-ky">
 <tr><td></td><th align="left">Index Entry</th><th align="left"> Section</th></tr>
 <tr><td colspan="3"> <hr></td></tr>
-<tr><th><a name="Index-1_ky_symbol-1">-</a></th><td></td><td></td></tr>
+<tr><th><a name="Index-1_ky_symbol-1">+</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002bignore_002dprofile"><code>+ignore-profile</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
+<tr><td colspan="3"> <hr></td></tr>
+<tr><th><a name="Index-1_ky_symbol-2">-</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dbacc"><code>-bacc</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbad"><code>-bad</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbap"><code>-bap</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbbb"><code>-bbb</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbc"><code>-bc</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dberkeley"><code>--berkeley</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dberkeley_002dstyle"><code>--berkeley-style</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dBill_002dShannon"><code>--Bill-Shannon</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbl"><code>-bl</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002d_002dblank_002dafter_002dsizeof"><code>--blank-after-sizeof</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dblank_002dbefore_002dsizeof"><code>--blank-before-sizeof</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dblank_002dlines_002dafter_002dblock_002dcomments"><code>--blank-lines-after-block-comments</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dblank_002dlines_002dafter_002dcommas"><code>--blank-lines-after-commas</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dblank_002dlines_002dafter_002ddeclarations"><code>--blank-lines-after-declarations</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dblank_002dlines_002dafter_002difdefs"><code>--blank-lines-after-ifdefs</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dblank_002dlines_002dafter_002dprocedures"><code>--blank-lines-after-procedures</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dblin"><code>-bli<var>n</var></code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbr"><code>-br</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
@@ -1585,6 +1730,8 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002d_002dbraces_002dafter_002dif_002dline"><code>--braces-after-if-line</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dbraces_002don_002dif_002dline"><code>--braces-on-if-line</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbs"><code>-bs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dc_002b_002b"><code>-c++</code></a></td><td valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dc_002dplus_002dplus"><code>--c-plus-plus</code></a></td><td valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dcase_002dindentationn"><code>--case-indentation<var>n</var></code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcdb"><code>-cdb</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcdn"><code>-cd<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
@@ -1599,8 +1746,8 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002dcpn"><code>-cp<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcs"><code>-cs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dcuddle_002delse"><code>--cuddle-else</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002dD"><code>-D</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.10 Miscellaneous options</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002ddce"><code>-dce</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dD"><code>-D</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002ddebug"><code>--debug</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddeclaration_002dcomment_002dcolumnn"><code>--declaration-comment-column<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddeclaration_002dindentationn"><code>--declaration-indentation<var>n</var></code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002ddin"><code>-di<var>n</var></code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
@@ -1612,30 +1759,42 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddont_002dline_002dup_002dparentheses"><code>--dont-line-up-parentheses</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddont_002dspace_002dspecial_002dsemicolon"><code>--dont-space-special-semicolon</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddont_002dstar_002dcomments"><code>--dont-star-comments</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002deei"><code>-eei</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002delse_002dendif_002dcolumnn"><code>--else-endif-column<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dextra_002dexpression_002dindentation"><code>--extra-expression-indentation</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dfc1"><code>-fc1</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dfca"><code>-fca</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dformat_002dall_002dcomments"><code>--format-all-comments</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dformat_002dfirst_002dcolumn_002dcomments"><code>--format-first-column-comments</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dgnu"><code>-gnu</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dgnu_002dstyle"><code>--gnu-style</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dh"><code>-h</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dhelp"><code>--help</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dignore_002dprofile"><code>--ignore-profile</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002din"><code>-i<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dindent_002dleveln"><code>--indent-level<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dindentation_002dleveln"><code>--indentation-level<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dipn"><code>-ip<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dk_002dand_002dr_002dstyle"><code>--k-and-r-style</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dkernighan_002dand_002dritchie"><code>--kernighan-and-ritchie</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dkernighan_002dand_002dritchie_002dstyle"><code>--kernighan-and-ritchie-style</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dkr"><code>-kr</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dleave_002doptional_002dblank_002dlines"><code>--leave-optional-blank-lines</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dleave_002dpreprocessor_002dspace"><code>--leave-preprocessor-space</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dlex_002dor_002dyacc"><code>--lex-or-yacc</code></a></td><td valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dline_002dcomments_002dindentationn"><code>--line-comments-indentation<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dlp"><code>-lp</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dlps"><code>-lps</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dly"><code>-ly</code></a></td><td valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dnbacc"><code>-nbacc</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnbad"><code>-nbad</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnbap"><code>-nbap</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnbbb"><code>-nbbb</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnbc"><code>-nbc</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dncdb"><code>-ncdb</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dnce"><code>-nce</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dncs"><code>-ncs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dneei"><code>-neei</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnfc1"><code>-nfc1</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnfca"><code>-nfca</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnip"><code>-nip</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
@@ -1644,22 +1803,26 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dblank_002dlines_002dafter_002dblock_002dcomments"><code>--no-blank-lines-after-block-comments</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dblank_002dlines_002dafter_002dcommas"><code>--no-blank-lines-after-commas</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dblank_002dlines_002dafter_002ddeclarations"><code>--no-blank-lines-after-declarations</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dblank_002dlines_002dafter_002difdefs"><code>--no-blank-lines-after-ifdefs</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dblank_002dlines_002dafter_002dprocedures"><code>--no-blank-lines-after-procedures</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dcomment_002ddelimiters_002don_002dblank_002dlines"><code>--no-comment-delimiters-on-blank-lines</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dextra_002dexpression_002dindentation"><code>--no-extra-expression-indentation</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dparameter_002dindentation"><code>--no-parameter-indentation</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dspace_002dafter_002dcasts"><code>--no-space-after-casts</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dspace_002dafter_002dfunction_002dcall_002dnames"><code>--no-space-after-function-call-names</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dverbosity"><code>--no-verbosity</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.10 Miscellaneous options</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dverbosity"><code>--no-verbosity</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnpcs"><code>-npcs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnpro"><code>-npro</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnpsl"><code>-npsl</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnsc"><code>-nsc</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnsob"><code>-nsob</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnss"><code>-nss</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002dnv"><code>-nv</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.10 Miscellaneous options</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dnv"><code>-nv</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002do"><code>-o</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dorig"><code>-orig</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002doriginal"><code>--original</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002doriginal_002dstyle"><code>--original-style</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002doutput"><code>--output</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002doutput_002dfile"><code>--output-file</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dparameter_002dindentationn"><code>--parameter-indentation<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dpcs"><code>-pcs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
@@ -1674,16 +1837,17 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002dss"><code>-ss</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dst"><code>-st</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dstandard_002doutput"><code>--standard-output</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002d_002dstar_002dleft_002dside_002dof_002dcomments"><code>--star-left-side-of-comments</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dstart_002dleft_002dside_002dof_002dcomments"><code>--start-left-side-of-comments</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dswallow_002doptional_002dblank_002dlines"><code>--swallow-optional-blank-lines</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dT"><code>-T</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dtab_002dsizen"><code>--tab-size<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dtsn"><code>-ts<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002dv"><code>-v</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.10 Miscellaneous options</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002d_002dverbose"><code>--verbose</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.10 Miscellaneous options</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002dversion"><code>-version</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.10 Miscellaneous options</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dusage"><code>--usage</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dv"><code>-v</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dverbose"><code>--verbose</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dversion"><code>--version</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
 <tr><td colspan="3"> <hr></td></tr>
-<tr><th><a name="Index-1_ky_symbol-2">.</a></th><td></td><td></td></tr>
+<tr><th><a name="Index-1_ky_symbol-3">.</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002eindent_002epro-file">&lsquo;<tt>.indent.pro</tt>&rsquo; file</a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td colspan="3"> <hr></td></tr>
 <tr><th><a name="Index-1_ky_letter-B">B</a></th><td></td><td></td></tr>
@@ -1725,9 +1889,11 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-Using-Standard-Input">Using Standard Input</a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td colspan="3"> <hr></td></tr>
 </table>
-<table><tr><th valign="top">Jump to: &nbsp; </th><td><a href="#Index-1_ky_symbol-1" class="summary-letter"><b>-</b></a>
+<table><tr><th valign="top">Jump to: &nbsp; </th><td><a href="#Index-1_ky_symbol-1" class="summary-letter"><b>+</b></a>
  &nbsp; 
-<a href="#Index-1_ky_symbol-2" class="summary-letter"><b>.</b></a>
+<a href="#Index-1_ky_symbol-2" class="summary-letter"><b>-</b></a>
+ &nbsp; 
+<a href="#Index-1_ky_symbol-3" class="summary-letter"><b>.</b></a>
  &nbsp; 
 <br>
 <a href="#Index-1_ky_letter-B" class="summary-letter"><b>B</b></a>
@@ -1790,9 +1956,10 @@ maintain consistency with the POSIX standard.
     <li><a name="toc-Declarations-1" href="#Declarations">1.7 Declarations</a></li>
     <li><a name="toc-Indentation-1" href="#Indentation">1.8 Indentation</a></li>
     <li><a name="toc-Disabling-Formatting-1" href="#Disabling-Formatting">1.9 Disabling Formatting</a></li>
-    <li><a name="toc-Miscellaneous-options-1" href="#Miscellaneous-options">1.10 Miscellaneous options</a></li>
-    <li><a name="toc-Bugs-1" href="#Bugs">1.11 Bugs</a></li>
-    <li><a name="toc-Copyright-1" href="#Copyright">1.12 Copyright</a></li>
+    <li><a name="toc-Other-Languages-1" href="#Other-Languages">1.10 Other Languages</a></li>
+    <li><a name="toc-Miscellaneous-options-1" href="#Miscellaneous-options">1.11 Miscellaneous options</a></li>
+    <li><a name="toc-Bugs-1" href="#Bugs">1.12 Bugs</a></li>
+    <li><a name="toc-Copyright-1" href="#Copyright">1.13 Copyright</a></li>
   </ul></li>
   <li><a name="toc-Option-Summary-1" href="#Option-Summary">A. Option Summary</a></li>
   <li><a name="toc-Index-1" href="#Index">Index</a></li>
@@ -1808,7 +1975,7 @@ maintain consistency with the POSIX standard.
 </tr></table>
 <h1>About This Document</h1>
 <p>
-  This document was generated by <em>Thomas Dickey</em> on <em>October 28, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas Dickey</em> on <em>October 29, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
 </p>
 <p>
   The buttons in the navigation panels have the following meaning:
@@ -1910,7 +2077,7 @@ maintain consistency with the POSIX standard.
 <hr size="1">
 <p>
  <font size="-1">
-  This document was generated by <em>Thomas Dickey</em> on <em>October 28, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas Dickey</em> on <em>October 29, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
  </font>
  <br>
 

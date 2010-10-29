@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.20 2010/10/28 09:45:02 tom Exp $
+# $Id: tdindent,v 1.21 2010/10/29 10:44:08 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010 Thomas E. Dickey                                      *
 #*                                                                          *
@@ -108,7 +108,7 @@ EOF
 	-*)
 		OPTS="$OPTS $name"
 		;;
-	*.[ch]|*.cc|*.cpp|*.[yl])
+	*.[ch]|*.hh|*.cc|*.cpp|*.[yl])
 		case $name in
 		*.[yl])
 			OPT2="-ly"

@@ -18,7 +18,9 @@ indent - indent.info
 This is indent.info, produced by makeinfo version 4.13 from
 \./indent.texinfo.
 Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software
-Foundation, Inc.  Copyright (C) 1995, 1996 Joseph Arceneaux
+Foundation, Inc.
+Copyright (C) 1995, 1996 Joseph Arceneaux
+Copyright (C) 1999\-2002, 2010 Thomas E. Dickey
 .PP
 This is Edition 2.0, January, 1996, of \fBThe indent Manual\fP, for
 Indent Version 2.0
@@ -61,6 +63,7 @@ Statements	see \fBStatements\fR
 Declarations	see \fBDeclarations\fR
 Indentation	see \fBIndentation\fR
 Disabling Formatting	see \fBDisabling Formatting\fR
+Other Languages	see \fBOther Languages\fR
 Miscellaneous options	see \fBMiscellaneous options\fR
 Bugs	see \fBBugs\fR
 Copyright	see \fBCopyright\fR
@@ -252,6 +255,9 @@ specific places.
 The \fB\-bad\fR option causes \fBindent\fR to force a blank line after every
 block of declarations.  The \fB\-nbad\fR option causes \fBindent\fR not to force
 such blank lines.
+.PP
+The \fB\-bacc\fR option forces a blank line after (before) every ifdef
+group.  The \fB\-nbacc\fR option forces no such blank line.
 .PP
 The \fB\-bap\fR option forces a blank line after every procedure body.
 The \fB\-nbap\fR option forces no such blank line.
@@ -645,10 +651,15 @@ create_world (x, y, scale)
 For compatibility with other versions of indent, the option \fB\-nip\fR
 is provided, which is equivalent to \fB\-ip0\fR.
 .PP
-ASCII C allows white space to be placed on preprocessor command lines
+ANSI C allows white space to be placed on preprocessor command lines
 between the character \fB#\fR and the command name.  By default, \fBindent\fR
 removes this space, but specifying the \fB\-lps\fR option directs \fBindent\fR
 to leave this space unmodified.
+.PP
+Use the \fB\-eei\fR option to tell \fBindent\fR to improve readability of
+continuation lines from the expression part of \fBif(e)\fR, \fBwhile(e)\fR,
+\fBfor(e;e;e)\fR by indenting an extra tab stop so that they do not
+conflict with the code that follows.
 .SH Disabling Formatting
 Formatting of C code may be disabled for portions of a program by
 embedding special "control comments" in the program.  To turn off
@@ -678,11 +689,47 @@ to be left unformatted.
 As a historical note, some earlier versions of \fBindent\fR produced
 error messages beginning with \fB*INDENT**\fR.  These versions of \fBindent\fR
 were written to ignore any input text lines which began with such error
-messages.  I have removed this incestuous feature from \fBGNU indent\fR.
+messages.
+.SH Other Languages
+In addition to recognizing C++ comments (which are now standard in C),
+\fBindent\fR provides limited support for C++ constructs:
+.PP
+* It deals with C++ Class::Method, by not splitting the double
+.NS
+colons.
+.NE
+.PP
+* It handles C++ const function declarations like
+.NS
+     const MediaDomainList PVR::get_itsMediaDomainList() const
+by ignoring "const" just after a parameter list */
+.NE
+.PP
+It also accepts (and currently ignores) a \fB\-c++\fR option.  This would
+be used with an alternate symbol table for C++.
+.PP
+If you add the \fB\-ly\fR option, \fBindent\fR also handles for Lex/Yacc
+scripts, by formatting the parts which are passed directly to the
+output.  Both lex and yacc use the same file structure:
+.NS
+\fBdefinitions\fR
+%%
+\fBrules\fR
+%%
+\fBliteral\fR
+Anything in the "literal" section is copied to the output, and is
+assumed to be C source.  Also, within the "definitions" and "rules"
+sections, lex/yacc pass any lines bracketed with %{ and %} to the
+output.
+.NE
+.PP
+Other C statements within "rules" are not currently formatted.
 .SH Miscellaneous options
 To find out what version of \fBindent\fR you have, use the command `indent
-\-version'.  This will report the version number of \fBindent\fR, without
+\-\-version'.  This will report the version number of \fBindent\fR, without
 doing any of the normal processing.
+.PP
+Use the \fB\-\-help\fR option to get a usage summary.
 .PP
 The \fB\-v\fR option can be used to turn on verbose mode.  When in
 verbose mode, \fBindent\fR reports when it splits one line of input into
@@ -702,11 +749,11 @@ copyright and copying permissions for this manual appear near the
 beginning of this document.
 .NS
 Copyright 1999\-2002, 2010 Thomas E. Dickey
-Copyright (c) 1995, 1996 Joseph Arceneaux
-Copyright (c) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
-Copyright (c) 1985 Sun Microsystems, Inc.
-Copyright (c) 1980 The Regents of the University of California.
-Copyright (c) 1976 Board of Trustees of the University of Illinois.
+Copyright (C) 1995, 1996 Joseph Arceneaux
+Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
+Copyright (C) 1985 Sun Microsystems, Inc.
+Copyright (C) 1980 The Regents of the University of California.
+Copyright (C) 1976 Board of Trustees of the University of Illinois.
 All rights reserved.
 .sp
 Redistribution and use in source and binary forms are permitted
@@ -727,6 +774,14 @@ PURPOSE.
 .SH Option Summary
 Here is a list of all the options for \fBindent\fR, alphabetized by short
 option.  It is followed by a cross key alphabetized by long option.
+.PP
+\fB\-bacc\fR
+.br
+\fB\-\-blank\-lines\-after\-ifdefs\fR
+.RS 5
+Force blank lines after (and before) ifdefs.
+(see \fBBlank lines\fR).
+.RE
 .PP
 \fB\-bad\fR
 .br
@@ -881,6 +936,14 @@ Put variables in column N.
 (see \fBDeclarations\fR).
 .RE
 .PP
+\fB\-eei\fR
+.br
+\fB\-\-extra\-expression\-indentation\fR
+.RS 5
+Indent continuation lines of \fBif\fR, \fBfor\fR and \fBwhile\fR statements.
+(see \fBIndentation\fR).
+.RE
+.PP
 \fB\-fc1\fR
 .br
 \fB\-\-format\-first\-column\-comments\fR
@@ -968,6 +1031,14 @@ Leave space between \fB#\fR and preprocessor directive.  *Note
 Indentation::.
 .RE
 .PP
+\fB\-nbacc\fR
+.br
+\fB\-\-no\-blank\-lines\-after\-ifdefs\fR
+.RS 5
+Do not force blank lines after (and before) ifdefs.
+(see \fBBlank lines\fR).
+.RE
+.PP
 \fB\-nbad\fR
 .br
 \fB\-\-no\-blank\-lines\-after\-declarations\fR
@@ -981,6 +1052,14 @@ Do not force blank lines after declarations.
 \fB\-\-no\-blank\-lines\-after\-procedures\fR
 .RS 5
 Do not force blank lines after procedure bodies.
+(see \fBBlank lines\fR).
+.RE
+.PP
+\fB\-nbbb\fR
+.br
+\fB\-\-no\-blank\-lines\-after\-block\-comments\fR
+.RS 5
+Do not force blank\-lines after (before) block comments.
 (see \fBBlank lines\fR).
 .RE
 .PP
@@ -1014,6 +1093,15 @@ Do not cuddle \fB}\fR and \fBelse\fR.
 .RS 5
 Do not put a space after cast operators.
 (see \fBStatements\fR).
+.RE
+.PP
+\fB\-neei\fR
+.br
+\fB\-\-no\-extra\-expression\-indentation\fR
+.RS 5
+Do not indent continuation lines of \fBif\fR, \fBfor\fR and \fBwhile\fR
+statements.
+(see \fBIndentation\fR).
 .RE
 .PP
 \fB\-nfc1\fR
@@ -1112,6 +1200,8 @@ Use the original Berkeley coding style.
 \fB\-npro\fR
 .br
 \fB\-\-ignore\-profile\fR
+.br
+\fB+ignore\-profile\fR
 .RS 5
 Do not read \fB.indent.pro\fR files.
 (see \fBInvoking indent\fR).
@@ -1208,6 +1298,41 @@ Output the version number of \fBindent\fR.
 Here is a list of options alphabetized by long option, to help you find
 the corresponding short option.
 .NS
+\-\-blank\-lines\-after\-block\-comments              \-bbb
+\-\-blank\-lines\-after\-commas                      \-bc
+\-\-blank\-lines\-after\-declarations                \-bad
+\-\-blank\-lines\-after\-procedures                  \-bap
+\-\-braces\-after\-if\-line                          \-bl
+\-\-brace\-indent                                  \-bli
+\-\-braces\-on\-if\-line                             \-br
+\-\-case\-indentation                              \-cliN
+\-\-comment\-delimiters\-on\-blank\-lines             \-cdb
+\-\-comment\-indentation                           \-cN
+\-\-continuation\-indentation                      \-ciN
+\-\-continue\-at\-parentheses                       \-lp
+\-\-cuddle\-else                                   \-ce
+\-\-debug                                         \-DN
+\-\-declaration\-comment\-column                    \-cdN
+\-\-declaration\-indentation                       \-diN
+\-\-dont\-break\-procedure\-type                     \-npsl
+\-\-dont\-cuddle\-else                              \-nce
+\-\-dont\-format\-comments                          \-nfca
+\-\-dont\-format\-first\-column\-comments             \-nfc1
+\-\-dont\-line\-up\-parentheses                      \-nlp
+\-\-dont\-space\-special\-semicolon                  \-nss
+\-\-dont\-star\-comments                            \-nsc
+\-\-else\-endif\-column                             \-cpN
+\-\-format\-all\-comments                           \-fca
+\-\-format\-first\-column\-comments                  \-fc1
+\-\-gnu\-style                                     \-gnu
+\-\-ignore\-profile                                \-npro
+\-\-indent\-level                                  \-iN
+\-\-k\-and\-r\-style                                 \-kr
+\-\-leave\-optional\-blank\-lines                    \-nsob
+\-\-leave\-preprocessor\-space                      \-lps
+\-\-line\-comments\-indentation                     \-dN
+\-\-line\-length                                   \-lN
+\-\-no\-blank\-lines\-after\-block\-comments           \-nbbb
 \-\-no\-blank\-lines\-after\-commas                   \-nbc
 \-\-no\-blank\-lines\-after\-declarations             \-nbad
 \-\-no\-blank\-lines\-after\-procedures               \-nbap
@@ -1234,6 +1359,7 @@ the corresponding short option.
 l l
 l l .
 Menu:
++ignore\-profile	Invoking indent.
 \-\-berkeley	Common styles.
 \-\-berkeley\-style	Common styles.
 \-\-Bill\-Shannon	Statements.
@@ -1241,16 +1367,19 @@ Menu:
 \-\-blank\-lines\-after\-block\-comments	Blank lines.
 \-\-blank\-lines\-after\-commas	Declarations.
 \-\-blank\-lines\-after\-declarations	\-bad.
+\-\-blank\-lines\-after\-ifdefs	Blank lines.
 \-\-blank\-lines\-after\-procedures	\-bap.
 \-\-brace\-indentN	Statements.
 \-\-braces\-after\-if\-line	Statements.
 \-\-braces\-on\-if\-line	Statements.
+\-\-c\-plus\-plus	Other Languages.
 \-\-case\-indentationN	Statements.
 \-\-comment\-delimiters\-on\-blank\-lines	Comments.
 \-\-comment\-indentationN	Comments.
 \-\-continuation\-indentationN	Indentation.
 \-\-continue\-at\-parentheses	Indentation.
 \-\-cuddle\-else	Statements.
+\-\-debug	Miscellaneous options.
 \-\-declaration\-comment\-columnN	Comments.
 \-\-declaration\-indentationN	Declarations.
 \-\-dont\-break\-procedure\-type	Declarations.
@@ -1261,9 +1390,11 @@ Menu:
 \-\-dont\-space\-special\-semicolon	Statements.
 \-\-dont\-star\-comments	Comments.
 \-\-else\-endif\-columnN	Comments.
+\-\-extra\-expression\-indentation	Indentation.
 \-\-format\-all\-comments	Comments.
 \-\-format\-first\-column\-comments	Comments.
 \-\-gnu\-style	Common styles.
+\-\-help	Miscellaneous options.
 \-\-ignore\-profile	Invoking indent.
 \-\-indent\-levelN	Indentation.
 \-\-indentation\-levelN	Indentation.
@@ -1272,12 +1403,15 @@ Menu:
 \-\-kernighan\-and\-ritchie\-style	Common styles.
 \-\-leave\-optional\-blank\-lines	Blank lines.
 \-\-leave\-preprocessor\-space	Indentation.
+\-\-lex\-or\-yacc	Other Languages.
 \-\-line\-comments\-indentationN	Comments.
 \-\-no\-blank\-lines\-after\-block\-comments	Blank lines.
 \-\-no\-blank\-lines\-after\-commas	Declarations.
 \-\-no\-blank\-lines\-after\-declarations	\-bad.
+\-\-no\-blank\-lines\-after\-ifdefs	Blank lines.
 \-\-no\-blank\-lines\-after\-procedures	\-bap.
 \-\-no\-comment\-delimiters\-on\-blank\-lines	Comments.
+\-\-no\-extra\-expression\-indentation	Indentation.
 \-\-no\-parameter\-indentation	Indentation.
 \-\-no\-space\-after\-casts	Statements.
 \-\-no\-space\-after\-function\-call\-names	Statements.
@@ -1296,7 +1430,10 @@ Menu:
 \-\-start\-left\-side\-of\-comments	Comments.
 \-\-swallow\-optional\-blank\-lines	Blank lines.
 \-\-tab\-sizeN	Indentation.
+\-\-usage	Miscellaneous options.
 \-\-verbose	Miscellaneous options.
+\-\-version	Miscellaneous options.
+\-bacc	Blank lines.
 \-bad	\-bad.
 \-bap	\-bap.
 \-bbb	Blank lines.
@@ -1305,6 +1442,7 @@ Menu:
 \-bliN	Statements.
 \-br	Statements.
 \-bs	Statements.
+\-c++	Other Languages.
 \-cdb	Comments.
 \-cdN	Comments.
 \-ce	Statements.
@@ -1316,14 +1454,18 @@ Menu:
 \-D	Miscellaneous options.
 \-diN	Declarations.
 \-dN	Comments.
+\-eei	Indentation.
 \-fc1	Comments.
 \-fca	Comments.
 \-gnu	Common styles.
+\-h	Miscellaneous options.
 \-iN	Indentation.
 \-ipN	Indentation.
 \-kr	Common styles.
 \-lp	Indentation.
 \-lps	Indentation.
+\-ly	Other Languages.
+\-nbacc	Blank lines.
 \-nbad	\-bad.
 \-nbap	\-bap.
 \-nbbb	Blank lines.
@@ -1331,6 +1473,7 @@ Menu:
 \-ncdb	Comments.
 \-nce	Statements.
 \-ncs	Statements.
+\-neei	Indentation.
 \-nfc1	Comments.
 \-nfca	Comments.
 \-nip	Indentation.
@@ -1354,7 +1497,6 @@ Menu:
 \-T	Declarations.
 \-tsN	Indentation.
 \-v	Miscellaneous options.
-\-version	Miscellaneous options.
 \.indent.pro file	Invoking indent.
 Beginning indent	Invoking indent.
 Berkeley style	Common styles.
