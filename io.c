@@ -1,4 +1,7 @@
-/* Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
+/*
+   Copyright 1999-2002,2010, Thomas E. Dickey
+
+   Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
    Copyright (c) 1992, Free Software Foundation, Inc.  All rights reserved.
 
@@ -117,6 +120,29 @@ pass_text (const char *s)
 {
   while (*s != 0)
     pass_char (*s++);
+}
+
+static char *
+pass_line (char *p)
+{
+  while (*p != '\0' && *p != EOL)
+    pass_char (*p++);
+  if (*p == EOL)
+    {
+      pass_char ('\n');
+      ++in_line_no;
+      ++p;
+      in_prog_pos = p;
+      cur_line = p;
+    }
+  else if (*p == '\0'
+	   && ((unsigned int) (p - current_input->data) == current_input->size))
+    {
+      buf_ptr = buf_end = in_prog_pos = p;
+      had_eof = 1;
+      p = 0;
+    }
+  return p;
 }
 
 static void
@@ -700,6 +726,44 @@ fill_buffer (void)
   finished_a_line = 0;
   do
     {
+      /*
+       * Anything after the second "%%" line is passed to the formatter.
+       * Before the second "%%" line, "%{" and "%}" bracket lines that are
+       * passed to the formatter.  None of those control lines are passed to
+       * the formatter.
+       */
+      if (lex_or_yacc)
+	{
+	  int pass_lexcode = (lex_section >= 2);
+
+	  if (!pass_lexcode)
+	    {
+	      if (!strncmp (p, "%%", 2))
+		{
+		  ++lex_section;
+		}
+	      else if (!strncmp (p, "%{", 2))
+		{
+		  next_lexcode = 1;
+		}
+	      else if (!strncmp (p, "%}", 2))
+		{
+		  next_lexcode = 0;
+		}
+	      else if (next_lexcode)
+		{
+		  pass_lexcode = 1;
+		}
+	    }
+
+	  if (!pass_lexcode)
+	    {
+	      if (!(p = pass_line (p)))
+		return;
+	      continue;
+	    }
+	}
+
       while (*p == ' ' || *p == TAB)
 	p++;
 

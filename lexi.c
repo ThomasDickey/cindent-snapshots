@@ -1,5 +1,5 @@
 /*
-   Updates 2002 - Thomas Dickey
+   Copyright 1999-2002,2010, Thomas Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 

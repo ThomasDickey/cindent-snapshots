@@ -52,13 +52,15 @@ original English.
 @sp 1
 @c !!set edition, version, date
 @subtitle Edition 2.0, for Indent Version 2.0
-@subtitle January, 1996
+@subtitle October, 2010
 @author Joseph Arceneaux
+@author Thomas E. Dickey
 @page
 @vskip 0pt plus1filll
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software
 Foundation, Inc.
 
+Copyright @copyright{} 1999-2002, 2010 Thomas E. Dickey
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 
 Permission is granted to make and distribute verbatim copies of
@@ -163,6 +165,7 @@ backups are made.
 
 @cindex Output File Specification
 @kindex -o
+@kindex --output
 @kindex --output-file
 In the second form, only one input file is specified.  In this case, or
 when the standard input is used, you may specify an output file after
@@ -339,6 +342,8 @@ size of integers, etc.)
 @cindex Kernighan & Ritchie style
 @kindex -kr
 @kindex --k-and-r-style
+@kindex --kernighan-and-ritchie
+@kindex --kernighan-and-ritchie-style
 @comment --kernighan-and-ritchie-style works, too, as does
 @comment --kernighan-and-ritchie.  Which is most intuitive?
 The Kernighan & Ritchie style is used throughout their well-known book
@@ -364,6 +369,9 @@ chosen column 33.
 @cindex Original Berkeley style
 @kindex -orig
 @kindex --original
+@kindex --original-style
+@kindex --berkeley
+@kindex --berkeley-style
 The style of the original Berkeley @code{indent} may be obtained by
 specifying @samp{-orig} (or by specifyfying @samp{--original}, using the
 long option name).  This style is equivalent to the following settings:
@@ -417,7 +425,7 @@ lines present in the input file will be copied to the output file.
 @ifinfo
 @node -bad, -bap,  , Blank lines
 @comment  node-name,  next,  previous,  up
-@subsection --blank-lines-after-declarations
+@subsection @minus{}-blank-lines-after-declarations
 
 The @samp{-bad} option forces a blank line after every block of
 declarations.  The @samp{-nbad} option does not add any such blank
@@ -466,7 +474,7 @@ int baz;
 @ifinfo
 @node -bap,  , -bad, Blank lines
 @comment  node-name,  next,  previous,  up
-@subsection --blank-lines-after-procedures
+@subsection @minus{}-blank-lines-after-procedures
 @end ifinfo
 
 @kindex -bap
@@ -663,7 +671,7 @@ transformed into:
 @end example
 
 @kindex -sc
-@kindex --star-left-side-of-comments
+@kindex --start-left-side-of-comments
 @kindex -nsc
 @kindex --dont-star-comments
 Stars can be placed at the beginning of multi-line comments with the
@@ -754,7 +762,7 @@ if (x > 0)
 
 @kindex -ce
 @kindex --cuddle-else
-@kindex -dce
+@kindex -nce
 @kindex --dont-cuddle-else
 If you are using the @samp{-br} option, you probably want to also use
 the @samp{-ce} option.  This causes the @code{else} in an if-then-else
@@ -818,7 +826,8 @@ If the @samp{-cs} option is specified, @code{indent} puts a space after
 a cast operator.
 
 @kindex -bs
-@kindex --blank-after-sizeof
+@kindex --blank-before-sizeof
+@kindex --Bill-Shannon
 The @samp{-bs} option ensures that there is a space between the
 keyword @code{sizeof} and its argument.  In some versions, this is
 known as the @samp{Bill_Shannon} option.
@@ -918,6 +927,7 @@ you would use the options @samp{-T CODE_ADDR -T COLOR}.
 
 @kindex -i@var{n}
 @kindex --indent-level@var{n}
+@kindex --indentation-level@var{n}
 @kindex -ci@var{n}
 @kindex --continuation-indentation@var{n}
 @kindex -lp
@@ -1088,6 +1098,7 @@ The copyright and copying permissions for this manual appear near the
 beginning of this document.
 
 @display
+Copyright 1999-2002, 2010 Thomas E. Dickey
 Copyright (c) 1995, 1996 Joseph Arceneaux
 Copyright (c) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright (c) 1985 Sun Microsystems, Inc.
@@ -1234,6 +1245,7 @@ Use GNU coding style.  This is the default.@*
 
 @item -i@var{n}
 @itemx --indent-level@var{n}
+@itemx --indentation-level@var{n}
 Set indentation level to @var{n} spaces.@*
 @xref{Indentation}.
 
@@ -1245,6 +1257,8 @@ definitions by @var{n} spaces.@*
 
 @item -kr
 @itemx --k-and-r-style
+@itemx --kernighan-and-ritchie
+@itemx --kernighan-and-ritchie-style
 Use Kernighan & Ritchie coding style.@*
 @xref{Common styles}.
 
@@ -1358,12 +1372,21 @@ Disable verbose mode. @xref{Miscellaneous options}.
 
 @item -orig
 @itemx --original
+@itemx --original-style
+@itemx --berkeley
+@itemx --berkeley-style
 Use the original Berkeley coding style.@*
 @xref{Common styles}.
 
 @item -npro
 @itemx --ignore-profile
 Do not read @file{.indent.pro} files.@*
+@xref{Invoking indent}.
+
+@item -o
+@itemx --output
+@itemx --output-file
+Write an output file, for the case where only one input is given.@*
 @xref{Invoking indent}.
 
 @item -pcs

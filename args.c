@@ -1,4 +1,7 @@
-/* Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
+/*
+   Copyright 1999-2002,2010, Thomas E. Dickey
+
+   Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
    Copyright (c) 1992, Free Software Foundation, Inc.  All rights reserved.
 
@@ -57,50 +60,52 @@ enum on_or_off
   };
 
 /* Explicit flags for each option.  */
+static int exp_D = 0;
 static int exp_T = 0;
 static int exp_bacc = 0;
-static int exp_badp = 0;
 static int exp_bad = 0;
+static int exp_badp = 0;
 static int exp_bap = 0;
 static int exp_bbb = 0;
 static int exp_bc = 0;
-static int exp_bli = 0;
 static int exp_bl = 0;
+static int exp_bli = 0;
 static int exp_bs = 0;
-static int exp_cdb = 0;
+static int exp_c = 0;
 static int exp_cd = 0;
+static int exp_cdb = 0;
 static int exp_ce = 0;
 static int exp_ci = 0;
 static int exp_cli = 0;
 static int exp_cp = 0;
 static int exp_cs = 0;
-static int exp_c = 0;
+static int exp_d = 0;
 static int exp_di = 0;
 static int exp_dj = 0;
-static int exp_d = 0;
 static int exp_eei = 0;
 static int exp_ei = 0;
+static int exp_fb = 0;
 static int exp_fbc = 0;
 static int exp_fbx = 0;
-static int exp_fb = 0;
+static int exp_fc = 0;
 static int exp_fc1 = 0;
 static int exp_fca = 0;
-static int exp_fc = 0;
 static int exp_fk = 0;
 static int exp_fs = 0;
 static int exp_gnu = 0;
-static int exp_orig = 0;
-static int exp_ip = 0;
-static int exp_nip = 0;
 static int exp_i = 0;
+static int exp_ip = 0;
+static int exp_kr = 0;
+static int exp_l = 0;
 static int exp_lc = 0;
 static int exp_lp = 0;
-static int exp_l = 0;
 static int exp_lps = 0;
+static int exp_ly = 0;
+static int exp_nip = 0;
+static int exp_orig = 0;
 static int exp_pcs = 0;
-static int exp_psl = 0;
 static int exp_pro = 0;
-static int exp_kr = 0;
+static int exp_psl = 0;
 static int exp_sc = 0;
 static int exp_sob = 0;
 static int exp_ss = 0;
@@ -147,6 +152,7 @@ int cast_space;
 int format_col1_comments;
 int format_comments;
 int continuation_indent;
+int lex_or_yacc;
 int lineup_to_parens;
 int leave_preproc_space;
 int blank_after_sizeof;
@@ -155,6 +161,7 @@ int comment_max_col;
 int extra_expression_indent;
 int space_after_pointer_type;
 
+int debug;
 int expect_output_file;
 
 #define NumberData(p) ((p)->d_number)
@@ -269,6 +276,7 @@ struct pro pro[] =
 	    ONOFF_NA, &comment_max_col, &exp_lc),
   INIT_BOOL ("lps", false, ON, &leave_preproc_space, &exp_lps),
   INIT_BOOL ("lp", true, ON, &lineup_to_parens, &exp_lp),
+  INIT_BOOL ("ly", false, ON, &lex_or_yacc, &exp_ly),
   INIT_INT ("l", DEFAULT_RIGHT_MARGIN, ONOFF_NA, &max_col, &exp_l),
   INIT_BOOL ("nbacc", false, OFF,
 	     &blanklines_around_conditional_compilation, &exp_bacc),
@@ -371,6 +379,7 @@ struct pro pro[] =
 	    ONOFF_NA, &comment_max_col, &exp_lc),
   INIT_BOOL ("lps", false, ON, &leave_preproc_space, &exp_lps),
   INIT_BOOL ("lp", true, ON, &lineup_to_parens, &exp_lp),
+  INIT_BOOL ("ly", false, ON, &lex_or_yacc, &exp_ly),
   INIT_INT ("l", DEFAULT_RIGHT_MARGIN, ONOFF_NA, &max_col, &exp_l),
   INIT_BOOL ("nbacc", false, OFF,
 	     &blanklines_around_conditional_compilation, &exp_bacc),
@@ -472,6 +481,7 @@ struct long_option_conversion option_conversions[] =
   {"kernighan-and-ritchie-style", "kr"},
   {"kernighan-and-ritchie", "kr"},
   {"comment-line-length", "lc"},
+  {"lex-or-yacc", "ly"},
   {"continue-at-parentheses", "lp"},
   {"leave-preprocessor-space", "lps"},
   {"remove-preprocessor-space", "nlps"},

@@ -1,4 +1,7 @@
-/* Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
+/*
+   Copyright 1999-2002,2010, Thomas E. Dickey
+
+   Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
 
    This file is subject to the terms of the GNU General Public License as
    published by the Free Software Foundation.  A copy of this license is
@@ -20,7 +23,6 @@
 #define NULL_CHAR '\0'
 
 extern int debug;
-extern int exp_D;
 
 #define INLINE
 

@@ -281,8 +281,8 @@ in the input file will be copied to the output file.
 
 File: indent.info,  Node: -bad,  Next: -bap,  Up: Blank lines
 
--blank-lines-after-declarations
--------------------------------
+--blank-lines-after-declarations
+--------------------------------
 
 The `-bad' option forces a blank line after every block of
 declarations.  The `-nbad' option does not add any such blank lines.
@@ -311,8 +311,8 @@ and `indent -nbad' produces
 
 File: indent.info,  Node: -bap,  Prev: -bad,  Up: Blank lines
 
--blank-lines-after-procedures
------------------------------
+--blank-lines-after-procedures
+------------------------------
 
    The `-bap' option forces a blank line after every procedure body.
 
@@ -739,6 +739,7 @@ The following copyright notice applies to the `indent' program.  The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 
+     Copyright 1999-2002, 2010 Thomas E. Dickey
      Copyright (c) 1995, 1996 Joseph Arceneaux
      Copyright (c) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
      Copyright (c) 1985 Sun Microsystems, Inc.
@@ -885,6 +886,7 @@ option.  It is followed by a cross key alphabetized by long option.
 
 `-iN'
 `--indent-levelN'
+`--indentation-levelN'
      Set indentation level to N spaces.
      *Note Indentation::.
 
@@ -896,6 +898,8 @@ option.  It is followed by a cross key alphabetized by long option.
 
 `-kr'
 `--k-and-r-style'
+`--kernighan-and-ritchie'
+`--kernighan-and-ritchie-style'
      Use Kernighan & Ritchie coding style.
      *Note Common styles::.
 
@@ -1002,12 +1006,21 @@ option.  It is followed by a cross key alphabetized by long option.
 
 `-orig'
 `--original'
+`--original-style'
+`--berkeley'
+`--berkeley-style'
      Use the original Berkeley coding style.
      *Note Common styles::.
 
 `-npro'
 `--ignore-profile'
      Do not read `.indent.pro' files.
+     *Note Invoking indent::.
+
+`-o'
+`--output'
+`--output-file'
+     Write an output file, for the case where only one input is given.
      *Note Invoking indent::.
 
 `-pcs'
@@ -1095,7 +1108,10 @@ Index
  [index ]
 * Menu:
 
-* --blank-after-sizeof:                  Statements.           (line 85)
+* --berkeley:                            Common styles.        (line 42)
+* --berkeley-style:                      Common styles.        (line 42)
+* --Bill-Shannon:                        Statements.           (line 85)
+* --blank-before-sizeof:                 Statements.           (line 85)
 * --blank-lines-after-block-comments:    Blank lines.          (line 17)
 * --blank-lines-after-commas:            Declarations.         (line 26)
 * --blank-lines-after-declarations:      -bad.                 (line 15)
@@ -1124,7 +1140,10 @@ Index
 * --gnu-style:                           Common styles.        (line 12)
 * --ignore-profile:                      Invoking indent.      (line 64)
 * --indent-levelN:                       Indentation.          (line  6)
+* --indentation-levelN:                  Indentation.          (line  6)
 * --k-and-r-style:                       Common styles.        (line 28)
+* --kernighan-and-ritchie:               Common styles.        (line 28)
+* --kernighan-and-ritchie-style:         Common styles.        (line 28)
 * --leave-optional-blank-lines:          Blank lines.          (line 20)
 * --leave-preprocessor-space:            Indentation.          (line 51)
 * --line-comments-indentationN:          Comments.             (line 67)
@@ -1139,6 +1158,8 @@ Index
 * --no-verbosity:                        Miscellaneous options.
                                                                (line 10)
 * --original:                            Common styles.        (line 42)
+* --original-style:                      Common styles.        (line 42)
+* --output:                              Invoking indent.      (line 20)
 * --output-file:                         Invoking indent.      (line 20)
 * --parameter-indentationN:              Indentation.          (line 34)
 * --procnames-start-lines:               Declarations.         (line 37)
@@ -1147,7 +1168,7 @@ Index
 * --space-after-procedure-calls:         Statements.           (line 78)
 * --space-special-semicolon:             Statements.           (line 72)
 * --standard-output:                     Invoking indent.      (line 24)
-* --star-left-side-of-comments:          Comments.             (line 98)
+* --start-left-side-of-comments:         Comments.             (line 98)
 * --swallow-optional-blank-lines:        Blank lines.          (line 20)
 * --tab-sizeN:                           Indentation.          (line 29)
 * --verbose:                             Miscellaneous options.
@@ -1170,7 +1191,6 @@ Index
 * -cs:                                   Statements.           (line 82)
 * -D:                                    Miscellaneous options.
                                                                (line 15)
-* -dce:                                  Statements.           (line 49)
 * -diN:                                  Declarations.         (line  6)
 * -dN:                                   Comments.             (line 67)
 * -fc1:                                  Comments.             (line 53)
@@ -1186,6 +1206,7 @@ Index
 * -nbbb:                                 Blank lines.          (line 17)
 * -nbc:                                  Declarations.         (line 26)
 * -ncdb:                                 Comments.             (line 90)
+* -nce:                                  Statements.           (line 49)
 * -ncs:                                  Statements.           (line 82)
 * -nfc1:                                 Comments.             (line 53)
 * -nfca:                                 Comments.             (line 53)
@@ -1243,16 +1264,16 @@ Node: Backup files5792
 Node: Common styles7654
 Node: Blank lines9816
 Node: -bad10906
-Node: -bap11545
-Node: Comments12401
-Node: Statements17188
-Node: Declarations19609
-Node: Indentation21117
-Node: Disabling Formatting23438
-Node: Miscellaneous options25174
-Node: Bugs25864
-Node: Copyright26173
-Node: Option Summary27614
-Node: Index35327
+Node: -bap11547
+Node: Comments12405
+Node: Statements17192
+Node: Declarations19613
+Node: Indentation21121
+Node: Disabling Formatting23442
+Node: Miscellaneous options25178
+Node: Bugs25868
+Node: Copyright26177
+Node: Option Summary27666
+Node: Index35645
 
 End Tag Table
