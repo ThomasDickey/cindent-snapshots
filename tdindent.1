@@ -1,4 +1,4 @@
-.\" $Id: tdindent.1,v 1.4 2010/10/29 10:51:38 tom Exp $
+.\" $Id: tdindent.1,v 1.6 2010/10/29 21:53:49 tom Exp $
 .\" Copyright:  2010 by Thomas E. Dickey
 .\"
 .\" Permission is hereby granted, free of charge, to any person obtaining a
@@ -34,6 +34,10 @@ tdindent \- utility scripts for \fI\*n\fP.
 This is a wrapper for the \fI\*n\fP program, which adds options.
 Unrecognized options are passed to \fI\*n\fP.
 .PP
+Before using \fI\*n\fP, the wrapper saves the file
+and checks after if there were any changes.
+If no change was made, the wrapper restores the original file.
+.PP
 Options:
 .TP 5
 \-h
@@ -64,16 +68,16 @@ These are the standard C suffixes.
 These are accepted as "close enough" to C.
 .TP 5
 .B .l .y
-The wrapper adds to \fB\-ly\fP option, telling \fBindent\fP to process
+The wrapper adds to \fB\-ly\fP option, telling \fI\*n\fP to process
 lex/yacc files.
 .PP
-It ignores other file-suffixes, making it possible to run the \fBindent\fP
+It ignores other file-suffixes, making it possible to run the \fI\*n\fP 
 program on all files in a directory.
 .SS FILTERING
-The \fBindent\fP program by itself cannot handle certain commonly-used
+The \fI\*n\fP program by itself cannot handle certain commonly-used
 macros, e.g., from \fIncurses\fP and \fIxterm\fP.
 The wrapper script temporarily changes references to these to a form
-that \fBindent\fP can handle:
+that \fI\*n\fP can handle:
 .RS
 .sp
 .nf

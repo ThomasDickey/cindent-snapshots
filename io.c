@@ -152,6 +152,12 @@ pass_n_text (const char *s, int n)
     pass_char (*s++);
 }
 
+static void
+reset_output ()
+{
+  reset_parser ();
+}
+
 int
 count_columns (
 		int column,
@@ -741,6 +747,8 @@ fill_buffer (void)
 	      if (!strncmp (p, "%%", 2))
 		{
 		  ++lex_section;
+		  if (lex_section >= 0)
+		    reset_output ();
 		}
 	      else if (!strncmp (p, "%{", 2))
 		{
@@ -752,6 +760,11 @@ fill_buffer (void)
 		}
 	      else if (next_lexcode)
 		{
+		  if (next_lexcode > 0)
+		    {
+		      next_lexcode = -1;
+		      reset_output ();
+		    }
 		  pass_lexcode = 1;
 		}
 	    }

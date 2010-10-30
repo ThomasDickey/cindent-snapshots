@@ -1852,6 +1852,13 @@ static size_t max_input_files = 128;
 #define INDENT_PROFILE ".indent.pro"
 #endif
 
+static void
+reset_lex (void)
+{
+  lex_section = 0;
+  next_lexcode = 0;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -2011,6 +2018,7 @@ main (int argc, char **argv)
 	    }
 
 	  make_backup (current_input);
+	  reset_lex ();
 	  reset_parser ();
 	  status = indent (current_input);
 	  if (status > exit_status)
@@ -2056,6 +2064,7 @@ main (int argc, char **argv)
 	    }
 	}
 
+      reset_lex ();
       reset_parser ();
       exit_status = indent (current_input);
     }

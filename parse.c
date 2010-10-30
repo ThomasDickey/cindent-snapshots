@@ -247,9 +247,6 @@ reset_parser (void)
   combuf[0] = codebuf[0] = labbuf[0] = ' ';
   combuf[1] = codebuf[1] = labbuf[1] = '\0';
 
-  lex_section = 0;
-  next_lexcode = 0;
-
   else_if = 1;
   else_or_endif = false;
   s_lab = e_lab = labbuf + 1;
