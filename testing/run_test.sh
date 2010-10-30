@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: run_test.sh,v 1.13 2010/10/25 22:27:25 tom Exp $
+# $Id: run_test.sh,v 1.14 2010/10/30 13:18:50 tom Exp $
 # vi:ts=4 sw=4
 CODE=0
 unset CDPATH
@@ -22,18 +22,19 @@ export PATH
 INDENT_DATA="$SCRIPTS"
 export INDENT_DATA
 
-for SRC in $TOP/*.in
+for SRC in $TOP/case*.[chyl]
 do
 	test -f "$SRC" || continue
 
-	name=`basename $SRC .in`
+	type=`basename $SRC | sed -e 's/^[^.]*//'`
+	name=`basename $SRC $type`
 	for OPT in $SCRIPTS/*-indent
 	do
 		test -f "$OPT" || continue
 
 		opt=`basename $OPT | sed -e 's/-indent//'`
 
-		TST=$name-$opt.c
+		TST=$name-$opt$type
 		ERR=$name-$opt.err
 
 		REF=$TOP/$name-$opt.ref
