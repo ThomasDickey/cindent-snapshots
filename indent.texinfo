@@ -1014,8 +1014,8 @@ is provided, which is equivalent to @samp{-ip0}.
 @kindex --remove-preprocessor-space
 ANSI C allows white space to be placed on preprocessor command lines
 between the character @samp{#} and the command name.  By default,
-@code{indent} removes this space, but specifying the @samp{-lps} option
-directs @code{indent} to leave this space unmodified.
+@code{indent} retains this space, but specifying the @samp{-nlps} option
+directs @code{indent} to remove the whitespace.
 
 @kindex -eei
 @kindex --extra-expression-indentation
@@ -1358,7 +1358,7 @@ Line up continued lines at parentheses.@*
 
 @item -lps
 @itemx --leave-preprocessor-space
-Leave space between @samp{#} and preprocessor directive.
+Leave space between @samp{#} and preprocessor directive.@*
 @xref{Indentation}.
 
 @item -nbacc
@@ -1426,6 +1426,11 @@ Zero width indentation for parameters.@*
 @itemx --dont-line-up-parentheses
 Do not line up parentheses.@*
 @xref{Statements}.
+
+@item -nlps
+@itemx --remove-preprocessor-space
+Remove space between @samp{#} and preprocessor directive.@*
+@xref{Indentation}.
 
 @item -npcs
 @itemx --no-space-after-function-call-names
@@ -1599,6 +1604,7 @@ the corresponding short option.
 \line{ --original \leaderfill                      -orig}
 \line{ --parameter-indentation \leaderfill         -ip@var{n}\ }
 \line{ --procnames-start-lines \leaderfill         -psl\ }
+\line{ --remove-preprocessor-space \leaderfill       -nlps\ }
 \line{ --space-after-cast \leaderfill              -cs\ \ }
 \line{ --space-after-procedure-calls \leaderfill   -pcs\ }
 \line{ --space-special-semicolon \leaderfill       -ss\ \ }

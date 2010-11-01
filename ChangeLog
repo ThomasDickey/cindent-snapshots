@@ -1,6 +1,18 @@
--- $Id: ChangeLog,v 1.34 2010/10/29 10:53:04 tom Exp $
+-- $Id: ChangeLog,v 1.40 2010/10/31 21:06:54 tom Exp $
 
-2010-10-29
+2010-10-31
+	+ make -nlps option actually work; it didn't work in any available
+	  version.  Instead, indent "always" behaved the same whether -lps
+	  was given or not.  Change default to avoid surprise.
+
+	+ use isblank() consistently to replace comparisons on space/tab,
+	  fixing a few places where only space was checked.
+
+	+ add "elif" to ifdef-level parsing.
+
+	+ fix an old bug where indent doesn't treat conditionals with different
+	  embedded whitespace as the same level.
+
 	+ add option -ly, to handle lex/yacc files.
 
 	+ enable the -D option all the time, without ifdef'ing for DEBUG.

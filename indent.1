@@ -653,8 +653,8 @@ is provided, which is equivalent to \fB\-ip0\fR.
 .PP
 ANSI C allows white space to be placed on preprocessor command lines
 between the character \fB#\fR and the command name.  By default, \fBindent\fR
-removes this space, but specifying the \fB\-lps\fR option directs \fBindent\fR
-to leave this space unmodified.
+retains this space, but specifying the \fB\-nlps\fR option directs \fBindent\fR
+to remove the whitespace.
 .PP
 Use the \fB\-eei\fR option to tell \fBindent\fR to improve readability of
 continuation lines from the expression part of \fBif(e)\fR, \fBwhile(e)\fR,
@@ -1027,8 +1027,8 @@ Line up continued lines at parentheses.
 .br
 \fB\-\-leave\-preprocessor\-space\fR
 .RS 5
-Leave space between \fB#\fR and preprocessor directive.  *Note
-Indentation::.
+Leave space between \fB#\fR and preprocessor directive.
+(see \fBIndentation\fR).
 .RE
 .PP
 \fB\-nbacc\fR
@@ -1134,6 +1134,14 @@ Zero width indentation for parameters.
 .RS 5
 Do not line up parentheses.
 (see \fBStatements\fR).
+.RE
+.PP
+\fB\-nlps\fR
+.br
+\fB\-\-remove\-preprocessor\-space\fR
+.RS 5
+Remove space between \fB#\fR and preprocessor directive.
+(see \fBIndentation\fR).
 .RE
 .PP
 \fB\-npcs\fR

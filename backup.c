@@ -51,9 +51,7 @@
 #include "sys.h"
 #include "backup.h"
 #include "indent.h"
-#include <ctype.h>
 
-#include <stdlib.h>
 #if defined (HAVE_UNISTD_H)
 #include <unistd.h>
 #endif
@@ -63,8 +61,6 @@
 #else
 #include <fcntl.h>
 #endif
-
-#include <string.h>
 
 #ifndef isascii
 #define ISDIGIT(c) (isdigit (UChar(c)))
