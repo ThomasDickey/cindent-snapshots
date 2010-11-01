@@ -667,8 +667,8 @@ is provided, which is equivalent to `-ip0'.
 
    ANSI C allows white space to be placed on preprocessor command lines
 between the character `#' and the command name.  By default, `indent'
-removes this space, but specifying the `-lps' option directs `indent'
-to leave this space unmodified.
+retains this space, but specifying the `-nlps' option directs `indent'
+to remove the whitespace.
 
    Use the `-eei' option to tell `indent' to improve readability of
 continuation lines from the expression part of `if(e)', `while(e)',
@@ -977,8 +977,8 @@ option.  It is followed by a cross key alphabetized by long option.
 
 `-lps'
 `--leave-preprocessor-space'
-     Leave space between `#' and preprocessor directive.  *Note
-     Indentation::.
+     Leave space between `#' and preprocessor directive.
+     *Note Indentation::.
 
 `-nbacc'
 `--no-blank-lines-after-ifdefs'
@@ -1045,6 +1045,11 @@ option.  It is followed by a cross key alphabetized by long option.
 `--dont-line-up-parentheses'
      Do not line up parentheses.
      *Note Statements::.
+
+`-nlps'
+`--remove-preprocessor-space'
+     Remove space between `#' and preprocessor directive.
+     *Note Indentation::.
 
 `-npcs'
 `--no-space-after-function-call-names'
@@ -1399,12 +1404,12 @@ Node: Comments12630
 Node: Statements17417
 Node: Declarations19838
 Node: Indentation21346
-Node: Disabling Formatting23904
-Node: Other Languages25575
-Node: Miscellaneous options26772
-Node: Bugs27510
-Node: Copyright27819
-Node: Option Summary29308
-Node: Index39996
+Node: Disabling Formatting23899
+Node: Other Languages25570
+Node: Miscellaneous options26767
+Node: Bugs27505
+Node: Copyright27814
+Node: Option Summary29303
+Node: Index40113
 
 End Tag Table

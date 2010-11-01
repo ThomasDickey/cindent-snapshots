@@ -273,6 +273,7 @@ extern int in_line_no;		/* the current input line number. */
 extern int out_line_no;		/* the current output line number. */
 
 extern int max_col;		/* the maximum allowable line length */
+extern int debug;		/* when true, debugging messages are printed */
 extern int verbose;		/* when true, non-essential error messages
 				   are printed */
 extern int cuddle_else;		/* true if else should cuddle up to '}' */

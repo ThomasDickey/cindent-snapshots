@@ -30,10 +30,6 @@
 #include <unistd.h>
 #endif
 
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-
 void
 usage (void)
 {
@@ -265,6 +261,12 @@ indent (struct file_buffer *this_file)
      a newline was passed over */
   int flushed_nl = 0;
   int force_nl = 0;
+
+  /*
+   * temporary parse-state
+   */
+  char *s_key;
+  char *e_key;
 
   in_prog = in_prog_pos = this_file->data;
   in_prog_size = this_file->size;
@@ -917,7 +919,7 @@ indent (struct file_buffer *this_file)
 
 	case binary_op:	/* any binary operation */
 	  if (parser_state_tos->want_blank
-	      || (e_code > s_code && *e_code != ' '))
+	      || (e_code > s_code && !isblank(*e_code)))
 	    {
 	      buf_break = e_code;
 	      *e_code++ = ' ';
@@ -1299,13 +1301,7 @@ indent (struct file_buffer *this_file)
 	      && hd_type == ifstmt)
 	    {
 	      type_code = ident;
-	      for (t_ptr = token; t_ptr < token_end; ++t_ptr)
-		{
-		  CHECK_CODE_SIZE;
-		  *e_code++ = *t_ptr;
-		}
-	      *e_code = '\0';	/* null terminate code sect */
-	      break;
+	      goto copy_id;
 	    }
 
 	  /* handle C++ const function declarations like
@@ -1566,7 +1562,7 @@ indent (struct file_buffer *this_file)
 		  }
 	      }
 
-	    while (e_lab > s_lab && (e_lab[-1] == ' ' || e_lab[-1] == TAB))
+	    while (e_lab > s_lab && isblank (e_lab[-1]))
 	      e_lab--;
 
 	    if (in_cplus_comment)	/* Should we also check in_comment? -jla */
@@ -1597,7 +1593,7 @@ indent (struct file_buffer *this_file)
 
 		e_lab = s_lab + com_start;
 		while (e_lab > s_lab
-		       && (e_lab[-1] == ' ' || e_lab[-1] == TAB))
+		       && isblank (e_lab[-1]))
 		  e_lab--;
 
 		/* Switch input buffers so that calls to lexi() will
@@ -1613,7 +1609,37 @@ indent (struct file_buffer *this_file)
 	    parser_state_tos->pcase = false;
 	  }
 
-	  if (strncmp (s_lab + 1, "if", (size_t) 2) == 0)
+	  /*
+	   * s_lab points to the "#" mark, but there may be spaces between it
+	   * and the keyword, if any.
+	   */
+	  for (s_key = s_lab + 1;
+	       s_key < e_lab && isspace (UChar (*s_key));
+	       ++s_key)
+	    {
+	      ;
+	    }
+	  if (s_key < e_lab)
+	    {
+	      for (e_key = s_key + 1;
+		   e_key < e_lab && !isspace (UChar (*e_key));
+		   ++e_key)
+		{
+		  ;
+		}
+	    }
+	  else
+	    {
+	      s_key = e_lab;
+	      e_key = e_lab;
+	    }
+
+#define SAME_KEY(name,len) \
+	  ((e_key - s_key) == len && strncmp (s_key, name, (size_t) len) == 0)
+
+	  if (SAME_KEY ("if", 2)
+	      || SAME_KEY ("ifdef", 5)
+	      || SAME_KEY ("ifndef", 6))
 	    {
 	      if (blanklines_around_conditional_compilation)
 		{
@@ -1664,7 +1690,7 @@ indent (struct file_buffer *this_file)
 		parser_state_tos = new;
 	      }
 	    }
-	  else if (strncmp (s_lab + 1, "else", (size_t) 4) == 0)
+	  else if (SAME_KEY ("else", 4) || SAME_KEY ("elif", 4))
 	    {
 	      /* When we get #else, we want to restore the parser state to
 	         what it was before the matching #if, so that things get
@@ -1720,11 +1746,11 @@ indent (struct file_buffer *this_file)
 		}
 	      else
 		{
-		  message (0, "Unmatched #else");
+		  message (0, "Unmatched #%.*s", e_key - s_key, s_key);
 		  file_exit_value = indent_error;
 		}
 	    }
-	  else if (strncmp (s_lab + 1, "endif", (size_t) 5) == 0)
+	  else if (SAME_KEY ("endif", 5))
 	    {
 	      else_or_endif = true;
 	      /* We want to remove the second to top elt on the stack, which
@@ -1757,7 +1783,6 @@ indent (struct file_buffer *this_file)
 	      else
 		prefix_blankline_requested = 0;
 	    }
-	  /* fprintf(stderr, "[%d]:%s\n", out_line_no, s_lab + 1); */
 
 	  /* Normally, subsequent processing of the newline character
 	     causes the line to be printed.  The following clause handles

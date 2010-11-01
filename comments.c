@@ -19,8 +19,6 @@
 #include "sys.h"
 #include "indent.h"
 
-#include <string.h>
-
 /* Check the limits of the comment buffer, and expand as neccessary. */
 
 #define CHECK_COM_SIZE \
@@ -335,7 +333,7 @@ print_comment (void)
 
       /* Check if the delimiter was already on a line by itself,
          and skip whitespace if formating. */
-      while (*p == ' ' || *p == TAB)
+      while (isblank (*p))
 	p++;
       if (*p == EOL)
 	buf_ptr = p + 1;
@@ -351,7 +349,7 @@ print_comment (void)
     {
       *e_com++ = ' ';
       column = start_column + 3;
-      while (*buf_ptr == ' ' || *buf_ptr == TAB)
+      while (isblank (*buf_ptr))
 	if (++buf_ptr >= buf_end)
 	  fill_buffer ();
     }
@@ -429,7 +427,7 @@ print_comment (void)
 
 		  /* If this is "\n\n", or "\n<whitespace>\n",
 		     it's a paragraph break. */
-		  while (*buf_ptr == TAB || *buf_ptr == ' ')
+		  while (isblank (*buf_ptr))
 		    if (buf_ptr++ >= buf_end)
 		      fill_buffer ();
 		  if (*buf_ptr == EOL || !text_on_line)
@@ -471,7 +469,7 @@ print_comment (void)
 				}
 			      else
 				/* Insert space before closing delim */
-			      if (*(e_com - 1) != ' ' && *(e_com - 1) != TAB)
+			      if (!isblank (*(e_com - 1)))
 				*e_com++ = ' ';
 			    }
 			  /* If no text on line, then line is completely empty
@@ -488,7 +486,7 @@ print_comment (void)
 			       with:
 			       if (first_comment_line != com_lines)
 			       abort (); */
-			  if (*(e_com - 1) != ' ' && *(e_com - 1) != TAB)
+			  if (!isblank (*(e_com - 1)))
 			    *e_com++ = ' ';
 			}
 
@@ -502,7 +500,7 @@ print_comment (void)
 
 		         NOTE:  We're not printing the line: TRY IT! */
 		      buf_ptr += 2;
-		      while (*buf_ptr == ' ' || *buf_ptr == TAB)
+		      while (isblank (*buf_ptr))
 			buf_ptr++;
 		      if (buf_ptr >= buf_end)
 			fill_buffer ();
@@ -572,7 +570,7 @@ print_comment (void)
 		{
 		  if (comment_type == cplus_comment)
 		    {
-		      while (*buf_ptr == TAB || *buf_ptr == ' ')
+		      while (isblank (*buf_ptr))
 			buf_ptr++;
 		      buf_ptr--;
 		      if (*buf_ptr == EOL)
@@ -580,7 +578,7 @@ print_comment (void)
 		    }
 		  else
 		    {
-		      while (*buf_ptr == TAB || *buf_ptr == ' '
+		      while (isblank (*buf_ptr)
 			     || *buf_ptr == EOL)
 			buf_ptr++;
 
@@ -613,7 +611,7 @@ print_comment (void)
       if (paragraph_break)
 	{
 	  if (merge_blank_comment_lines)
-	    while (*buf_ptr == EOL || *buf_ptr == ' ' || *buf_ptr == TAB)
+	    while (*buf_ptr == EOL || isblank (*buf_ptr))
 	      if (++buf_ptr >= buf_end)
 		fill_buffer ();
 	  paragraph_break = 0;
@@ -650,7 +648,7 @@ print_comment (void)
          new comment line. */
       if (save_ptr)
 	{
-	  while ((*save_ptr == ' ' || *save_ptr == TAB) && save_length)
+	  while (isblank (*save_ptr) && save_length)
 	    {
 	      save_ptr++;
 	      save_length--;
@@ -666,7 +664,7 @@ print_comment (void)
 	}
       else
 	{
-	  while (*buf_ptr == ' ' || *buf_ptr == TAB)
+	  while (isblank (*buf_ptr))
 	    if (++buf_ptr >= buf_end)
 	      fill_buffer ();
 	  text_on_line = 0;

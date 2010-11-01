@@ -26,13 +26,9 @@
 #include "sys.h"
 #include "indent.h"
 
-#include <ctype.h>
-#include <stdlib.h>
-
 #if defined (HAVE_UNISTD_H)
 #include <unistd.h>
 #endif
-#include <string.h>
 
 #ifdef VMS
 #   include <file.h>
@@ -153,7 +149,7 @@ pass_n_text (const char *s, int n)
 }
 
 static void
-reset_output ()
+reset_output (void)
 {
   reset_parser ();
 }
@@ -336,7 +332,7 @@ dump_line (void)
 	      comment_open = 0;
 	      pass_text (".*/\n");
 	    }
-	  while (e_lab > s_lab && (e_lab[-1] == ' ' || e_lab[-1] == TAB))
+	  while (e_lab > s_lab && isblank (e_lab[-1]))
 	    e_lab--;
 	  cur_col = pad_output (1, compute_label_target ());
 	  if (s_lab[0] == '#'
@@ -351,7 +347,7 @@ dump_line (void)
 	      do
 		pass_char (*s++);
 	      while (s < e_lab && 'a' <= *s && *s <= 'z');
-	      while ((*s == ' ' || *s == TAB) && s < e_lab)
+	      while (isblank (*s) && s < e_lab)
 		s++;
 	      if (s < e_lab)
 		{
@@ -378,7 +374,7 @@ dump_line (void)
       parser_state_tos->pcase = false;
 
       /* Remove trailing spaces */
-      while (*(e_code - 1) == ' ' && e_code > s_code)
+      while (isblank (*(e_code - 1)) && e_code > s_code)
 	*(--e_code) = NULL_CHAR;
       if (s_code != e_code)
 	{			/* print code section, if any */
@@ -756,7 +752,14 @@ fill_buffer (void)
 		}
 	      else if (!strncmp (p, "%}", 2))
 		{
-		  next_lexcode = 0;
+		  if (next_lexcode)
+		    {
+		      if (next_lexcode < 0)
+			{
+			  dump_line ();
+			}
+		      next_lexcode = 0;
+		    }
 		}
 	      else if (next_lexcode)
 		{
@@ -777,7 +780,7 @@ fill_buffer (void)
 	    }
 	}
 
-      while (*p == ' ' || *p == TAB)
+      while (isblank (*p))
 	p++;
 
       /* If we are looking at the beginning of a comment, see
@@ -785,7 +788,7 @@ fill_buffer (void)
       if (*p == '/' && (*(p + 1) == '*' || *(p + 1) == '/'))
 	{
 	  p += 2;
-	  while (*p == ' ' || *p == TAB)
+	  while (isblank (*p))
 	    p++;
 
 	  /* Skip all lines between the indent off and on directives. */
@@ -819,7 +822,7 @@ fill_buffer (void)
 		      cur_line = p + 1;
 		    }
 		  pass_char (*p++);
-		  while (*p == ' ' || *p == TAB)
+		  while (isblank (*p))
 		    pass_char (*p++);
 
 		  if (*p == '/' && (*(p + 1) == '*' || *(p + 1) == '/'))
@@ -828,7 +831,7 @@ fill_buffer (void)
 		         back on. */
 		      pass_char (*p++);
 		      pass_char (*p++);
-		      while (*p == ' ' || *p == TAB)
+		      while (isblank (*p))
 			pass_char (*p++);
 		      if (!strncmp (p, "*INDENT-ON*", (size_t) 11))
 			{

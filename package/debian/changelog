@@ -1,4 +1,4 @@
-cindent (2.0.20101029) unstable; urgency=low
+cindent (2.0.20101031) unstable; urgency=low
 
   * improve messages for unterminated indent-off comment
 

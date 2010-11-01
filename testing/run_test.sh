@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: run_test.sh,v 1.14 2010/10/30 13:18:50 tom Exp $
+# $Id: run_test.sh,v 1.15 2010/10/31 14:15:41 tom Exp $
 # vi:ts=4 sw=4
 CODE=0
 unset CDPATH
@@ -25,6 +25,11 @@ export INDENT_DATA
 for SRC in $TOP/case*.[chyl]
 do
 	test -f "$SRC" || continue
+	case "$SRC" in
+	*-*)
+		continue
+		;;
+	esac
 
 	type=`basename $SRC | sed -e 's/^[^.]*//'`
 	name=`basename $SRC $type`
@@ -40,7 +45,7 @@ do
 		REF=$TOP/$name-$opt.ref
 		MSG=$TOP/$name-$opt.msg
 
-		rm -f $TST
+		rm -f $TST $ERR
 		cp $SRC $TST
 
 		sh -c "./$OPT -v $TST >$ERR 2>&1"
@@ -54,6 +59,7 @@ do
 			if cmp -s $REF $TST
 			then
 				echo "... ok $REF"
+				rm -f $TST
 			else
 				diff -u $REF $TST
 				CODE=1
@@ -62,7 +68,6 @@ do
 			echo "... saving $REF"
 			mv $TST $REF
 		fi
-		rm -f $TST
 
 		if test ! -f $ERR
 		then
@@ -71,12 +76,14 @@ do
 			len=`wc -l $ERR | sed -e 's/^[ ]*//' -e 's/ .*//'`
 			if test ! -f $MSG && test "x$len" = x1
 			then
+				rm -f $ERR
 				:		# only interested in multiline response
 			elif test -f $MSG
 			then
 				if cmp -s $MSG $ERR
 				then
 					echo "... ok $MSG"
+					rm -f $ERR
 				else
 					diff -u $MSG $ERR
 					CODE=1
@@ -85,7 +92,6 @@ do
 				echo "... saving messages $MSG"
 				mv $ERR $MSG
 			fi
-			rm -f $ERR
 		fi
 	done
 done

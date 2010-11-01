@@ -22,9 +22,7 @@
 #include "indent.h"
 
 #include <errno.h>
-#include <stdlib.h>
 #include <stdarg.h>
-#include <string.h>
 
 /* Like malloc but get error if no storage available. */
 

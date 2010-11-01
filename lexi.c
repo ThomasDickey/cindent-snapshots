@@ -29,12 +29,10 @@
 
 #include "sys.h"
 #include "indent.h"
-#include <ctype.h>
 
 #if defined (HAVE_UNISTD_H)
 #include <unistd.h>
 #endif
-#include <string.h>
 
 /* Stuff that needs to be shared with the rest of indent. Documented in
    indent.h.  */
@@ -93,10 +91,10 @@ lexi (void)
   parser_state_tos->col_1 = parser_state_tos->last_nl;
   parser_state_tos->last_nl = false;
 
-  if (*buf_ptr == ' ' || *buf_ptr == TAB)
+  if (isblank (*buf_ptr))
     {
       parser_state_tos->col_1 = false;
-      while (*buf_ptr == ' ' || *buf_ptr == TAB)
+      while (isblank (*buf_ptr))
 	if (++buf_ptr >= buf_end)
 	  fill_buffer ();
     }
@@ -178,7 +176,7 @@ lexi (void)
 
       token_end = buf_ptr;
 
-      while (*buf_ptr == ' ' || *buf_ptr == TAB)
+      while (isblank (*buf_ptr))
 	{
 	  if (++buf_ptr >= buf_end)
 	    fill_buffer ();
@@ -505,9 +503,14 @@ lexi (void)
          the token if user specified "-lps" */
       if (leave_preproc_space)
 	{
-	  while (*buf_ptr == ' ' && buf_ptr < buf_end)
+	  while (isblank (*buf_ptr) && buf_ptr < buf_end)
 	    inc_token_len ();
 	  token_end = buf_ptr;
+	}
+      else
+	{
+	  while (isblank (*buf_ptr) && buf_ptr < buf_end)
+	    ++buf_ptr;
 	}
       break;
 
@@ -528,7 +531,7 @@ lexi (void)
 
       code = colon;
       unary_delim = true;
-      if (squest && *e_com != ' ')
+      if (squest && !isblank (*e_com))
 	{
 	  if (e_code == s_code)
 	    parser_state_tos->want_blank = false;

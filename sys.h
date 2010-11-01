@@ -14,7 +14,13 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details. */
 
+#ifndef INDENT_SYS_H
+#define INDENT_SYS_H 1
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 /* Values of special characters. */
 #define TAB '\t'
@@ -22,9 +28,10 @@
 #define BACKSLASH '\\'
 #define NULL_CHAR '\0'
 
-extern int debug;
-
-#define INLINE
+#ifndef isblank
+#undef  isblank
+#define isblank(c) ((c) == ' ' || (c) == TAB)
+#endif
 
 #ifdef VMS
 # define ONE_DOT_PER_FILENAME 1
@@ -54,3 +61,5 @@ struct file_buffer
 
 extern struct file_buffer *read_file (const char *);
 extern struct file_buffer *read_stdin (void);
+
+#endif /* INDENT_SYS_H */
