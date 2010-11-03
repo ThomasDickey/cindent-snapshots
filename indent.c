@@ -403,6 +403,7 @@ indent (struct file_buffer *this_file)
 	      /* Save this comment in the `save_com' buffer, for
 	         possible re-insertion in the output stream later. */
 	    case comment:
+	      parser_state_tos->in_comment = true;
 	      if ((last_code != rparen || parser_state_tos->paren_depth != 0)
 		  && (!flushed_nl || save_com.end != save_com.ptr))
 		{
@@ -452,8 +453,10 @@ indent (struct file_buffer *this_file)
 		  save_com.len++;
 		  if (++buf_ptr >= buf_end)	/* get past / in buffer */
 		    fill_buffer ();
+		  parser_state_tos->in_comment = false;
 		  break;
 		}
+	      parser_state_tos->in_comment = false;
 	      /* FALLTHRU */
 
 	      /* Just some statement. */
@@ -919,7 +922,7 @@ indent (struct file_buffer *this_file)
 
 	case binary_op:	/* any binary operation */
 	  if (parser_state_tos->want_blank
-	      || (e_code > s_code && !isblank(*e_code)))
+	      || (e_code > s_code && !isblank (*e_code)))
 	    {
 	      buf_break = e_code;
 	      *e_code++ = ' ';
@@ -1801,6 +1804,7 @@ indent (struct file_buffer *this_file)
 	  /* A C or C++ comment. */
 	case comment:
 	case cplus_comment:
+	  parser_state_tos->in_comment = true;
 	  if (flushed_nl)
 	    {
 	      flushed_nl = false;
@@ -1809,6 +1813,7 @@ indent (struct file_buffer *this_file)
 	      force_nl = false;
 	    }
 	  print_comment ();
+	  parser_state_tos->in_comment = false;
 	  break;
 
 	default:

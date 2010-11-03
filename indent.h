@@ -452,6 +452,7 @@ struct parser_state
     int i_l_follow;		/* the level in spaces to which ind_level
 				   should be set after the current line is
 				   printed */
+    int in_comment;		/* set to true while processing a C comment */
     int in_decl;		/* set to true when we are in a declaration
 				   stmt.  The processing of braces is then
 				   slightly different */

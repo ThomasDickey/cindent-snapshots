@@ -217,6 +217,7 @@ reset_parser (void)
   parser_state_tos->sizeof_keyword = false;
   parser_state_tos->dumped_decl_indent = false;
   parser_state_tos->in_parameter_declaration = false;
+  parser_state_tos->in_comment = false;
   parser_state_tos->just_saw_decl = false;
   parser_state_tos->in_decl = false;
   parser_state_tos->decl_on_line = false;
