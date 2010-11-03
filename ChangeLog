@@ -1,6 +1,12 @@
--- $Id: ChangeLog,v 1.40 2010/10/31 21:06:54 tom Exp $
+-- $Id: ChangeLog,v 1.42 2010/11/03 00:32:46 tom Exp $
 
-2010-10-31
+2010-11-02
+	+ improve sed script in tdindent used to handle multiple GCC_xxx's on
+	  the same line, to reduce unintended matches.
+
+	+ add check to ensure that --break-after-declaration does not cause
+	  a blank line in multiline comments which begin on the same line.
+
 	+ make -nlps option actually work; it didn't work in any available
 	  version.  Instead, indent "always" behaved the same whether -lps
 	  was given or not.  Change default to avoid surprise.

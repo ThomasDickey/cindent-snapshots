@@ -67,7 +67,7 @@ int out_lines;
 int com_lines;
 
 int suppress_blanklines = 0;
-static int comment_open;
+static int not_first_line;
 
 int paren_target;
 
@@ -152,6 +152,9 @@ static void
 reset_output (void)
 {
   reset_parser ();
+  not_first_line = 0;
+  n_real_blanklines = 0;
+  suppress_blanklines = 1;
 }
 
 int
@@ -273,7 +276,6 @@ dump_line (void)
 				   level, followed by any comments */
   int cur_col;
   int target_col = 0;
-  static int not_first_line;
   int not_truncated = 1;
 
   if (parser_state_tos->procname[0])
@@ -292,15 +294,10 @@ dump_line (void)
 	  pass_char ('\014');
 	  parser_state_tos->use_ff = false;
 	}
-      else
+      else if (!suppress_blanklines)
 	{
-	  if (suppress_blanklines > 0)
-	    suppress_blanklines--;
-	  else
-	    {
-	      parser_state_tos->bl_line = true;
-	      n_real_blanklines++;
-	    }
+	  parser_state_tos->bl_line = true;
+	  n_real_blanklines++;
 	}
     }
   else
@@ -327,11 +324,6 @@ dump_line (void)
 
       if (e_lab != s_lab)
 	{			/* print lab, if any */
-	  if (comment_open)
-	    {
-	      comment_open = 0;
-	      pass_text (".*/\n");
-	    }
 	  while (e_lab > s_lab && isblank (e_lab[-1]))
 	    e_lab--;
 	  cur_col = pad_output (1, compute_label_target ());
@@ -380,12 +372,6 @@ dump_line (void)
 	{			/* print code section, if any */
 	  char *p;
 	  int i;
-
-	  if (comment_open)
-	    {
-	      comment_open = 0;
-	      pass_text (".*/\n");
-	    }
 
 	  /* If a comment begins this line, then indent it to the right
 	     column for comments, otherwise the line starts with code,
@@ -476,7 +462,8 @@ dump_line (void)
       if (parser_state_tos->just_saw_decl == 1
 	  && blanklines_after_declarations)
 	{
-	  prefix_blankline_requested = 1;
+	  if (!parser_state_tos->in_comment)
+	    prefix_blankline_requested = 1;
 	  parser_state_tos->just_saw_decl = 0;
 	}
       else
@@ -737,6 +724,7 @@ fill_buffer (void)
       if (lex_or_yacc)
 	{
 	  int pass_lexcode = (lex_section >= 2);
+	  int skip_line = 0;
 
 	  if (!pass_lexcode)
 	    {
@@ -744,11 +732,15 @@ fill_buffer (void)
 		{
 		  ++lex_section;
 		  if (lex_section >= 0)
-		    reset_output ();
+		    {
+		      reset_output ();
+		      skip_line = (lex_section >= 2);
+		    }
 		}
 	      else if (!strncmp (p, "%{", 2))
 		{
 		  next_lexcode = 1;
+		  skip_line = 1;
 		}
 	      else if (!strncmp (p, "%}", 2))
 		{
@@ -758,6 +750,7 @@ fill_buffer (void)
 			{
 			  dump_line ();
 			}
+		      pass_char ('\n');
 		      next_lexcode = 0;
 		    }
 		}
@@ -774,7 +767,12 @@ fill_buffer (void)
 
 	  if (!pass_lexcode)
 	    {
-	      if (!(p = pass_line (p)))
+	      p = pass_line (p);
+	      if (skip_line)
+		{
+		  pass_char ('\n');
+		}
+	      if (!p)
 		return;
 	      continue;
 	    }
