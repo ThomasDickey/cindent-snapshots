@@ -1,4 +1,4 @@
-dnl $Id: aclocal.m4,v 1.2 2010/10/25 21:34:02 tom Exp $
+dnl $Id: aclocal.m4,v 1.3 2010/11/03 23:24:57 tom Exp $
 dnl autoconf macros for vttest - T.E.Dickey
 dnl ---------------------------------------------------------------------------
 dnl Copyright:  1997-2009,2010 by Thomas E. Dickey
@@ -688,6 +688,14 @@ AC_OBJEXT
 PROG_EXT="$EXEEXT"
 AC_SUBST(PROG_EXT)
 test -n "$PROG_EXT" && AC_DEFINE_UNQUOTED(PROG_EXT,"$PROG_EXT")
+])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_PROG_LINT version: 2 updated: 2009/08/12 04:43:14
+dnl ------------
+AC_DEFUN([CF_PROG_LINT],
+[
+AC_CHECK_PROGS(LINT, tdlint lint alint splint lclint)
+AC_SUBST(LINT_OPTS)
 ])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_REMOVE_DEFINE version: 3 updated: 2010/01/09 11:05:50

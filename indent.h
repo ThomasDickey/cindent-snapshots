@@ -134,6 +134,9 @@ enum rwcodes
 
 #define DEFAULT_RIGHT_COMMENT_MARGIN 78
 
+#define at_buffer_end(p) ((p) >= buf_end)
+#define at_line_end(p)   (at_buffer_end(p) || (*p) == EOL)
+
 extern const char *progname;	/* actual name of this program */
 
 extern const char *in_name;	/* Name of input file.  */

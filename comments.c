@@ -142,7 +142,7 @@ print_comment (void)
 	      *e_com++ = *buf_ptr++;
 	      CHECK_COM_SIZE;
 	    }
-	  while (*buf_ptr != '*' && buf_ptr < buf_end);
+	  while (*buf_ptr != '*' && !at_buffer_end(buf_ptr));
 
 	  CHECK_COM_SIZE;
 
@@ -150,11 +150,11 @@ print_comment (void)
 	     this line. */
 	  if (*buf_ptr == '*' && *(buf_ptr + 1) == '/')
 	    {
-	      if (buf_ptr == buf_end)
+	      if (at_buffer_end(buf_ptr))
 		fill_buffer ();
 
 	      buf_ptr += 2;
-	      if (buf_ptr == buf_end)
+	      if (at_buffer_end(buf_ptr))
 		fill_buffer ();
 
 	      *e_com++ = '*';
@@ -176,7 +176,7 @@ print_comment (void)
 	    }
 
 	  /* End of the line, or end of file. */
-	  if (buf_ptr == buf_end)
+	  if (at_buffer_end(buf_ptr))
 	    {
 	      if (*(buf_ptr - 1) == EOL)
 		{
@@ -339,7 +339,7 @@ print_comment (void)
 	buf_ptr = p + 1;
       else if (format)
 	buf_ptr = p;
-      if (buf_ptr >= buf_end)
+      if (at_buffer_end(buf_ptr))
 	fill_buffer ();
 
       column = start_column;
@@ -350,7 +350,7 @@ print_comment (void)
       *e_com++ = ' ';
       column = start_column + 3;
       while (isblank (*buf_ptr))
-	if (++buf_ptr >= buf_end)
+	if (at_buffer_end(++buf_ptr))
 	  fill_buffer ();
     }
 
@@ -416,7 +416,7 @@ print_comment (void)
 		     end an input line, so check here if we need to
 		     get the next line. */
 		  buf_ptr++;
-		  if (buf_ptr >= buf_end)
+		  if (at_buffer_end(buf_ptr))
 		    fill_buffer ();
 
 		  /* If there are any spaces between the text and this
@@ -428,7 +428,7 @@ print_comment (void)
 		  /* If this is "\n\n", or "\n<whitespace>\n",
 		     it's a paragraph break. */
 		  while (isblank (*buf_ptr))
-		    if (buf_ptr++ >= buf_end)
+		    if (at_buffer_end(buf_ptr++))
 		      fill_buffer ();
 		  if (*buf_ptr == EOL || !text_on_line)
 		    {
@@ -502,7 +502,7 @@ print_comment (void)
 		      buf_ptr += 2;
 		      while (isblank (*buf_ptr))
 			buf_ptr++;
-		      if (buf_ptr >= buf_end)
+		      if (at_buffer_end(buf_ptr))
 			fill_buffer ();
 
 		      parser_state_tos->tos--;
@@ -591,7 +591,7 @@ print_comment (void)
 	    }
 
 	  buf_ptr++;
-	  if (buf_ptr == buf_end)
+	  if (at_buffer_end(buf_ptr))
 	    fill_buffer ();
 	}
 
@@ -612,7 +612,7 @@ print_comment (void)
 	{
 	  if (merge_blank_comment_lines)
 	    while (*buf_ptr == EOL || isblank (*buf_ptr))
-	      if (++buf_ptr >= buf_end)
+	      if (at_buffer_end(++buf_ptr))
 		fill_buffer ();
 	  paragraph_break = 0;
 	}
@@ -621,7 +621,7 @@ print_comment (void)
 	  /* If it was a paragraph break (`if' clause), we scanned ahead
 	     one character.  So, here in the `else' clause, advance buf_ptr. */
 	  buf_ptr++;
-	  if (buf_ptr >= buf_end)
+	  if (at_buffer_end(buf_ptr))
 	    fill_buffer ();
 	}
 
@@ -665,7 +665,7 @@ print_comment (void)
       else
 	{
 	  while (isblank (*buf_ptr))
-	    if (++buf_ptr >= buf_end)
+	    if (at_buffer_end(++buf_ptr))
 	      fill_buffer ();
 	  text_on_line = 0;
 	}
