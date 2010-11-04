@@ -753,7 +753,7 @@ scan_profile (FILE * f)
       /* If we've scanned something... */
       if (p != next)
 	{
-	  *p++ = 0;
+	  *p = 0;
 	  if (!this)
 	    {
 	      this = b0;

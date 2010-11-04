@@ -22,6 +22,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#if defined (HAVE_UNISTD_H)
+#include <unistd.h>
+#endif
+
 /* Values of special characters. */
 #define TAB '\t'
 #define EOL '\n'

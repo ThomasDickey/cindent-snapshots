@@ -26,10 +26,6 @@
 #include "sys.h"
 #include "indent.h"
 
-#if defined (HAVE_UNISTD_H)
-#include <unistd.h>
-#endif
-
 #ifdef VMS
 #   include <file.h>
 #   include <types.h>
@@ -135,7 +131,7 @@ pass_line (char *p)
 	   && ((unsigned int) (p - current_input->data) == current_input->size))
     {
       buf_ptr = buf_end = in_prog_pos = p;
-      had_eof = 1;
+      had_eof = true;
       p = 0;
     }
   return p;
@@ -277,6 +273,7 @@ dump_line (void)
   int cur_col;
   int target_col = 0;
   int not_truncated = 1;
+  char *s_key;
 
   if (parser_state_tos->procname[0])
     {
@@ -326,19 +323,31 @@ dump_line (void)
 	{			/* print lab, if any */
 	  while (e_lab > s_lab && isblank (e_lab[-1]))
 	    e_lab--;
+
+	  if (*s_lab == '#')
+	    {
+	      for (s_key = s_lab + 1; s_key < e_lab && isblank (*s_key); ++s_key);
+	      if (s_key >= e_lab)
+		s_key = 0;
+	    }
+	  else
+	    {
+	      s_key = 0;
+	    }
 	  cur_col = pad_output (1, compute_label_target ());
-	  if (s_lab[0] == '#'
-	      && (strncmp (s_lab, "#else", (size_t) 5) == 0
-		  || strncmp (s_lab, "#endif", (size_t) 6) == 0))
+	  if (s_key != 0
+	      && (strncmp (s_key, "else", (size_t) 4) == 0
+		  || strncmp (s_key, "endif", (size_t) 5) == 0))
 	    {
 	      /* Treat #else and #endif as a special case because any text
 	         after #else or #endif should be converted to a comment.  */
 	      char *s = s_lab;
+
 	      if (e_lab[-1] == EOL)
 		e_lab--;
 	      do
 		pass_char (*s++);
-	      while (s < e_lab && 'a' <= *s && *s <= 'z');
+	      while ((s < s_key) || (s < e_lab && 'a' <= *s && *s <= 'z'));
 	      while (isblank (*s) && s < e_lab)
 		s++;
 	      if (s < e_lab)
@@ -440,9 +449,8 @@ dump_line (void)
 		++out_lines;
 	      }
 
-	    cur_col = pad_output (cur_col, target);
+	    (void) pad_output (cur_col, target);
 	    pass_n_text (com_st, (int) (e_com - com_st));
-	    cur_col += (int) (e_com - com_st);
 	    com_lines++;
 	  }
 	}
@@ -697,8 +705,10 @@ fill_buffer (void)
       bp_save = be_save = 0;
 
       /* only return if there is really something in this buffer */
-      if (buf_ptr < buf_end)
-	return;
+      if (!at_buffer_end (buf_ptr))
+	{
+	  return;
+	}
     }
 
   if (*in_prog_pos == '\0')
@@ -809,7 +819,7 @@ fill_buffer (void)
 		      && ((unsigned int) (p - current_input->data) == current_input->size))
 		    {
 		      buf_ptr = buf_end = in_prog_pos = p;
-		      had_eof = 1;
+		      had_eof = true;
 		      unterminated_inhibit (starting_no);
 		      return;
 		    }
@@ -843,7 +853,7 @@ fill_buffer (void)
 				      == current_input->size))
 				{
 				  buf_ptr = buf_end = in_prog_pos = p;
-				  had_eof = 1;
+				  had_eof = true;
 				  return;
 				}
 			      else
@@ -895,7 +905,7 @@ fill_buffer (void)
       else
 	{
 	  in_prog_pos = p;
-	  finished_a_line = 1;
+	  break;
 	}
     }
   while (!finished_a_line);
@@ -904,5 +914,11 @@ fill_buffer (void)
   buf_end = in_prog_pos;
   buf_break = NULL;
   if (debug)
-    printf ("%6d: %.*s", in_line_no, buf_end - buf_ptr, buf_ptr);
+    {
+      printf ("%6d: %s%.*s%s",
+	      in_line_no,
+	      finished_a_line ? "" : "*",
+	      (int) (buf_end - buf_ptr), buf_ptr,
+	      finished_a_line ? "" : "\n");
+    }
 }

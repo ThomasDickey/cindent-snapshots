@@ -30,10 +30,6 @@
 #include "sys.h"
 #include "indent.h"
 
-#if defined (HAVE_UNISTD_H)
-#include <unistd.h>
-#endif
-
 /* Stuff that needs to be shared with the rest of indent. Documented in
    indent.h.  */
 char *token;
@@ -95,7 +91,7 @@ lexi (void)
     {
       parser_state_tos->col_1 = false;
       while (isblank (*buf_ptr))
-	if (++buf_ptr >= buf_end)
+	if (at_buffer_end (++buf_ptr))
 	  fill_buffer ();
     }
 
@@ -170,7 +166,7 @@ lexi (void)
 	while (chartype[UChar (*buf_ptr)] == alphanum)
 	  {			/* copy it over */
 	    inc_token_len ();
-	    if (buf_ptr >= buf_end)
+	    if (at_buffer_end (buf_ptr))
 	      fill_buffer ();
 	  }
 
@@ -178,7 +174,7 @@ lexi (void)
 
       while (isblank (*buf_ptr))
 	{
-	  if (++buf_ptr >= buf_end)
+	  if (at_buffer_end (++buf_ptr))
 	    fill_buffer ();
 	}
       parser_state_tos->its_a_keyword = false;
@@ -413,7 +409,7 @@ lexi (void)
      Note that it may be possible for this to kill us--if `fill_buffer'
      at any time switches `buf_ptr' to the other input buffer, `token'
      and `token_end' will point to different storage areas!!! */
-  if (++buf_ptr >= buf_end)
+  if (at_buffer_end (++buf_ptr))
     fill_buffer ();
 
   switch (*token)
@@ -455,13 +451,13 @@ lexi (void)
 	  if (*buf_ptr == '\\')
 	    {
 	      inc_token_len ();
-	      if (buf_ptr >= buf_end)
+	      if (at_buffer_end (buf_ptr))
 		fill_buffer ();
 	      if (*buf_ptr == 0)
 		break;
 	    }
 	  inc_token_len ();
-	  if (buf_ptr >= buf_end)
+	  if (at_buffer_end (buf_ptr))
 	    fill_buffer ();
 	}
 
@@ -476,7 +472,7 @@ lexi (void)
 	{
 	  /* Advance over end quote char.  */
 	  inc_token_len ();
-	  if (buf_ptr >= buf_end)
+	  if (at_buffer_end (buf_ptr))
 	    fill_buffer ();
 	}
 
@@ -503,13 +499,13 @@ lexi (void)
          the token if user specified "-lps" */
       if (leave_preproc_space)
 	{
-	  while (isblank (*buf_ptr) && buf_ptr < buf_end)
+	  while (isblank (*buf_ptr) && !at_buffer_end (buf_ptr))
 	    inc_token_len ();
 	  token_end = buf_ptr;
 	}
       else
 	{
-	  while (isblank (*buf_ptr) && buf_ptr < buf_end)
+	  while (isblank (*buf_ptr) && !at_buffer_end (buf_ptr))
 	    ++buf_ptr;
 	}
       break;
@@ -658,12 +654,12 @@ lexi (void)
       while (*buf_ptr == '>' || *buf_ptr == '<' || *buf_ptr == '=')
 	{
 	  inc_token_len ();
-	  if (buf_ptr >= buf_end)
+	  if (at_buffer_end (buf_ptr))
 	    fill_buffer ();
 	  if (*buf_ptr == '=')
 	    {
 	      inc_token_len ();
-	      if (buf_ptr >= buf_end)
+	      if (at_buffer_end (buf_ptr))
 		fill_buffer ();
 	    }
 	}
@@ -684,7 +680,7 @@ lexi (void)
 	    code = cplus_comment;
 
 	  inc_token_len ();
-	  if (buf_ptr >= buf_end)
+	  if (at_buffer_end (buf_ptr))
 	    fill_buffer ();
 
 	  unary_delim = parser_state_tos->last_u_d;
@@ -701,7 +697,7 @@ lexi (void)
 	    {
 	      /* handle ||, &&, etc, and also things as in int *****i */
 	      inc_token_len ();
-	      if (buf_ptr >= buf_end)
+	      if (at_buffer_end (buf_ptr))
 		fill_buffer ();
 	    }
 	  code = (parser_state_tos->last_u_d ? unary_op : binary_op);
@@ -718,7 +714,7 @@ lexi (void)
       last_code = code;
     }
 
-  if (buf_ptr >= buf_end)
+  if (at_buffer_end (buf_ptr))
     fill_buffer ();
   parser_state_tos->last_u_d = unary_delim;
 

@@ -435,7 +435,7 @@ indent (struct file_buffer *this_file)
 		      need_chars (&save_com, (size_t) 2);
 		      *save_com.end = *buf_ptr++;
 		      save_com.len++;
-		      if (buf_ptr >= buf_end)
+		      if (at_buffer_end (buf_ptr))
 			{
 			  fill_buffer ();
 			  if (had_eof)
@@ -451,7 +451,7 @@ indent (struct file_buffer *this_file)
 		    }
 		  *save_com.end++ = '/';	/* add ending slash */
 		  save_com.len++;
-		  if (++buf_ptr >= buf_end)	/* get past / in buffer */
+		  if (at_buffer_end (++buf_ptr))	/* get past / in buffer */
 		    fill_buffer ();
 		  parser_state_tos->in_comment = false;
 		  break;
@@ -1514,11 +1514,11 @@ indent (struct file_buffer *this_file)
 		*e_lab++ = *t_ptr;
 	      }
 
-	    while (!had_eof && (*buf_ptr != EOL || in_comment))
+	    while (!had_eof && (!at_line_end (buf_ptr) || in_comment))
 	      {
 		CHECK_LAB_SIZE;
 		*e_lab = *buf_ptr++;
-		if (buf_ptr >= buf_end)
+		if (at_buffer_end (buf_ptr))
 		  fill_buffer ();
 
 		switch (*e_lab++)
@@ -1527,7 +1527,7 @@ indent (struct file_buffer *this_file)
 		    if (!in_comment && !in_cplus_comment)
 		      {
 			*e_lab++ = *buf_ptr++;
-			if (buf_ptr >= buf_end)
+			if (at_buffer_end (buf_ptr))
 			  fill_buffer ();
 		      }
 		    break;

@@ -1,5 +1,5 @@
 # Makefile template for GNU indent
-# $Id: makefile.in,v 1.25 2010/10/31 14:16:04 tom Exp $
+# $Id: makefile.in,v 1.27 2010/11/03 23:48:00 tom Exp $
 # Copyright 1999-2002,2010, Thomas E. Dickey
 # Copyright (C) 1994, Joseph Arceneaux.  All rights reserved
 # Copyright (C) 1992, Free Software Foundation, Inc.
@@ -55,6 +55,9 @@ ZIP		= gzip
 
 DVITOGHOSTSCRIPT = dvi2ps indent.dvi > indent.ps
 CTAGS		= @CTAGS@
+ETAGS		= @ETAGS@
+LINT		= @LINT@
+LINT_OPTS	= @LINT_OPTS@
 
 CPPFLAGS	= @CPPFLAGS@
 CFLAGS		= @CFLAGS@
@@ -134,6 +137,9 @@ tags: $(SRC) $(HEADERS)
 	${CTAGS} ${SRC} ${HEADERS}
 TAGS: $(SRC) $(HEADERS)
 	${ETAGS} ${SRC} ${HEADERS}
+
+lint: $(SRC) $(HEADERS)
+	$(LINT) ${DEFS} $(CPPFLAGS) $(LINT_OPTS) $(OBJ:$o=.c)
 
 # Documents
 #

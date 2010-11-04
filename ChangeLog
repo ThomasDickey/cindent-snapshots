@@ -1,6 +1,14 @@
--- $Id: ChangeLog,v 1.42 2010/11/03 00:32:46 tom Exp $
+-- $Id: ChangeLog,v 1.45 2010/11/03 23:25:38 tom Exp $
 
-2010-11-02
+2010-11-03
+	+ add configure check and makefile rules for lint.
+
+	+ fix check for non-comment text after "#else" or "#endif" to allow
+	  for whitespace between "#" and the keyword.
+
+	+ bug-fix for files without an ending newline when parsing comments
+	  on a preprocessor line.
+
 	+ improve sed script in tdindent used to handle multiple GCC_xxx's on
 	  the same line, to reduce unintended matches.
 

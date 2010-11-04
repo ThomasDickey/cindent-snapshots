@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.5 2010/10/28 10:46:37 tom Exp $
+dnl $Id: configure.in,v 1.6 2010/11/03 23:23:30 tom Exp $
 dnl Process this file with autoconf to produce a configure script.
 dnl ---------------------------------------------------------------------------
 dnl Copyright:  1999-2002,2010 by Thomas E. Dickey
@@ -38,6 +38,7 @@ AC_PROG_CPP
 AC_PROG_AWK
 AC_PROG_INSTALL
 CF_MAKE_TAGS
+CF_PROG_LINT
 
 CF_DISABLE_ECHO
 CF_WITH_WARNINGS
