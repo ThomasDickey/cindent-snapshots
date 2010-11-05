@@ -26,10 +26,6 @@
 #include "indent.h"
 #include "backup.h"
 
-#if defined (HAVE_UNISTD_H)
-#include <unistd.h>
-#endif
-
 void
 usage (void)
 {
@@ -1570,7 +1566,6 @@ indent (struct file_buffer *this_file)
 
 	    if (in_cplus_comment)	/* Should we also check in_comment? -jla */
 	      {
-		in_cplus_comment = 0;
 		*e_lab++ = *buf_ptr++;
 		com_end = (int) (e_lab - s_lab);
 	      }
@@ -1648,7 +1643,10 @@ indent (struct file_buffer *this_file)
 		{
 		  int c;
 		  prefix_blankline_requested++;
-		  while ((c = *in_prog_pos++) == EOL);
+		  while (*in_prog_pos++ == EOL)
+		    {
+		      ;
+		    }
 		  in_prog_pos--;
 		}
 	      {
@@ -1807,7 +1805,6 @@ indent (struct file_buffer *this_file)
 	  parser_state_tos->in_comment = true;
 	  if (flushed_nl)
 	    {
-	      flushed_nl = false;
 	      dump_line ();
 	      parser_state_tos->want_blank = false;
 	      force_nl = false;
@@ -1915,15 +1912,17 @@ main (int argc, char **argv)
   set_defaults ();
   for (i = 1; i < argc; ++i)
     {
-      if (strcmp (argv[i], "-c++") == 0
-	  || strcmp (argv[i], "--c-plus-plus") == 0)
+      char *param = argv[i];
+
+      if (strcmp (param, "-c++") == 0
+	  || strcmp (param, "--c-plus-plus") == 0)
 	c_plus_plus = 1;
 
-      if (strcmp (argv[i], "-npro") == 0
-	  || strcmp (argv[i], "--ignore-profile") == 0
-	  || strcmp (argv[i], "+ignore-profile") == 0)
+      if (strcmp (param, "-npro") == 0
+	  || strcmp (param, "--ignore-profile") == 0
+	  || strcmp (param, "+ignore-profile") == 0)
 	break;
-      if (strcmp (argv[i], "--profile") == 0)
+      if (strcmp (param, "--profile") == 0)
 	{
 	  profile_filename = argv[++i];
 	  if (profile_filename == 0)
@@ -1935,7 +1934,9 @@ main (int argc, char **argv)
 
   for (i = 1; i < argc; ++i)
     {
-      if (argv[i][0] != '-' && argv[i][0] != '+')	/* Filename */
+      char *param = argv[i];
+
+      if (param[0] != '-' && param[0] != '+')	/* Filename */
 	{
 	  if (expect_output_file == true)	/* Last arg was "-o" */
 	    {
@@ -1944,7 +1945,7 @@ main (int argc, char **argv)
 		  fprintf (stderr,
 			   "%s: only one output file (2nd was %s)\n",
 			   progname,
-			   argv[i]);
+			   param);
 		  exit (invocation_error);
 		}
 
@@ -1956,7 +1957,7 @@ main (int argc, char **argv)
 		  exit (invocation_error);
 		}
 
-	      out_name = argv[i];
+	      out_name = param;
 	      expect_output_file = false;
 	      continue;
 	    }
@@ -1999,13 +2000,13 @@ main (int argc, char **argv)
 		    }
 		}
 
-	      in_file_names[input_files - 1] = argv[i];
+	      in_file_names[input_files - 1] = param;
 	    }
 	}
       else
 	{
 	  /* '-' as filename means stdin. */
-	  if (argv[i][0] == '-' && argv[i][1] == '\0')
+	  if (param[0] == '-' && param[1] == '\0')
 	    {
 	      if (input_files > 0)
 		{
@@ -2017,12 +2018,12 @@ main (int argc, char **argv)
 
 	      using_stdin = true;
 	    }
-	  else if (strcmp (argv[i], "--profile") == 0)
+	  else if (strcmp (param, "--profile") == 0)
 	    {
 	      ++i;
 	    }
 	  else
-	    i += set_option (argv[i], (i < argc ? argv[i + 1] : 0), 1);
+	    i += set_option (param, (i < argc ? argv[i + 1] : 0), 1);
 	}
     }
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.24 2010/11/03 00:50:06 tom Exp $
+# $Id: tdindent,v 1.28 2010/11/04 09:16:16 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010 Thomas E. Dickey                                      *
 #*                                                                          *
@@ -36,6 +36,8 @@ NOOP=no
 OPTS="-npro"
 SPCS=no
 USED=no
+TEST_D=no
+TEST_N=no
 
 PROFILE=
 EXPAND=cat
@@ -57,13 +59,19 @@ do
 	-h|-help|--help)
 		cat <<-EOF
 		This is a wrapper for the $INDENT_PROG program, which adds options.
-		Unrecognized options are passed to $INDENT_PROG.
+		Unrecognized options are passed to $INDENT_PROG, which does not use
+		getopt.
+
+		The wrapper pre/post-filters the source to provide for macros which
+		would confuse $INDENT_PROG.
 
 		Options:
 		  -h             help (shows this message)
 		  -n             no-op (perform indent and show difference without saving)
 		  --profile file get settings (look in current, home or $INDENT_DATA)
 		  -s             convert tabs to spaces in the updated file
+		  -D             test: show differences from pre-filtering
+		  -N             test: suppress indent, to test pre/post-filtering
 EOF
 		exit
 		;;
@@ -105,6 +113,13 @@ EOF
 		esac
 		test "$NOOP" = yes && OPTS="$OPTS -v"
 		;;
+	-D)
+		TEST_D=yes
+		;;
+	-N)
+		TEST_N=yes
+		NOOP=yes
+		;;
 	-*)
 		OPTS="$OPTS $name"
 		;;
@@ -134,12 +149,12 @@ EOF
 		test="${name}".b$$
 		rm -f "$save" "$test"
 		mv "$name" "$save"
-		# temporarily comment-out macros which confuse indent
+		# (pre-filter) temporarily comment-out macros which confuse indent
 		sed \
 			-e '/EMPTY_MODULE(/s/)$/);/' \
 			-e 's,\(MODULEID(\),//\1,' \
 			-e '/MODULE_ID(/s/)$/);/' \
-			-e 's,\<GCC_UNUSED\(.*\);,;//GCC_UNUSED\1,' \
+			-e 's,\<GCC_UNUSED[ 	]*\([;]\),\1//GCC_UNUSED,' \
 			-e 's,\<GCC_NORETURN\(.*\);,;//GCC_NORETURN\1,' \
 			-e 's,\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,' \
 			-e 's,\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,' \
@@ -149,15 +164,26 @@ EOF
 			-e 's,\(\<YY_BREAK\>\),\1;,' \
 			"$save" >"$test"
 		cp "$test" "$name"
+		# show the result of pre-filtering for the -D option
+		if test $TEST_D = yes ; then
+			echo ".. pre-filtering"
+			diff -u "$save" "$name"
+		fi
 		chmod u+w "$name"
-		$INDENT_PROG $OPTS $OPT2 "$name"
-		# restore the file.  There is an extra chunk used to handle multiple
-		# GCC_xxx's on the same line.
+		# if the -N option is given, simply echo the command rather than
+		# performing it.
+		if test $TEST_N = yes ; then
+			echo "$INDENT_PROG $OPTS $OPT2 $name"
+		else
+			$INDENT_PROG $OPTS $OPT2 "$name"
+		fi
+		# (post-filter) restore the file.  There is an extra chunk used to
+		# handle multiple GCC_xxx's on the same line.
 		sed \
 			-e '/EMPTY_MODULE(/s/);$/)/' \
 			-e 's,//\(MODULEID(\),\1,' \
 			-e '/MODULE_ID(/s/);$/)/' \
-			-e 's,;[ 	]*//GCC_UNUSED\(.*\);, GCC_UNUSED\1;,' \
+			-e 's,[ 	]*\([;]\)[ 	]*//GCC_UNUSED\(.*\), GCC_UNUSED\1\2,' \
 			-e 's,;[ 	]*//GCC_NORETURN\(.*\);, GCC_NORETURN\1;,' \
 			-e 's,;[ 	]*//GCC_PRINTFLIKE(\(.*\);, GCC_PRINTFLIKE(\1;,' \
 			-e 's,;[ 	]*//GCC_SCANFLIKE(\(.*\);, GCC_SCANFLIKE(\1;,' \

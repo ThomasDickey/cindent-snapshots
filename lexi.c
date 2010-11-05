@@ -567,7 +567,7 @@ lexi (void)
 
       break;
 
-    case 014:			/* a form feed */
+    case FORM_FEED:		/* a form feed */
       unary_delim = parser_state_tos->last_u_d;
       parser_state_tos->last_nl = true;		/* remember this so we can set
 						   'parser_state_tos->col_1' right */

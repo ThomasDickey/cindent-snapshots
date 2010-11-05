@@ -311,7 +311,6 @@ enum exit_values
 parse (enum codes tk)		/* the code for the construct scanned */
 {
   int i;
-  enum exit_values my_value = total_success;
 
   if (debug)
     {
@@ -462,7 +461,6 @@ parse (enum codes tk)		/* the code for the construct scanned */
 	  message (0, "Unmatched 'else' (stack has %s rather than %s)",
 		   parsecode2s (parser_state_tos->p_stack[parser_state_tos->tos]),
 		   parsecode2s (ifhead));
-	  my_value = indent_error;
 	}
       else
 	{
@@ -489,7 +487,7 @@ parse (enum codes tk)		/* the code for the construct scanned */
 	}
       else if (parser_state_tos->p_stack[parser_state_tos->tos - 1] == stmtl)
 	{
-	  message (token_col (), "FIXME");
+	  message (token_col (), "Did not expect a statement here");
 	  parser_state_tos->ind_level = parser_state_tos->i_l_follow
 	    = parser_state_tos->il[--parser_state_tos->tos];
 	}
@@ -500,7 +498,6 @@ parse (enum codes tk)		/* the code for the construct scanned */
 		   parsecode2s (lbrace),
 		   parsecode2s
 		   (parser_state_tos->p_stack[parser_state_tos->tos - 1]));
-	  my_value = indent_error;
 	}
       break;
 

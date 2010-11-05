@@ -88,7 +88,6 @@ print_comment (void)
   char *text_on_line = 0;
   char *line_break_ptr = 0;
   const char *start_delim;
-  const char *end_delim;
 
   const char *line_preamble;
   int line_preamble_length;
@@ -142,7 +141,7 @@ print_comment (void)
 	      *e_com++ = *buf_ptr++;
 	      CHECK_COM_SIZE;
 	    }
-	  while (*buf_ptr != '*' && !at_buffer_end(buf_ptr));
+	  while (*buf_ptr != '*' && !at_buffer_end (buf_ptr));
 
 	  CHECK_COM_SIZE;
 
@@ -150,11 +149,11 @@ print_comment (void)
 	     this line. */
 	  if (*buf_ptr == '*' && *(buf_ptr + 1) == '/')
 	    {
-	      if (at_buffer_end(buf_ptr))
+	      if (at_buffer_end (buf_ptr))
 		fill_buffer ();
 
 	      buf_ptr += 2;
-	      if (at_buffer_end(buf_ptr))
+	      if (at_buffer_end (buf_ptr))
 		fill_buffer ();
 
 	      *e_com++ = '*';
@@ -176,7 +175,7 @@ print_comment (void)
 	    }
 
 	  /* End of the line, or end of file. */
-	  if (at_buffer_end(buf_ptr))
+	  if (at_buffer_end (buf_ptr))
 	    {
 	      if (*(buf_ptr - 1) == EOL)
 		{
@@ -200,7 +199,6 @@ print_comment (void)
   else
     {
       start_delim = "/*";
-      end_delim = "*/";
       line_preamble = 0;
       line_preamble_length = 0;
       visible_preamble = 0;
@@ -339,10 +337,9 @@ print_comment (void)
 	buf_ptr = p + 1;
       else if (format)
 	buf_ptr = p;
-      if (at_buffer_end(buf_ptr))
+      if (at_buffer_end (buf_ptr))
 	fill_buffer ();
 
-      column = start_column;
       goto begin_line;
     }
   else if (format)
@@ -350,15 +347,13 @@ print_comment (void)
       *e_com++ = ' ';
       column = start_column + 3;
       while (isblank (*buf_ptr))
-	if (at_buffer_end(++buf_ptr))
+	if (at_buffer_end (++buf_ptr))
 	  fill_buffer ();
     }
 
   /* Iterate through the lines of the comment */
   while (!had_eof)
     {
-      int whitespace_character;	/* Mark if we've just seen whitespace or not */
-
       /* Iterate through the characters on one line */
       while (!had_eof)
 	{
@@ -368,8 +363,6 @@ print_comment (void)
 	    {
 	    case ' ':
 	    case TAB:
-	      whitespace_character = 1;
-
 	      /* If formatting, and previous break marker is
 	         nonexistant, or before text on line, reset
 	         it to here. */
@@ -397,8 +390,6 @@ print_comment (void)
 
 
 	    case EOL:
-	      whitespace_character = 1;
-
 	      /* We may be at the end of a C++ comment */
 	      if (comment_type == cplus_comment)
 		{
@@ -416,7 +407,7 @@ print_comment (void)
 		     end an input line, so check here if we need to
 		     get the next line. */
 		  buf_ptr++;
-		  if (at_buffer_end(buf_ptr))
+		  if (at_buffer_end (buf_ptr))
 		    fill_buffer ();
 
 		  /* If there are any spaces between the text and this
@@ -428,7 +419,7 @@ print_comment (void)
 		  /* If this is "\n\n", or "\n<whitespace>\n",
 		     it's a paragraph break. */
 		  while (isblank (*buf_ptr))
-		    if (at_buffer_end(buf_ptr++))
+		    if (at_buffer_end (buf_ptr++))
 		      fill_buffer ();
 		  if (*buf_ptr == EOL || !text_on_line)
 		    {
@@ -502,7 +493,7 @@ print_comment (void)
 		      buf_ptr += 2;
 		      while (isblank (*buf_ptr))
 			buf_ptr++;
-		      if (at_buffer_end(buf_ptr))
+		      if (at_buffer_end (buf_ptr))
 			fill_buffer ();
 
 		      parser_state_tos->tos--;
@@ -538,7 +529,6 @@ print_comment (void)
 
 	    default:
 	      /* Some textual character. */
-	      whitespace_character = 0;
 	      text_on_line = e_com;
 	      *e_com++ = *buf_ptr;
 	      column++;
@@ -591,7 +581,7 @@ print_comment (void)
 	    }
 
 	  buf_ptr++;
-	  if (at_buffer_end(buf_ptr))
+	  if (at_buffer_end (buf_ptr))
 	    fill_buffer ();
 	}
 
@@ -612,7 +602,7 @@ print_comment (void)
 	{
 	  if (merge_blank_comment_lines)
 	    while (*buf_ptr == EOL || isblank (*buf_ptr))
-	      if (at_buffer_end(++buf_ptr))
+	      if (at_buffer_end (++buf_ptr))
 		fill_buffer ();
 	  paragraph_break = 0;
 	}
@@ -621,7 +611,7 @@ print_comment (void)
 	  /* If it was a paragraph break (`if' clause), we scanned ahead
 	     one character.  So, here in the `else' clause, advance buf_ptr. */
 	  buf_ptr++;
-	  if (at_buffer_end(buf_ptr))
+	  if (at_buffer_end (buf_ptr))
 	    fill_buffer ();
 	}
 
@@ -665,7 +655,7 @@ print_comment (void)
       else
 	{
 	  while (isblank (*buf_ptr))
-	    if (at_buffer_end(++buf_ptr))
+	    if (at_buffer_end (++buf_ptr))
 	      fill_buffer ();
 	  text_on_line = 0;
 	}
