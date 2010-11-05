@@ -164,7 +164,7 @@ count_columns (
       switch (*bp++)
 	{
 	case EOL:
-	case 014:		/* form feed */
+	case FORM_FEED:	/* form feed */
 	  column = 1;
 	  break;
 	case TAB:
@@ -179,6 +179,36 @@ count_columns (
 	}
     }
 
+  return column;
+}
+
+static int
+this_column (char *from, char *to, int column)
+{
+  while (from < to)
+    {
+      switch (*from)
+	{
+	case EOL:
+	case FORM_FEED:	/* form feed */
+	  column = 1;
+	  break;
+
+	case TAB:
+	  column += tabsize - (column - 1) % tabsize;
+	  break;
+
+	case '\b':		/* backspace */
+	  column--;
+	  break;
+
+	default:
+	  column++;
+	  break;
+	}
+
+      from++;
+    }
   return column;
 }
 
@@ -201,32 +231,7 @@ current_column (void)
       column = 1;
     }
 
-  while (p < buf_ptr)
-    {
-      switch (*p)
-	{
-	case EOL:
-	case 014:		/* form feed */
-	  column = 1;
-	  break;
-
-	case TAB:
-	  column += tabsize - (column - 1) % tabsize;
-	  break;
-
-	case '\b':		/* backspace */
-	  column--;
-	  break;
-
-	default:
-	  column++;
-	  break;
-	}
-
-      p++;
-    }
-
-  return column;
+  return this_column (p, buf_ptr, column);
 }
 
 /* Fill the output line with whitespace up to TARGET_COLUMN, given that
@@ -288,7 +293,7 @@ dump_line (void)
          rather than treat it as a normal blank line.  */
       if (parser_state_tos->use_ff)
 	{
-	  pass_char ('\014');
+	  pass_char (FORM_FEED);
 	  parser_state_tos->use_ff = false;
 	}
       else if (!suppress_blanklines)
@@ -348,26 +353,41 @@ dump_line (void)
 	      do
 		pass_char (*s++);
 	      while ((s < s_key) || (s < e_lab && 'a' <= *s && *s <= 'z'));
+	      cur_col = this_column (s_lab, s, 1);
 	      while (isblank (*s) && s < e_lab)
 		s++;
 	      if (s < e_lab)
 		{
-		  pass_char ((tabsize > 1) ? '\t' : ' ');
+		  int len = (int) (e_lab - s);
+
+		  if (cur_col < else_endif_col)
+		    {
+		      (void) pad_output (cur_col, else_endif_col);
+		    }
+		  else
+		    {
+		      pass_char (' ');
+		      ++cur_col;
+		    }
 		  if (s[0] == '/' && (s[1] == '*' || s[1] == '/'))
 		    {
-		      pass_n_text (s, (int) (e_lab - s));
+		      pass_n_text (s, len);
 		    }
 		  else
 		    {
 		      pass_text ("/* ");
-		      pass_n_text (s, (int) (e_lab - s));
+		      pass_n_text (s, len);
 		      pass_text (" */");
+		      len += 2;
 		    }
+		  cur_col += len;
 		}
 	    }
 	  else
-	    pass_n_text (s_lab, (int) (e_lab - s_lab));
-	  cur_col = count_columns (cur_col, s_lab, NULL_CHAR);
+	    {
+	      pass_n_text (s_lab, (int) (e_lab - s_lab));
+	      cur_col = count_columns (cur_col, s_lab, NULL_CHAR);
+	    }
 	}
       else
 	cur_col = 1;		/* there is no label section */
@@ -460,7 +480,7 @@ dump_line (void)
 
       if (parser_state_tos->use_ff)
 	{
-	  pass_char ('\014');
+	  pass_char (FORM_FEED);
 	  parser_state_tos->use_ff = false;
 	}
       else

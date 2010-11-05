@@ -1,6 +1,9 @@
--- $Id: ChangeLog,v 1.45 2010/11/03 23:25:38 tom Exp $
+-- $Id: ChangeLog,v 1.46 2010/11/04 21:56:27 tom Exp $
 
 2010-11-03
+	+ make -cpN option apply to text after "#else" or "#endif" which is
+	  converted to a comment.
+
 	+ add configure check and makefile rules for lint.
 
 	+ fix check for non-comment text after "#else" or "#endif" to allow

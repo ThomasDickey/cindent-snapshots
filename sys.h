@@ -29,6 +29,7 @@
 /* Values of special characters. */
 #define TAB '\t'
 #define EOL '\n'
+#define FORM_FEED '\014'
 #define BACKSLASH '\\'
 #define NULL_CHAR '\0'
 
