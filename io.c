@@ -268,6 +268,19 @@ pad_output (
   return my_current_col;
 }
 
+static int
+preprocessor_level (struct parser_state *p)
+{
+  int level = 0;
+  while (p != 0)
+    {
+      if (p->preprocessor_indent)
+	++level;
+      p = p->next;
+    }
+  return level;
+}
+
 void
 dump_line (void)
 {				/* dump_line is the routine that actually
@@ -326,20 +339,38 @@ dump_line (void)
 
       if (e_lab != s_lab)
 	{			/* print lab, if any */
+	  int label_target = compute_label_target ();
+	  int pad_preproc = 0;
+
 	  while (e_lab > s_lab && isblank (e_lab[-1]))
 	    e_lab--;
 
+	  cur_col = 1;
 	  if (*s_lab == '#')
 	    {
-	      for (s_key = s_lab + 1; s_key < e_lab && isblank (*s_key); ++s_key);
+	      pass_char (*s_lab++);
+	      ++cur_col;
+
+	      for (s_key = s_lab; s_key < e_lab && isblank (*s_key); ++s_key);
+
 	      if (s_key >= e_lab)
-		s_key = 0;
+		{
+		  s_key = 0;
+		}
+	      else if (preprocessor_indentation)
+		{
+		  int adj = (!strncmp (s_key, "if", 2) ||
+			     !strncmp (s_key, "el", 2)) ? 1 : 0;
+		  pad_preproc = ((preprocessor_level (parser_state_tos) - adj)
+				 * preprocessor_indentation);
+		  cur_col = pad_output (cur_col, cur_col + pad_preproc);
+		}
 	    }
 	  else
 	    {
 	      s_key = 0;
 	    }
-	  cur_col = pad_output (1, compute_label_target ());
+	  cur_col = pad_output (cur_col, label_target);
 	  if (s_key != 0
 	      && (strncmp (s_key, "else", (size_t) 4) == 0
 		  || strncmp (s_key, "endif", (size_t) 5) == 0))
@@ -351,9 +382,13 @@ dump_line (void)
 	      if (e_lab[-1] == EOL)
 		e_lab--;
 	      do
-		pass_char (*s++);
+		{
+		  /* skip 's' past the end of "endif" */
+		  pass_char (*s++);
+		}
 	      while ((s < s_key) || (s < e_lab && 'a' <= *s && *s <= 'z'));
-	      cur_col = this_column (s_lab, s, 1);
+	      cur_col = this_column (s_lab, s, cur_col);
+	      /* skip whitespace after "endif" */
 	      while (isblank (*s) && s < e_lab)
 		s++;
 	      if (s < e_lab)

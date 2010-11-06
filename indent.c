@@ -618,7 +618,7 @@ indent (struct file_buffer *this_file)
 	      else
 		embedded_comment_on_line = 1;
 
-	      for (t_ptr = s_com; *t_ptr; ++t_ptr)
+	      for (t_ptr = s_com; *t_ptr && (t_ptr < e_com); ++t_ptr)
 		{
 		  CHECK_CODE_SIZE;
 		  *e_code++ = *t_ptr;
@@ -1641,7 +1641,6 @@ indent (struct file_buffer *this_file)
 	    {
 	      if (blanklines_around_conditional_compilation)
 		{
-		  int c;
 		  prefix_blankline_requested++;
 		  while (*in_prog_pos++ == EOL)
 		    {
@@ -1688,6 +1687,7 @@ indent (struct file_buffer *this_file)
 				* sizeof (int)));
 
 		new->next = parser_state_tos;
+		parser_state_tos->preprocessor_indent = true;
 		parser_state_tos = new;
 	      }
 	    }
@@ -1707,10 +1707,8 @@ indent (struct file_buffer *this_file)
 		  enum codes *tos_p_stack = parser_state_tos->p_stack;
 		  int *tos_il = parser_state_tos->il;
 		  int *tos_cstk = parser_state_tos->cstk;
-		  int *tos_paren_indents =
-		  parser_state_tos->paren_indents;
-		  struct parser_state *second =
-		  parser_state_tos->next;
+		  int *tos_paren_indents = parser_state_tos->paren_indents;
+		  struct parser_state *second = parser_state_tos->next;
 
 		  (void) memcpy (parser_state_tos, second,
 				 sizeof (struct parser_state));
@@ -1744,6 +1742,8 @@ indent (struct file_buffer *this_file)
 				 parser_state_tos->next->paren_indents,
 				 (parser_state_tos->paren_indents_size
 				  * sizeof (int)));
+
+		  parser_state_tos->preprocessor_indent = false;
 		}
 	      else
 		{

@@ -670,6 +670,11 @@ between the character `#' and the command name.  By default, `indent'
 retains this space, but specifying the `-nlps' option directs `indent'
 to remove the whitespace.
 
+   Alternatively, you may use the `-ppi' option to insert spaces,
+indenting the preprocessor keywords (after first removing any existing
+spacing between the character `#' and preprocessor keywords).  This
+option overrides `-lps'.
+
    Use the `-eei' option to tell `indent' to improve readability of
 continuation lines from the expression part of `if(e)', `while(e)',
 `for(e;e;e)' by indenting an extra tab stop so that they do not
@@ -848,7 +853,6 @@ option.  It is followed by a cross key alphabetized by long option.
      *Note Statements::.
 
 `-bliN'
-
 `--brace-indentN'
      Indent braces N spaces.
      *Note Statements::.
@@ -895,7 +899,6 @@ option.  It is followed by a cross key alphabetized by long option.
      *Note Statements::.
 
 `-cpN'
-
 `--else-endif-columnN'
      Put comments to the right of `#else' and `#endif' statements in
      column N.
@@ -1072,7 +1075,6 @@ option.  It is followed by a cross key alphabetized by long option.
      *Note Blank lines::.
 
 `-nss'
-
 `--dont-space-special-semicolon'
      Do not force a space before the semicolon after certain statements.
      Disables `-ss'.
@@ -1107,6 +1109,12 @@ option.  It is followed by a cross key alphabetized by long option.
      Insert a space between the name of the procedure being called and
      the `('.
      *Note Statements::.
+
+`-ppiN'
+`--preprocessor-indentationN'
+     Insert spacing between `#' and preprocessor keywords.  This
+     overrides `-lps'.
+     *Note Indentation::.
 
 `-psl'
 `--procnames-start-lines'
@@ -1203,6 +1211,7 @@ the corresponding short option.
      --no-verbosity                                  -nv
      --original                                      -orig
      --parameter-indentation                         -ipN
+     --preprocessor-indentation                      -ppiN
      --procnames-start-lines                         -psl
      --space-after-cast                              -cs
      --space-after-procedure-calls                   -pcs
@@ -1254,7 +1263,7 @@ Index
 * --dont-space-special-semicolon:        Statements.           (line 72)
 * --dont-star-comments:                  Comments.             (line 98)
 * --else-endif-columnN:                  Comments.             (line 78)
-* --extra-expression-indentation:        Indentation.          (line 56)
+* --extra-expression-indentation:        Indentation.          (line 61)
 * --format-all-comments:                 Comments.             (line 53)
 * --format-first-column-comments:        Comments.             (line 53)
 * --gnu-style:                           Common styles.        (line 12)
@@ -1276,7 +1285,7 @@ Index
 * --no-blank-lines-after-ifdefs:         Blank lines.          (line 14)
 * --no-blank-lines-after-procedures:     -bap.                 (line  6)
 * --no-comment-delimiters-on-blank-lines: Comments.            (line 90)
-* --no-extra-expression-indentation:     Indentation.          (line 56)
+* --no-extra-expression-indentation:     Indentation.          (line 61)
 * --no-parameter-indentation:            Indentation.          (line 34)
 * --no-space-after-casts:                Statements.           (line 82)
 * --no-space-after-function-call-names:  Statements.           (line 78)
@@ -1287,6 +1296,7 @@ Index
 * --output:                              Invoking indent.      (line 20)
 * --output-file:                         Invoking indent.      (line 20)
 * --parameter-indentationN:              Indentation.          (line 34)
+* --preprocessor-indentationN:           Indentation.          (line 56)
 * --procnames-start-lines:               Declarations.         (line 37)
 * --remove-preprocessor-space:           Indentation.          (line 51)
 * --space-after-cast:                    Statements.           (line 82)
@@ -1324,7 +1334,7 @@ Index
                                                                (line 17)
 * -diN:                                  Declarations.         (line  6)
 * -dN:                                   Comments.             (line 67)
-* -eei:                                  Indentation.          (line 56)
+* -eei:                                  Indentation.          (line 61)
 * -fc1:                                  Comments.             (line 53)
 * -fca:                                  Comments.             (line 53)
 * -gnu:                                  Common styles.        (line 12)
@@ -1344,7 +1354,7 @@ Index
 * -ncdb:                                 Comments.             (line 90)
 * -nce:                                  Statements.           (line 49)
 * -ncs:                                  Statements.           (line 82)
-* -neei:                                 Indentation.          (line 56)
+* -neei:                                 Indentation.          (line 61)
 * -nfc1:                                 Comments.             (line 53)
 * -nfca:                                 Comments.             (line 53)
 * -nip:                                  Indentation.          (line 34)
@@ -1361,6 +1371,7 @@ Index
 * -o:                                    Invoking indent.      (line 20)
 * -orig:                                 Common styles.        (line 42)
 * -pcs:                                  Statements.           (line 78)
+* -ppiN:                                 Indentation.          (line 56)
 * -psl:                                  Declarations.         (line 37)
 * -sc:                                   Comments.             (line 98)
 * -sob:                                  Blank lines.          (line 23)
@@ -1404,12 +1415,12 @@ Node: Comments12630
 Node: Statements17417
 Node: Declarations19838
 Node: Indentation21346
-Node: Disabling Formatting23899
-Node: Other Languages25570
-Node: Miscellaneous options26767
-Node: Bugs27505
-Node: Copyright27814
-Node: Option Summary29303
-Node: Index40113
+Node: Disabling Formatting24130
+Node: Other Languages25801
+Node: Miscellaneous options26998
+Node: Bugs27736
+Node: Copyright28045
+Node: Option Summary29534
+Node: Index40553
 
 End Tag Table

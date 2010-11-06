@@ -1,6 +1,16 @@
--- $Id: ChangeLog,v 1.46 2010/11/04 21:56:27 tom Exp $
+-- $Id: ChangeLog,v 1.52 2010/11/06 00:31:48 tom Exp $
 
-2010-11-03
+2010-11-05
+	+ modify lnx-profile to use -nlps and -cp options.
+
+	+ added -ppiN (--preprocessor-indentation) option like indent 2.2.9.
+
+	+ modify comment formatting to ensure that two comments due not abut
+	  without a separating space.
+
+	+ correct a loop-limit when moving string to handle an inline comment
+	  special case.
+
 	+ make -cpN option apply to text after "#else" or "#endif" which is
 	  converted to a comment.
 

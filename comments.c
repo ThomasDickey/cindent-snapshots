@@ -317,6 +317,19 @@ print_comment (void)
 
   /* Output the beginning comment delimiter.  They are both two
      characters long. */
+  CHECK_COM_SIZE;
+  if (e_com != s_com)
+    {
+      if (blankline_delims)
+	{
+	  *e_com = '\0';
+	  dump_line ();
+	}
+      else
+	{
+	  *e_com++ = ' ';
+	}
+    }
   *e_com++ = *start_delim;
   *e_com++ = *(start_delim + 1);
   column = start_column + 2;
