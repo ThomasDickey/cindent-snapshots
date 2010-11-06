@@ -496,8 +496,8 @@ lexi (void)
       code = preesc;
 
       /* Make spaces between '#' and the directive be part of
-         the token if user specified "-lps" */
-      if (leave_preproc_space)
+         the token if user specified "-lps" and did not specify "-ppi" */
+      if (leave_preproc_space && !preprocessor_indentation)
 	{
 	  while (isblank (*buf_ptr) && !at_buffer_end (buf_ptr))
 	    inc_token_len ();

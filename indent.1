@@ -656,6 +656,11 @@ between the character \fB#\fR and the command name.  By default, \fBindent\fR
 retains this space, but specifying the \fB\-nlps\fR option directs \fBindent\fR
 to remove the whitespace.
 .PP
+Alternatively, you may use the \fB\-ppi\fR option to insert spaces,
+indenting the preprocessor keywords (after first removing any existing
+spacing between the character \fB#\fR and preprocessor keywords).  This
+option overrides \fB\-lps\fR.
+.PP
 Use the \fB\-eei\fR option to tell \fBindent\fR to improve readability of
 continuation lines from the expression part of \fBif(e)\fR, \fBwhile(e)\fR,
 \fBfor(e;e;e)\fR by indenting an extra tab stop so that they do not
@@ -822,8 +827,9 @@ Force newline after comma in declaration.
 Put braces on line after \fBif\fR, etc.
 (see \fBStatements\fR).
 .RE
-\fB\-bliN\fR
 .PP
+\fB\-bliN\fR
+.br
 \fB\-\-brace\-indentN\fR
 .RS 5
 Indent braces N spaces.
@@ -895,8 +901,9 @@ Continuation indent of N spaces.
 Case label indent of N spaces.
 (see \fBStatements\fR).
 .RE
-\fB\-cpN\fR
 .PP
+\fB\-cpN\fR
+.br
 \fB\-\-else\-endif\-columnN\fR
 .RS 5
 Put comments to the right of \fB#else\fR and \fB#endif\fR statements in
@@ -1175,8 +1182,9 @@ Do not put the \fB*\fR character at the left of comments.
 Do not swallow optional blank lines.
 (see \fBBlank lines\fR).
 .RE
-\fB\-nss\fR
 .PP
+\fB\-nss\fR
+.br
 \fB\-\-dont\-space\-special\-semicolon\fR
 .RS 5
 Do not force a space before the semicolon after certain statements.
@@ -1232,6 +1240,15 @@ Write an output file, for the case where only one input is given.
 Insert a space between the name of the procedure being called and
 the \fB(\fR.
 (see \fBStatements\fR).
+.RE
+.PP
+\fB\-ppiN\fR
+.br
+\fB\-\-preprocessor\-indentationN\fR
+.RS 5
+Insert spacing between \fB#\fR and preprocessor keywords.  This
+overrides \fB\-lps\fR.
+(see \fBIndentation\fR).
 .RE
 .PP
 \fB\-psl\fR
@@ -1351,6 +1368,7 @@ the corresponding short option.
 \-\-no\-verbosity                                  \-nv
 \-\-original                                      \-orig
 \-\-parameter\-indentation                         \-ipN
+\-\-preprocessor\-indentation                      \-ppiN
 \-\-procnames\-start\-lines                         \-psl
 \-\-space\-after\-cast                              \-cs
 \-\-space\-after\-procedure\-calls                   \-pcs
@@ -1429,6 +1447,7 @@ Menu:
 \-\-output	Invoking indent.
 \-\-output\-file	Invoking indent.
 \-\-parameter\-indentationN	Indentation.
+\-\-preprocessor\-indentationN	Indentation.
 \-\-procnames\-start\-lines	Declarations.
 \-\-remove\-preprocessor\-space	Indentation.
 \-\-space\-after\-cast	Statements.
@@ -1497,6 +1516,7 @@ Menu:
 \-o	Invoking indent.
 \-orig	Common styles.
 \-pcs	Statements.
+\-ppiN	Indentation.
 \-psl	Declarations.
 \-sc	Comments.
 \-sob	Blank lines.

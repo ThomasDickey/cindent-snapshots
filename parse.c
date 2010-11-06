@@ -233,6 +233,7 @@ reset_parser (void)
   parser_state_tos->pcase = false;
   parser_state_tos->dec_nest = 0;
 
+  parser_state_tos->preprocessor_indent = false;
   parser_state_tos->il[0] = 0;
   parser_state_tos->cstk[0] = 0;
   parser_state_tos->paren_indents[0] = 0;
@@ -287,6 +288,19 @@ inc_pstack (void)
   parser_state_tos->cstk[parser_state_tos->tos]
     = parser_state_tos->cstk[parser_state_tos->tos - 1];
   return parser_state_tos->tos;
+}
+
+#define SHOW_PARSER(name) \
+  if (s_##name < e_##name) \
+    printf(#name ":%.*s\n", (int) (e_##name - s_##name), s_##name)
+
+void
+show_parser (const char *fn, int ln)
+{
+  printf ("<<%s@%d>>\n", fn, ln);
+  SHOW_PARSER (lab);
+  SHOW_PARSER (code);
+  SHOW_PARSER (com);
 }
 
 static void

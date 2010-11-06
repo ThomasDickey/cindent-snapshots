@@ -308,6 +308,8 @@ extern int lineup_to_parens;	/* if true, continued code within parens will
 				   be lined up to the open paren */
 extern int leave_preproc_space;	/* if true, leave the spaces between
 				   '#' and preprocessor commands. */
+extern int preprocessor_indentation;	/* if nonzero, override -lps and
+					   indent preprocessor keywords */
 
 /* The position that we will line the current line up with when it comes time
    to print it (if we are lining up to parentheses).  */
@@ -403,6 +405,9 @@ struct parser_state
     /* This stack stores indentation levels */
     /* Currently allocated size is stored in p_stack_size.  */
     int *il;
+
+    /* true for preprocessor #if statements */
+    int preprocessor_indent;
 
     /* If the last token was an ident and is a reserved word,
        remember the type. */
@@ -551,3 +556,4 @@ extern void init_parser (void);
 extern void parse_lparen_in_decl (void);
 extern void reduce (void);
 extern void reset_parser (void);
+extern void show_parser (const char *, int);

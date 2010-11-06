@@ -32,4 +32,4 @@ char *memmove(s1, s2, n)
     }
     return s1;
 }
-#endif /* HAVE_MEMMOVE */
+#endif				/* HAVE_MEMMOVE */

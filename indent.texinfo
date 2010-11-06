@@ -1017,6 +1017,14 @@ between the character @samp{#} and the command name.  By default,
 @code{indent} retains this space, but specifying the @samp{-nlps} option
 directs @code{indent} to remove the whitespace.
 
+@kindex -ppi@var{n}
+@kindex --preprocessor-indentation@var{n}
+Alternatively, you may use the @samp{-ppi} option to insert spaces,
+indenting the preprocessor keywords
+(after first removing any existing spacing between the character @samp{#}
+and preprocessor keywords).
+This option overrides @samp{-lps}.
+
 @kindex -eei
 @kindex --extra-expression-indentation
 @kindex -neei
@@ -1229,7 +1237,7 @@ Put braces on line after @code{if}, etc.@*
 @xref{Statements}.
 
 @item -bli@var{n}
-@item --brace-indent@var{n}
+@itemx --brace-indent@var{n}
 Indent braces @var{n} spaces.@*
 @xref{Statements}.
 
@@ -1275,7 +1283,7 @@ Case label indent of @var{n} spaces.@*
 @xref{Statements}.
 
 @item -cp@var{n}
-@item --else-endif-column@var{n}
+@itemx --else-endif-column@var{n}
 Put comments to the right of @samp{#else} and
 @samp{#endif} statements in column @var{n}.@*
 @xref{Comments}.
@@ -1453,7 +1461,7 @@ Do not swallow optional blank lines.@*
 @xref{Blank lines}.
 
 @item -nss
-@item --dont-space-special-semicolon
+@itemx --dont-space-special-semicolon
 Do not force a space before the semicolon after certain statements.
 Disables @samp{-ss}.@*
 @xref{Statements}.
@@ -1487,6 +1495,12 @@ Write an output file, for the case where only one input is given.@*
 Insert a space between the name of the
 procedure being called and the @samp{(}.@*
 @xref{Statements}.
+
+@item -ppi@var{n}
+@itemx --preprocessor-indentation@var{n}
+Insert spacing between @samp{#} and preprocessor keywords.
+This overrides @samp{-lps}.@*
+@xref{Indentation}.
 
 @item -psl
 @itemx --procnames-start-lines
@@ -1603,6 +1617,7 @@ the corresponding short option.
 \line{ --no-verbosity \leaderfill                       -nv\ \ }
 \line{ --original \leaderfill                      -orig}
 \line{ --parameter-indentation \leaderfill         -ip@var{n}\ }
+\line{ --preprocessor-indentation \leaderfill      -ppi@var{n}\ }
 \line{ --procnames-start-lines \leaderfill         -psl\ }
 \line{ --remove-preprocessor-space \leaderfill       -nlps\ }
 \line{ --space-after-cast \leaderfill              -cs\ \ }
@@ -1663,6 +1678,7 @@ the corresponding short option.
 --no-verbosity                                  -nv
 --original                                      -orig
 --parameter-indentation                         -ip@var{n}
+--preprocessor-indentation                      -ppi@var{n}
 --procnames-start-lines                         -psl
 --space-after-cast                              -cs
 --space-after-procedure-calls                   -pcs
