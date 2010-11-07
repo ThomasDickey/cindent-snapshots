@@ -341,17 +341,18 @@ dump_line (void)
 	{			/* print lab, if any */
 	  int label_target = compute_label_target ();
 	  int pad_preproc = 0;
+	  char *skip_pound = s_lab;
 
 	  while (e_lab > s_lab && isblank (e_lab[-1]))
 	    e_lab--;
 
 	  cur_col = 1;
-	  if (*s_lab == '#')
+	  if (*skip_pound == '#')
 	    {
-	      pass_char (*s_lab++);
+	      pass_char (*skip_pound++);
 	      ++cur_col;
 
-	      for (s_key = s_lab; s_key < e_lab && isblank (*s_key); ++s_key);
+	      for (s_key = skip_pound; s_key < e_lab && isblank (*s_key); ++s_key);
 
 	      if (s_key >= e_lab)
 		{
@@ -359,8 +360,8 @@ dump_line (void)
 		}
 	      else if (preprocessor_indentation)
 		{
-		  int adj = (!strncmp (s_key, "if", 2) ||
-			     !strncmp (s_key, "el", 2)) ? 1 : 0;
+		  int adj = (!strncmp (s_key, "if", (size_t) 2) ||
+			     !strncmp (s_key, "el", (size_t) 2)) ? 1 : 0;
 		  pad_preproc = ((preprocessor_level (parser_state_tos) - adj)
 				 * preprocessor_indentation);
 		  cur_col = pad_output (cur_col, cur_col + pad_preproc);
@@ -377,7 +378,7 @@ dump_line (void)
 	    {
 	      /* Treat #else and #endif as a special case because any text
 	         after #else or #endif should be converted to a comment.  */
-	      char *s = s_lab;
+	      char *s = skip_pound;
 
 	      if (e_lab[-1] == EOL)
 		e_lab--;
@@ -387,7 +388,7 @@ dump_line (void)
 		  pass_char (*s++);
 		}
 	      while ((s < s_key) || (s < e_lab && 'a' <= *s && *s <= 'z'));
-	      cur_col = this_column (s_lab, s, cur_col);
+	      cur_col = this_column (skip_pound, s, cur_col);
 	      /* skip whitespace after "endif" */
 	      while (isblank (*s) && s < e_lab)
 		s++;
@@ -420,8 +421,8 @@ dump_line (void)
 	    }
 	  else
 	    {
-	      pass_n_text (s_lab, (int) (e_lab - s_lab));
-	      cur_col = count_columns (cur_col, s_lab, NULL_CHAR);
+	      pass_n_text (skip_pound, (int) (e_lab - skip_pound));
+	      cur_col = count_columns (cur_col, skip_pound, NULL_CHAR);
 	    }
 	}
       else
@@ -793,7 +794,7 @@ fill_buffer (void)
 
 	  if (!pass_lexcode)
 	    {
-	      if (!strncmp (p, "%%", 2))
+	      if (!strncmp (p, "%%", (size_t) 2))
 		{
 		  ++lex_section;
 		  if (lex_section >= 0)
@@ -802,12 +803,12 @@ fill_buffer (void)
 		      skip_line = (lex_section >= 2);
 		    }
 		}
-	      else if (!strncmp (p, "%{", 2))
+	      else if (!strncmp (p, "%{", (size_t) 2))
 		{
 		  next_lexcode = 1;
 		  skip_line = 1;
 		}
-	      else if (!strncmp (p, "%}", 2))
+	      else if (!strncmp (p, "%}", (size_t) 2))
 		{
 		  if (next_lexcode)
 		    {
