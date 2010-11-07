@@ -1,4 +1,13 @@
--- $Id: ChangeLog,v 1.52 2010/11/06 00:31:48 tom Exp $
+-- $Id: ChangeLog,v 1.55 2010/11/06 23:22:31 tom Exp $
+
+2010-11-06
+	+ fix character comparison in preprocessor keyword parsing to handle
+	  abutting punctuation, e.g., "#if(0)".
+
+	+ modify logic in io.c where -ppiN is handled to avoid changing s_lab
+	  variable, since this can confuse later updates for that variable.
+
+	+ revert change to lnx-profile, too intrusive.
 
 2010-11-05
 	+ modify lnx-profile to use -nlps and -cp options.

@@ -16,13 +16,13 @@ DefineFilter("fdl");
 #if 1
 static char *Comment_attr;
 
-#if 2
+#	if 2
 static char *Ident2_attr;
 
-#else
+#	else
 static char *Keyword_attr;
 static char *String_attr;
-#endif
+#	endif
 #endif
 
 static int next_state;
@@ -83,7 +83,7 @@ static void init_filter(int before GCC_UNUSED)
 
 static void do_filter(FILE *inputs)
 {
-#if 1
+#		if 1
     InitLEX(inputs);
 #else
 
@@ -91,7 +91,7 @@ static void do_filter(FILE *inputs)
     Ident2_attr = class_attr(NAME_IDENT2);
     Keyword_attr = class_attr(NAME_KEYWORD);
     String_attr = class_attr(NAME_LITERAL);
-#endif
+#	endif
 
     next_state = INITIAL;
 

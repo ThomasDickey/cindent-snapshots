@@ -38,6 +38,8 @@
 #define isblank(c) ((c) == ' ' || (c) == TAB)
 #endif
 
+#define isName(c)  (isalnum(UChar(c)) || (c) == '_' || (c) == '$')
+
 #ifdef VMS
 # define ONE_DOT_PER_FILENAME 1
 # define NODIR 1

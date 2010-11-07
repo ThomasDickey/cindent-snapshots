@@ -1620,7 +1620,7 @@ indent (struct file_buffer *this_file)
 	  if (s_key < e_lab)
 	    {
 	      for (e_key = s_key + 1;
-		   e_key < e_lab && !isspace (UChar (*e_key));
+		   e_key < e_lab && isName (UChar (*e_key));
 		   ++e_key)
 		{
 		  ;

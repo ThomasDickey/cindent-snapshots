@@ -1,3 +1,9 @@
+cindent (2.0.20101106) unstable; urgency=low
+
+  * fix minor regressions for lnx-indent
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sat, 06 Nov 2010 09:48:48 -0400
+
 cindent (2.0.20101105) unstable; urgency=low
 
   * format lex/yacc files
