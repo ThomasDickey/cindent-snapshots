@@ -67,6 +67,26 @@ char chartype[256];
  */
 #define inc_token_len() token_len += (token_buf == cur_line), ++buf_ptr
 
+static int
+ident_is_cast (void)
+{
+  int result;
+  if (parser_state_tos->p_l_follow
+      && !(parser_state_tos->noncast_mask
+	   & 1 << parser_state_tos->p_l_follow))
+    /* inside parens: cast */
+    {
+      parser_state_tos->cast_mask
+	|= 1 << parser_state_tos->p_l_follow;
+      result = true;
+    }
+  else
+    {
+      result = false;
+    }
+  return result;
+}
+
 enum codes
 lexi (void)
 {
@@ -261,32 +281,22 @@ lexi (void)
 	      break;
 
 	    case rw_struct_like:	/* a "struct" */
-	      if (parser_state_tos->p_l_follow
-		  && !(parser_state_tos->noncast_mask
-		       & 1 << parser_state_tos->p_l_follow))
-		/* inside parens: cast */
+	      if (!ident_is_cast ())
 		{
-		  parser_state_tos->cast_mask
-		    |= 1 << parser_state_tos->p_l_follow;
-		  break;
+		  l_struct = true;
+		  last_code = decl;
+		  value = (decl);
 		}
-	      l_struct = true;
-	      /* FALLTHRU */
+	      break;
 
 	      /* Next time around, we will want to know that we have had a
 	         'struct' */
 	    case rw_decl:	/* one of the declaration keywords */
-	      if (parser_state_tos->p_l_follow
-		  && !(parser_state_tos->noncast_mask
-		       & 1 << parser_state_tos->p_l_follow))
-		/* inside parens: cast */
+	      if (!ident_is_cast ())
 		{
-		  parser_state_tos->cast_mask
-		    |= 1 << parser_state_tos->p_l_follow;
-		  break;
+		  last_code = decl;
+		  value = (decl);
 		}
-	      last_code = decl;
-	      value = (decl);
 	      break;
 
 	    case rw_sp_paren:	/* if, while, for */
@@ -388,6 +398,25 @@ lexi (void)
 	    return overloaded;
 
 	  return decl;
+	}
+      /*
+       * If auto-typedefs, treat any identifier ending with "_t" as a type.
+       */
+      else if (auto_typedefs)
+	{
+	  if (token_len > 2
+	      && !strncmp (token_end - 2, "_t", (size_t) 2))
+	    {
+	      parser_state_tos->its_a_keyword = true;
+	      parser_state_tos->last_u_d = true;
+	      parser_state_tos->last_rw_depth = parser_state_tos->paren_depth;
+	      if (!ident_is_cast ())
+		{
+		  parser_state_tos->last_rw = rw_decl;
+		  last_code = decl;
+		  return (decl);
+		}
+	    }
 	}
 
       if (last_code == decl)	/* if this is a declared variable, then
@@ -544,13 +573,6 @@ lexi (void)
     case (L_CURL):
       unary_delim = true;
 
-      /* This check is made in the code for '='.  No one who writes
-         initializers without '=' these days deserves to have indent work on
-         their code (besides which, uncommenting this would screw up anything
-         which assumes that parser_state_tos->block_init really means you are
-         in an initializer.  */
-      /* if (parser_state_tos->in_or_st) parser_state_tos->block_init = 1; */
-
       /* The following neat hack causes the braces in structure
          initializations to be treated as parentheses, thus causing
          initializations to line up correctly, e.g. struct foo bar = {{a, b,
@@ -642,6 +664,8 @@ lexi (void)
       code = binary_op;
       unary_delim = true;
       token_end = buf_ptr;
+      if (indent_eqls < 0)
+	indent_eqls = token_col ();
       break;
       /* can drop thru!!! */
 
@@ -739,6 +763,26 @@ token_col (void)
   if (col == 0)
     col = 1;
   return col;
+}
+
+int
+first_token_col (void)
+{
+  int column;
+  int n;
+
+  for (n = column = 0; n <= (buf_ptr - cur_line); ++n)
+    {
+      if (cur_line[n] == TAB)
+	column += tabsize - (column - 1) % tabsize;
+      else if (cur_line[n] == ' ')
+	++column;
+      else
+	break;
+    }
+  if (column == 0)
+    column = 1;
+  return column;
 }
 
 /* Add the given keyword to the keyword table, using val as

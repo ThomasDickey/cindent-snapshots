@@ -289,7 +289,7 @@ indent (struct file_buffer *this_file)
     char *p = buf_ptr;
     int col = 1;
 
-    while (1)
+    while (!at_buffer_end (p))
       {
 	if (*p == ' ')
 	  col++;
@@ -604,7 +604,7 @@ indent (struct file_buffer *this_file)
 						   turned off by a semicolon or
 						   right curly-brace */
 	  if (s_com != e_com)
-	    {			/* the turkey has embedded a comment in a
+	    {			/* There is an embedded comment in the current
 				   line. Move it from the com buffer to the
 				   code buffer.  */
 	      /* Do not add a space before the comment if it is the first
@@ -925,15 +925,26 @@ indent (struct file_buffer *this_file)
 	      *e_code = '\0';	/* null terminate code sect */
 	    }
 
+	  if (indent_eqls > 0)
+	    {
+	      int need;
+	      int have = (int) (e_code - s_code);
+
+	      if (indent_eqls_1st <= 0)
+		indent_eqls_1st = first_token_col ();
+	      need = indent_eqls - indent_eqls_1st - 1;
+
+	      while (have < need)
+		{
+		  CHECK_CODE_SIZE;
+		  *e_code++ = ' ';
+		  ++have;
+		}
+	    }
+
 	  {
 	    char *res = token;
 	    char *res_end = token_end;
-#define set_res(str) \
-	      {\
-		static char resval[] = str;\
-		res = resval;\
-		res_end = res + sizeof(resval);\
-	      }
 
 	    for (t_ptr = res; t_ptr < res_end; ++t_ptr)
 	      {

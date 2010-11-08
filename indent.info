@@ -604,7 +604,7 @@ placed on the line before the name of the procedure.  This style is
 required for the `etags' program to work correctly, as well as some of
 the `c-mode' functions of Emacs.
 
-   You must use the `-T' option to tell `indent' the name of all the
+   You should use the `-T' option to tell `indent' the name of all the
 typenames in your program that are defined by `typedef'.  `-T' can be
 specified more than once, and all names specified are used.  For
 example, if your program contains
@@ -613,6 +613,9 @@ example, if your program contains
      typedef enum {red, blue, green} COLOR;
 
 you would use the options `-T CODE_ADDR -T COLOR'.
+
+   You may also use the `-ta' option to tell `indent' to interpret
+identifiers ending with "_t" as if they were typenames declared by `-T'.
 
 
 File: indent.info,  Node: Indentation,  Next: Disabling Formatting,  Prev: Declarations,  Up: Indent Program
@@ -715,6 +718,21 @@ to be left unformatted.
 error messages beginning with `*INDENT**'.  These versions of `indent'
 were written to ignore any input text lines which began with such error
 messages.
+
+   You may also override the formatting of assignment statements by
+using and `/* *INDENT-EQLS* */' comment.  This tells `indent' to use
+the next statement as a hint of how it and subsequent statements (up to
+the next blank line) should be formatted.  It uses the first "binary
+operator" (such as `=') on the line as a marker.  The resulting line
+will put that operator in the same column, and align the first "binary
+operator" on subsequent lines in the same column.
+
+   Here is an example of how it might be used:
+
+     /* *INDENT-EQLS* */
+     dimensions = 2;
+     x          = 5;
+     y          += 6;
 
 
 File: indent.info,  Node: Other Languages,  Next: Miscellaneous options,  Prev: Disabling Formatting,  Up: Indent Program
@@ -1146,6 +1164,11 @@ option.  It is followed by a cross key alphabetized by long option.
      Tell `indent' the name of typenames.
      *Note Declarations::.
 
+`-ta'
+`-auto-typedefs'
+     Tell `indent' to assume names ending with "_t" are typenames.
+     *Note Declarations::.
+
 `-tsN'
 `--tab-sizeN'
      Set tab size to N spaces.
@@ -1166,6 +1189,7 @@ Options' Cross Key
 Here is a list of options alphabetized by long option, to help you find
 the corresponding short option.
 
+     --auto-typedefs                                 -ta
      --blank-lines-after-block-comments              -bbb
      --blank-lines-after-commas                      -bc
      --blank-lines-after-declarations                -bad
@@ -1312,6 +1336,7 @@ Index
                                                                (line 12)
 * --version:                             Miscellaneous options.
                                                                (line  6)
+* -auto-typedefs:                        Declarations.         (line 52)
 * -bacc:                                 Blank lines.          (line 14)
 * -bad:                                  -bad.                 (line 15)
 * -bap:                                  -bap.                 (line  6)
@@ -1378,6 +1403,7 @@ Index
 * -ss:                                   Statements.           (line 72)
 * -st:                                   Invoking indent.      (line 24)
 * -T:                                    Declarations.         (line 42)
+* -ta:                                   Declarations.         (line 52)
 * -tsN:                                  Indentation.          (line 29)
 * -v:                                    Miscellaneous options.
                                                                (line 12)
@@ -1414,13 +1440,13 @@ Node: -bap11772
 Node: Comments12630
 Node: Statements17417
 Node: Declarations19838
-Node: Indentation21346
-Node: Disabling Formatting24130
-Node: Other Languages25801
-Node: Miscellaneous options26998
-Node: Bugs27736
-Node: Copyright28045
-Node: Option Summary29534
-Node: Index40553
+Node: Indentation21489
+Node: Disabling Formatting24273
+Node: Other Languages26551
+Node: Miscellaneous options27748
+Node: Bugs28486
+Node: Copyright28795
+Node: Option Summary30284
+Node: Index41478
 
 End Tag Table

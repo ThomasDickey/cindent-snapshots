@@ -592,7 +592,7 @@ placed on the line before the name of the procedure.  This style is
 required for the \fBetags\fR program to work correctly, as well as some of
 the \fBc\-mode\fR functions of Emacs.
 .PP
-You must use the \fB\-T\fR option to tell \fBindent\fR the name of all the
+You should use the \fB\-T\fR option to tell \fBindent\fR the name of all the
 typenames in your program that are defined by \fBtypedef\fR.  \fB\-T\fR can be
 specified more than once, and all names specified are used.  For
 example, if your program contains
@@ -602,6 +602,9 @@ typedef enum {red, blue, green} COLOR;
 .NE
 .PP
 you would use the options \fB\-T CODE_ADDR \-T COLOR\fR.
+.PP
+You may also use the \fB\-ta\fR option to tell \fBindent\fR to interpret
+identifiers ending with "_t" as if they were typenames declared by \fB\-T\fR.
 .SH Indentation
 One issue in the formatting of code is how far each line should be
 indented from the left margin.  When the beginning of a statement such
@@ -695,6 +698,23 @@ As a historical note, some earlier versions of \fBindent\fR produced
 error messages beginning with \fB*INDENT**\fR.  These versions of \fBindent\fR
 were written to ignore any input text lines which began with such error
 messages.
+.PP
+You may also override the formatting of assignment statements by
+using and \fB/* *INDENT\-EQLS* */\fR comment.  This tells \fBindent\fR to use
+the next statement as a hint of how it and subsequent statements (up to
+the next blank line) should be formatted.  It uses the first "binary
+operator" (such as \fB=\fR) on the line as a marker.  The resulting line
+will put that operator in the same column, and align the first "binary
+operator" on subsequent lines in the same column.
+.PP
+Here is an example of how it might be used:
+.NS
+/* *INDENT\-EQLS* */
+dimensions = 2;
+x          = 5;
+y          += 6;
+.NE
+.PP
 .SH Other Languages
 In addition to recognizing C++ comments (which are now standard in C),
 \fBindent\fR provides limited support for C++ constructs:
@@ -1298,6 +1318,14 @@ Tell \fBindent\fR the name of typenames.
 (see \fBDeclarations\fR).
 .RE
 .PP
+\fB\-ta\fR
+.br
+\fB\-auto\-typedefs\fR
+.RS 5
+Tell \fBindent\fR to assume names ending with "_t" are typenames.
+(see \fBDeclarations\fR).
+.RE
+.PP
 \fB\-tsN\fR
 .br
 \fB\-\-tab\-sizeN\fR
@@ -1323,6 +1351,7 @@ Output the version number of \fBindent\fR.
 Here is a list of options alphabetized by long option, to help you find
 the corresponding short option.
 .NS
+\-\-auto\-typedefs                                 \-ta
 \-\-blank\-lines\-after\-block\-comments              \-bbb
 \-\-blank\-lines\-after\-commas                      \-bc
 \-\-blank\-lines\-after\-declarations                \-bad
@@ -1460,6 +1489,7 @@ Menu:
 \-\-usage	Miscellaneous options.
 \-\-verbose	Miscellaneous options.
 \-\-version	Miscellaneous options.
+\-auto\-typedefs	Declarations.
 \-bacc	Blank lines.
 \-bad	\-bad.
 \-bap	\-bap.
@@ -1523,6 +1553,7 @@ Menu:
 \-ss	Statements.
 \-st	Invoking indent.
 \-T	Declarations.
+\-ta	Declarations.
 \-tsN	Indentation.
 \-v	Miscellaneous options.
 \.indent.pro file	Invoking indent.

@@ -1,5 +1,5 @@
 /*
- * $Id: lnx-profile,v 1.4 2010/11/06 13:45:03 tom Exp $
+ * $Id: lnx-profile,v 1.5 2010/11/07 19:16:31 tom Exp $
  ****************************************************************************
  * Copyright (c) 2010 Thomas E. Dickey                                      *
  *                                                                          *
@@ -29,6 +29,7 @@
  ****************************************************************************
  * use this for Lynx source
  */
+--auto-typedefs
 --blank-lines-after-declarations
 --blank-lines-after-procedures
 --braces-on-if-line
@@ -99,7 +100,6 @@
 -T SearchAPDU 
 -T SearchResponseAPDU 
 -T TextAnchor 
--T UCode_t 
 -T UserDefList 
 -T WAISDocumentCodes 
 -T WAISDocumentHeader 

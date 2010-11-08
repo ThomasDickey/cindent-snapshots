@@ -1,3 +1,9 @@
+cindent (2.0.20101107) unstable; urgency=low
+
+  * fix special case of comment on last line with no trailing newline
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 07 Nov 2010 05:45:12 -0500
+
 cindent (2.0.20101106) unstable; urgency=low
 
   * fix minor regressions for lnx-indent

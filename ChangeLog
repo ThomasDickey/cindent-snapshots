@@ -1,4 +1,23 @@
--- $Id: ChangeLog,v 1.55 2010/11/06 23:22:31 tom Exp $
+-- $Id: ChangeLog,v 1.62 2010/11/07 21:01:33 tom Exp $
+
+2010-11-07
+	+ add "/* *INDENT-EQLS* */" comment feature, to aid in aligning
+	  assignment statements.
+
+	+ add "-ta" option to allow identifiers suffixed with "_t" to be
+	  automatically handled as types, prompted by recent FreeBSD change.
+
+	+ modify check in dump_line() which puts a comment onto a new line to
+	  not do this for preprocessor lines.
+
+	+ ensure that there is a blank before comments which are not in column
+	  one, e.g., when using -ppi option.
+
+	+ update keyword list per ISO/IEC 9899:1999
+
+	+ fix special case of comment on last line of file having no trailing
+	  newline; the parser had exited from comment-mode and treated the
+	  contents of the comment as identifiers.
 
 2010-11-06
 	+ fix character comparison in preprocessor keyword parsing to handle

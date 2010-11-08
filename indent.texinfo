@@ -915,7 +915,7 @@ of the @code{c-mode} functions of Emacs.
 
 @kindex -T
 @cindex Typenames
-You must use the @samp{-T}
+You should use the @samp{-T}
 option to tell @code{indent} the name of all the typenames in your
 program that are defined by @code{typedef}.  @samp{-T} can be specified
 more than once, and all names specified are used.  For example, if your
@@ -930,6 +930,13 @@ typedef enum @{red, blue, green@} COLOR;
 
 @noindent
 you would use the options @samp{-T CODE_ADDR -T COLOR}.
+
+@kindex -ta
+@kindex -auto-typedefs
+@cindex Typenames
+You may also use the @samp{-ta}
+option to tell @code{indent} to interpret identifiers ending with ``_t''
+as if they were typenames declared by @samp{-T}.
 
 @node Indentation, Disabling Formatting, Declarations, Indent Program
 @comment  node-name,  next,  previous,  up
@@ -1068,6 +1075,27 @@ As a historical note, some earlier versions of @code{indent} produced
 error messages beginning with @code{*INDENT**}.  These versions of
 @code{indent} were written to ignore any input text lines which began
 with such error messages.
+
+You may also override the formatting of assignment statements by using
+and @code{/* *INDENT-EQLS* */} comment.
+This tells @code{indent} to use the next statement as a hint of how
+it and subsequent statements (up to the next blank line) should be
+formatted.
+It uses the first ``binary operator'' (such as @code{=})
+on the line as a marker.
+The resulting line will put that operator in the same column,
+and align the first ``binary operator'' on subsequent lines in the same column.
+
+Here is an example of how it might be used:
+
+@example
+@group
+/* *INDENT-EQLS* */
+dimensions = 2;
+x          = 5;
+y          += 6;
+@end group
+@end example
 
 @node Other Languages, Miscellaneous options, Disabling Formatting, Indent Program
 @comment  node-name,  next,  previous,  up
@@ -1532,6 +1560,11 @@ Write to standard output.@*
 Tell @code{indent} the name of typenames.@*
 @xref{Declarations}.
 
+@item -ta
+@itemx -auto-typedefs
+Tell @code{indent} to assume names ending with ``_t'' are typenames.@*
+@xref{Declarations}.
+
 @c Ignore the following since it is not supported.  When someone
 @c rewrites this program, an effort could be made to generate TeX.
 @c
@@ -1568,6 +1601,7 @@ the corresponding short option.
 \def\leaderfill{\leaders\hbox to 1em{\hss.\hss}\hfill}
 
 {\tt
+\line{ --auto-typedefs \leaderfill -ta\ }
 \line{ --blank-lines-after-block-comments \leaderfill -bbb\ }
 \line{ --blank-lines-after-commas \leaderfill         -bc\ \ }
 \line{ --blank-lines-after-declarations \leaderfill   -bad\ }
@@ -1633,6 +1667,7 @@ the corresponding short option.
 
 @ifinfo
 @example
+--auto-typedefs                                 -ta
 --blank-lines-after-block-comments              -bbb
 --blank-lines-after-commas                      -bc
 --blank-lines-after-declarations                -bad

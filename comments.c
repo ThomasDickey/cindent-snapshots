@@ -97,7 +97,7 @@ print_comment (void)
      there for dump_line to use. */
   inc_pstack ();
 
-  /* Have to do it this way because this piece of shit program doesn't
+  /* Have to do it this way because this program doesn't
      always place the last token code on the stack. */
   if (*(token + 1) == '/')
     comment_type = cplus_comment;
@@ -225,7 +225,7 @@ print_comment (void)
 	  start_column = 1;
 	}
       else if (s_com != e_com)
-	/* The fool has a line consisting of two contiguous comments.
+	/* We have a line consisting of two contiguous comments.
 	   In this case, we don't try too hard, 'cause nothing will
 	   look good. */
 	{
@@ -672,6 +672,20 @@ print_comment (void)
 	      fill_buffer ();
 	  text_on_line = 0;
 	}
+    }
+
+  /*
+   * Recover from special case of a comment on the last line of a file which
+   * has no trailing newline.
+   */
+  if (had_eof && !at_buffer_end (buf_ptr))
+    {
+      while (!at_buffer_end (buf_ptr))
+	{
+	  CHECK_COM_SIZE;
+	  *e_com++ = *buf_ptr++;
+	}
+      --e_com;
     }
 
   parser_state_tos->tos--;
