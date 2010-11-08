@@ -188,64 +188,64 @@ init_parser (void)
 void
 reset_parser (void)
 {
-  parser_state_tos->next = 0;
-  parser_state_tos->tos = 0;
+  /* *INDENT-EQLS* */
+  parser_state_tos->next               = 0;
+  parser_state_tos->tos                = 0;
   parser_state_tos->paren_indents_size = 1;
-  parser_state_tos->p_stack[0] = stmt;	/* this is the parser's stack */
-  parser_state_tos->last_nl = true;	/* this is true if the last thing
-					   scanned was a newline */
-  parser_state_tos->last_token = start_token;
-  parser_state_tos->box_com = false;
-  parser_state_tos->cast_mask = 0;
-  parser_state_tos->noncast_mask = 0;
-  parser_state_tos->sizeof_mask = 0;
-  parser_state_tos->block_init = false;
-  parser_state_tos->block_init_level = 0;
-  parser_state_tos->col_1 = false;
-  parser_state_tos->com_col = 0;
-  parser_state_tos->dec_nest = 0;
-  parser_state_tos->i_l_follow = 0;
-  parser_state_tos->ind_level = 0;
-  parser_state_tos->inner_stmt = 0;
-  parser_state_tos->last_u_d = false;
-  parser_state_tos->p_l_follow = 0;
-  parser_state_tos->paren_level = 0;
-  parser_state_tos->paren_depth = 0;
-  parser_state_tos->search_brace = false;
-  parser_state_tos->use_ff = false;
-  parser_state_tos->its_a_keyword = false;
-  parser_state_tos->sizeof_keyword = false;
+  parser_state_tos->p_stack[0]         = stmt;
+  parser_state_tos->last_nl            = true;
+  parser_state_tos->last_token         = start_token;
+  parser_state_tos->box_com            = false;
+  parser_state_tos->cast_mask          = 0;
+  parser_state_tos->noncast_mask       = 0;
+  parser_state_tos->sizeof_mask        = 0;
+  parser_state_tos->block_init         = false;
+  parser_state_tos->block_init_level   = 0;
+  parser_state_tos->col_1              = false;
+  parser_state_tos->com_col            = 0;
+  parser_state_tos->dec_nest           = 0;
+  parser_state_tos->i_l_follow         = 0;
+  parser_state_tos->ind_level          = 0;
+  parser_state_tos->inner_stmt         = 0;
+  parser_state_tos->last_u_d           = false;
+  parser_state_tos->p_l_follow         = 0;
+  parser_state_tos->paren_level        = 0;
+  parser_state_tos->paren_depth        = 0;
+  parser_state_tos->search_brace       = false;
+  parser_state_tos->use_ff             = false;
+  parser_state_tos->its_a_keyword      = false;
+  parser_state_tos->sizeof_keyword     = false;
   parser_state_tos->dumped_decl_indent = false;
   parser_state_tos->in_parameter_declaration = false;
-  parser_state_tos->in_comment = false;
-  parser_state_tos->just_saw_decl = false;
-  parser_state_tos->in_decl = false;
-  parser_state_tos->decl_on_line = false;
-  parser_state_tos->in_or_st = false;
-  parser_state_tos->bl_line = true;
-  parser_state_tos->want_blank = false;
-  parser_state_tos->in_stmt = false;
-  parser_state_tos->ind_stmt = false;
-  parser_state_tos->procname = "\0";
-  parser_state_tos->procname_end = "\0";
-  parser_state_tos->classname = "\0";
-  parser_state_tos->classname_end = "\0";
-  parser_state_tos->pcase = false;
-  parser_state_tos->dec_nest = 0;
-
+  parser_state_tos->in_comment         = false;
+  parser_state_tos->just_saw_decl      = false;
+  parser_state_tos->in_decl            = false;
+  parser_state_tos->decl_on_line       = false;
+  parser_state_tos->in_or_st           = false;
+  parser_state_tos->bl_line            = true;
+  parser_state_tos->want_blank         = false;
+  parser_state_tos->in_stmt            = false;
+  parser_state_tos->ind_stmt           = false;
+  parser_state_tos->procname           = "\0";
+  parser_state_tos->procname_end       = "\0";
+  parser_state_tos->classname          = "\0";
+  parser_state_tos->classname_end      = "\0";
+  parser_state_tos->pcase              = false;
+  parser_state_tos->dec_nest           = 0;
   parser_state_tos->preprocessor_indent = false;
-  parser_state_tos->il[0] = 0;
-  parser_state_tos->cstk[0] = 0;
-  parser_state_tos->paren_indents[0] = 0;
+  parser_state_tos->il[0]              = 0;
+  parser_state_tos->cstk[0]            = 0;
+  parser_state_tos->paren_indents[0]   = 0;
 
   save_com.len = 0;
   save_com.column = 0;
 
   di_stack[parser_state_tos->dec_nest] = 0;
 
-  l_com = combuf + INITIAL_BUFFER_SIZE - 5;
-  l_lab = labbuf + INITIAL_BUFFER_SIZE - 5;
-  l_code = codebuf + INITIAL_BUFFER_SIZE - 5;
+  /* *INDENT-EQLS* */
+  l_com     = combuf + INITIAL_BUFFER_SIZE - 5;
+  l_lab     = labbuf + INITIAL_BUFFER_SIZE - 5;
+  l_code    = codebuf + INITIAL_BUFFER_SIZE - 5;
   combuf[0] = codebuf[0] = labbuf[0] = ' ';
   combuf[1] = codebuf[1] = labbuf[1] = '\0';
 
@@ -261,8 +261,12 @@ reset_parser (void)
   break_comma = false;
   bp_save = 0;
   be_save = 0;
+
   if (tabsize <= 0)
     tabsize = 1;
+
+  indent_eqls = 0;
+  indent_eqls_1st = 0;
 }
 
 /* like ++parser_state_tos->tos but checks for stack overflow and extends
@@ -303,7 +307,7 @@ show_parser (const char *fn, int ln)
   SHOW_PARSER (com);
 }
 
-static void
+void
 show_pstack (void)
 {
   int i;

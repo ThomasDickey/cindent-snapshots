@@ -47,4 +47,4 @@ int             level1;
 #ifndef LYNX_CFG_H
 #define LYNX_CFG_H 1
 
-#	endif			//  LYNX_CFG_H
+#	endif			// LYNX_CFG_H

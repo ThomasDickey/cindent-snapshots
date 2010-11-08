@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
 <html>
-<!-- Created on November 5, 2010 by texi2html 1.82
+<!-- Created on November 7, 2010 by texi2html 1.82
 texi2html was written by: 
             Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -882,7 +882,7 @@ of the <code>c-mode</code> functions of Emacs.
 </p>
 <a name="index-_002dT"></a>
 <a name="index-Typenames"></a>
-<p>You must use the &lsquo;<samp>-T</samp>&rsquo;
+<p>You should use the &lsquo;<samp>-T</samp>&rsquo;
 option to tell <code>indent</code> the name of all the typenames in your
 program that are defined by <code>typedef</code>.  &lsquo;<samp>-T</samp>&rsquo; can be specified
 more than once, and all names specified are used.  For example, if your
@@ -893,6 +893,13 @@ typedef enum {red, blue, green} COLOR;
 </pre></td></tr></table>
 
 <p>you would use the options &lsquo;<samp>-T CODE_ADDR -T COLOR</samp>&rsquo;.
+</p>
+<a name="index-_002dta"></a>
+<a name="index-_002dauto_002dtypedefs"></a>
+<a name="index-Typenames-1"></a>
+<p>You may also use the &lsquo;<samp>-ta</samp>&rsquo;
+option to tell <code>indent</code> to interpret identifiers ending with &ldquo;_t&rdquo;
+as if they were typenames declared by &lsquo;<samp>-T</samp>&rsquo;.
 </p>
 <hr size="6">
 <a name="Indentation"></a>
@@ -1056,6 +1063,24 @@ error messages beginning with <code>*INDENT**</code>.  These versions of
 <code>indent</code> were written to ignore any input text lines which began
 with such error messages.
 </p>
+<p>You may also override the formatting of assignment statements by using
+and <code>/* *INDENT-EQLS* */</code> comment.
+This tells <code>indent</code> to use the next statement as a hint of how
+it and subsequent statements (up to the next blank line) should be
+formatted.
+It uses the first &ldquo;binary operator&rdquo; (such as <code>=</code>)
+on the line as a marker.
+The resulting line will put that operator in the same column,
+and align the first &ldquo;binary operator&rdquo; on subsequent lines in the same column.
+</p>
+<p>Here is an example of how it might be used:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">/* *INDENT-EQLS* */
+dimensions = 2;
+x          = 5;
+y          += 6;
+</pre></td></tr></table>
+
 <hr size="6">
 <a name="Other-Languages"></a>
 <table cellpadding="1" cellspacing="1" border="0">
@@ -1646,6 +1671,12 @@ See section <a href="#Invoking-indent">Invoking <code>indent</code></a>.
 See section <a href="#Declarations">Declarations</a>.
 </p>
 </dd>
+<dt> &lsquo;<samp>-ta</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>-auto-typedefs</samp>&rsquo;</dt>
+<dd><p>Tell <code>indent</code> to assume names ending with &ldquo;_t&rdquo; are typenames.<br>
+See section <a href="#Declarations">Declarations</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-ts<var>n</var></samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--tab-size<var>n</var></samp>&rsquo;</dt>
 <dd><p>Set tab size to <var>n</var> spaces.<br>
@@ -1730,6 +1761,7 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002bignore_002dprofile"><code>+ignore-profile</code></a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td colspan="3"> <hr></td></tr>
 <tr><th><a name="Index-1_ky_symbol-2">-</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dauto_002dtypedefs"><code>-auto-typedefs</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbacc"><code>-bacc</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbad"><code>-bad</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dbap"><code>-bap</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
@@ -1863,6 +1895,7 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002d_002dstart_002dleft_002dside_002dof_002dcomments"><code>--start-left-side-of-comments</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dswallow_002doptional_002dblank_002dlines"><code>--swallow-optional-blank-lines</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dT"><code>-T</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dta"><code>-ta</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dtab_002dsizen"><code>--tab-size<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dtsn"><code>-ts<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dusage"><code>--usage</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
@@ -1907,6 +1940,7 @@ the corresponding short option.
 <tr><td colspan="3"> <hr></td></tr>
 <tr><th><a name="Index-1_ky_letter-T">T</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-Typenames">Typenames</a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-Typenames-1">Typenames</a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td colspan="3"> <hr></td></tr>
 <tr><th><a name="Index-1_ky_letter-U">U</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-Using-Standard-Input">Using Standard Input</a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
@@ -1998,7 +2032,7 @@ maintain consistency with the POSIX standard.
 </tr></table>
 <h1>About This Document</h1>
 <p>
-  This document was generated by <em>Thomas Dickey</em> on <em>November 5, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas Dickey</em> on <em>November 7, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
 </p>
 <p>
   The buttons in the navigation panels have the following meaning:
@@ -2100,7 +2134,7 @@ maintain consistency with the POSIX standard.
 <hr size="1">
 <p>
  <font size="-1">
-  This document was generated by <em>Thomas Dickey</em> on <em>November 5, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas Dickey</em> on <em>November 7, 2010</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
  </font>
  <br>
 

@@ -186,6 +186,9 @@ extern char *buf_end;		/* ptr to first after last char in in_buffer */
 extern char *buf_break;		/* Where we can break the line. */
 extern int break_line;		/* Whether or not we should break the line. */
 
+extern int indent_eqls;		/* column on which to align "=", etc. */
+extern int indent_eqls_1st;	/* reference column */
+
 /* pointer to the token that lexi() has just found */
 extern char *token;
 /* points to the first char after the end of token */
@@ -198,6 +201,7 @@ extern char *token_buf;
 /* Functions from lexi.c */
 extern enum codes lexi (void);
 extern int token_col (void);
+extern int first_token_col (void);
 extern void addkey (const char *, enum rwcodes);
 extern void init_lexi (void);
 
@@ -227,17 +231,103 @@ extern char *bp_save;		/* saved value of buf_ptr when taking input
 				   from save_com */
 extern char *be_save;		/* similarly saved value of buf_end */
 
-
-extern int use_stdout;
-extern int pointer_as_binop;
+/*
+ * Variables set by command-line options.
+ */
+extern int auto_typedefs;	/* true to treat "xxx_t" as typedef'd */
+extern int blank_after_sizeof;	/* true iff a blank should always be inserted
+				   after sizeof */
 extern int blanklines_after_declarations;
-extern int blanklines_before_blockcomments;
+extern int blanklines_after_declarations_at_proctop;
+				/* This is vaguely similar
+				   to blanklines_after_declarations except
+				   that it only applies to the first set of
+				   declarations in a procedure (just after the
+				   first '{') and it causes a blank line to be
+				   generated even if there are no
+				   declarations */
 extern int blanklines_after_procs;
 extern int blanklines_around_conditional_compilation;
-extern int swallow_optional_blanklines;
+extern int blanklines_before_blockcomments;
+extern int brace_indent;	/* number of spaces to indent braces from the
+				   surrounding if, while, etc. in -bl
+				   (bype_2 == 0) code */
+extern int btype_2;		/* when true, brace should be on same line as
+				   if, while, etc */
+extern int case_indent;		/* The distance to indent case labels from
+				   the switch statement */
+extern int cast_space;		/* If true, casts look like:
+				   (char *) bar rather than (char *)bar */
+extern int com_ind;		/* the column in which comments to the right
+				   of code should start */
+extern int comment_delimiter_on_blankline;
+extern int comment_max_col;
+extern int continuation_indent;	/* set to the indentation between the edge of
+				   code and continuation lines in spaces */
+extern int cuddle_else;		/* true if else should cuddle up to '}' */
+extern int debug;		/* when true, debugging messages are printed */
+extern int decl_com_ind;	/* the column in which comments after
+				   declarations should be put */
+extern int decl_indent;		/* column to indent declared identifiers to */
+extern int else_if;		/* True iff else if pairs should be handled
+				   specially */
+extern int expect_output_file;	/* Means "-o" was specified. */
+extern int extra_expression_indent;
+				/* True if continuation lines from
+				   the expression part of "if(e)", "while(e)",
+				   "for(e;e;e)" should be indented an extra tab
+				   stop so that they don't conflict with the
+				   code that follows */
+extern int format_col1_comments;
+				/* If comments which start in column 1 are to
+				   be magically reformatted */
+extern int format_comments;	/* If any comments are to be reformatted */
+extern int ind_size;		/* The size of one indentation level in spaces.  */
+extern int indent_parameters;	/* Number of spaces to indent parameters.  */
+extern int leave_comma;		/* if true, never break declarations after
+				   commas */
+extern int leave_preproc_space;	/* if true, leave the spaces between
+				   '#' and preprocessor commands. */
+extern int lex_or_yacc;		/* if true, format lex/yacc source */
+extern int lineup_to_parens;	/* if true, continued code within parens will
+				   be lined up to the open paren */
+extern int ljust_decl;		/* true if declarations should be left
+				   justified */
+extern int max_col;		/* the maximum allowable line length */
 extern int n_real_blanklines;
-extern int prefix_blankline_requested;
 extern int postfix_blankline_requested;
+extern int prefix_blankline_requested;
+extern int preprocessor_indentation;
+				/* if nonzero, override -lps and
+				   indent preprocessor keywords */
+extern int proc_calls_space;	/* If true, procedure calls look like:
+				   foo (bar) rather than foo(bar) */
+extern int procnames_start_line;
+				/* if true, the names of procedures being
+				   defined get placed in column 1 (ie. a
+				   newline is placed between the type of the
+				   procedure and its name) */
+extern int space_after_pointer_type;
+				/* Space after star in:  char * foo(); */
+extern int space_sp_semicolon;	/* If true, a space is inserted between if,
+				   while, or for, and a semicolon
+				   for example while (*p++ == ' ') ; */
+extern int star_comment_cont;	/* true iff comment continuation lines should
+				   have stars at the beginning of each line. */
+extern int swallow_optional_blanklines;
+extern int tabsize;		/* The number of columns a tab character
+				   generates. */
+extern int troff;		/* true iff were generating troff input */
+extern int unindent_displace;	/* comments not to the right of code will be
+				   placed this many indentation levels to the
+				   left of code */
+extern int use_stdout;
+extern int verbose;		/* when true, non-essential error messages
+				   are printed */
+
+/*
+ * Working state.
+ */
 extern int break_comma;		/* when true and not in parens, break after a
 				   comma */
 
@@ -247,17 +337,6 @@ extern int embedded_comment_on_line;
 extern int else_or_endif;
 extern size_t di_stack_alloc;
 extern int *di_stack;
-
-/* number of spaces to indent braces from the suround if, while, etc. in -bl
-   (bype_2 == 0) code */
-extern int brace_indent;
-
-/* when true, brace should be on same line as if, while, etc */
-extern int btype_2;
-
-/* If true, a space is inserted between if, while, or for, and a semicolon
-   for example while (*p++ == ' ') ; */
-extern int space_sp_semicolon;
 
 /* True if a #else or #endif has been encountered.  */
 extern int else_or_endif;
@@ -274,98 +353,13 @@ extern int com_lines;		/* the number of lines with comments, set by
 extern int had_eof;		/* set to true when input is exhausted */
 extern int in_line_no;		/* the current input line number. */
 extern int out_line_no;		/* the current output line number. */
-
-extern int max_col;		/* the maximum allowable line length */
-extern int debug;		/* when true, debugging messages are printed */
-extern int verbose;		/* when true, non-essential error messages
-				   are printed */
-extern int cuddle_else;		/* true if else should cuddle up to '}' */
-extern int star_comment_cont;	/* true iff comment continuation lines should
-				   have stars at the beginning of each line. */
-extern int comment_delimiter_on_blankline;
-extern int troff;		/* true iff were generating troff input */
-extern int procnames_start_line;	/* if true, the names of procedures being
-					   defined get placed in column 1 (ie. a
-					   newline is placed between the type of the
-					   procedure and its name) */
-extern int expect_output_file;	/* Means "-o" was specified. */
-extern int proc_calls_space;	/* If true, procedure calls look like:
-				   foo (bar) rather than foo(bar) */
-extern int cast_space;		/* If true, casts look like: r                           *
-				   (char *) bar rather than (char *)bar */
-
-/* If comments which start in column 1 are to be magically reformatted */
-extern int format_col1_comments;
-/* If any comments are to be reformatted */
-extern int format_comments;
-
 extern int suppress_blanklines;	/* set iff following blanklines should be
 				   suppressed */
-extern int continuation_indent;	/* set to the indentation between the edge of
-				   code and continuation lines in spaces */
-extern int lex_or_yacc;		/* if true, format lex/yacc source */
-extern int lineup_to_parens;	/* if true, continued code within parens will
-				   be lined up to the open paren */
-extern int leave_preproc_space;	/* if true, leave the spaces between
-				   '#' and preprocessor commands. */
-extern int preprocessor_indentation;	/* if nonzero, override -lps and
-					   indent preprocessor keywords */
 
 /* The position that we will line the current line up with when it comes time
    to print it (if we are lining up to parentheses).  */
 extern int paren_target;
 
-/* true iff a blank should always be inserted after sizeof */
-extern int blank_after_sizeof;
-
-extern int blanklines_after_declarations_at_proctop;	/* This is vaguely
-							   similar to
-							   blanklines_after_decla
-							   rations except that
-							   it only applies to
-							   the first set of
-							   declarations in a
-							   procedure (just after
-							   the first '{') and it
-							   causes a blank line
-							   to be generated even
-							   if there are no
-							   declarations */
-extern int comment_max_col;
-extern int extra_expression_indent;	/* True if continuation lines from
-					   the expression part of "if(e)",
-					   "while(e)", "for(e;e;e)" should be
-					   indented an extra tab stop so that
-					   they don't conflict with the code
-					   that follows */
-
-/* Space after star in:  char * foo(); */
-extern int space_after_pointer_type;
-
-/* The following are all controlled by command line switches (as are some of
-   the things above).  */
-extern int leave_comma;		/* if true, never break declarations after
-				   commas */
-extern int decl_com_ind;	/* the column in which comments after
-				   declarations should be put */
-extern int case_indent;		/* The distance to indent case labels from
-				   the switch statement */
-extern int com_ind;		/* the column in which comments to the right
-				   of code should start */
-extern int decl_indent;		/* column to indent declared identifiers to */
-extern int ljust_decl;		/* true if declarations should be left
-				   justified */
-extern int unindent_displace;	/* comments not to the right of code will be
-				   placed this many indentation levels to the
-				   left of code */
-extern int else_if;		/* True iff else if pairs should be handled
-				   specially */
-/* Number of spaces to indent parameters.  */
-extern int indent_parameters;
-/* The size of one indentation level in spaces.  */
-extern int ind_size;
-/* The number of columns a tab character generates. */
-extern int tabsize;
 /* Nonzero if we should use standard input/output when files are not
    explicitly specified.  */
 extern int use_stdinout;
@@ -557,3 +551,4 @@ extern void parse_lparen_in_decl (void);
 extern void reduce (void);
 extern void reset_parser (void);
 extern void show_parser (const char *, int);
+extern void show_pstack (void);

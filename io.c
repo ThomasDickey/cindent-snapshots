@@ -61,6 +61,8 @@ int break_line;
 int had_eof;
 int out_lines;
 int com_lines;
+int indent_eqls;
+int indent_eqls_1st;
 
 int suppress_blanklines = 0;
 static int not_first_line;
@@ -498,14 +500,23 @@ dump_line (void)
 	    int target = parser_state_tos->com_col;
 	    char *com_st = s_com;
 
-	    if (cur_col > target)
+	    if ((cur_col > target) && (*s_lab != '#'))
 	      {
 		pass_char (EOL);
 		cur_col = 1;
 		++out_lines;
 	      }
-
-	    (void) pad_output (cur_col, target);
+	    else if ((cur_col == target)
+		     && (cur_col > 1)
+		     && (s_code != e_code || s_lab != e_lab))
+	      {
+		pass_char (' ');
+		++cur_col;
+	      }
+	    else
+	      {
+		(void) pad_output (cur_col, target);
+	      }
 	    pass_n_text (com_st, (int) (e_com - com_st));
 	    com_lines++;
 	  }
@@ -938,6 +949,10 @@ fill_buffer (void)
 		}
 	      while (inhibited);
 	    }
+	  else if (!strncmp (p, "*INDENT-EQLS*", (size_t) 13))
+	    {
+	      indent_eqls = -1;
+	    }
 	}
 
       while (*p != '\0' && *p != EOL)
@@ -969,6 +984,29 @@ fill_buffer (void)
   buf_ptr = cur_line;
   buf_end = in_prog_pos;
   buf_break = NULL;
+
+  /*
+   * Turn off the indent-eqls feature on the next blank line.
+   */
+  if (indent_eqls > 0)
+    {
+      int blank = true;
+
+      for (p = buf_ptr; p < buf_end; ++p)
+	{
+	  if (!isspace (UChar (*p)))
+	    {
+	      blank = false;
+	      break;
+	    }
+	}
+      if (blank)
+	{
+	  indent_eqls = 0;
+	  indent_eqls_1st = 0;
+	}
+    }
+
   if (debug)
     {
       printf ("%6d: %s%.*s%s",

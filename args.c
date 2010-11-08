@@ -107,60 +107,60 @@ static int exp_sc = 0;
 static int exp_sob = 0;
 static int exp_ss = 0;
 static int exp_st = 0;
+static int exp_ta = 0;
 static int exp_ts = 0;
 static int exp_v = 0;
 static int exp_version = 0;
 
 /* The following variables are controlled by command line parameters and
    their meaning is explained in indent.h.  */
-int leave_comma;
-int decl_com_ind;
-int case_indent;
-int com_ind;
-int decl_indent;
-int ljust_decl;
-int unindent_displace;
-int else_if;
-int indent_parameters;
-int ind_size;
-int tabsize;
-int blanklines_after_procs;
-int use_stdout;
+int auto_typedefs;
+int blank_after_sizeof;
 int blanklines_after_declarations;
-int blanklines_before_blockcomments;
+int blanklines_after_declarations_at_proctop;
+int blanklines_after_procs;
 int blanklines_around_conditional_compilation;
-int swallow_optional_blanklines;
-int n_real_blanklines;
-int prefix_blankline_requested;
-int postfix_blankline_requested;
+int blanklines_before_blockcomments;
 int brace_indent;
 int btype_2;
-
-int space_sp_semicolon;
-int max_col;
-int verbose;
-int cuddle_else;
-int star_comment_cont;
-int comment_delimiter_on_blankline;
-int troff;
-int preprocessor_indentation;
-int procnames_start_line;
-int proc_calls_space;
+int case_indent;
 int cast_space;
+int com_ind;
+int comment_delimiter_on_blankline;
+int comment_max_col;
+int continuation_indent;
+int cuddle_else;
+int debug;
+int decl_com_ind;
+int decl_indent;
+int else_if;
+int expect_output_file;
+int extra_expression_indent;
 int format_col1_comments;
 int format_comments;
-int continuation_indent;
+int ind_size;
+int indent_parameters;
+int leave_comma;
+int leave_preproc_space;
 int lex_or_yacc;
 int lineup_to_parens;
-int leave_preproc_space;
-int blank_after_sizeof;
-int blanklines_after_declarations_at_proctop;
-int comment_max_col;
-int extra_expression_indent;
+int ljust_decl;
+int max_col;
+int n_real_blanklines;
+int postfix_blankline_requested;
+int prefix_blankline_requested;
+int preprocessor_indentation;
+int proc_calls_space;
+int procnames_start_line;
 int space_after_pointer_type;
-
-int debug;
-int expect_output_file;
+int space_sp_semicolon;
+int star_comment_cont;
+int swallow_optional_blanklines;
+int tabsize;
+int troff;
+int unindent_displace;
+int use_stdout;
+int verbose;
 
 #define NumberData(p) ((p)->d_number)
 #define FunctnData(p) ((p)->d_functn)
@@ -370,6 +370,7 @@ struct pro pro[] =
   INIT_BOOL ("sob", DFT_SOB, ON, &swallow_optional_blanklines, &exp_sob),
   INIT_BOOL ("ss", DFT_SS, ON, &space_sp_semicolon, &exp_ss),
   INIT_BOOL ("st", false, ON, &use_stdout, &exp_st),
+  INIT_BOOL ("ta", false, ON, &auto_typedefs, &exp_ta),
   INIT_INT ("ts", 8, ONOFF_NA, &tabsize, &exp_ts),
   INIT_PRSTRING ("version", 0, ONOFF_NA, VERSION_STRING, &exp_version),
   INIT_BOOL ("v", DFT_V, ON, &verbose, &exp_v),
@@ -475,6 +476,7 @@ struct long_option_conversion option_conversions[] =
   INIT_LONG ("sob", "swallow-optional-blank-lines"),
   INIT_LONG ("ss", "space-special-semicolon"),
   INIT_LONG ("st", "standard-output"),
+  INIT_LONG ("ta", "auto-typedefs"),
   INIT_LONG ("ts", "tab-size"),
   INIT_LONG ("version", "version"),
   INIT_LONG ("v", "verbose"),
