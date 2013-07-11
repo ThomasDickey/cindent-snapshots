@@ -1,7 +1,7 @@
 /*
- * $Id: ncu-profile,v 1.2 2010/10/08 22:50:28 tom Exp $
+ * $Id: ncu-profile,v 1.3 2013/07/10 22:51:04 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010 Thomas E. Dickey                                      *
+ * Copyright (c) 2010,2013 Thomas E. Dickey                                 *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -44,31 +44,58 @@
 --swallow-optional-blank-lines
 --tab-size8
 
--T NCURSES_SP_ARGx
--T NCURSES_SP_DCLx
+/* common */
+-T FILE
+-T GCC_NORETURN
+-T RETSIGTYPE 
+-T gid_t
+-T inline
+-T off_t
+-T size_t
+-T uid_t
+-T va_list
+-T wchar_t
+-T wint_t
+
+/* ncurses */
 -T NCURSES_EXPORT_VAR
 -T NCURSES_INLINE
+-T NCURSES_SP_ARGx
+-T NCURSES_SP_DCLx
 -T SCREEN
 -T TERMTYPE
 -T attr_t
 -T cchar_t
 -T chtype
--T inline
--T wchar_t
--T wint_t
 
+/* vile */
 -T BUFFER
 -T CHARTYPE
--T FILE
--T GCC_NORETURN
 -T LINE
 -T MARK
--T RETSIGTYPE 
 -T TBUFF
 -T WINDOW
--T size_t
--T va_list
 
+/* xterm */
+-T ANSI
+-T Bool
+-T Boolean
+-T CELL
 -T Cardinal
+-T Char
+-T ColorRegister
+-T Dimension
+-T Display
+-T Drawable
+-T IChar
+-T LineData
+-T ScrnBuf
+-T SixelGraphic
+-T String
+-T TScreen
 -T Widget
+-T Window
 -T XtPointer
+-T XtermRect
+-T XtermWidget
+-T _Xconst

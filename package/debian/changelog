@@ -1,3 +1,9 @@
+cindent (2.0.20130710) unstable; urgency=low
+
+  * Add keywords to ncurses profile
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Wed, 10 Jul 2013 05:21:52 -0400
+
 cindent (2.0.20101107) unstable; urgency=low
 
   * fix special case of comment on last line with no trailing newline

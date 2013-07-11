@@ -1,4 +1,7 @@
--- $Id: ChangeLog,v 1.62 2010/11/07 21:01:33 tom Exp $
+-- $Id: ChangeLog,v 1.63 2013/07/10 22:56:17 tom Exp $
+
+2013-07-10
+	+ add some keywords to ncu-indent for xterm.
 
 2010-11-07
 	+ add "/* *INDENT-EQLS* */" comment feature, to aid in aligning
