@@ -1,4 +1,5 @@
 Read profile ./scripts/cdk-profile
-There were 11 output lines and 1 comments
-(Lines with comments)/(Lines with code):  0.100
+case005-cdk.c:4:45: Warning: Line split #2 at {
+There were 25 output lines and 2 comments
+(Lines with comments)/(Lines with code):  0.087
 ** updated case005-cdk.c

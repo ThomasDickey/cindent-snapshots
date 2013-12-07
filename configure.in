@@ -1,7 +1,7 @@
-dnl $Id: configure.in,v 1.6 2010/11/03 23:23:30 tom Exp $
+dnl $Id: configure.in,v 1.7 2013/12/07 12:44:16 tom Exp $
 dnl Process this file with autoconf to produce a configure script.
 dnl ---------------------------------------------------------------------------
-dnl Copyright:  1999-2002,2010 by Thomas E. Dickey
+dnl Copyright:  1999-2010,2013 by Thomas E. Dickey
 dnl
 dnl Permission is hereby granted, free of charge, to any person obtaining a
 dnl copy of this software and associated documentation files (the
@@ -26,12 +26,12 @@ dnl Except as contained in this notice, the name(s) of the above copyright
 dnl holders shall not be used in advertising or otherwise to promote the
 dnl sale, use or other dealings in this Software without prior written
 dnl authorization.
+AC_PREREQ(2.52.20011201)
 AC_INIT(indent.c)
 
 AC_ARG_PROGRAM
 
-AC_PROG_CC
-CF_INTEL_COMPILER
+CF_PROG_CC
 CF_PROG_EXT
 
 AC_PROG_CPP

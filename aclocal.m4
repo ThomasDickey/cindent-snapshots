@@ -1,7 +1,7 @@
-dnl $Id: aclocal.m4,v 1.3 2010/11/03 23:24:57 tom Exp $
+dnl $Id: aclocal.m4,v 1.4 2013/12/07 12:43:44 tom Exp $
 dnl autoconf macros for vttest - T.E.Dickey
 dnl ---------------------------------------------------------------------------
-dnl Copyright:  1997-2009,2010 by Thomas E. Dickey
+dnl Copyright:  1997-2010,2013 by Thomas E. Dickey
 dnl
 dnl Permission is hereby granted, free of charge, to any person obtaining a
 dnl copy of this software and associated documentation files (the
@@ -27,6 +27,32 @@ dnl holders shall not be used in advertising or otherwise to promote the
 dnl sale, use or other dealings in this Software without prior written
 dnl authorization.
 dnl ---------------------------------------------------------------------------
+dnl ---------------------------------------------------------------------------
+dnl CF_ACVERSION_CHECK version: 4 updated: 2013/03/04 19:52:56
+dnl ------------------
+dnl Conditionally generate script according to whether we're using a given autoconf.
+dnl
+dnl $1 = version to compare against
+dnl $2 = code to use if AC_ACVERSION is at least as high as $1.
+dnl $3 = code to use if AC_ACVERSION is older than $1.
+define([CF_ACVERSION_CHECK],
+[
+ifdef([AC_ACVERSION], ,[m4_copy([m4_PACKAGE_VERSION],[AC_ACVERSION])])dnl
+ifdef([m4_version_compare],
+[m4_if(m4_version_compare(m4_defn([AC_ACVERSION]), [$1]), -1, [$3], [$2])],
+[CF_ACVERSION_COMPARE(
+AC_PREREQ_CANON(AC_PREREQ_SPLIT([$1])),
+AC_PREREQ_CANON(AC_PREREQ_SPLIT(AC_ACVERSION)), AC_ACVERSION, [$2], [$3])])])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_ACVERSION_COMPARE version: 3 updated: 2012/10/03 18:39:53
+dnl --------------------
+dnl CF_ACVERSION_COMPARE(MAJOR1, MINOR1, TERNARY1,
+dnl                      MAJOR2, MINOR2, TERNARY2,
+dnl                      PRINTABLE2, not FOUND, FOUND)
+define([CF_ACVERSION_COMPARE],
+[ifelse(builtin([eval], [$2 < $5]), 1,
+[ifelse([$8], , ,[$8])],
+[ifelse([$9], , ,[$9])])])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_ADD_CFLAGS version: 10 updated: 2010/05/26 05:38:42
 dnl -------------
@@ -145,7 +171,33 @@ ifelse([$3],,[    :]dnl
 ])dnl
   ])])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_CHECK_CACHE version: 11 updated: 2008/03/23 14:45:59
+dnl CF_CC_ENV_FLAGS version: 1 updated: 2012/10/03 05:25:49
+dnl ---------------
+dnl Check for user's environment-breakage by stuffing CFLAGS/CPPFLAGS content
+dnl into CC.  This will not help with broken scripts that wrap the compiler with
+dnl options, but eliminates a more common category of user confusion.
+AC_DEFUN([CF_CC_ENV_FLAGS],
+[
+# This should have been defined by AC_PROG_CC
+: ${CC:=cc}
+
+AC_MSG_CHECKING(\$CC variable)
+case "$CC" in #(vi
+*[[\ \	]]-[[IUD]]*)
+	AC_MSG_RESULT(broken)
+	AC_MSG_WARN(your environment misuses the CC variable to hold CFLAGS/CPPFLAGS options)
+	# humor him...
+	cf_flags=`echo "$CC" | sed -e 's/^[[^ 	]]*[[ 	]]//'`
+	CC=`echo "$CC" | sed -e 's/[[ 	]].*//'`
+	CF_ADD_CFLAGS($cf_flags)
+	;;
+*)
+	AC_MSG_RESULT(ok)
+	;;
+esac
+])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_CHECK_CACHE version: 12 updated: 2012/10/02 20:55:03
 dnl --------------
 dnl Check if we're accidentally using a cache from a different machine.
 dnl Derive the system name, as a check for reusing the autoconf cache.
@@ -168,7 +220,7 @@ else
 		system_name="`(hostname) 2>/dev/null`"
 	fi
 fi
-test -n "$system_name" && AC_DEFINE_UNQUOTED(SYSTEM_NAME,"$system_name")
+test -n "$system_name" && AC_DEFINE_UNQUOTED(SYSTEM_NAME,"$system_name",[Define to the system name.])
 AC_CACHE_VAL(cf_cv_system_name,[cf_cv_system_name="$system_name"])
 
 test -z "$system_name" && system_name="$cf_cv_system_name"
@@ -180,7 +232,40 @@ if test ".$system_name" != ".$cf_cv_system_name" ; then
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_DISABLE_ECHO version: 11 updated: 2009/12/13 13:16:57
+dnl CF_CLANG_COMPILER version: 2 updated: 2013/11/19 19:23:35
+dnl -----------------
+dnl Check if the given compiler is really clang.  clang's C driver defines
+dnl __GNUC__ (fooling the configure script into setting $GCC to yes) but does
+dnl not ignore some gcc options.
+dnl
+dnl This macro should be run "soon" after AC_PROG_CC or AC_PROG_CPLUSPLUS, to
+dnl ensure that it is not mistaken for gcc/g++.  It is normally invoked from
+dnl the wrappers for gcc and g++ warnings.
+dnl
+dnl $1 = GCC (default) or GXX
+dnl $2 = CLANG_COMPILER (default)
+dnl $3 = CFLAGS (default) or CXXFLAGS
+AC_DEFUN([CF_CLANG_COMPILER],[
+ifelse([$2],,CLANG_COMPILER,[$2])=no
+
+if test "$ifelse([$1],,[$1],GCC)" = yes ; then
+	AC_MSG_CHECKING(if this is really Clang ifelse([$1],GXX,C++,C) compiler)
+	cf_save_CFLAGS="$ifelse([$3],,CFLAGS,[$3])"
+	ifelse([$3],,CFLAGS,[$3])="$ifelse([$3],,CFLAGS,[$3]) -Qunused-arguments"
+	AC_TRY_COMPILE([],[
+#ifdef __clang__
+#else
+make an error
+#endif
+],[ifelse([$2],,CLANG_COMPILER,[$2])=yes
+cf_save_CFLAGS="$cf_save_CFLAGS -Qunused-arguments"
+],[])
+	ifelse([$3],,CFLAGS,[$3])="$cf_save_CFLAGS"
+	AC_MSG_RESULT($ifelse([$2],,CLANG_COMPILER,[$2]))
+fi
+])
+dnl ---------------------------------------------------------------------------
+dnl CF_DISABLE_ECHO version: 12 updated: 2012/10/06 16:30:28
 dnl ---------------
 dnl You can always use "make -n" to see the actual options, but it's hard to
 dnl pick out/analyze warning messages when the compile-line is long.
@@ -195,7 +280,7 @@ dnl
 AC_DEFUN([CF_DISABLE_ECHO],[
 AC_MSG_CHECKING(if you want to see long compiling messages)
 CF_ARG_DISABLE(echo,
-	[  --disable-echo          display "compiling" commands],
+	[  --disable-echo          do not display "compiling" commands],
 	[
     ECHO_LT='--silent'
     ECHO_LD='@echo linking [$]@;'
@@ -217,7 +302,7 @@ AC_SUBST(SHOW_CC)
 AC_SUBST(ECHO_CC)
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_GCC_ATTRIBUTES version: 14 updated: 2010/10/23 15:52:32
+dnl CF_GCC_ATTRIBUTES version: 16 updated: 2012/10/02 20:55:03
 dnl -----------------
 dnl Test for availability of useful gcc __attribute__ directives to quiet
 dnl compiler warnings.  Though useful, not all are supported -- and contrary
@@ -295,27 +380,27 @@ EOF
 			test -n "$verbose" && AC_MSG_RESULT(... $cf_attribute)
 			cat conftest.h >>confdefs.h
 			case $cf_attribute in #(vi
+			noreturn) #(vi
+				AC_DEFINE_UNQUOTED(GCC_NORETURN,$cf_directive,[Define to noreturn-attribute for gcc])
+				;;
 			printf) #(vi
-				if test "$cf_printf_attribute" = no ; then
-					cat >>confdefs.h <<EOF
-#define GCC_PRINTFLIKE(fmt,var) /* nothing */
-EOF
-				else
-					cat >>confdefs.h <<EOF
-#define GCC_PRINTFLIKE(fmt,var) __attribute__((format(printf,fmt,var)))
-EOF
+				cf_value='/* nothing */'
+				if test "$cf_printf_attribute" != no ; then
+					cf_value='__attribute__((format(printf,fmt,var)))'
+					AC_DEFINE(GCC_PRINTF,1,[Define to 1 if the compiler supports gcc-like printf attribute.])
 				fi
+				AC_DEFINE_UNQUOTED(GCC_PRINTFLIKE(fmt,var),$cf_value,[Define to printf-attribute for gcc])
 				;;
 			scanf) #(vi
-				if test "$cf_scanf_attribute" = no ; then
-					cat >>confdefs.h <<EOF
-#define GCC_SCANFLIKE(fmt,var) /* nothing */
-EOF
-				else
-					cat >>confdefs.h <<EOF
-#define GCC_SCANFLIKE(fmt,var)  __attribute__((format(scanf,fmt,var)))
-EOF
+				cf_value='/* nothing */'
+				if test "$cf_scanf_attribute" != no ; then
+					cf_value='__attribute__((format(scanf,fmt,var)))'
+					AC_DEFINE(GCC_SCANF,1,[Define to 1 if the compiler supports gcc-like scanf attribute.])
 				fi
+				AC_DEFINE_UNQUOTED(GCC_SCANFLIKE(fmt,var),$cf_value,[Define to sscanf-attribute for gcc])
+				;;
+			unused) #(vi
+				AC_DEFINE_UNQUOTED(GCC_UNUSED,$cf_directive,[Define to unused-attribute for gcc])
 				;;
 			esac
 		fi
@@ -327,7 +412,7 @@ rm -rf conftest*
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_GCC_VERSION version: 5 updated: 2010/04/24 11:02:31
+dnl CF_GCC_VERSION version: 7 updated: 2012/10/18 06:46:33
 dnl --------------
 dnl Find version of gcc
 AC_DEFUN([CF_GCC_VERSION],[
@@ -335,13 +420,13 @@ AC_REQUIRE([AC_PROG_CC])
 GCC_VERSION=none
 if test "$GCC" = yes ; then
 	AC_MSG_CHECKING(version of $CC)
-	GCC_VERSION="`${CC} --version 2>/dev/null | sed -e '2,$d' -e 's/^.*(GCC) //' -e 's/^[[^0-9.]]*//' -e 's/[[^0-9.]].*//'`"
+	GCC_VERSION="`${CC} --version 2>/dev/null | sed -e '2,$d' -e 's/^.*(GCC[[^)]]*) //' -e 's/^.*(Debian[[^)]]*) //' -e 's/^[[^0-9.]]*//' -e 's/[[^0-9.]].*//'`"
 	test -z "$GCC_VERSION" && GCC_VERSION=unknown
 	AC_MSG_RESULT($GCC_VERSION)
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_GCC_WARNINGS version: 27 updated: 2010/10/23 15:52:32
+dnl CF_GCC_WARNINGS version: 31 updated: 2013/11/19 19:23:35
 dnl ---------------
 dnl Check if the compiler supports useful warning options.  There's a few that
 dnl we don't use, simply because they're too noisy:
@@ -364,6 +449,7 @@ AC_DEFUN([CF_GCC_WARNINGS],
 [
 AC_REQUIRE([CF_GCC_VERSION])
 CF_INTEL_COMPILER(GCC,INTEL_COMPILER,CFLAGS)
+CF_CLANG_COMPILER(GCC,CLANG_COMPILER,CFLAGS)
 
 cat > conftest.$ac_ext <<EOF
 #line __oline__ "${as_me:-configure}"
@@ -412,10 +498,14 @@ then
 	EXTRA_CFLAGS=
 	cf_warn_CONST=""
 	test "$with_ext_const" = yes && cf_warn_CONST="Wwrite-strings"
+	cf_gcc_warnings="Wignored-qualifiers Wlogical-op Wvarargs"
+	test "x$CLANG_COMPILER" = xyes && cf_gcc_warnings=
 	for cf_opt in W Wall \
 		Wbad-function-cast \
 		Wcast-align \
 		Wcast-qual \
+		Wdeclaration-after-statement \
+		Wextra \
 		Winline \
 		Wmissing-declarations \
 		Wmissing-prototypes \
@@ -423,7 +513,7 @@ then
 		Wpointer-arith \
 		Wshadow \
 		Wstrict-prototypes \
-		Wundef $cf_warn_CONST $1
+		Wundef $cf_gcc_warnings $cf_warn_CONST $1
 	do
 		CFLAGS="$cf_save_CFLAGS $EXTRA_CFLAGS -$cf_opt"
 		if AC_TRY_EVAL(ac_compile); then
@@ -435,6 +525,13 @@ then
 			Winline) #(vi
 				case $GCC_VERSION in
 				[[34]].*)
+					CF_VERBOSE(feature is broken in gcc $GCC_VERSION)
+					continue;;
+				esac
+				;;
+			Wpointer-arith) #(vi
+				case $GCC_VERSION in
+				[[12]].*)
 					CF_VERBOSE(feature is broken in gcc $GCC_VERSION)
 					continue;;
 				esac
@@ -480,7 +577,7 @@ make an error
 test "$cf_cv_gnu_source" = yes && CPPFLAGS="$CPPFLAGS -D_GNU_SOURCE"
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_INTEL_COMPILER version: 4 updated: 2010/05/26 05:38:42
+dnl CF_INTEL_COMPILER version: 5 updated: 2013/02/10 10:41:05
 dnl -----------------
 dnl Check if the given compiler is really the Intel compiler for Linux.  It
 dnl tries to imitate gcc, but does not return an error when it finds a mismatch
@@ -494,6 +591,7 @@ dnl $1 = GCC (default) or GXX
 dnl $2 = INTEL_COMPILER (default) or INTEL_CPLUSPLUS
 dnl $3 = CFLAGS (default) or CXXFLAGS
 AC_DEFUN([CF_INTEL_COMPILER],[
+AC_REQUIRE([AC_CANONICAL_HOST])
 ifelse([$2],,INTEL_COMPILER,[$2])=no
 
 if test "$ifelse([$1],,[$1],GCC)" = yes ; then
@@ -554,7 +652,7 @@ AC_SUBST(MAKE_UPPER_TAGS)
 AC_SUBST(MAKE_LOWER_TAGS)
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_MIXEDCASE_FILENAMES version: 3 updated: 2003/09/20 17:07:55
+dnl CF_MIXEDCASE_FILENAMES version: 6 updated: 2013/10/08 17:47:05
 dnl ----------------------
 dnl Check if the file-system supports mixed-case filenames.  If we're able to
 dnl create a lowercase name and see it as uppercase, it doesn't support that.
@@ -563,7 +661,7 @@ AC_DEFUN([CF_MIXEDCASE_FILENAMES],
 AC_CACHE_CHECK(if filesystem supports mixed-case filenames,cf_cv_mixedcase,[
 if test "$cross_compiling" = yes ; then
 	case $target_alias in #(vi
-	*-os2-emx*|*-msdosdjgpp*|*-cygwin*|*-mingw32*|*-uwin*) #(vi
+	*-os2-emx*|*-msdosdjgpp*|*-cygwin*|*-msys*|*-mingw*|*-uwin*) #(vi
 		cf_cv_mixedcase=no
 		;;
 	*)
@@ -581,7 +679,7 @@ else
 	rm -f conftest CONFTEST
 fi
 ])
-test "$cf_cv_mixedcase" = yes && AC_DEFINE(MIXEDCASE_FILENAMES)
+test "$cf_cv_mixedcase" = yes && AC_DEFINE(MIXEDCASE_FILENAMES,1,[Define to 1 if filesystem supports mixed-case filenames.])
 ])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_MSG_LOG version: 5 updated: 2010/10/23 15:52:32
@@ -665,7 +763,20 @@ fi
 
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_PROG_EXT version: 10 updated: 2004/01/03 19:28:18
+dnl CF_PROG_CC version: 3 updated: 2012/10/06 15:31:55
+dnl ----------
+dnl standard check for CC, plus followup sanity checks
+dnl $1 = optional parameter to pass to AC_PROG_CC to specify compiler name
+AC_DEFUN([CF_PROG_CC],[
+ifelse($1,,[AC_PROG_CC],[AC_PROG_CC($1)])
+CF_GCC_VERSION
+CF_ACVERSION_CHECK(2.52,
+	[AC_PROG_CC_STDC],
+	[CF_ANSI_CC_REQD])
+CF_CC_ENV_FLAGS 
+])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_PROG_EXT version: 11 updated: 2012/10/06 08:57:51
 dnl -----------
 dnl Compute $PROG_EXT, used for non-Unix ports, such as OS/2 EMX.
 AC_DEFUN([CF_PROG_EXT],
@@ -687,7 +798,7 @@ AC_OBJEXT
 
 PROG_EXT="$EXEEXT"
 AC_SUBST(PROG_EXT)
-test -n "$PROG_EXT" && AC_DEFINE_UNQUOTED(PROG_EXT,"$PROG_EXT")
+test -n "$PROG_EXT" && AC_DEFINE_UNQUOTED(PROG_EXT,"$PROG_EXT",[Define to the program extension (normally blank)])
 ])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_PROG_LINT version: 2 updated: 2009/08/12 04:43:14
@@ -714,6 +825,45 @@ $1=`echo "$2" | \
 	sed	-e 's/-[[UD]]'"$3"'\(=[[^ 	]]*\)\?[[ 	]]/ /g' \
 		-e 's/-[[UD]]'"$3"'\(=[[^ 	]]*\)\?[$]//g'`
 ])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_TRY_XOPEN_SOURCE version: 1 updated: 2011/10/30 17:09:50
+dnl -------------------
+dnl If _XOPEN_SOURCE is not defined in the compile environment, check if we
+dnl can define it successfully.
+AC_DEFUN([CF_TRY_XOPEN_SOURCE],[
+AC_CACHE_CHECK(if we should define _XOPEN_SOURCE,cf_cv_xopen_source,[
+	AC_TRY_COMPILE([
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+],[
+#ifndef _XOPEN_SOURCE
+make an error
+#endif],
+	[cf_cv_xopen_source=no],
+	[cf_save="$CPPFLAGS"
+	 CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=$cf_XOPEN_SOURCE"
+	 AC_TRY_COMPILE([
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+],[
+#ifdef _XOPEN_SOURCE
+make an error
+#endif],
+	[cf_cv_xopen_source=no],
+	[cf_cv_xopen_source=$cf_XOPEN_SOURCE])
+	CPPFLAGS="$cf_save"
+	])
+])
+
+if test "$cf_cv_xopen_source" != no ; then
+	CF_REMOVE_DEFINE(CFLAGS,$CFLAGS,_XOPEN_SOURCE)
+	CF_REMOVE_DEFINE(CPPFLAGS,$CPPFLAGS,_XOPEN_SOURCE)
+	cf_temp_xopen_source="-D_XOPEN_SOURCE=$cf_cv_xopen_source"
+	CF_ADD_CFLAGS($cf_temp_xopen_source)
+fi
+])
 dnl ---------------------------------------------------------------------------
 dnl CF_UPPER version: 5 updated: 2001/01/29 23:40:59
 dnl --------
@@ -755,7 +905,7 @@ fi
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_XOPEN_SOURCE version: 34 updated: 2010/05/26 05:38:42
+dnl CF_XOPEN_SOURCE version: 45 updated: 2013/09/07 14:06:25
 dnl ---------------
 dnl Try to get _XOPEN_SOURCE defined properly that we can use POSIX functions,
 dnl or adapt to the vendor's definitions to get equivalent functionality,
@@ -765,20 +915,25 @@ dnl Parameters:
 dnl	$1 is the nominal value for _XOPEN_SOURCE
 dnl	$2 is the nominal value for _POSIX_C_SOURCE
 AC_DEFUN([CF_XOPEN_SOURCE],[
+AC_REQUIRE([AC_CANONICAL_HOST])
 
 cf_XOPEN_SOURCE=ifelse([$1],,500,[$1])
 cf_POSIX_C_SOURCE=ifelse([$2],,199506L,[$2])
 cf_xopen_source=
 
 case $host_os in #(vi
-aix[[456]]*) #(vi
+aix[[4-7]]*) #(vi
 	cf_xopen_source="-D_ALL_SOURCE"
+	;;
+cygwin|msys) #(vi
+	cf_XOPEN_SOURCE=600
 	;;
 darwin[[0-8]].*) #(vi
 	cf_xopen_source="-D_APPLE_C_SOURCE"
 	;;
 darwin*) #(vi
 	cf_xopen_source="-D_DARWIN_C_SOURCE"
+	cf_XOPEN_SOURCE=
 	;;
 freebsd*|dragonfly*) #(vi
 	# 5.x headers associate
@@ -796,15 +951,23 @@ hpux*) #(vi
 	;;
 irix[[56]].*) #(vi
 	cf_xopen_source="-D_SGI_SOURCE"
+	cf_XOPEN_SOURCE=
 	;;
 linux*|gnu*|mint*|k*bsd*-gnu) #(vi
 	CF_GNU_SOURCE
 	;;
 mirbsd*) #(vi
-	# setting _XOPEN_SOURCE or _POSIX_SOURCE breaks <arpa/inet.h>
+	# setting _XOPEN_SOURCE or _POSIX_SOURCE breaks <sys/select.h> and other headers which use u_int / u_short types
+	cf_XOPEN_SOURCE=
+	CF_POSIX_C_SOURCE($cf_POSIX_C_SOURCE)
 	;;
 netbsd*) #(vi
-	# setting _XOPEN_SOURCE breaks IPv6 for lynx on NetBSD 1.6, breaks xterm, is not needed for ncursesw
+	cf_xopen_source="-D_NETBSD_SOURCE" # setting _XOPEN_SOURCE breaks IPv6 for lynx on NetBSD 1.6, breaks xterm, is not needed for ncursesw
+	;;
+openbsd[[4-9]]*) #(vi
+	# setting _XOPEN_SOURCE lower than 500 breaks g++ compile with wchar.h, needed for ncursesw
+	cf_xopen_source="-D_BSD_SOURCE"
+	cf_XOPEN_SOURCE=600
 	;;
 openbsd*) #(vi
 	# setting _XOPEN_SOURCE breaks xterm on OpenBSD 2.8, is not needed for ncursesw
@@ -818,41 +981,45 @@ nto-qnx*) #(vi
 sco*) #(vi
 	# setting _XOPEN_SOURCE breaks Lynx on SCO Unix / OpenServer
 	;;
-solaris2.1[[0-9]]) #(vi
-	cf_xopen_source="-D__EXTENSIONS__ -D_XOPEN_SOURCE=$cf_XOPEN_SOURCE"
-	;;
-solaris2.[[1-9]]) #(vi
+solaris2.*) #(vi
 	cf_xopen_source="-D__EXTENSIONS__"
 	;;
 *)
-	AC_CACHE_CHECK(if we should define _XOPEN_SOURCE,cf_cv_xopen_source,[
-	AC_TRY_COMPILE([#include <sys/types.h>],[
-#ifndef _XOPEN_SOURCE
-make an error
-#endif],
-	[cf_cv_xopen_source=no],
-	[cf_save="$CPPFLAGS"
-	 CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=$cf_XOPEN_SOURCE"
-	 AC_TRY_COMPILE([#include <sys/types.h>],[
-#ifdef _XOPEN_SOURCE
-make an error
-#endif],
-	[cf_cv_xopen_source=no],
-	[cf_cv_xopen_source=$cf_XOPEN_SOURCE])
-	CPPFLAGS="$cf_save"
-	])
-])
-	if test "$cf_cv_xopen_source" != no ; then
-		CF_REMOVE_DEFINE(CFLAGS,$CFLAGS,_XOPEN_SOURCE)
-		CF_REMOVE_DEFINE(CPPFLAGS,$CPPFLAGS,_XOPEN_SOURCE)
-		cf_temp_xopen_source="-D_XOPEN_SOURCE=$cf_cv_xopen_source"
-		CF_ADD_CFLAGS($cf_temp_xopen_source)
-	fi
+	CF_TRY_XOPEN_SOURCE
 	CF_POSIX_C_SOURCE($cf_POSIX_C_SOURCE)
 	;;
 esac
 
 if test -n "$cf_xopen_source" ; then
 	CF_ADD_CFLAGS($cf_xopen_source)
+fi
+
+dnl In anything but the default case, we may have system-specific setting
+dnl which is still not guaranteed to provide all of the entrypoints that
+dnl _XOPEN_SOURCE would yield.
+if test -n "$cf_XOPEN_SOURCE" && test -z "$cf_cv_xopen_source" ; then
+	AC_MSG_CHECKING(if _XOPEN_SOURCE really is set)
+	AC_TRY_COMPILE([#include <stdlib.h>],[
+#ifndef _XOPEN_SOURCE
+make an error
+#endif],
+	[cf_XOPEN_SOURCE_set=yes],
+	[cf_XOPEN_SOURCE_set=no])
+	AC_MSG_RESULT($cf_XOPEN_SOURCE_set)
+	if test $cf_XOPEN_SOURCE_set = yes
+	then
+		AC_TRY_COMPILE([#include <stdlib.h>],[
+#if (_XOPEN_SOURCE - 0) < $cf_XOPEN_SOURCE
+make an error
+#endif],
+		[cf_XOPEN_SOURCE_set_ok=yes],
+		[cf_XOPEN_SOURCE_set_ok=no])
+		if test $cf_XOPEN_SOURCE_set_ok = no
+		then
+			AC_MSG_WARN(_XOPEN_SOURCE is lower than requested)
+		fi
+	else
+		CF_TRY_XOPEN_SOURCE
+	fi
 fi
 ])
