@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas Dickey
+   Copyright 1999-2010,2013, Thomas Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -664,8 +664,9 @@ lexi (void)
       code = binary_op;
       unary_delim = true;
       token_end = buf_ptr;
-      if (indent_eqls < 0)
+      if (indent_eqls < 0) {
 	indent_eqls = token_col ();
+      }
       break;
       /* can drop thru!!! */
 
@@ -769,19 +770,22 @@ int
 first_token_col (void)
 {
   int column;
+  int tabbed = 0;
   int n;
 
   for (n = column = 0; n <= (buf_ptr - cur_line); ++n)
     {
-      if (cur_line[n] == TAB)
+      if (cur_line[n] == TAB) {
 	column += tabsize - (column - 1) % tabsize;
-      else if (cur_line[n] == ' ')
+	tabbed = 1;
+      } else if (cur_line[n] == ' ') {
 	++column;
-      else
+      } else {
 	break;
+      }
     }
-  if (column == 0)
-    column = 1;
+  if (!tabbed)
+    ++column;
   return column;
 }
 

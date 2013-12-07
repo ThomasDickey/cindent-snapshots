@@ -1,4 +1,10 @@
--- $Id: ChangeLog,v 1.63 2013/07/10 22:56:17 tom Exp $
+-- $Id: ChangeLog,v 1.65 2013/12/07 16:16:51 tom Exp $
+
+2013-12-07
+	+ correct column-computation for "/* *INDENT-EQLS* */" feature, which
+	  had an off-by-one error for tab-stops.
+	+ updated configure macros, e.g., for clang and mingw
+	+ update config.guess, config.sub
 
 2013-07-10
 	+ add some keywords to ncu-indent for xterm.

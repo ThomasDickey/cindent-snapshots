@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2010,2013, Thomas E. Dickey
 
    Copyright (c) 1994,1996,1997, Joseph Arceneaux.  All rights reserved.
 
@@ -932,7 +932,7 @@ indent (struct file_buffer *this_file)
 
 	      if (indent_eqls_1st <= 0)
 		indent_eqls_1st = first_token_col ();
-	      need = indent_eqls - indent_eqls_1st - 1;
+	      need = indent_eqls - indent_eqls_1st;
 
 	      while (have < need)
 		{
