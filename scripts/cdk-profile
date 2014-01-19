@@ -1,5 +1,5 @@
 /*
- * $Id: cdk-profile,v 1.2 2010/10/08 22:48:51 tom Exp $
+ * $Id: cdk-profile,v 1.3 2014/01/19 01:56:00 tom Exp $
  ****************************************************************************
  * Copyright (c) 2010 Thomas E. Dickey                                      *
  *                                                                          *
@@ -61,6 +61,7 @@
 -T CDKSCALE
 -T CDKSCREEN
 -T CDKSCROLL
+-T CDKSCROLLER
 -T CDKSELECTION
 -T CDKSLIDER
 -T CDKSWINDOW
@@ -74,3 +75,5 @@
 -T boolean
 -T bool
 -T chtype
+-T CDK_CSTRING
+-T CDK_CSTRING2
