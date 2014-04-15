@@ -1,7 +1,7 @@
 /*
- * $Id: ncu-profile,v 1.3 2013/07/10 22:51:04 tom Exp $
+ * $Id: ncu-profile,v 1.5 2014/04/14 22:48:27 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010,2013 Thomas E. Dickey                                 *
+ * Copyright (c) 2010-2013,2014 Thomas E. Dickey                            *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -47,7 +47,7 @@
 /* common */
 -T FILE
 -T GCC_NORETURN
--T RETSIGTYPE 
+-T RETSIGTYPE
 -T gid_t
 -T inline
 -T off_t
@@ -67,6 +67,8 @@
 -T attr_t
 -T cchar_t
 -T chtype
+-T NCURSES_COLOR_T
+-T NCURSES_PAIRS_T
 
 /* vile */
 -T BUFFER
@@ -87,8 +89,10 @@
 -T Dimension
 -T Display
 -T Drawable
+-T Graphic
 -T IChar
 -T LineData
+-T RegisterNum
 -T ScrnBuf
 -T SixelGraphic
 -T String
@@ -99,3 +103,9 @@
 -T XtermRect
 -T XtermWidget
 -T _Xconst
+-T RegisParseLevel
+-T RegisWriteControls
+-T RegisGraphicsContext
+-T RegisDataFragment
+-T RegisParseState
+-T RegisGraphicsContext

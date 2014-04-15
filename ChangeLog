@@ -1,9 +1,20 @@
--- $Id: ChangeLog,v 1.65 2013/12/07 16:16:51 tom Exp $
+-- $Id: ChangeLog,v 1.66 2014/04/14 22:53:33 tom Exp $
+
+2014-04-14
+	+ add some keywords to ncu-indent for xterm.
+
+	+ add some keywords to cdk-indent for cdk.
+
+	+ updated configure macros, e.g., for Intel compiler and Solaris
+
+	+ update config.guess
 
 2013-12-07
 	+ correct column-computation for "/* *INDENT-EQLS* */" feature, which
 	  had an off-by-one error for tab-stops.
+
 	+ updated configure macros, e.g., for clang and mingw
+
 	+ update config.guess, config.sub
 
 2013-07-10

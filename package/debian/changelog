@@ -1,3 +1,10 @@
+cindent (2.0.20140414) unstable; urgency=low
+
+  * maintenance release, e.g., configure-script
+  * Add keywords to xterm and cdk profiles
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Mon, 14 Apr 2014 19:07:48 -0400
+
 cindent (2.0.20131207) unstable; urgency=low
 
   * maintenance release, e.g., configure-script
