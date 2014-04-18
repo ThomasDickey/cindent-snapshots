@@ -1,5 +1,5 @@
 /*
- * $Id: ncu-profile,v 1.5 2014/04/14 22:48:27 tom Exp $
+ * $Id: ncu-profile,v 1.6 2014/04/18 00:35:03 Ross.Combs Exp $
  ****************************************************************************
  * Copyright (c) 2010-2013,2014 Thomas E. Dickey                            *
  *                                                                          *
@@ -78,6 +78,20 @@
 -T TBUFF
 -T WINDOW
 
+/* X libraries */
+-T Atom
+-T XColor
+-T XFontStruct
+-T XButtonEvent
+-T XEvent
+-T XErrorEvent
+-T XEnterWindowEvent
+-T XFocusChangeEvent
+-T XKeyEvent
+-T XftFont
+-T XftColor
+-T XftPattern
+
 /* xterm */
 -T ANSI
 -T Bool
@@ -109,3 +123,11 @@
 -T RegisDataFragment
 -T RegisParseState
 -T RegisGraphicsContext
+-T CellData
+-T FontNameProperties
+-T PrinterFlags
+-T PtyData
+-T ScrnPtr
+-T VTwin
+-T XTermRect
+-T XTermXftFonts

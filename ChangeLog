@@ -1,4 +1,7 @@
--- $Id: ChangeLog,v 1.66 2014/04/14 22:53:33 tom Exp $
+-- $Id: ChangeLog,v 1.67 2014/04/18 00:22:19 tom Exp $
+
+2014-04-17
+	+ add some keywords to ncu-indent for xterm (patch by Ross Combs).
 
 2014-04-14
 	+ add some keywords to ncu-indent for xterm.
