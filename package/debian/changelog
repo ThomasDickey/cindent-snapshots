@@ -1,3 +1,9 @@
+cindent (2.0.20140417) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Thu, 17 Apr 2014 20:22:03 -0400
+
 cindent (2.0.20140414) unstable; urgency=low
 
   * maintenance release, e.g., configure-script
