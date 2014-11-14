@@ -1,4 +1,13 @@
--- $Id: ChangeLog,v 1.67 2014/04/18 00:22:19 tom Exp $
+-- $Id: ChangeLog,v 1.70 2014/11/14 00:36:08 tom Exp $
+
+2014-11-13
+	+ improve whitespace adjustments for GCC_xxx symbols in tdindent.
+
+	+ updated configure macros, e.g., for Minix.
+
+	+ add some keywords to ncu-indent for xterm (patch by Ross Combs).
+
+	+ update config.guess, config.sub
 
 2014-04-17
 	+ add some keywords to ncu-indent for xterm (patch by Ross Combs).
