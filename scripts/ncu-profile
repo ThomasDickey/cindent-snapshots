@@ -1,5 +1,5 @@
 /*
- * $Id: ncu-profile,v 1.6 2014/04/18 00:35:03 Ross.Combs Exp $
+ * $Id: ncu-profile,v 1.7 2014/11/13 09:35:09 tom Exp $
  ****************************************************************************
  * Copyright (c) 2010-2013,2014 Thomas E. Dickey                            *
  *                                                                          *
@@ -97,37 +97,40 @@
 -T Bool
 -T Boolean
 -T CELL
+-T CLineData
 -T Cardinal
+-T CellData
 -T Char
 -T ColorRegister
 -T Dimension
 -T Display
 -T Drawable
+-T FontNameProperties
 -T Graphic
 -T IChar
 -T LineData
+-T Pixel
+-T PrinterFlags
+-T PtyData
+-T RegisDataFragment
+-T RegisGraphicsContext
+-T RegisGraphicsContext
+-T RegisParseLevel
+-T RegisParseState
+-T RegisTextControls
+-T RegisWriteControls
 -T RegisterNum
 -T ScrnBuf
+-T ScrnPtr
 -T SixelGraphic
 -T String
 -T TScreen
+-T VTwin
 -T Widget
 -T Window
+-T XTermRect
+-T XTermXftFonts
 -T XtPointer
 -T XtermRect
 -T XtermWidget
 -T _Xconst
--T RegisParseLevel
--T RegisWriteControls
--T RegisGraphicsContext
--T RegisDataFragment
--T RegisParseState
--T RegisGraphicsContext
--T CellData
--T FontNameProperties
--T PrinterFlags
--T PtyData
--T ScrnPtr
--T VTwin
--T XTermRect
--T XTermXftFonts

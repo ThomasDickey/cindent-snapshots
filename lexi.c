@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2010,2013, Thomas Dickey
+   Copyright 1999-2013,2014 Thomas Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -419,9 +419,6 @@ lexi (void)
 	    }
 	}
 
-      if (last_code == decl)	/* if this is a declared variable, then
-				   following sign is unary */
-	parser_state_tos->last_u_d = true;	/* will make "int a -1" work */
       last_code = ident;
       if (parser_state_tos->last_token == cpp_operator)
 	return overloaded;

@@ -1,7 +1,7 @@
 #!/bin/sh
-# $Id: tdindent,v 1.29 2014/04/14 23:02:04 tom Exp $
+# $Id: tdindent,v 1.30 2014/11/14 00:35:26 tom Exp $
 #****************************************************************************
-#* Copyright (c) 2010 Thomas E. Dickey                                      *
+#* Copyright (c) 2010-2013,2014 Thomas E. Dickey                            *
 #*                                                                          *
 #* Permission is hereby granted, free of charge, to any person obtaining a  *
 #* copy of this software and associated documentation files (the            *
@@ -154,10 +154,10 @@ EOF
 			-e '/EMPTY_MODULE(/s/)$/);/' \
 			-e 's,\(MODULEID(\),//\1,' \
 			-e '/MODULE_ID(/s/)$/);/' \
-			-e 's,\<GCC_UNUSED[ 	]*\([;]\),\1//GCC_UNUSED,' \
-			-e 's,\<GCC_NORETURN\(.*\);,;//GCC_NORETURN\1,' \
-			-e 's,\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,' \
-			-e 's,\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,' \
+			-e 's,[ 	]*\<GCC_UNUSED[ 	]*\([;]\),\1//GCC_UNUSED,' \
+			-e 's,[ 	]*\<GCC_NORETURN\(.*\);,;//GCC_NORETURN\1,' \
+			-e 's,[ 	]*\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,' \
+			-e 's,[ 	]*\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,' \
 			-e 's,\(\<NCURSES_EXPORT_VAR\>.*;\),//\1,' \
 			-e 's,\(\<MARK_END_OF_PROLOG\>\),\1;,' \
 			-e 's,\(\<YY_RULE_SETUP\>\),\1;,' \
