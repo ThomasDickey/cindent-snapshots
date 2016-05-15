@@ -1,4 +1,18 @@
--- $Id: ChangeLog,v 1.70 2014/11/14 00:36:08 tom Exp $
+-- $Id: ChangeLog,v 1.72 2016/05/15 19:25:09 tom Exp $
+
+2016-05-15
+	+ modify indent.texinfo to work with install-info
+
+	+ add Screen keyword for ncu-profile, for xterm
+
+	+ add several keywords to cdk-profile
+
+	+ add LINENUM keyword for gnu-profile
+
+	+ updated several configure macros to use POSIX shell case-statement
+	  feature
+
+	+ update config.guess, config.sub
 
 2014-11-13
 	+ improve whitespace adjustments for GCC_xxx symbols in tdindent.

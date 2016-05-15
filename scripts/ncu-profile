@@ -1,7 +1,7 @@
 /*
- * $Id: ncu-profile,v 1.7 2014/11/13 09:35:09 tom Exp $
+ * $Id: ncu-profile,v 1.8 2016/05/15 18:50:03 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010-2013,2014 Thomas E. Dickey                            *
+ * Copyright (c) 2010-2014,2016 Thomas E. Dickey                            *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -58,8 +58,10 @@
 -T wint_t
 
 /* ncurses */
+-T NCURSES_COLOR_T
 -T NCURSES_EXPORT_VAR
 -T NCURSES_INLINE
+-T NCURSES_PAIRS_T
 -T NCURSES_SP_ARGx
 -T NCURSES_SP_DCLx
 -T SCREEN
@@ -67,8 +69,6 @@
 -T attr_t
 -T cchar_t
 -T chtype
--T NCURSES_COLOR_T
--T NCURSES_PAIRS_T
 
 /* vile */
 -T BUFFER
@@ -80,40 +80,45 @@
 
 /* X libraries */
 -T Atom
--T XColor
--T XFontStruct
--T XButtonEvent
--T XEvent
--T XErrorEvent
--T XEnterWindowEvent
--T XFocusChangeEvent
--T XKeyEvent
--T XftFont
--T XftColor
--T XftPattern
-
-/* xterm */
--T ANSI
 -T Bool
 -T Boolean
--T CELL
--T CLineData
 -T Cardinal
--T CellData
--T Char
--T ColorRegister
 -T Dimension
 -T Display
 -T Drawable
+-T Pixel
+-T Screen
+-T String
+-T Widget
+-T Window
+-T XButtonEvent
+-T XColor
+-T XEnterWindowEvent
+-T XErrorEvent
+-T XEvent
+-T XFocusChangeEvent
+-T XFontStruct
+-T XKeyEvent
+-T XftColor
+-T XftFont
+-T XftPattern
+-T XtPointer
+-T _Xconst
+
+/* xterm */
+-T ANSI
+-T CELL
+-T CLineData
+-T CellData
+-T Char
+-T ColorRegister
 -T FontNameProperties
 -T Graphic
 -T IChar
 -T LineData
--T Pixel
 -T PrinterFlags
 -T PtyData
 -T RegisDataFragment
--T RegisGraphicsContext
 -T RegisGraphicsContext
 -T RegisParseLevel
 -T RegisParseState
@@ -123,14 +128,9 @@
 -T ScrnBuf
 -T ScrnPtr
 -T SixelGraphic
--T String
 -T TScreen
 -T VTwin
--T Widget
--T Window
 -T XTermRect
 -T XTermXftFonts
--T XtPointer
 -T XtermRect
 -T XtermWidget
--T _Xconst

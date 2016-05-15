@@ -1,7 +1,7 @@
 /*
- * $Id: yak-profile,v 1.2 2010/10/08 22:51:06 tom Exp $
+ * $Id: yak-profile,v 1.3 2016/05/15 18:43:38 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010 Thomas E. Dickey                                      *
+ * Copyright (c) 2010,2016 Thomas E. Dickey                                 *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -40,9 +40,14 @@
 --no-space-after-function-call-names
 --swallow-optional-blank-lines
 
+-T Assoc_t
+-T Class_t
+-T Index_t
+-T Value_t
 -T action
 -T bucket 
 -T core 
+-T param
+-T reductions 
 -T shifts 
 -T shorts
--T reductions 
