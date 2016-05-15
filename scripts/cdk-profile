@@ -1,7 +1,7 @@
 /*
- * $Id: cdk-profile,v 1.4 2014/04/14 22:48:39 tom Exp $
+ * $Id: cdk-profile,v 1.5 2016/05/15 18:25:02 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010,2014 Thomas E. Dickey                                 *
+ * Copyright (c) 2010-2014,2016 Thomas E. Dickey                            *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -77,3 +77,9 @@
 -T chtype
 -T CDK_CSTRING
 -T CDK_CSTRING2
+-T _CTYPE_ 
+-T _UPPER_ 
+-T _LOWER_ 
+-T _MIXED_ 
+-T _DTYPE_ 
+-T CDK_UPPER_ 
