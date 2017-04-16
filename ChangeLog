@@ -1,4 +1,12 @@
--- $Id: ChangeLog,v 1.72 2016/05/15 19:25:09 tom Exp $
+-- $Id: ChangeLog,v 1.75 2017/04/16 12:46:43 tom Exp $
+
+2017-04-16
+	+ add keywords for ncurses6
+
+	+ updated several configure macros:  CF_ADD_CFLAGS, CF_CC_ENV_FLAGS
+	  CF_GNU_SOURCE, CF_PROG_LINT, CF_XOPEN_SOURCE
+
+	+ update config.guess, config.sub
 
 2016-05-15
 	+ modify indent.texinfo to work with install-info
