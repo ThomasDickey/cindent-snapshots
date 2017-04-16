@@ -1,7 +1,7 @@
 /*
- * $Id: ncu-profile,v 1.8 2016/05/15 18:50:03 tom Exp $
+ * $Id: ncu-profile,v 1.10 2017/04/10 00:28:41 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010-2014,2016 Thomas E. Dickey                            *
+ * Copyright (c) 2010-2016,2017 Thomas E. Dickey                            *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -58,14 +58,21 @@
 -T wint_t
 
 /* ncurses */
+-T FIELD
+-T FORM
 -T NCURSES_COLOR_T
 -T NCURSES_EXPORT_VAR
 -T NCURSES_INLINE
+-T NCURSES_INT2
 -T NCURSES_PAIRS_T
+-T NCURSES_SIZE_T
 -T NCURSES_SP_ARGx
 -T NCURSES_SP_DCLx
+-T PANEL
 -T SCREEN
+-T TERMINAL
 -T TERMTYPE
+-T TERMTYPE2
 -T attr_t
 -T cchar_t
 -T chtype
