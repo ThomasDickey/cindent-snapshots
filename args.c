@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2010,2018, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -526,13 +526,11 @@ static int
 option_prefix (const char *arg)
 {
   const char **prefixes = option_prefixes;
-  const char *this_prefix;
-  const char *argp;
 
   do
     {
-      this_prefix = *prefixes;
-      argp = arg;
+      const char *this_prefix = *prefixes;
+      const char *argp = arg;
       while (*this_prefix == *argp)
 	{
 	  this_prefix++;

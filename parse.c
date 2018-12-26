@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2010,2018, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -149,6 +149,9 @@ parsecode2s (enum codes value)
       break;
     case struct_delim:		/* '.' or "->" */
       result = "struct_delim";
+      break;
+    case ellipsis:		/* "..." */
+      result = "ellipsis";
       break;
     }
   return result;
@@ -310,10 +313,11 @@ show_parser (const char *fn, int ln)
 void
 show_pstack (void)
 {
-  int i;
 
   if (debug)
     {
+      int i;
+
       printf ("\nParseStack [%d]:\n", (int) parser_state_tos->p_stack_size);
       for (i = 1; i <= parser_state_tos->tos; ++i)
 	printf ("  [%3d] =>  indent:%3d  stack: %2d (%s)\n",
@@ -328,8 +332,6 @@ show_pstack (void)
 enum exit_values
 parse (enum codes tk)		/* the code for the construct scanned */
 {
-  int i;
-
   if (debug)
     {
       if (debug > 1)
@@ -366,6 +368,7 @@ parse (enum codes tk)		/* the code for the construct scanned */
 	  if (ljust_decl)
 	    {			/* only do if we want left justified
 				   declarations */
+	      int i;
 	      parser_state_tos->ind_level = 0;
 	      for (i = parser_state_tos->tos - 1; i > 0; --i)
 		if (parser_state_tos->p_stack[i] == decl)

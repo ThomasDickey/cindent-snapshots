@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2013,2014 Thomas Dickey
+   Copyright 1999-2014,2018 Thomas Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -599,8 +599,32 @@ lexi (void)
       break;
 
     case '.':
-      unary_delim = false;
-      code = struct_delim;
+      /* check for "..." */
+      if ((buf_end - buf_ptr) >= 2 &&
+	  buf_ptr[0] == token[0] &&
+	  buf_ptr[1] == token[0])
+	{
+	  inc_token_len ();
+	  inc_token_len ();
+	  token_end = buf_ptr;
+	  inc_token_len ();
+	  buf_ptr--;
+	  unary_delim = false;
+	  /* pretend it is an identifier, with corresponding spacing */
+	  code = (ident);
+	  parser_state_tos->its_a_keyword = true;
+	  parser_state_tos->last_u_d = true;
+	  parser_state_tos->last_rw_depth = parser_state_tos->paren_depth;
+	  if (debug)
+	    {
+	      printf ("keyword \"%.*s\"\n", token_len, token);
+	    }
+	}
+      else
+	{
+	  unary_delim = false;
+	  code = struct_delim;
+	}
       break;
 
     case '-':
@@ -661,9 +685,10 @@ lexi (void)
       code = binary_op;
       unary_delim = true;
       token_end = buf_ptr;
-      if (indent_eqls < 0) {
-	indent_eqls = token_col ();
-      }
+      if (indent_eqls < 0)
+	{
+	  indent_eqls = token_col ();
+	}
       break;
       /* can drop thru!!! */
 
@@ -772,14 +797,19 @@ first_token_col (void)
 
   for (n = column = 0; n <= (buf_ptr - cur_line); ++n)
     {
-      if (cur_line[n] == TAB) {
-	column += tabsize - (column - 1) % tabsize;
-	tabbed = 1;
-      } else if (cur_line[n] == ' ') {
-	++column;
-      } else {
-	break;
-      }
+      if (cur_line[n] == TAB)
+	{
+	  column += tabsize - (column - 1) % tabsize;
+	  tabbed = 1;
+	}
+      else if (cur_line[n] == ' ')
+	{
+	  ++column;
+	}
+      else
+	{
+	  break;
+	}
     }
   if (!tabbed)
     ++column;

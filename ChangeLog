@@ -1,4 +1,17 @@
--- $Id: ChangeLog,v 1.75 2017/04/16 12:46:43 tom Exp $
+-- $Id: ChangeLog,v 1.80 2018/12/26 20:59:05 tom Exp $
+
+2018-12-26
+	+ improve script converting info to man
+
+	+ handle special case of "..." like a keyword
+
+	+ updated keywords for lynx
+
+	+ updated several configure macros:  CF_CC_ENV_FLAGS, CF_GCC_WARNINGS,
+	  CF_GNU_SOURCE, CF_POSIX_C_SOURCE, CF_PROG_EXT, CF_TRY_XOPEN_SOURCE,
+	  CF_XOPEN_SOURCE
+
+	+ update config.guess, config.sub
 
 2017-04-16
 	+ add keywords for ncurses6

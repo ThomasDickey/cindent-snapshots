@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
-# $Id: make-man.pl,v 1.19 2016/05/15 19:38:39 tom Exp $
+# $Id: make-man.pl,v 1.24 2018/12/26 21:11:12 tom Exp $
 #------------------------------------------------------------------------------
-# Copyright:  2010,2016 by Thomas E. Dickey
+# Copyright:  2010-2016,2018 by Thomas E. Dickey
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the
@@ -313,6 +313,7 @@ sub do_file($) {
         $input[$n] =~ s/``([^']+)''/\\fB$1\\fR/g;
         $input[$n] =~ s/`([^']+)'/\\fB$1\\fR/g;
         $input[$n] =~ s/-/\\-/g;
+        $input[$n] =~ s/\\n/\\en/g if ( $input[$n] !~ /^\./ );
         $input[$n] =~ s/\(\*note (.*)::\)/(see \\fB$1\\fR)/g;
         $input[$n] =~ s/\*Note (.*)::/(see \\fB$1\\fR)/g;
     }
@@ -323,18 +324,20 @@ sub do_file($) {
     printf "'\\\" t
 .TH $ROOTNAME 1
 .de NS
-.sp
-.in +4
+.ie n  .sp
+.el    .sp .5
+.ie n  .in +4
+.el    .in +2
 .nf
-.ft C
+.ft C \\\" Courier
 ..
 .de NE
 .fi
-.ft P
-.br
-.in -4
+.ft R
+.ie n  .in -4
+.el    .in -2
 ..
-.SH Summary
+.SH NAME
 $rootname \- $name
 .PP
 ";
@@ -353,8 +356,18 @@ $rootname \- $name
             }
         }
         if ( not &is_ignored( $input[$n] ) ) {
-            if ( $input[$n] ne "" ) {
+            if ( $input[$n] =~ /^\./
+                or ( $n > 0 and $input[ $n - 1 ] =~ /^\.\w+$/ ) )
+            {
                 printf "%s\n", $input[$n];
+            }
+            else {
+                if ( $input[$n] ne "" ) {
+                    my @parts = split /\.\s+/, $input[$n];
+                    for my $part ( 0 .. $#parts ) {
+                        printf "%s\n", $parts[$part];
+                    }
+                }
             }
         }
     }

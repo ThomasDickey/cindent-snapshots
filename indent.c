@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2010,2013, Thomas E. Dickey
+   Copyright 1999-2013,2018, Thomas E. Dickey
 
    Copyright (c) 1994,1996,1997, Joseph Arceneaux.  All rights reserved.
 

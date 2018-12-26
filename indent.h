@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2010,2018, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -104,7 +104,8 @@ enum codes
     ifhead,
 
     elsehead,
-    struct_delim		/* '.' or "->" */
+    struct_delim,		/* '.' or "->" */
+    ellipsis			/* "..." */
   };
 
 enum rwcodes

@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2010,2018, Thomas E. Dickey
 
    Copyright (c) 1993 - 1998, Joseph Arceneaux.  All rights reserved.
 
@@ -96,6 +96,8 @@ print_comment (void)
   /* Increment the parser stack, as we will store some things
      there for dump_line to use. */
   inc_pstack ();
+
+  stars = 0;
 
   /* Have to do it this way because this program doesn't
      always place the last token code on the stack. */

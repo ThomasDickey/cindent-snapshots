@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2010,2018, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -290,10 +290,7 @@ dump_line (void)
 				   prints the label section, followed by the
 				   code section with the appropriate nesting
 				   level, followed by any comments */
-  int cur_col;
-  int target_col = 0;
   int not_truncated = 1;
-  char *s_key;
 
   if (parser_state_tos->procname[0])
     {
@@ -319,6 +316,8 @@ dump_line (void)
     }
   else
     {
+      int cur_col;
+
       suppress_blanklines = 0;
       parser_state_tos->bl_line = false;
       if (prefix_blankline_requested
@@ -344,6 +343,7 @@ dump_line (void)
 	  int label_target = compute_label_target ();
 	  int pad_preproc = 0;
 	  char *skip_pound = s_lab;
+	  char *s_key;
 
 	  while (e_lab > s_lab && isblank (e_lab[-1]))
 	    e_lab--;
@@ -439,6 +439,7 @@ dump_line (void)
 	{			/* print code section, if any */
 	  char *p;
 	  int i;
+	  int target_col = 0;
 
 	  /* If a comment begins this line, then indent it to the right
 	     column for comments, otherwise the line starts with code,

@@ -1,8 +1,8 @@
 %define AppProgram indent
 %define AppVersion 2.0
-%define AppRelease 20170416
+%define AppRelease 20181226
 %define ActualProg c%{AppProgram}
-# $Id: indent.spec,v 1.22 2017/04/16 12:38:52 tom Exp $
+# $Id: indent.spec,v 1.24 2018/12/26 20:45:44 tom Exp $
 Summary: %{ActualProg} - format C program sources
 Name: c%{AppProgram}
 Version: %{AppVersion}
@@ -18,7 +18,7 @@ The `%{ActualProg}' program changes the appearance of a C program by
 inserting or deleting whitespace.
 
 This is a stable version of indent, used in most programs at
-    http://invisible-island.net/
+    https://invisible-island.net/
 
 It has some feature enhancements required by those programs,
 not found in other versions of indent.
