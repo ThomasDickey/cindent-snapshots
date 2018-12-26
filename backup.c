@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2010,2018, Thomas E. Dickey
 
    Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
 
@@ -139,12 +139,12 @@ static int
 version_number (const char *base, const char *direntry, size_t base_length)
 {
   int version;
-  const char *p;
 
   version = 0;
   if (!strncmp (base, direntry, base_length)
       && ISDIGIT (direntry[base_length + 2]))
     {
+      const char *p;
       for (p = &direntry[base_length + 2]; ISDIGIT (*p); ++p)
 	version = version * 10 + *p - '0';
       if (p[0] != BACKUP_SUFFIX_CHAR || p[1])

@@ -1,4 +1,4 @@
-Upstream source http://invisible-island.net/gnu-patches/gnu-patches.html
+Upstream source https://invisible-island.net/gnu-patches/gnu-patches.html
 
 -------------------------------------------------------------------------------
 Files: indent.c, indent.info
@@ -60,7 +60,7 @@ Licence: other-BSD
     shared with many OS's install programs.
 
 Files: debian/*
-Copyright:  2010-2016,2017 Thomas E. Dickey
+Copyright:  2010-2017,2018 Thomas E. Dickey
 Licence: other-BSD
     Permission to use, copy, modify, and distribute this software and its
     documentation for any purpose and without fee is hereby granted,

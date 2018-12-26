@@ -1,7 +1,7 @@
 /*
- * $Id: lnx-profile,v 1.5 2010/11/07 19:16:31 tom Exp $
+ * $Id: lnx-profile,v 1.9 2018/12/26 13:14:11 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010 Thomas E. Dickey                                      *
+ * Copyright (c) 2010,2018 Thomas E. Dickey                                 *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -52,8 +52,8 @@
 -T DocAddress 
 -T DocInfo 
 -T DocObj
--T EntryInfo 
 -T EditFieldData 
+-T EntryInfo 
 -T FILE
 -T GCC_NORETURN 
 -T GCC_UNUSED 
@@ -72,6 +72,7 @@
 -T HTChildAnchor 
 -T HTChunk 
 -T HTConverter 
+-T HTCoord
 -T HTFormat 
 -T HTLine 
 -T HTLinkType 
@@ -88,8 +89,13 @@
 -T InitResponseAPDU 
 -T Item 
 -T ItemList 
+-T LYEditCode
+-T LYKbLayout_t
+-T LYKeymap_t
 -T LYNX_ADDRINFO
+-T LYNX_FD
 -T LYNX_HOSTENT
+-T LYNX_SOCKADDR
 -T LYUCcharset 
 -T LexItem 
 -T ProgramPaths 
@@ -99,7 +105,10 @@
 -T STable_states 
 -T SearchAPDU 
 -T SearchResponseAPDU 
+-T SockA
+-T TYPE_FD_SET
 -T TextAnchor 
+-T UCode_t
 -T UserDefList 
 -T WAISDocumentCodes 
 -T WAISDocumentHeader 
@@ -114,9 +123,13 @@
 -T bit_map 
 -T boolean 
 -T bstring 
+-T cchar_t
+-T chtype
 -T data_tag
 -T eServerType 
 -T lynx_list_item_type 
+-T mode_t
 -T pdu_type
 -T query_term 
+-T scrnmap_t
 -nbacc
