@@ -1,4 +1,16 @@
--- $Id: ChangeLog,v 1.80 2018/12/26 20:59:05 tom Exp $
+-- $Id: ChangeLog,v 1.83 2019/05/18 11:26:32 tom Exp $
+
+2019-05-18
+	+ add "-linux" option for compatibility with x-indent.sh script,
+	  using manpage description from "2.2.11".
+
+	+ add "xxx-indent" script as an alternative to x-indent.sh script from
+	  https://www.x.org/wiki/CodingStyle/
+
+	+ updated several configure macros: CF_CONST_X_STRING, CF_GCC_WARNINGS,
+	  CF_POSIX_C_SOURCE, CF_POSIX_VISIBLE, CF_XOPEN_SOURCE
+
+	+ update config.guess, config.sub
 
 2018-12-26
 	+ improve script converting info to man
