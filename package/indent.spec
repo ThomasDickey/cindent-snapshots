@@ -1,8 +1,8 @@
 %define AppProgram indent
 %define AppVersion 2.0
-%define AppRelease 20181226
+%define AppRelease 20190518
 %define ActualProg c%{AppProgram}
-# $Id: indent.spec,v 1.24 2018/12/26 20:45:44 tom Exp $
+# $Id: indent.spec,v 1.25 2019/05/18 11:03:48 tom Exp $
 Summary: %{ActualProg} - format C program sources
 Name: c%{AppProgram}
 Version: %{AppVersion}

@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2010,2018, Thomas E. Dickey
+   Copyright 1999-2018,2019, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -93,6 +93,7 @@ static int exp_i = 0;
 static int exp_ip = 0;
 static int exp_kr = 0;
 static int exp_l = 0;
+static int exp_linux = 0;
 static int exp_lc = 0;
 static int exp_lp = 0;
 static int exp_lps = 0;
@@ -111,6 +112,8 @@ static int exp_ta = 0;
 static int exp_ts = 0;
 static int exp_v = 0;
 static int exp_version = 0;
+
+static int ignored;		/* unimplemented placeholders */
 
 /* The following variables are controlled by command line parameters and
    their meaning is explained in indent.h.  */
@@ -235,6 +238,11 @@ struct pro
 -ci4\0-cli0\0-d0\0-di1\0-nfc1\0-i4\0-ip0\0-l75\0-lp\0-npcs\0-npsl\0-cs\0\
 -nsc\0-nsob\0-nfca\0-cp33\0-nss\0"
 
+#define SETTINGS_LINUX \
+"-nbad\0-bap\0-nbc\0-bbo\0-hnl\0-br\0-brs\0-c33\0-cd33\0-ncdb\0-ce\0-ci4\0\
+-cli0\0-d0\0-di1\0-nfc1\0-i8\0-ip0\0-l80\0-lp\0-npcs\0-nprs\0-npsl\0-sai\0\
+-saf\0-saw\0-ncs\0-nsc\0-sob\0-nfca\0-cp33\0-ss\0-ts8\0-il1\0"
+
 /* Settings for original defaults vs gnu */
 #ifdef BERKELEY_DEFAULTS
 #define DFT_BAP  false
@@ -297,12 +305,15 @@ struct pro pro[] =
   INIT_BOOL ("bad", DFT_BAD, ON, &blanklines_after_declarations, &exp_bad),
   INIT_BOOL ("bap", DFT_BAP, ON, &blanklines_after_procs, &exp_bap),
   INIT_BOOL ("bbb", DFT_BBB, ON, &blanklines_before_blockcomments, &exp_bbb),
+  INIT_BOOL ("bbo", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("bc", DFT_BC, OFF, &leave_comma, &exp_bc),
   INIT_INT ("bli", DFT_BLI, ONOFF_NA, &brace_indent, &exp_bli),
   INIT_BOOL ("bl", true, OFF, &btype_2, &exp_bl),
   INIT_BOOL ("br", DFT_BR, ON, &btype_2, &exp_bl),
   INIT_BOOL ("bs", DFT_BS, ON, &blank_after_sizeof, &exp_bs),
+  INIT_INT ("cbi", DFT_I, ONOFF_NA, &ignored, &ignored),
   INIT_BOOL ("cdb", DFT_CDB, ON, &comment_delimiter_on_blankline, &exp_cdb),
+  INIT_BOOL ("cdw", DFT_BAD, ON, &ignored, &ignored),
   INIT_INT ("cd", 33, ONOFF_NA, &decl_com_ind, &exp_cd),
   INIT_BOOL ("ce", DFT_CE, ON, &cuddle_else, &exp_ce),
   INIT_INT ("ci", DFT_CI, ONOFF_NA, &continuation_indent, &exp_ci),
@@ -324,12 +335,15 @@ struct pro pro[] =
   INIT_FONT ("fk", 0, ONOFF_NA, (int *) &keywordf, &exp_fk),
   INIT_FONT ("fs", 0, ONOFF_NA, (int *) &stringf, &exp_fs),
   INIT_SETTINGS ("gnu", 0, ONOFF_NA, SETTINGS_GNU, &exp_gnu),
+  INIT_BOOL ("hnl", DFT_BAD, ON, &ignored, &ignored),
   INIT_FUNCTION ("h", 0, ONOFF_NA, usage, &exp_version),
   INIT_INT ("ip", DFT_IP, ON, &indent_parameters, &exp_ip),
+  INIT_INT ("il", DFT_I, ONOFF_NA, &ignored, &ignored),
   INIT_INT ("i", DFT_I, ONOFF_NA, &ind_size, &exp_i),
   INIT_SETTINGS ("kr", 0, ONOFF_NA, SETTINGS_KR, &exp_kr),
   INIT_INT ("lc", DEFAULT_RIGHT_COMMENT_MARGIN,
 	    ONOFF_NA, &comment_max_col, &exp_lc),
+  INIT_SETTINGS ("linux", 0, ONOFF_NA, SETTINGS_LINUX, &exp_linux),
   INIT_BOOL ("lps", DFT_LPS, ON, &leave_preproc_space, &exp_lps),
   INIT_BOOL ("lp", DFT_LP, ON, &lineup_to_parens, &exp_lp),
   INIT_BOOL ("ly", false, ON, &lex_or_yacc, &exp_ly),
@@ -341,7 +355,9 @@ struct pro pro[] =
   INIT_BOOL ("nbad", DFT_BAD, OFF, &blanklines_after_declarations, &exp_bad),
   INIT_BOOL ("nbap", DFT_BAP, OFF, &blanklines_after_procs, &exp_bap),
   INIT_BOOL ("nbbb", DFT_BBB, OFF, &blanklines_before_blockcomments, &exp_bbb),
+  INIT_BOOL ("nbbo", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("nbc", DFT_BC, ON, &leave_comma, &exp_bc),
+  INIT_BOOL ("nbfda", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("nbs", DFT_BS, OFF, &blank_after_sizeof, &exp_bs),
   INIT_BOOL ("ncdb", DFT_CDB, OFF, &comment_delimiter_on_blankline, &exp_cdb),
   INIT_BOOL ("nce", DFT_CE, OFF, &cuddle_else, &exp_ce),
@@ -356,16 +372,21 @@ struct pro pro[] =
   INIT_BOOL ("nlp", DFT_LP, OFF, &lineup_to_parens, &exp_lp),
   INIT_BOOL ("npcs", DFT_PCS, OFF, &proc_calls_space, &exp_pcs),
   INIT_IGN ("npro", 0, ONOFF_NA, 0, &exp_pro),
+  INIT_BOOL ("nprs", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("npsl", DFT_PSL, OFF, &procnames_start_line, &exp_psl),
   INIT_BOOL ("nsc", DFT_SC, OFF, &star_comment_cont, &exp_sc),
   INIT_BOOL ("nsob", DFT_SOB, OFF, &swallow_optional_blanklines, &exp_sob),
   INIT_BOOL ("nss", DFT_SS, OFF, &space_sp_semicolon, &exp_ss),
+  INIT_BOOL ("nut", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("nv", DFT_V, OFF, &verbose, &exp_v),
   INIT_SETTINGS ("orig", 0, ONOFF_NA, SETTINGS_BSD, &exp_orig),
   INIT_BOOL ("o", false, ON, &expect_output_file, &expect_output_file),
   INIT_BOOL ("pcs", DFT_PCS, ON, &proc_calls_space, &exp_pcs),
   INIT_INT ("ppi", 0, ONOFF_NA, &preprocessor_indentation, &exp_ppi),
   INIT_BOOL ("psl", DFT_PSL, ON, &procnames_start_line, &exp_psl),
+  INIT_BOOL ("saf", DFT_BAD, ON, &ignored, &ignored),
+  INIT_BOOL ("sai", DFT_BAD, ON, &ignored, &ignored),
+  INIT_BOOL ("saw", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("sc", DFT_SC, ON, &star_comment_cont, &exp_sc),
   INIT_BOOL ("sob", DFT_SOB, ON, &swallow_optional_blanklines, &exp_sob),
   INIT_BOOL ("ss", DFT_SS, ON, &space_sp_semicolon, &exp_ss),
@@ -432,6 +453,7 @@ struct long_option_conversion option_conversions[] =
   INIT_LONG ("kr", "kernighan-and-ritchie-style"),
   INIT_LONG ("kr", "kernighan-and-ritchie"),
   INIT_LONG ("lc", "comment-line-length"),
+  INIT_LONG ("linux", "linux-style"),
   INIT_LONG ("ly", "lex-or-yacc"),
   INIT_LONG ("lp", "continue-at-parentheses"),
   INIT_LONG ("lps", "leave-preprocessor-space"),

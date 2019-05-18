@@ -1,0 +1,121 @@
+/*
+ * $Id: xxx-profile,v 1.1 2019/05/18 14:54:29 tom Exp $
+ ****************************************************************************
+ * Copyright (c) 2019 Thomas E. Dickey                                      *
+ *                                                                          *
+ * Permission is hereby granted, free of charge, to any person obtaining a  *
+ * copy of this software and associated documentation files (the            *
+ * "Software"), to deal in the Software without restriction, including      *
+ * without limitation the rights to use, copy, modify, merge, publish,      *
+ * distribute, distribute with modifications, sublicense, and/or sell       *
+ * copies of the Software, and to permit persons to whom the Software is    *
+ * furnished to do so, subject to the following conditions:                 *
+ *                                                                          *
+ * The above copyright notice and this permission notice shall be included  *
+ * in all copies or substantial portions of the Software.                   *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS  *
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF               *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.   *
+ * IN NO EVENT SHALL THE ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,   *
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR    *
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR    *
+ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.                               *
+ *                                                                          *
+ * Except as contained in this notice, the name(s) of the above copyright   *
+ * holders shall not be used in advertising or otherwise to promote the     *
+ * sale, use or other dealings in this Software without prior written       *
+ * authorization.                                                           *
+ ****************************************************************************
+ * indent a la "x-indent.sh"
+ */
+-linux
+-bad
+-bap
+-blf
+-bli0
+-cbi0
+-cdw
+-nce
+-cs
+-i4
+-lc80
+-psl
+-nbbo
+-nbc
+-psl
+-nbfda
+-nut
+-nss
+
+-T Atom
+-T BITS32
+-T BlockHandlerProcPtr
+-T Bool
+-T BoxPtr
+-T CARD16
+-T CARD32
+-T CARD8
+-T CallbackListPtr
+-T CallbackProcPtr
+-T CallbackPtr
+-T ClientPtr
+-T ColormapPtr
+-T CursorPtr
+-T DevPrivateKey
+-T DevScreenPrivateKey
+-T DevUnion
+-T DeviceChangedEvent
+-T DeviceEvent
+-T DeviceIntPtr
+-T DevicePtr
+-T Drawable
+-T DrawablePtr
+-T Font
+-T FontPtr
+-T GCPtr
+-T GrabMask
+-T GrabParameters
+-T GrabPtr
+-T INT16
+-T INT32
+-T INT8
+-T InputOption
+-T InternalEvent
+-T KeyCode
+-T KeySymsPtr
+-T Mask
+-T OsTimerPtr
+-T PixmapPtr
+-T PrivatePtr
+-T PropertyPtr
+-T RESTYPE
+-T RawDeviceEvent
+-T RegionPtr
+-T RegionRec
+-T ScreenPtr
+-T ScrnInfoPtr
+-T Time
+-T TimeStamp
+-T Timestamp
+-T TouchOwnershipEvent
+-T ValuatorMask
+-T WakeupHandlerProcPtr
+-T Window
+-T WindowPtr
+-T XI2Mask
+-T XID
+-T XIPropertyValuePtr
+-T XkbAction
+-T XkbChangesPtr
+-T XkbControlsPtr
+-T XkbDescPtr
+-T _XFUNCPROTOBEGIN
+-T _XFUNCPROTOEND
+-T _X_EXPORT
+-T deviceKeyButtonPointer
+-T pmWait
+-T pointer
+-T xEvent
+-T xGenericEvent
+-T xRectangle
