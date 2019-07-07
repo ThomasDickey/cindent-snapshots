@@ -1,4 +1,4 @@
 version=3
 
-opts=passive ftp://invisible-island.net/gnu-patches/indent-(\d+)\.tgz \
+opts=passive ftp://ftp.invisible-island.net/indent/indent-(\d+)\.tgz \
  debian  uupdate

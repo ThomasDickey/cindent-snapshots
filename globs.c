@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2010,2019, Thomas E. Dickey
 
    Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
 
@@ -69,7 +69,7 @@ xstrdup (const char *ptr)
 }
 
 void
-message (int warnings, const char *string,...)
+message (int warnings, const char *string, ...)
 {
   if (((warnings > 0) && verbose) || (warnings <= 0))
     {
@@ -98,7 +98,7 @@ message (int warnings, const char *string,...)
    "DEBUG" defined, abort (). */
 
 void
-fatal (const char *string,...)
+fatal (const char *string, ...)
 {
   va_list ap;
 

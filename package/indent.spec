@@ -1,15 +1,15 @@
 %define AppProgram indent
 %define AppVersion 2.0
-%define AppRelease 20190518
+%define AppRelease 20190707
 %define ActualProg c%{AppProgram}
-# $Id: indent.spec,v 1.25 2019/05/18 11:03:48 tom Exp $
+# $Id: indent.spec,v 1.27 2019/07/07 21:30:39 tom Exp $
 Summary: %{ActualProg} - format C program sources
 Name: c%{AppProgram}
 Version: %{AppVersion}
 Release: %{AppRelease}
 License: GPLv2
 Group: Applications/Development
-URL: ftp://invisible-island.net/%{AppProgram}
+URL: ftp://ftp.invisible-island.net/%{AppProgram}
 Source0: %{AppProgram}-%{AppVersion}-%{AppRelease}.tgz
 Packager: Thomas Dickey <dickey@invisible-island.net>
 
@@ -24,6 +24,8 @@ It has some feature enhancements required by those programs,
 not found in other versions of indent.
 
 %prep
+
+%define debug_package %{nil}
 
 %setup -q -n %{AppProgram}-%{AppVersion}-%{AppRelease}
 
