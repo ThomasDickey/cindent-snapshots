@@ -1,7 +1,7 @@
-#!/usr/bin/perl -w
-# $Id: make-man.pl,v 1.24 2018/12/26 21:11:12 tom Exp $
+#!/usr/bin/env perl
+# $Id: make-man.pl,v 1.25 2019/07/07 22:57:04 tom Exp $
 #------------------------------------------------------------------------------
-# Copyright:  2010-2016,2018 by Thomas E. Dickey
+# Copyright:  2010-2018,2019 by Thomas E. Dickey
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the
@@ -31,6 +31,8 @@
 # (info2man does not handle the .DS parts)
 
 use strict;
+use warnings;
+use diagnostics;
 
 our $margin = 70;
 our $ignore = ".";
@@ -309,9 +311,9 @@ sub do_file($) {
 
     for $n ( 0 .. $#input ) {
         $input[$n] =~ s/``([^`']+)``([^`']+)''([^`']+)''/\\fB$1$2$3\\fP/g;
-        $input[$n] =~ s/`([^`']+)`([^`']+)'([^`']+)'/\\fB$1$2$3\\fP/g;
+        $input[$n] =~ s/['`]([^`']+)`([^`']+)'([^`']+)'/\\fB$1$2$3\\fP/g;
         $input[$n] =~ s/``([^']+)''/\\fB$1\\fR/g;
-        $input[$n] =~ s/`([^']+)'/\\fB$1\\fR/g;
+        $input[$n] =~ s/['`]([^']+)'/\\fB$1\\fR/g;
         $input[$n] =~ s/-/\\-/g;
         $input[$n] =~ s/\\n/\\en/g if ( $input[$n] !~ /^\./ );
         $input[$n] =~ s/\(\*note (.*)::\)/(see \\fB$1\\fR)/g;

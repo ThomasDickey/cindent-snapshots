@@ -1,4 +1,4 @@
-dnl $Id: aclocal.m4,v 1.10 2019/05/18 11:09:35 tom Exp $
+dnl $Id: aclocal.m4,v 1.11 2019/07/07 18:20:12 tom Exp $
 dnl autoconf macros for vttest - T.E.Dickey
 dnl ---------------------------------------------------------------------------
 dnl Copyright:  1997-2018,2019 by Thomas E. Dickey
@@ -528,7 +528,7 @@ if test "$GCC" = yes ; then
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_GCC_WARNINGS version: 34 updated: 2019/04/08 17:50:29
+dnl CF_GCC_WARNINGS version: 35 updated: 2019/06/16 09:45:01
 dnl ---------------
 dnl Check if the compiler supports useful warning options.  There's a few that
 dnl we don't use, simply because they're too noisy:
@@ -552,14 +552,11 @@ AC_DEFUN([CF_GCC_WARNINGS],
 AC_REQUIRE([CF_GCC_VERSION])
 CF_INTEL_COMPILER(GCC,INTEL_COMPILER,CFLAGS)
 CF_CLANG_COMPILER(GCC,CLANG_COMPILER,CFLAGS)
-
-CF_CONST_X_STRING
-
+if test "x$have_x" = xyes; then CF_CONST_X_STRING fi
 cat > conftest.$ac_ext <<EOF
 #line __oline__ "${as_me:-configure}"
 int main(int argc, char *argv[[]]) { return (argv[[argc-1]] == 0) ; }
 EOF
-
 if test "$INTEL_COMPILER" = yes
 then
 # The "-wdXXX" options suppress warnings:

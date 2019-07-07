@@ -16,7 +16,7 @@ fill_addrinfo(void **buffer)
 }
 
 void
-failed(mode_t * _t)
+failed(mode_t *_t)
 {
     /* *INDENT-EQLS* */
     parser_state_tos->next                = 0;

@@ -1,3 +1,4 @@
+/* *INDENT-OFF* */
 /* ANSI-C code produced by gperf version 3.0.4 */
 /* Command-line: gperf -LANSI-C -C -c -p -t -T -g -j1 -o -K rwd -N is_reserved indent.gperf  */
 /* Computed positions: -k'2-3' */
@@ -93,7 +94,6 @@ hash (register const char *str, register unsigned int len)
   return hval;
 }
 
-static
 #ifdef __GNUC__
 __inline
 #if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
@@ -187,15 +187,16 @@ is_reserved (register const char *str, register unsigned int len)
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {
-      register int key = (int) hash (str, len);
+      register int key = (int)hash (str, len);
 
-      if (key <= (int) MAX_HASH_VALUE && key >= 0)
+      if (key <= MAX_HASH_VALUE && key >= 0)
         {
           register const char *s = wordlist[key].rwd;
 
-          if (*str == *s && !strncmp (str + 1, s + 1, (size_t) len - 1) && s[len] == '\0')
+          if (*str == *s && !strncmp (str + 1, s + 1, len - 1) && s[len] == '\0')
             return &wordlist[key];
         }
     }
   return 0;
 }
+/* *INDENT-ON* */

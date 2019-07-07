@@ -46,7 +46,7 @@ alloc_LINE(BUFFER * bp)
 }
 
 static Boolean
-SaveConvertedLength(XtPointer * target, unsigned long source)
+SaveConvertedLength(XtPointer *target, unsigned long source)
 {
     Boolean result = False;
 

@@ -26,10 +26,10 @@
 @ifinfo
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.@*
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux@*
-Copyright @copyright{} 1999-2010, 2016 Thomas E. Dickey
+Copyright @copyright{} 1999-2018, 2019 Thomas E. Dickey
 
 @c !!set edition, date, version
-This is Edition 2.0, May, 2016, of @cite{The @code{indent} Manual},
+This is Edition 2.0, July, 2019, of @cite{The @code{indent} Manual},
 for Indent Version 2.0
 
 Permission is granted to make and distribute verbatim copies of
@@ -1054,11 +1054,23 @@ so that they do not conflict with the code that follows.
 Formatting of C code may be disabled for portions of a program by
 embedding special @dfn{control comments} in the program.  To turn off
 formatting for a section of a program, place the disabling control
-comment @code{/* *INDENT-OFF* */} on a line by itself just before that
+comment
+
+@example
+/* *INDENT-OFF* */
+@end example
+
+on a line by itself just before that
 section.  Program text scanned after this control comment is output
 precisely as input with no modifications until the corresponding
 enabling comment is scanned on a line by itself.  The disabling control
-comment is @code{/* *INDENT-ON* */}, and any text following the comment
+comment is
+
+@example
+/* *INDENT-ON* */
+@end example
+
+and any text following the comment
 on the line is also output unformatted.  Formatting begins again with
 the input line following the enabling control comment.
 
@@ -1066,8 +1078,18 @@ More precisely, @code{indent} does not attempt to verify the closing
 delimiter (@code{*/}) for these C comments, and any whitespace on the
 line is totally transparent.
 
-These control comments also function in their C++ formats, namely
-@code{// *INDENT-OFF*} and @code{// *INDENT-ON*}.
+These control comments also function in their C++ formats,
+namely
+
+@example
+// *INDENT-OFF*
+@end example
+
+and
+
+@example
+// *INDENT-ON*
+@end example
 
 It should be noted that the internal state of @code{indent} remains
 unchanged over the course of the unformatted section.  Thus, for
@@ -1082,7 +1104,7 @@ error messages beginning with @code{*INDENT**}.  These versions of
 with such error messages.
 
 You may also override the formatting of assignment statements by using
-and @code{/* *INDENT-EQLS* */} comment.
+a @code{/* *INDENT-EQLS* */} comment.
 This tells @code{indent} to use the next statement as a hint of how
 it and subsequent statements (up to the next blank line) should be
 formatted.

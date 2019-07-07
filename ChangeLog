@@ -1,4 +1,21 @@
--- $Id: ChangeLog,v 1.83 2019/05/18 11:26:32 tom Exp $
+-- $Id: ChangeLog,v 1.89 2019/07/07 21:11:43 tom Exp $
+
+2019-07-07
+	+ add Xt and Xaw typedefs to xxx-profile, as well as "common" typedefs
+	  from ncu-profile.
+
+	+ add mode_t to ncu-profile.
+
+	+ regen gperf.c with gperf 3.0.4
+
+	+ fix an extra newline when turning indent back on with "*INDENT-ON*"
+
+	+ make it simpler to substitute the other indent version by overriding
+	  $INDENT_PROG, for comparison/testing.
+
+	+ minor fix for configure macro CF_GCC_WARNINGS
+
+	+ update config.guess, config.sub
 
 2019-05-18
 	+ add "-linux" option for compatibility with x-indent.sh script,

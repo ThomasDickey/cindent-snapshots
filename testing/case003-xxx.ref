@@ -89,7 +89,7 @@ init_filter(int before GCC_UNUSED)
 }
 
 static void
-do_filter(FILE * inputs)
+do_filter(FILE *inputs)
 {
 #               if 1
     InitLEX(inputs);
