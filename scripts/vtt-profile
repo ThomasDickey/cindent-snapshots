@@ -1,7 +1,7 @@
 /*
- * $Id: vtt-profile,v 1.2 2010/10/08 22:50:50 tom Exp $
+ * $Id: vtt-profile,v 1.3 2019/07/21 17:27:37 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010 Thomas E. Dickey                                      *
+ * Copyright (c) 2010,2019 Thomas E. Dickey                                 *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -54,4 +54,7 @@
 -T MODES
 -T National
 -T VTLEVEL
+-T cc_t
 -T size_t
+-T speed_t
+-T tcflag_t

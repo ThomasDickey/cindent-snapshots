@@ -1,4 +1,7 @@
--- $Id: ChangeLog,v 1.89 2019/07/07 21:11:43 tom Exp $
+-- $Id: ChangeLog,v 1.90 2019/07/21 17:29:18 tom Exp $
+
+2019-07-21
+	+ add typedefs for termios.h to xxx-profile, ncu-profile, vtt-profile.
 
 2019-07-07
 	+ add Xt and Xaw typedefs to xxx-profile, as well as "common" typedefs
