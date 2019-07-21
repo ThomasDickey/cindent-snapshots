@@ -1,5 +1,5 @@
 /*
- * $Id: xxx-profile,v 1.9 2019/07/07 20:15:47 tom Exp $
+ * $Id: xxx-profile,v 1.10 2019/07/21 17:22:10 tom Exp $
  ****************************************************************************
  * Copyright (c) 2019 Thomas E. Dickey                                      *
  *                                                                          *
@@ -52,11 +52,14 @@
 -T FILE
 -T GCC_NORETURN
 -T RETSIGTYPE
+-T cc_t
 -T gid_t
 -T inline
 -T mode_t
 -T off_t
 -T size_t
+-T speed_t
+-T tcflag_t
 -T uid_t
 -T va_list
 -T wchar_t
