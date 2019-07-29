@@ -15,4 +15,4 @@
    The number after the base version is my patch date -TD
 */
 
-#define VERSION_STRING "GNU indent 2.0-20190707"
+#define VERSION_STRING "GNU indent 2.0-20190728"

@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2018,2019 Thomas E. Dickey
+   Copyright 1999-2018,2019, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -931,11 +931,8 @@ fill_buffer (void)
 				      ++in_line_no;
 				      inhibited = 0;
 				      cur_line = p + 1;
-				      if (*cur_line == '\0')
-					pass_char (*p++);
 				    }
-				  else
-				    pass_char (*p++);
+				  pass_char (*p++);
 				}
 			    }
 			  while (inhibited);

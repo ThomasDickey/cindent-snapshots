@@ -1,3 +1,9 @@
+cindent (2.0.20190728) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sun, 28 Jul 2019 20:09:38 -0400
+
 cindent (2.0.20190707) unstable; urgency=low
 
   * maintenance updates

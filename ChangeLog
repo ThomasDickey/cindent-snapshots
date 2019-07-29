@@ -1,4 +1,7 @@
--- $Id: ChangeLog,v 1.90 2019/07/21 17:29:18 tom Exp $
+-- $Id: ChangeLog,v 1.91 2019/07/29 00:09:02 tom Exp $
+
+2019-07-28
+	+ revert 2019-07-07 change for "*INDENT-ON*", which trimmed too much.
 
 2019-07-21
 	+ add typedefs for termios.h to xxx-profile, ncu-profile, vtt-profile.
