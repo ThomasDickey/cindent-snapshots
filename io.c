@@ -105,7 +105,32 @@ static void
 pass_char (int ch)
 {
   if (ch == '\n')
-    ++out_line_no;
+    {
+      ++out_line_no;
+      out_column_no = 0;
+    }
+  else if (ch == TAB)
+    {
+      int target_column = out_column_no + tabsize - (out_column_no % tabsize);
+      if (use_tabs)
+	{
+	  out_column_no = target_column;
+	}
+      else
+	{
+	  ch = ' ';
+	  while (out_column_no < target_column - 1)
+	    {
+	      putc (ch, output);
+	      ++out_column_no;
+	    }
+	  ++out_column_no;
+	}
+    }
+  else
+    {
+      ++out_column_no;
+    }
   putc (ch, output);
 }
 
@@ -245,28 +270,27 @@ pad_output (
 	     int my_current_col,
 	     int target_column)
 {
-  if (my_current_col >= target_column)
-    return my_current_col;
-
-  if (tabsize > 1)
+  if (my_current_col < target_column)
     {
-      int offset;
-
-      offset = tabsize - (my_current_col - 1) % tabsize;
-      while (my_current_col + offset <= target_column)
+      if (tabsize > 1)
 	{
-	  pass_char (TAB);
-	  my_current_col += offset;
-	  offset = tabsize;
+	  int offset;
+
+	  offset = tabsize - (my_current_col - 1) % tabsize;
+	  while (my_current_col + offset <= target_column)
+	    {
+	      pass_char (TAB);
+	      my_current_col += offset;
+	      offset = tabsize;
+	    }
+	}
+
+      while (my_current_col < target_column)
+	{
+	  pass_char (' ');
+	  my_current_col++;
 	}
     }
-
-  while (my_current_col < target_column)
-    {
-      pass_char (' ');
-      my_current_col++;
-    }
-
   return my_current_col;
 }
 
@@ -601,17 +625,23 @@ int
 compute_code_target (void)
 {
   int target_col = parser_state_tos->ind_level + 1;
+  int rc;
 
   if (!parser_state_tos->paren_level)
     {
       if (parser_state_tos->ind_stmt)
 	target_col += continuation_indent;
-      return target_col;
+      rc = target_col;
     }
-
-  if (!lineup_to_parens)
-    return target_col + (continuation_indent * parser_state_tos->paren_level);
-  return paren_target;
+  else if (lineup_to_parens)
+    {
+      rc = paren_target;
+    }
+  else
+    {
+      rc = target_col + (continuation_indent * parser_state_tos->paren_level);
+    }
+  return rc;
 }
 
 int

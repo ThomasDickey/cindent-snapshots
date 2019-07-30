@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2010,2018, Thomas E. Dickey
+   Copyright 1999-2018,2019, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -255,6 +255,8 @@ extern int brace_indent;	/* number of spaces to indent braces from the
 				   (bype_2 == 0) code */
 extern int btype_2;		/* when true, brace should be on same line as
 				   if, while, etc */
+extern int case_brace_indent;	/* The distance to indent curly-braces from
+				   the switch statement */
 extern int case_indent;		/* The distance to indent case labels from
 				   the switch statement */
 extern int cast_space;		/* If true, casts look like:
@@ -265,6 +267,7 @@ extern int comment_delimiter_on_blankline;
 extern int comment_max_col;
 extern int continuation_indent;	/* set to the indentation between the edge of
 				   code and continuation lines in spaces */
+extern int cuddle_do_while;	/* true if '}' should cuddle up to do in while */
 extern int cuddle_else;		/* true if else should cuddle up to '}' */
 extern int debug;		/* when true, debugging messages are printed */
 extern int decl_com_ind;	/* the column in which comments after
@@ -323,6 +326,7 @@ extern int unindent_displace;	/* comments not to the right of code will be
 				   placed this many indentation levels to the
 				   left of code */
 extern int use_stdout;
+extern int use_tabs;		/* true if tab-characters are output */
 extern int verbose;		/* when true, non-essential error messages
 				   are printed */
 
@@ -354,6 +358,7 @@ extern int com_lines;		/* the number of lines with comments, set by
 extern int had_eof;		/* set to true when input is exhausted */
 extern int in_line_no;		/* the current input line number. */
 extern int out_line_no;		/* the current output line number. */
+extern int out_column_no;	/* the current output column number. */
 extern int suppress_blanklines;	/* set iff following blanklines should be
 				   suppressed */
 
@@ -518,13 +523,14 @@ extern int else_endif_col;
 extern char *xmalloc (size_t);
 extern char *xrealloc (char *, size_t);
 extern char *xstrdup (const char *);
-extern void message (int, const char *,...);
-extern void fatal (const char *,...);
+extern void message (int, const char *, ...);
+extern void fatal (const char *, ...);
 
 /* Declared in args.c */
 extern char *set_profile (const char *);
 extern int set_option (const char *, const char *, int);
 extern void set_defaults (void);
+extern void print_options (void);
 
 /* Declared in comment.c */
 extern void print_comment (void);

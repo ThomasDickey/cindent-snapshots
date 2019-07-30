@@ -1,4 +1,13 @@
--- $Id: ChangeLog,v 1.91 2019/07/29 00:09:02 tom Exp $
+-- $Id: ChangeLog,v 1.96 2019/07/29 23:47:25 tom Exp $
+
+2019-07-29
+	+ add debugging feature to show options in effect
+
+	+ implement -ncdw/-cdw options for compatibility with x-indent.sh
+
+	+ implement -cbi option for compatibility with x-indent.sh
+
+	+ implement -nut/-ut options for compatibility with x-indent.sh
 
 2019-07-28
 	+ revert 2019-07-07 change for "*INDENT-ON*", which trimmed too much.
