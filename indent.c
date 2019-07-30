@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2013,2018, Thomas E. Dickey
+   Copyright 1999-2018,2019, Thomas E. Dickey
 
    Copyright (c) 1994,1996,1997, Joseph Arceneaux.  All rights reserved.
 
@@ -62,6 +62,7 @@ char *be_save;
 int code_lines;
 int in_line_no;
 int out_line_no;
+int out_column_no;
 struct fstate keywordf;
 struct fstate stringf;
 struct fstate boxcomf;
@@ -1217,7 +1218,9 @@ indent (struct file_buffer *this_file)
 	  PARSE (rbrace);
 	  parser_state_tos->search_brace
 	    = (cuddle_else
-	       && parser_state_tos->p_stack[parser_state_tos->tos] == ifhead);
+	       && parser_state_tos->p_stack[parser_state_tos->tos] == ifhead)
+	    || (cuddle_do_while
+		&& (parser_state_tos->p_stack[parser_state_tos->tos] == dohead));
 
 	  if ((parser_state_tos->p_stack[parser_state_tos->tos] == stmtl
 	       && ((parser_state_tos->last_rw != rw_struct_like
@@ -1225,7 +1228,7 @@ indent (struct file_buffer *this_file)
 		   || !btype_2))
 	      || (parser_state_tos->p_stack[parser_state_tos->tos] == ifhead)
 	      || (parser_state_tos->p_stack[parser_state_tos->tos] == dohead
-		  && !btype_2))
+		  && !cuddle_do_while && !btype_2))
 	    force_nl = true;
 	  else if (parser_state_tos->tos <= 1
 		   && blanklines_after_procs
@@ -2040,6 +2043,8 @@ main (int argc, char **argv)
 
   if (verbose && profile_pathname)
     fprintf (stderr, "Read profile %s\n", profile_pathname);
+  if (debug)
+    print_options ();
 
   if (input_files > 1)
     {

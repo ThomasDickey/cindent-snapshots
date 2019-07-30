@@ -68,8 +68,10 @@ static int exp_bl = 0;
 static int exp_bli = 0;
 static int exp_bs = 0;
 static int exp_c = 0;
+static int exp_cbi = 0;
 static int exp_cd = 0;
 static int exp_cdb = 0;
+static int exp_cdw = 0;
 static int exp_ce = 0;
 static int exp_ci = 0;
 static int exp_cli = 0;
@@ -110,6 +112,7 @@ static int exp_ss = 0;
 static int exp_st = 0;
 static int exp_ta = 0;
 static int exp_ts = 0;
+static int exp_ut = 0;
 static int exp_v = 0;
 static int exp_version = 0;
 
@@ -126,12 +129,14 @@ int blanklines_around_conditional_compilation;
 int blanklines_before_blockcomments;
 int brace_indent;
 int btype_2;
+int case_brace_indent;
 int case_indent;
 int cast_space;
 int com_ind;
 int comment_delimiter_on_blankline;
 int comment_max_col;
 int continuation_indent;
+int cuddle_do_while;
 int cuddle_else;
 int debug;
 int decl_com_ind;
@@ -163,6 +168,7 @@ int tabsize;
 int troff;
 int unindent_displace;
 int use_stdout;
+int use_tabs;
 int verbose;
 
 #define NumberData(p) ((p)->d_number)
@@ -307,13 +313,14 @@ struct pro pro[] =
   INIT_BOOL ("bbb", DFT_BBB, ON, &blanklines_before_blockcomments, &exp_bbb),
   INIT_BOOL ("bbo", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("bc", DFT_BC, OFF, &leave_comma, &exp_bc),
+  INIT_BOOL ("bfda", DFT_BAD, ON, &ignored, &ignored),
   INIT_INT ("bli", DFT_BLI, ONOFF_NA, &brace_indent, &exp_bli),
   INIT_BOOL ("bl", true, OFF, &btype_2, &exp_bl),
   INIT_BOOL ("br", DFT_BR, ON, &btype_2, &exp_bl),
   INIT_BOOL ("bs", DFT_BS, ON, &blank_after_sizeof, &exp_bs),
-  INIT_INT ("cbi", DFT_I, ONOFF_NA, &ignored, &ignored),
+  INIT_INT ("cbi", DFT_I, ONOFF_NA, &case_brace_indent, &exp_cbi),
   INIT_BOOL ("cdb", DFT_CDB, ON, &comment_delimiter_on_blankline, &exp_cdb),
-  INIT_BOOL ("cdw", DFT_BAD, ON, &ignored, &ignored),
+  INIT_BOOL ("cdw", false, ON, &cuddle_do_while, &exp_cdw),
   INIT_INT ("cd", 33, ONOFF_NA, &decl_com_ind, &exp_cd),
   INIT_BOOL ("ce", DFT_CE, ON, &cuddle_else, &exp_ce),
   INIT_INT ("ci", DFT_CI, ONOFF_NA, &continuation_indent, &exp_ci),
@@ -337,8 +344,8 @@ struct pro pro[] =
   INIT_SETTINGS ("gnu", 0, ONOFF_NA, SETTINGS_GNU, &exp_gnu),
   INIT_BOOL ("hnl", DFT_BAD, ON, &ignored, &ignored),
   INIT_FUNCTION ("h", 0, ONOFF_NA, usage, &exp_version),
-  INIT_INT ("ip", DFT_IP, ON, &indent_parameters, &exp_ip),
   INIT_INT ("il", DFT_I, ONOFF_NA, &ignored, &ignored),
+  INIT_INT ("ip", DFT_IP, ON, &indent_parameters, &exp_ip),
   INIT_INT ("i", DFT_I, ONOFF_NA, &ind_size, &exp_i),
   INIT_SETTINGS ("kr", 0, ONOFF_NA, SETTINGS_KR, &exp_kr),
   INIT_INT ("lc", DEFAULT_RIGHT_COMMENT_MARGIN,
@@ -360,6 +367,7 @@ struct pro pro[] =
   INIT_BOOL ("nbfda", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("nbs", DFT_BS, OFF, &blank_after_sizeof, &exp_bs),
   INIT_BOOL ("ncdb", DFT_CDB, OFF, &comment_delimiter_on_blankline, &exp_cdb),
+  INIT_BOOL ("ncdw", false, OFF, &cuddle_do_while, &exp_cdw),
   INIT_BOOL ("nce", DFT_CE, OFF, &cuddle_else, &exp_ce),
   INIT_BOOL ("ncs", DFT_CS, OFF, &cast_space, &exp_cs),
   INIT_BOOL ("ndj", DFT_DJ, OFF, &ljust_decl, &exp_dj),
@@ -377,12 +385,13 @@ struct pro pro[] =
   INIT_BOOL ("nsc", DFT_SC, OFF, &star_comment_cont, &exp_sc),
   INIT_BOOL ("nsob", DFT_SOB, OFF, &swallow_optional_blanklines, &exp_sob),
   INIT_BOOL ("nss", DFT_SS, OFF, &space_sp_semicolon, &exp_ss),
-  INIT_BOOL ("nut", DFT_BAD, ON, &ignored, &ignored),
+  INIT_BOOL ("nut", false, OFF, &use_tabs, &exp_ut),
   INIT_BOOL ("nv", DFT_V, OFF, &verbose, &exp_v),
   INIT_SETTINGS ("orig", 0, ONOFF_NA, SETTINGS_BSD, &exp_orig),
   INIT_BOOL ("o", false, ON, &expect_output_file, &expect_output_file),
   INIT_BOOL ("pcs", DFT_PCS, ON, &proc_calls_space, &exp_pcs),
   INIT_INT ("ppi", 0, ONOFF_NA, &preprocessor_indentation, &exp_ppi),
+  INIT_BOOL ("prs", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("psl", DFT_PSL, ON, &procnames_start_line, &exp_psl),
   INIT_BOOL ("saf", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("sai", DFT_BAD, ON, &ignored, &ignored),
@@ -393,6 +402,7 @@ struct pro pro[] =
   INIT_BOOL ("st", false, ON, &use_stdout, &exp_st),
   INIT_BOOL ("ta", false, ON, &auto_typedefs, &exp_ta),
   INIT_INT ("ts", 8, ONOFF_NA, &tabsize, &exp_ts),
+  INIT_BOOL ("ut", true, ON, &use_tabs, &exp_ut),
   INIT_PRSTRING ("version", 0, ONOFF_NA, VERSION_STRING, &exp_version),
   INIT_BOOL ("v", DFT_V, ON, &verbose, &exp_v),
 
@@ -411,41 +421,48 @@ struct long_option_conversion
 struct long_option_conversion option_conversions[] =
 {
   INIT_LONG ("D", "debug"),
+  INIT_LONG ("T", "typedef"),
   INIT_LONG ("bacc", "blank-lines-after-ifdefs"),
-  INIT_LONG ("badp", "blank-lines-after-procedure-declarations"),
   INIT_LONG ("bad", "blank-lines-after-declarations"),
+  INIT_LONG ("badp", "blank-lines-after-procedure-declarations"),
   INIT_LONG ("bap", "blank-lines-after-procedures"),
   INIT_LONG ("bbb", "blank-lines-after-block-comments"),
+  INIT_LONG ("bbo", "break-before-boolean-operator"),
   INIT_LONG ("bc", "blank-lines-after-commas"),
-  INIT_LONG ("bli", "brace-indent"),
+  INIT_LONG ("bfda", "break-function-decl-args"),
   INIT_LONG ("bl", "braces-after-if-line"),
+  INIT_LONG ("bli", "brace-indent"),
   INIT_LONG ("br", "braces-on-if-line"),
   INIT_LONG ("bs", "Bill-Shannon"),
   INIT_LONG ("bs", "blank-before-sizeof"),
-  INIT_LONG ("cdb", "comment-delimiters-on-blank-lines"),
+  INIT_LONG ("c", "comment-indentation"),
+  INIT_LONG ("cbi", "case-brace-indentation"),
   INIT_LONG ("cd", "declaration-comment-column"),
+  INIT_LONG ("cdb", "comment-delimiters-on-blank-lines"),
+  INIT_LONG ("cdw", "cuddle-do-while"),
   INIT_LONG ("ce", "cuddle-else"),
   INIT_LONG ("ci", "continuation-indentation"),
   INIT_LONG ("cli", "case-indentation"),
   INIT_LONG ("cp", "else-endif-column"),
   INIT_LONG ("cs", "space-after-cast"),
-  INIT_LONG ("c", "comment-indentation"),
+  INIT_LONG ("d", "line-comments-indentation"),
   INIT_LONG ("di", "declaration-indentation"),
   INIT_LONG ("dj", "left-justify-declarations"),
-  INIT_LONG ("d", "line-comments-indentation"),
   INIT_LONG ("eei", "extra-expression-indentation"),
   INIT_LONG ("ei", "else-if"),
+  INIT_LONG ("fb", "*"),
   INIT_LONG ("fbc", "*"),
   INIT_LONG ("fbx", "*"),
-  INIT_LONG ("fb", "*"),
+  INIT_LONG ("fc", "*"),
   INIT_LONG ("fc1", "format-first-column-comments"),
   INIT_LONG ("fca", "format-all-comments"),
-  INIT_LONG ("fc", "*"),
   INIT_LONG ("fk", "*"),
   INIT_LONG ("fs", "*"),
   INIT_LONG ("gnu", "gnu-style"),
+  INIT_LONG ("hnl", "honor-newlines"),
   INIT_LONG ("h", "help"),
   INIT_LONG ("h", "usage"),
+  INIT_LONG ("il", "indent-label"),
   INIT_LONG ("ip", "parameter-indentation"),
   INIT_LONG ("i", "indentation-level"),
   INIT_LONG ("i", "indent-level"),
@@ -492,6 +509,7 @@ struct long_option_conversion option_conversions[] =
   INIT_LONG ("orig", "berkeley-style"),
   INIT_LONG ("orig", "berkeley"),
   INIT_LONG ("pcs", "space-after-procedure-calls"),
+  INIT_LONG ("prs", "space-after-parenthesis"),
   INIT_LONG ("ppi", "preprocessor-indentation"),
   INIT_LONG ("psl", "procnames-start-lines"),
   INIT_LONG ("sc", "start-left-side-of-comments"),
@@ -862,4 +880,115 @@ set_profile (const char *given)
     }
 
   return 0;
+}
+
+void
+print_options (void)
+{
+  struct pro *p, *q, *r;
+
+  for (p = pro, q = 0; p->p_name; q = p++)
+    {
+      if (p->p_name[0] == 'n' && p->p_type != PRO_IGN)
+	{
+	  int found = 0;
+	  for (r = pro; r->p_name; r++)
+	    {
+	      if (!strcmp (p->p_name + 1, r->p_name))
+		{
+		  found = 1;
+		  break;
+		}
+	    }
+	  if (found)
+	    continue;
+	  printf ("expected '%s' not found\n", p->p_name + 1);
+	}
+      if (debug > 1 || *p->p_explicit)
+	{
+	  char buffer[80];
+	  char *next;
+	  sprintf (buffer, "options %s", p->p_name);
+	  next = buffer + strlen (buffer);
+	  switch (p->p_type)
+	    {
+	    case PRO_BOOL:	/* boolean */
+	      sprintf (next, " %s", *NumberData (p) ? "ON" : "OFF");
+	      break;
+	    case PRO_INT:	/* integer */
+	      sprintf (next, " %d", *NumberData (p));
+	      break;
+	    case PRO_FONT:	/* troff font */
+	      sprintf (next, " font");
+	      break;
+	    case PRO_IGN:	/* ignore it */
+	      sprintf (next, " ignored");
+	      break;
+	    case PRO_KEY:	/* -T switch */
+	      sprintf (next, " keyword");
+	      break;
+	    case PRO_SETTINGS:	/* bundled set of settings */
+	      sprintf (next, " settings %s", *p->p_explicit ? "ON" : "OFF");
+	      break;
+	    case PRO_PRSTRING:	/* Print string and exit */
+	      sprintf (next, " \"%s\"", StringData (p));
+	      break;
+	    case PRO_FUNCTION:	/* Call the associated function. */
+	      sprintf (next, " function");
+	      break;
+	    }
+	  if (debug > 1)
+	    {
+	      struct long_option_conversion *s;
+	      int found = 0;
+	      for (s = option_conversions; s->long_name; ++s)
+		{
+		  if (!strcmp (s->short_name, p->p_name))
+		    {
+		      printf ("%-25s\t(%s)", buffer, s->long_name);
+		      found = 1;
+		      break;
+		    }
+		}
+	      if (!found)
+		printf ("%s", buffer);
+	    }
+	  else
+	    {
+	      printf ("%s", buffer);
+	    }
+	  printf ("\n");
+	}
+      if (q && debug > 2)
+	{
+	  int cmp = (int) strlen (p->p_name) - (int) strlen (q->p_name);
+	  int ok = 1;
+	  if (cmp > 0)
+	    {
+	      if (!strncmp (p->p_name, q->p_name, strlen (p->p_name)))
+		ok = 0;
+	      else if (!strncmp (p->p_name, q->p_name, strlen (q->p_name)))
+		ok = 1;
+	      else
+		ok = (strcmp (p->p_name, q->p_name) >= 0);
+	    }
+	  else if (cmp < 0)
+	    {
+	      if (!strncmp (p->p_name, q->p_name, strlen (q->p_name)))
+		ok = 0;
+	      else if (!strncmp (p->p_name, q->p_name, strlen (p->p_name)))
+		ok = 1;
+	      else
+		ok = (strcmp (p->p_name, q->p_name) >= 0);
+	    }
+	  else
+	    {
+	      ok = (strcmp (p->p_name, q->p_name) >= 0);
+	    }
+	  if (ok)
+	    printf ("\tOK ('%s' vs '%s')\n", q->p_name, p->p_name);
+	  else
+	    printf ("\t? ('%s' should be after '%s')\n", q->p_name, p->p_name);
+	}
+    }
 }

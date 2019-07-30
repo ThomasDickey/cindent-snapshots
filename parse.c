@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2010,2018, Thomas E. Dickey
+   Copyright 1999-2018,2019, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -415,6 +415,11 @@ parse (enum codes tk)		/* the code for the construct scanned */
 	      parser_state_tos->ind_level += brace_indent;
 	      parser_state_tos->i_l_follow += brace_indent;
 	    }
+	}
+      else if (parser_state_tos->p_stack[parser_state_tos->tos] == casestmt)
+	{
+	  parser_state_tos->ind_level += case_brace_indent - ind_size;
+	  parser_state_tos->i_l_follow += case_brace_indent;
 	}
       else
 	{
