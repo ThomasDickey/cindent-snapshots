@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2014,2018 Thomas Dickey
+   Copyright 1999-2018,2019 Thomas Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -491,8 +491,7 @@ lexi (void)
 	{
 	  message (1, (qchar == '\''
 		       ? "Unterminated character constant"
-		       : "Unterminated string constant"),
-		   0, 0);
+		       : "Unterminated string constant"));
 	}
       else
 	{

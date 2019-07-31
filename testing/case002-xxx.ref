@@ -7,20 +7,16 @@ set_envvar(int f GCC_UNUSED, int n GCC_UNUSED)
     char *both;
     int rc;
 
-    if ((rc = mlreply2("Environment variable: ", &var)) == ABORT)
-    {
+    if ((rc = mlreply2("Environment variable: ", &var)) == ABORT) {
         /* EMPTY */ ;
     }
-    else if ((rc = mlreply2("Value: ", &val)) == ABORT)
-    {
+    else if ((rc = mlreply2("Value: ", &val)) == ABORT) {
         /* EMPTY */ ;
     }
-    else if ((both = typeallocn(char, tb_length(var) + tb_length(val))) == 0)
-    {
+    else if ((both = typeallocn(char, tb_length(var) + tb_length(val))) == 0) {
         rc = no_memory("set_envvar");
     }
-    else
-    {
+    else {
         lsprintf(both, "%s=%s", tb_values(var), tb_values(val));
         putenv(both);           /* this will leak.  i think it has to. */
     }
@@ -34,12 +30,10 @@ alloc_LINE(BUFFER * bp)
 {
     LINEPTR lp;
 
-    if ((lp = bp->b_freeLINEs) != NULL)
-    {
+    if ((lp = bp->b_freeLINEs) != NULL) {
         bp->b_freeLINEs = lp->l_nxtundo;
     }
-    else if ((lp = typealloc(LINE)) == NULL)
-    {
+    else if ((lp = typealloc(LINE)) == NULL) {
         (void) no_memory("LINE");
     }
     return lp;
@@ -51,23 +45,18 @@ SaveConvertedLength(XtPointer *target, unsigned long source)
     Boolean result = False;
 
     *target = XtMalloc(4);
-    if (*target != 0)
-    {
+    if (*target != 0) {
         result = True;
-        if (sizeof(unsigned long) == 4)
-        {
+        if (sizeof(unsigned long) == 4) {
             *(unsigned long *) *target = source;
         }
-        else if (sizeof(unsigned) == 4)
-        {
+        else if (sizeof(unsigned) == 4) {
             *(unsigned *) *target = (unsigned) source;
         }
-        else if (sizeof(unsigned short) == 4)
-        {
+        else if (sizeof(unsigned short) == 4) {
             *(unsigned short *) *target = (unsigned short) source;
         }
-        else
-        {
+        else {
             /* FIXME - does this depend on byte-order? */
             unsigned long temp = source;
 

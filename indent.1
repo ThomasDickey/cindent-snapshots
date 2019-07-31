@@ -278,13 +278,23 @@ right of the code), so for this style \fBindent\fR has arbitrarily chosen
 column 33.
 .PP
 The style of the original Berkeley \fBindent\fR may be obtained by
-specifying \fB\-orig\fR (or by specifyfying \fB\-\-original\fR, using the long
-option name)
+specifying \fB\-orig\fR (or by specifying \fB\-\-original\fR, using the long option
+name)
 This style is equivalent to the following settings:
 .NS
 \-nbap \-nbad \-bc \-br \-c33 \-cd33 \-cdb \-ce \-ci4
 \-cli0 \-cp33 \-di16 \-fc1 \-fca \-i4 \-ip4 \-l75 \-lp
 \-npcs \-psl \-sc \-nsob \-nss \-ts8
+.NE
+.PP
+The Linux style is used in the Linux kernel and drivers
+It is
+enabled with the \fB\-linux\fR option (or by specifying \fB\-\-linux\-style\fR.
+This style is equivalent to the following settings:
+.NS
+\-nbad \-bap \-nbc \-bbo \-hnl \-br \-brs \-c33 \-cd33 \-ncdb \-ce \-ci4
+\-cli0 \-d0 \-di1 \-nfc1 \-i8 \-ip0 \-l80 \-lp \-npcs \-nprs \-npsl \-sai
+\-saf \-saw \-ncs \-nsc \-sob \-nfca \-cp33 \-ss \-ts8 \-il1
 .NE
 .PP
 .SH Blank lines
@@ -416,10 +426,10 @@ comments begin with the delimiter \fB//\fR and end at the newline.
 statements, comments which follow declarations, comments following
 preprocessor directives, and comments which are not preceded by code of
 any sort, i.e., they begin the text of the line (although not
-neccessarily in column 1).
+necessarily in column 1).
 .PP
 \fBindent\fR further distinguishes between comments found outside of
-procecures and aggregates, and those found within them
+procedures and aggregates, and those found within them
 In particular,
 comments beginning a line found within a procedure will be indented to
 the column at which code is currently indented
@@ -605,8 +615,74 @@ else {
 }
 .NE
 .PP
+The \fB\-cdw\fR option causes the \fBwhile\fR in a do\-while loop to cuddle up
+to the immediately preceding \fB}\fR
+For example, with \fB\-cdw\fR you get the
+following:
+.NS
+do {
+  x\-\-;
+} while (x);
+.NE
+.PP
+With \fB\-ncdw\fR that code would appear as
+.NS
+do {
+  x\-\-;
+}
+while (x);
+.NE
+.PP
 The \fB\-cli\fR option specifies the number of spaces that case labels
 should be indented to the right of the containing \fBswitch\fR statement.
+.PP
+The default setting gives code like:
+.NS
+switch (i)
+  {
+  case 0:
+    break;
+  case 1:
+    {
+      ++i;
+    }
+  default:
+    break;
+  }
+.NE
+.PP
+Using the \fB\-cli2\fR option that would become:
+.NS
+switch (i)
+  {
+    case 0:
+      break;
+    case 1:
+      {
+        ++i;
+      }
+    default:
+      break;
+  }
+.NE
+.PP
+The indentation of the braces below a case statement can be
+controlled with the \fB\-cbin\fR option
+For example, using \fB\-cli2 \-cbi0\fR
+results in:
+.NS
+switch (i)
+  {
+    case 0:
+      break;
+    case 1:
+    {
+      ++i;
+    }
+    default:
+      break;
+  }
+.NE
 .PP
 If a semicolon is on the same line as a \fBfor\fR or \fBwhile\fR statement,
 the \fB\-ss\fR option will cause a space to be placed before the semicolon.
@@ -637,7 +713,7 @@ char           *bar;
 .NE
 .PP
 Using a small value (such as one or two) for the \fB\-di\fR option can be
-used to cause the indentifiers to be placed in the first available
+used to cause the identifiers to be placed in the first available
 position, for example
 .NS
 int foo;
@@ -838,15 +914,12 @@ y          += 6;
 .SH Other Languages
 In addition to recognizing C++ comments (which are now standard in C),
 \fBindent\fR provides limited support for C++ constructs:
-.TP 3
+.PP
 * It deals with C++ Class::Method, by not splitting the double
-colons.
-.TP 3
-* It handles C++ const function declarations like
 .NS
-const MediaDomainList PVR::get_itsMediaDomainList() const
-.NE
-.IP
+colons.
+   * It handles C++ const function declarations like
+     const MediaDomainList PVR::get_itsMediaDomainList() const
 by ignoring "const" just after a parameter list */
 .NE
 .PP
@@ -893,14 +966,14 @@ verbose).
 The "\-troff" option is strongly deprecated, and is not supported
 A
 good thing for someone to do is to rewrite \fBindent\fR to generate TeX
-source as a hardcopy output option, amoung other things.
+source as a hardcopy output option, among other things.
 .SH Copyright
 The following copyright notice applies to the \fBindent\fR program
 The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 .NS
-Copyright 1999\-2002, 2010 Thomas E
+Copyright 1999\-2018, 2019 Thomas E
 Dickey
 Copyright (C) 1995, 1996 Joseph Arceneaux
 Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
@@ -1013,6 +1086,14 @@ Put comments to the right of code in column N.
 (see \fBComments\fR).
 .RE
 .PP
+\fB\-cbiN\fR
+.br
+\fB\-\-case\-brace\-indentationN\fR
+.RS 5
+Indent braces after a case label N spaces.
+(see \fBStatements\fR).
+.RE
+.PP
 \fB\-cdN\fR
 .br
 \fB\-\-declaration\-comment\-columnN\fR
@@ -1029,11 +1110,20 @@ Put comment delimiters on blank lines.
 (see \fBComments\fR).
 .RE
 .PP
+\fB\-cdw\fR
+.br
+\fB\-\-cuddle\-do\-while\fR
+.RS 5
+Cuddle while of \fBdo {} while;\fR and preceding \fB}\fR
+*Note
+Comments::.
+.RE
+.PP
 \fB\-ce\fR
 .br
 \fB\-\-cuddle\-else\fR
 .RS 5
-Cuddle else and preceeding \fB}\fR.
+Cuddle else and preceding \fB}\fR.
 (see \fBComments\fR).
 .RE
 .PP
@@ -1238,6 +1328,14 @@ Do not put comment delimiters on blank lines.
 (see \fBComments\fR).
 .RE
 .PP
+\fB\-ncdw\fR
+.br
+\fB\-\-dont\-cuddle\-do\-while\fR
+.RS 5
+Do not cuddle \fB}\fR and the \fBwhile\fR of a \fBdo {} while;\fR.
+(see \fBStatements\fR).
+.RE
+.PP
 \fB\-nce\fR
 .br
 \fB\-\-dont\-cuddle\-else\fR
@@ -1344,6 +1442,14 @@ Disables \fB\-ss\fR.
 (see \fBStatements\fR).
 .RE
 .PP
+\fB\-nut\fR
+.br
+\fB\-\-no\-tabs\fR
+.RS 5
+Use spaces instead of tabs.
+(see \fBIndentation\fR).
+.RE
+.PP
 \fB\-nv\fR
 .br
 \fB\-\-no\-verbosity\fR
@@ -1433,7 +1539,7 @@ Swallow optional blank lines.
 .br
 \fB\-\-space\-special\-semicolon\fR
 .RS 5
-On one\-line \fBfor\fR and \fBwhile\fR statments, force a blank before the
+On one\-line \fBfor\fR and \fBwhile\fR statements, force a blank before the
 semicolon.
 (see \fBStatements\fR).
 .RE
@@ -1468,6 +1574,15 @@ Set tab size to N spaces.
 (see \fBIndentation\fR).
 .RE
 .PP
+\fB\-ut\fR
+.br
+\fB\-\-use\-tabs\fR
+.RS 5
+Use tabs
+This is the default
+(see \fBIndentation\fR).
+.RE
+.PP
 \fB\-v\fR
 .br
 \fB\-\-verbose\fR
@@ -1493,16 +1608,19 @@ the corresponding short option.
 \-\-braces\-after\-if\-line                          \-bl
 \-\-brace\-indent                                  \-bli
 \-\-braces\-on\-if\-line                             \-br
+\-\-case\-brace\-indentation                        \-cbiN
 \-\-case\-indentation                              \-cliN
 \-\-comment\-delimiters\-on\-blank\-lines             \-cdb
 \-\-comment\-indentation                           \-cN
 \-\-continuation\-indentation                      \-ciN
 \-\-continue\-at\-parentheses                       \-lp
+\-\-cuddle\-do\-while                               \-cdw
 \-\-cuddle\-else                                   \-ce
 \-\-debug                                         \-DN
 \-\-declaration\-comment\-column                    \-cdN
 \-\-declaration\-indentation                       \-diN
 \-\-dont\-break\-procedure\-type                     \-npsl
+\-\-dont\-cuddle\-do\-while                          \-ncdw
 \-\-dont\-cuddle\-else                              \-nce
 \-\-dont\-format\-comments                          \-nfca
 \-\-dont\-format\-first\-column\-comments             \-nfc1
@@ -1520,6 +1638,7 @@ the corresponding short option.
 \-\-leave\-preprocessor\-space                      \-lps
 \-\-line\-comments\-indentation                     \-dN
 \-\-line\-length                                   \-lN
+\-\-linux\-style                                   \-linux
 \-\-no\-blank\-lines\-after\-block\-comments           \-nbbb
 \-\-no\-blank\-lines\-after\-commas                   \-nbc
 \-\-no\-blank\-lines\-after\-declarations             \-nbad
@@ -1528,6 +1647,7 @@ the corresponding short option.
 \-\-no\-space\-after\-casts                          \-ncs
 \-\-no\-parameter\-indentation                      \-nip
 \-\-no\-space\-after\-function\-call\-names            \-npcs
+\-\-no\-tabs                                       \-nut
 \-\-no\-verbosity                                  \-nv
 \-\-original                                      \-orig
 \-\-parameter\-indentation                         \-ipN
@@ -1540,6 +1660,7 @@ the corresponding short option.
 \-\-start\-left\-side\-of\-comments                   \-sc
 \-\-swallow\-optional\-blank\-lines                  \-sob
 \-\-tab\-size                                      \-tsN
+\-\-use\-tabs                                      \-ut
 \-\-verbose                                       \-v
 .NE
 .PP
@@ -1562,16 +1683,18 @@ Menu:
 \-\-braces\-after\-if\-line	Statements.
 \-\-braces\-on\-if\-line	Statements.
 \-\-c\-plus\-plus	Other Languages.
-\-\-case\-indentationN	Statements.
+\-\-case\-brace\-indentationN	Statements.
 \-\-comment\-delimiters\-on\-blank\-lines	Comments.
 \-\-comment\-indentationN	Comments.
 \-\-continuation\-indentationN	Indentation.
 \-\-continue\-at\-parentheses	Indentation.
+\-\-cuddle\-do\-while	Statements.
 \-\-cuddle\-else	Statements.
 \-\-debug	Miscellaneous options.
 \-\-declaration\-comment\-columnN	Comments.
 \-\-declaration\-indentationN	Declarations.
 \-\-dont\-break\-procedure\-type	Declarations.
+\-\-dont\-cuddle\-do\-while	Statements.
 \-\-dont\-cuddle\-else	Statements.
 \-\-dont\-format\-comments	Comments.
 \-\-dont\-format\-first\-column\-comments	Comments.
@@ -1594,6 +1717,7 @@ Menu:
 \-\-leave\-preprocessor\-space	Indentation.
 \-\-lex\-or\-yacc	Other Languages.
 \-\-line\-comments\-indentationN	Comments.
+\-\-linux	Common styles.
 \-\-no\-blank\-lines\-after\-block\-comments	Blank lines.
 \-\-no\-blank\-lines\-after\-commas	Declarations.
 \-\-no\-blank\-lines\-after\-declarations	\-bad.
@@ -1634,11 +1758,12 @@ Menu:
 \-br	Statements.
 \-bs	Statements.
 \-c++	Other Languages.
+\-cbiN	Statements.
 \-cdb	Comments.
 \-cdN	Comments.
+\-cdw	Statements.
 \-ce	Statements.
 \-ciN	Indentation.
-\-cliN	Statements.
 \-cN	Comments.
 \-cpN	Comments.
 \-cs	Statements.
@@ -1662,6 +1787,7 @@ Menu:
 \-nbbb	Blank lines.
 \-nbc	Declarations.
 \-ncdb	Comments.
+\-ncdw	Statements.
 \-nce	Statements.
 \-ncs	Statements.
 \-neei	Indentation.
@@ -1700,6 +1826,7 @@ GNU style	Common styles.
 Initialization file	Invoking indent.
 Invoking indent	Invoking indent.
 Kernighan & Ritchie style	Common styles.
+Linux style	Common styles.
 Long options, use of	Invoking indent.
 Original Berkeley style	Common styles.
 Output File Specification	Invoking indent.

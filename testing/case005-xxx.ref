@@ -1,8 +1,7 @@
 static size_t
 fill_addrinfo(void **buffer)
 {
-    for (count = 0; count < limit; ++count)
-    {
+    for (count = 0; count < limit; ++count) {
 
         /* *INDENT-EQLS* */
         actual->ai_flags    = phost->ai_flags;

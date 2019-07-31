@@ -381,7 +381,7 @@ chosen column 33.
 @kindex --berkeley
 @kindex --berkeley-style
 The style of the original Berkeley @code{indent} may be obtained by
-specifying @samp{-orig} (or by specifyfying @samp{--original}, using the
+specifying @samp{-orig} (or by specifying @samp{--original}, using the
 long option name).  This style is equivalent to the following settings:
 
 @example
@@ -389,6 +389,21 @@ long option name).  This style is equivalent to the following settings:
 -nbap -nbad -bc -br -c33 -cd33 -cdb -ce -ci4
 -cli0 -cp33 -di16 -fc1 -fca -i4 -ip4 -l75 -lp
 -npcs -psl -sc -nsob -nss -ts8
+@end group
+@end example
+
+@cindex Linux style
+@kindex --linux
+The Linux style is used in the Linux kernel and drivers.
+It is enabled  with  the  @samp{-linux} option
+(or by specifying @samp{--linux-style}.
+This style is equivalent to the following settings:
+
+@example
+@group
+-nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4
+-cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -npsl -sai
+-saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
 @end group
 @end example
 
@@ -572,10 +587,10 @@ C++ comments begin with the delimiter @samp{//} and end at the newline.
 statements, comments which follow declarations, comments following
 preprocessor directives, and comments which are not preceded by code of
 any sort, i.e., they begin the text of the line (although not
-neccessarily in column 1).
+necessarily in column 1).
 
 @code{indent} further distinguishes between comments found outside of
-procecures and aggregates, and those found within them.  In particular,
+procedures and aggregates, and those found within them.  In particular,
 comments beginning a line found within a procedure will be indented to
 the column at which code is currently indented.  The exception to this a
 comment beginning in the leftmost column;  such a comment is output
@@ -808,11 +823,95 @@ else @{
 @end group
 @end smallexample
 
-@kindex -cli@var{n}
-@kindex --case-indentation@var{n}
+@kindex -cdw
+@kindex --cuddle-do-while
+@kindex -ncdw
+@kindex --dont-cuddle-do-while
+The @samp{-cdw} option causes the @code{while}
+in a do-while loop to cuddle up
+to the immediately preceding @samp{@}}.
+For example, with @samp{-cdw} you get the following:
+
+@smallexample
+@group
+do @{
+  x--;
+@} while (x);
+@end group
+@end smallexample
+
+With @samp{-ncdw} that code would appear as
+
+@smallexample
+@group
+do @{
+  x--;
+@}
+while (x);
+@end group
+@end smallexample
+
+@kindex -cbi@var{n}
+@kindex --case-brace-indentation@var{n}
 The @samp{-cli} option specifies the number of spaces that case labels
 should be indented to the right of the containing @samp{switch}
 statement.
+
+The default setting gives code like:
+
+@smallexample
+@group
+switch (i)
+  @{
+  case 0:
+    break;
+  case 1:
+    @{
+      ++i;
+    @}
+  default:
+    break;
+  @}
+@end group
+@end smallexample
+
+Using the @samp{-cli2} option that would become:
+
+@smallexample
+@group
+switch (i)
+  @{
+    case 0:
+      break;
+    case 1:
+      @{
+        ++i;
+      @}
+    default:
+      break;
+  @}
+@end group
+@end smallexample
+
+The  indentation of the braces below a case statement can be controlled
+with the @samp{-cbin} option.
+For example, using @samp{-cli2 -cbi0} results in:
+
+@smallexample
+@group
+switch (i)
+  @{
+    case 0:
+      break;
+    case 1:
+    @{
+      ++i;
+    @}
+    default:
+      break;
+  @}
+@end group
+@end smallexample
 
 @kindex -ss
 @kindex --space-special-semicolon
@@ -865,7 +964,7 @@ char           *bar;
 @end example
 
 Using a small value (such as one or two) for the @samp{-di} option can
-be used to cause the indentifiers to be placed in the first available
+be used to cause the identifiers to be placed in the first available
 position, for example
 
 @example
@@ -1218,7 +1317,7 @@ Its parameter gives the debugging level (0 is off, 1 is on, 2 is more verbose).
 
 The "-troff" option is strongly deprecated, and is not supported.  A
 good thing for someone to do is to rewrite `indent' to generate TeX
-source as a hardcopy output option, amoung other things.
+source as a hardcopy output option, among other things.
 
 @node Copyright,  , Bugs, Indent Program
 @comment  node-name,  next,  previous,  up
@@ -1229,7 +1328,7 @@ The copyright and copying permissions for this manual appear near the
 beginning of this document.
 
 @display
-Copyright 1999-2002, 2010 Thomas E. Dickey
+Copyright 1999-2018, 2019 Thomas E. Dickey
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright @copyright{} 1985 Sun Microsystems, Inc.
@@ -1312,6 +1411,11 @@ Put a space between @code{sizeof} and its argument.@*
 Put comments to the right of code in column @var{n}.@*
 @xref{Comments}.
 
+@item -cbi@var{n}
+@itemx --case-brace-indentation@var{n}
+Indent braces after a case label @var{n} spaces.@*
+@xref{Statements}.
+
 @item -cd@var{n}
 @itemx --declaration-comment-column@var{n}
 Put comments to the right of the declarations in column @var{n}.@*
@@ -1322,9 +1426,14 @@ Put comments to the right of the declarations in column @var{n}.@*
 Put comment delimiters on blank lines.@*
 @xref{Comments}.
 
+@item -cdw
+@itemx --cuddle-do-while
+Cuddle while of @code{do @{@} while;} and preceding @samp{@}}.
+@xref{Comments}.
+
 @item -ce
 @itemx --cuddle-else
-Cuddle else and preceeding @samp{@}}.@*
+Cuddle else and preceding @samp{@}}.@*
 @xref{Comments}.
 
 @item -ci@var{n}
@@ -1454,6 +1563,11 @@ Do not force newlines after commas in declarations.@*
 Do not put comment delimiters on blank lines.@*
 @xref{Comments}.
 
+@item -ncdw
+@itemx --dont-cuddle-do-while
+Do not cuddle @code{@}} and the @code{while} of a @code{do @{@} while;}.@*
+@xref{Statements}.
+
 @item -nce
 @itemx --dont-cuddle-else
 Do not cuddle @code{@}} and @code{else}.@*
@@ -1521,9 +1635,14 @@ Do not force a space before the semicolon after certain statements.
 Disables @samp{-ss}.@*
 @xref{Statements}.
 
+@item -nut
+@itemx --no-tabs
+Use spaces instead of tabs.@*
+@xref{Indentation}.
+
 @item -nv
 @itemx --no-verbosity
-Disable verbose mode. @xref{Miscellaneous options}.
+Disable verbose mode. @xref{Miscellaneous options}.@*
 
 @item -orig
 @itemx --original
@@ -1574,7 +1693,7 @@ Swallow optional blank lines.@*
 
 @item -ss
 @itemx --space-special-semicolon
-On one-line @code{for} and @code{while} statments,
+On one-line @code{for} and @code{while} statements,
 force a blank before the semicolon.@*
 @xref{Statements}.
 
@@ -1604,6 +1723,11 @@ Tell @code{indent} to assume names ending with ``_t'' are typenames.@*
 @item -ts@var{n}
 @itemx --tab-size@var{n}
 Set tab size to @var{n} spaces.@*
+@xref{Indentation}.
+
+@item -ut
+@itemx --use-tabs
+Use tabs. This is the default.
 @xref{Indentation}.
 
 @item -v
@@ -1637,16 +1761,19 @@ the corresponding short option.
 \line{ --braces-after-if-line \leaderfill            -bl\ \ }
 \line{ --brace-indent \leaderfill                -bli@var{n}}
 \line{ --braces-on-if-line \leaderfill               -br\ \ }
+\line{ --case-brace-indentation \leaderfill            -cbi@var{n}}
 \line{ --case-indentation \leaderfill            -cli@var{n}}
 \line{ --comment-delimiters-on-blank-lines \leaderfill -cdb\ }
 \line{ --comment-indentation \leaderfill       -c@var{n}\ \ }
 \line{ --continuation-indentation       \leaderfill -ci@var{n}\ }
 \line{ --continue-at-parentheses  \leaderfill   -lp\ \ }
+\line{ --cuddle-do-while \leaderfill                         -cdw\ \ }
 \line{ --cuddle-else \leaderfill                         -ce\ \ }
 \line{ --debug \leaderfill  -D@var{n}\ }
 \line{ --declaration-comment-column \leaderfill  -cd@var{n}\ }
 \line{ --declaration-indentation \leaderfill     -di@var{n}\ }
 \line{ --dont-break-procedure-type \leaderfill           -npsl}
+\line{ --dont-cuddle-do-while \leaderfill                    -ncdw\ }
 \line{ --dont-cuddle-else \leaderfill                    -nce\ }
 \line{ --dont-format-comments \leaderfill                -nfca}
 \line{ --dont-format-first-column-comments \leaderfill   -nfc1}
@@ -1663,6 +1790,7 @@ the corresponding short option.
 \line{ --k-and-r-style \leaderfill                       -kr\ \ }
 \line{ --leave-optional-blank-lines \leaderfill          -nsob}
 \line{ --line-comments-indentation \leaderfill      -d@var{n}\ \ }
+\line{ --linux-style \leaderfill                      --linux}
 \line{ --leave-preprocessor-space \leaderfill       -lps\ }
 \line{ --line-length \leaderfill                    -l@var{n}\ \ }
 \line{ --no-blank-lines-after-block-comments \leaderfill -nbbb}
@@ -1675,6 +1803,7 @@ the corresponding short option.
 \line{ --no-space-after-casts \leaderfill               -ncs\ }
 \line{ --no-parameter-indentation \leaderfill               -nip\ }
 \line{ --no-space-after-function-call-names \leaderfill -npcs}
+\line{ --no-tabs \leaderfill       -nut\ \ \ }
 \line{ --no-verbosity \leaderfill                       -nv\ \ }
 \line{ --original \leaderfill                      -orig}
 \line{ --parameter-indentation \leaderfill         -ip@var{n}\ }
@@ -1688,6 +1817,7 @@ the corresponding short option.
 \line{ --start-left-side-of-comments \leaderfill   -sc\ \ }
 \line{ --swallow-optional-blank-lines \leaderfill  -sob\ }
 \line{ --tab-size \leaderfill          -ts@var{n}\ }
+\line{ --use-tabs \leaderfill       -ut\ \ \ }
 \line{ --verbose \leaderfill       -v\ \ \ }
 }
 @end tex
@@ -1702,16 +1832,19 @@ the corresponding short option.
 --braces-after-if-line                          -bl
 --brace-indent                                  -bli
 --braces-on-if-line                             -br
+--case-brace-indentation                        -cbi@var{n}
 --case-indentation                              -cli@var{n}
 --comment-delimiters-on-blank-lines             -cdb
 --comment-indentation                           -c@var{n}
 --continuation-indentation                      -ci@var{n}
 --continue-at-parentheses                       -lp
+--cuddle-do-while                               -cdw
 --cuddle-else                                   -ce
 --debug                                         -D@var{n}
 --declaration-comment-column                    -cd@var{n}
 --declaration-indentation                       -di@var{n}
 --dont-break-procedure-type                     -npsl
+--dont-cuddle-do-while                          -ncdw
 --dont-cuddle-else                              -nce
 --dont-format-comments                          -nfca
 --dont-format-first-column-comments             -nfc1
@@ -1729,6 +1862,7 @@ the corresponding short option.
 --leave-preprocessor-space                      -lps
 --line-comments-indentation                     -d@var{n}
 --line-length                                   -l@var{n}
+--linux-style                                   -linux
 --no-blank-lines-after-block-comments           -nbbb
 --no-blank-lines-after-commas                   -nbc
 --no-blank-lines-after-declarations             -nbad
@@ -1737,6 +1871,7 @@ the corresponding short option.
 --no-space-after-casts                          -ncs
 --no-parameter-indentation                      -nip
 --no-space-after-function-call-names            -npcs
+--no-tabs                                       -nut
 --no-verbosity                                  -nv
 --original                                      -orig
 --parameter-indentation                         -ip@var{n}
@@ -1749,6 +1884,7 @@ the corresponding short option.
 --start-left-side-of-comments                   -sc
 --swallow-optional-blank-lines                  -sob
 --tab-size                                      -ts@var{n}
+--use-tabs                                      -ut
 --verbose                                       -v
 @end example
 @end ifinfo

@@ -67,17 +67,14 @@ handle_keyword(char *name)
 {
     flt_puts(name, (int) strlen(name), keyword_attr(name));
     next_state = INITIAL;
-    if (!strcmp(name, "$rem"))
-    {
+    if (!strcmp(name, "$rem")) {
         BEGIN(NOTE);
     }
-    else if (!strcmp(name, "$text"))
-    {
+    else if (!strcmp(name, "$text")) {
         BEGIN(PRETEXT);
         next_state = sTEXT;
     }
-    else
-    {
+    else {
         BEGIN(INITIAL);
     }
 }

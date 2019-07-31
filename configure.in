@@ -1,7 +1,7 @@
-dnl $Id: configure.in,v 1.7 2013/12/07 12:44:16 tom Exp $
+dnl $Id: configure.in,v 1.8 2019/07/31 22:24:32 tom Exp $
 dnl Process this file with autoconf to produce a configure script.
 dnl ---------------------------------------------------------------------------
-dnl Copyright:  1999-2010,2013 by Thomas E. Dickey
+dnl Copyright:  1999-2013,2019 by Thomas E. Dickey
 dnl
 dnl Permission is hereby granted, free of charge, to any person obtaining a
 dnl copy of this software and associated documentation files (the
@@ -41,7 +41,7 @@ CF_MAKE_TAGS
 CF_PROG_LINT
 
 CF_DISABLE_ECHO
-CF_WITH_WARNINGS
+CF_ENABLE_WARNINGS
 
 CF_XOPEN_SOURCE
 
