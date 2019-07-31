@@ -1761,7 +1761,7 @@ indent (struct file_buffer *this_file)
 		}
 	      else
 		{
-		  message (0, "Unmatched #%.*s", e_key - s_key, s_key);
+		  message (0, "Unmatched #%.*s", (int) (e_key - s_key), s_key);
 		  file_exit_value = indent_error;
 		}
 	    }

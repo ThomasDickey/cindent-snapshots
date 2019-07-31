@@ -314,8 +314,10 @@ struct pro pro[] =
   INIT_BOOL ("bbo", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("bc", DFT_BC, OFF, &leave_comma, &exp_bc),
   INIT_BOOL ("bfda", DFT_BAD, ON, &ignored, &ignored),
+  INIT_BOOL ("blf", DFT_BAD, ON, &ignored, &ignored),
   INIT_INT ("bli", DFT_BLI, ONOFF_NA, &brace_indent, &exp_bli),
-  INIT_BOOL ("bl", true, OFF, &btype_2, &exp_bl),
+  INIT_BOOL ("bl", DFT_BR, OFF, &btype_2, &exp_bl),
+  INIT_BOOL ("brs", DFT_BAD, ON, &ignored, &ignored),
   INIT_BOOL ("br", DFT_BR, ON, &btype_2, &exp_bl),
   INIT_BOOL ("bs", DFT_BS, ON, &blank_after_sizeof, &exp_bs),
   INIT_INT ("cbi", DFT_I, ONOFF_NA, &case_brace_indent, &exp_cbi),
@@ -484,6 +486,7 @@ struct long_option_conversion option_conversions[] =
   INIT_LONG ("nbs", "no-Bill-Shannon"),
   INIT_LONG ("nbs", "no-blank-before-sizeof"),
   INIT_LONG ("ncdb", "no-comment-delimiters-on-blank-lines"),
+  INIT_LONG ("ncdw", "dont-cuddle-do-while"),
   INIT_LONG ("nce", "dont-cuddle-else"),
   INIT_LONG ("ncs", "no-space-after-casts"),
   INIT_LONG ("ndj", "dont-left-justify-declarations"),
@@ -501,6 +504,7 @@ struct long_option_conversion option_conversions[] =
   INIT_LONG ("nsc", "dont-star-comments"),
   INIT_LONG ("nsob", "leave-optional-blank-lines"),
   INIT_LONG ("nss", "dont-space-special-semicolon"),
+  INIT_LONG ("nut", "no-tabs"),
   INIT_LONG ("nv", "no-verbosity"),
   INIT_LONG ("o", "output"),
   INIT_LONG ("o", "output-file"),
@@ -517,6 +521,7 @@ struct long_option_conversion option_conversions[] =
   INIT_LONG ("ss", "space-special-semicolon"),
   INIT_LONG ("st", "standard-output"),
   INIT_LONG ("ta", "auto-typedefs"),
+  INIT_LONG ("ut", "use-tabs"),
   INIT_LONG ("ts", "tab-size"),
   INIT_LONG ("version", "version"),
   INIT_LONG ("v", "verbose"),
@@ -644,10 +649,41 @@ found:
   /* If the parameter has been explicitly specified, we don't
      want a group of bundled settings to override the explicit
      setting.  */
-  if (verbose)
-    fprintf (stderr, "option: %s\n", p->p_name);
-  if (explicit || !*(p->p_explicit))
+  if (NumberData (p) == &ignored)
     {
+      if (verbose)
+	{
+	  fflush (stdout);
+	  fprintf (stderr, "%soption: %s (not implemented)\n",
+		   explicit ? "" : " ",
+		   p->p_name);
+	}
+    }
+  else if (explicit || !*(p->p_explicit))
+    {
+      if (verbose)
+	{
+	  const char *use_param = 0;
+
+	  fflush (stdout);
+	  switch (p->p_type)
+	    {
+	    case PRO_KEY:
+	      /* FALLTHRU */
+	    case PRO_INT:
+	      use_param = (*param_start ? param_start : param);
+	      break;
+	    default:
+	      break;
+	    }
+	  fprintf (stderr, "%soption: %s",
+		   explicit ? "" : " ", option);
+	  if (strcmp (option, p->p_name))
+	    fprintf (stderr, " (%s)", p->p_name);
+	  if (use_param)
+	    fprintf (stderr, " %s", use_param);
+	  fprintf (stderr, "\n");
+	}
       if (explicit)
 	*(p->p_explicit) = 1;
 
@@ -732,6 +768,11 @@ found:
 	  exit (invocation_error);
 	}
     }
+  else if (verbose)
+    {
+      fflush (stdout);
+      fprintf (stderr, "option: %s (ignored)\n", p->p_name);
+    }
 
   return val;
 }
@@ -780,8 +821,7 @@ scan_profile (FILE * f)
 		    i = getc (f);
 		  if (i == EOF)
 		    {
-		      message (-1, "Profile contains unpalatable characters",
-			       0, 0);
+		      message (-1, "Profile contains unpalatable characters");
 		      return;
 		    }
 		}

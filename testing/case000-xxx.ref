@@ -10,16 +10,13 @@ char *s1;
 char *s2;
 int n;
 {
-    if (n != 0)
-    {
-        if ((s1 + n > s2) && (s2 + n > s1))
-        {
+    if (n != 0) {
+        if ((s1 + n > s2) && (s2 + n > s1)) {
             static char *bfr;
             static int length;
             size_t j;
 
-            if (length < n)
-            {
+            if (length < n) {
                 length = (n * 3) / 2;
                 bfr = (bfr != 0)
                     ? (char *) realloc(bfr, length)

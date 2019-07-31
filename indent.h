@@ -22,6 +22,8 @@
    IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES
    OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
 
+#ifndef INDENT_H
+#define INDENT_H 1
 
 /* Values that `indent' can return for exit status.
 
@@ -138,6 +140,13 @@ enum rwcodes
 #define at_buffer_end(p) ((p) >= buf_end)
 #define at_line_end(p)   (at_buffer_end(p) || (*p) == EOL)
 
+#ifndef GCC_PRINTFLIKE
+#if defined(GCC_PRINTF) && !defined(printf)
+#define GCC_PRINTFLIKE(fmt,var) __attribute__((format(printf,fmt,var)))
+#else
+#define GCC_PRINTFLIKE(fmt,var) /*nothing*/
+#endif
+#endif
 extern const char *progname;	/* actual name of this program */
 
 extern const char *in_name;	/* Name of input file.  */
@@ -523,8 +532,8 @@ extern int else_endif_col;
 extern char *xmalloc (size_t);
 extern char *xrealloc (char *, size_t);
 extern char *xstrdup (const char *);
-extern void message (int, const char *, ...);
-extern void fatal (const char *, ...);
+extern void message (int, const char *, ...) GCC_PRINTFLIKE(2,3);
+extern void fatal (const char *, ...) GCC_PRINTFLIKE(1,2);
 
 /* Declared in args.c */
 extern char *set_profile (const char *);
@@ -559,3 +568,5 @@ extern void reduce (void);
 extern void reset_parser (void);
 extern void show_parser (const char *, int);
 extern void show_pstack (void);
+
+#endif /* INDENT_H */

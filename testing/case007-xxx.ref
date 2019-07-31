@@ -1,17 +1,14 @@
-typedef struct
-{
+typedef struct {
     unsigned int val;
     const char *name;
-}
-NAMES;
+} NAMES;
 
 const char *
 _nc_altcharset_name(attr_t attr, chtype ch)
 {
     const char *result = 0;
 
-    if (attr & A_ALTCHARSET)
-    {
+    if (attr & A_ALTCHARSET) {
         char *cp;
         char *found = 0;
         static const NAMES names[] =
@@ -49,21 +46,17 @@ _nc_altcharset_name(attr_t attr, chtype ch)
 
         const NAMES *sp2;
 
-        for (cp = acs_chars; cp[0] && cp[1]; cp += 2)
-        {
-            if (ChCharOf(cp[1]) == ChCharOf(ch))
-            {
+        for (cp = acs_chars; cp[0] && cp[1]; cp += 2) {
+            if (ChCharOf(cp[1]) == ChCharOf(ch)) {
                 found = cp;
                 /* don't exit from loop - there may be redefinitions */
             }
         }
 
-        if (found != 0)
-        {
+        if (found != 0) {
             ch = ChCharOf(*found);
             for (sp = names; sp->val; sp++)
-                if (sp->val == ch)
-                {
+                if (sp->val == ch) {
                     result = sp->name;
                     break;
                 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
 <html>
-<!-- Created on July 7, 2019 by texi2html 1.82
+<!-- Created on July 31, 2019 by texi2html 1.82
 texi2html was written by: 
             Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -359,12 +359,24 @@ chosen column 33.
 <a name="index-_002d_002dberkeley"></a>
 <a name="index-_002d_002dberkeley_002dstyle"></a>
 <p>The style of the original Berkeley <code>indent</code> may be obtained by
-specifying &lsquo;<samp>-orig</samp>&rsquo; (or by specifyfying &lsquo;<samp>--original</samp>&rsquo;, using the
+specifying &lsquo;<samp>-orig</samp>&rsquo; (or by specifying &lsquo;<samp>--original</samp>&rsquo;, using the
 long option name).  This style is equivalent to the following settings:
 </p>
 <table><tr><td>&nbsp;</td><td><pre class="example">-nbap -nbad -bc -br -c33 -cd33 -cdb -ce -ci4
 -cli0 -cp33 -di16 -fc1 -fca -i4 -ip4 -l75 -lp
 -npcs -psl -sc -nsob -nss -ts8
+</pre></td></tr></table>
+
+<a name="index-Linux-style"></a>
+<a name="index-_002d_002dlinux"></a>
+<p>The Linux style is used in the Linux kernel and drivers.
+It is enabled  with  the  &lsquo;<samp>-linux</samp>&rsquo; option
+(or by specifying &lsquo;<samp>--linux-style</samp>&rsquo;.
+This style is equivalent to the following settings:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">-nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4
+-cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -npsl -sai
+-saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
 </pre></td></tr></table>
 
 <hr size="6">
@@ -546,10 +558,10 @@ C++ comments begin with the delimiter &lsquo;<samp>//</samp>&rsquo; and end at t
 statements, comments which follow declarations, comments following
 preprocessor directives, and comments which are not preceded by code of
 any sort, i.e., they begin the text of the line (although not
-neccessarily in column 1).
+necessarily in column 1).
 </p>
 <p><code>indent</code> further distinguishes between comments found outside of
-procecures and aggregates, and those found within them.  In particular,
+procedures and aggregates, and those found within them.  In particular,
 comments beginning a line found within a procedure will be indented to
 the column at which code is currently indented.  The exception to this a
 comment beginning in the leftmost column;  such a comment is output
@@ -767,12 +779,81 @@ else {
 }
 </pre></td></tr></table>
 
-<a name="index-_002dclin"></a>
-<a name="index-_002d_002dcase_002dindentationn"></a>
+<a name="index-_002dcdw"></a>
+<a name="index-_002d_002dcuddle_002ddo_002dwhile"></a>
+<a name="index-_002dncdw"></a>
+<a name="index-_002d_002ddont_002dcuddle_002ddo_002dwhile"></a>
+<p>The &lsquo;<samp>-cdw</samp>&rsquo; option causes the <code>while</code>
+in a do-while loop to cuddle up
+to the immediately preceding &lsquo;<samp>}</samp>&rsquo;.
+For example, with &lsquo;<samp>-cdw</samp>&rsquo; you get the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">do {
+  x--;
+} while (x);
+</pre></td></tr></table>
+
+<p>With &lsquo;<samp>-ncdw</samp>&rsquo; that code would appear as
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">do {
+  x--;
+}
+while (x);
+</pre></td></tr></table>
+
+<a name="index-_002dcbin"></a>
+<a name="index-_002d_002dcase_002dbrace_002dindentationn"></a>
 <p>The &lsquo;<samp>-cli</samp>&rsquo; option specifies the number of spaces that case labels
 should be indented to the right of the containing &lsquo;<samp>switch</samp>&rsquo;
 statement.
 </p>
+<p>The default setting gives code like:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">switch (i)
+  {
+  case 0:
+    break;
+  case 1:
+    {
+      ++i;
+    }
+  default:
+    break;
+  }
+</pre></td></tr></table>
+
+<p>Using the &lsquo;<samp>-cli2</samp>&rsquo; option that would become:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">switch (i)
+  {
+    case 0:
+      break;
+    case 1:
+      {
+        ++i;
+      }
+    default:
+      break;
+  }
+</pre></td></tr></table>
+
+<p>The  indentation of the braces below a case statement can be controlled
+with the &lsquo;<samp>-cbin</samp>&rsquo; option.
+For example, using &lsquo;<samp>-cli2 -cbi0</samp>&rsquo; results in:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">switch (i)
+  {
+    case 0:
+      break;
+    case 1:
+    {
+      ++i;
+    }
+    default:
+      break;
+  }
+</pre></td></tr></table>
+
 <a name="index-_002dss"></a>
 <a name="index-_002d_002dspace_002dspecial_002dsemicolon"></a>
 <a name="index-_002dnss"></a>
@@ -838,7 +919,7 @@ char           *bar;
 </pre></td></tr></table>
 
 <p>Using a small value (such as one or two) for the &lsquo;<samp>-di</samp>&rsquo; option can
-be used to cause the indentifiers to be placed in the first available
+be used to cause the identifiers to be placed in the first available
 position, for example
 </p>
 <table><tr><td>&nbsp;</td><td><pre class="example">int foo;
@@ -1226,7 +1307,7 @@ Its parameter gives the debugging level (0 is off, 1 is on, 2 is more verbose).
 
 <p>The &quot;-troff&quot; option is strongly deprecated, and is not supported.  A
 good thing for someone to do is to rewrite &lsquo;indent&rsquo; to generate TeX
-source as a hardcopy output option, amoung other things.
+source as a hardcopy output option, among other things.
 </p>
 <hr size="6">
 <a name="Copyright"></a>
@@ -1253,7 +1334,7 @@ source as a hardcopy output option, amoung other things.
 The copyright and copying permissions for this manual appear near the
 beginning of this document.
 </p>
-<table><tr><td>&nbsp;</td><td><pre class="display">Copyright 1999-2002, 2010 Thomas E. Dickey
+<table><tr><td>&nbsp;</td><td><pre class="display">Copyright 1999-2018, 2019 Thomas E. Dickey
 Copyright &copy; 1995, 1996 Joseph Arceneaux
 Copyright &copy; 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright &copy; 1985 Sun Microsystems, Inc.
@@ -1362,6 +1443,12 @@ See section <a href="#Statements">Statements</a>.
 See section <a href="#Comments">Comments</a>.
 </p>
 </dd>
+<dt> &lsquo;<samp>-cbi<var>n</var></samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--case-brace-indentation<var>n</var></samp>&rsquo;</dt>
+<dd><p>Indent braces after a case label <var>n</var> spaces.<br>
+See section <a href="#Statements">Statements</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-cd<var>n</var></samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--declaration-comment-column<var>n</var></samp>&rsquo;</dt>
 <dd><p>Put comments to the right of the declarations in column <var>n</var>.<br>
@@ -1374,9 +1461,15 @@ See section <a href="#Comments">Comments</a>.
 See section <a href="#Comments">Comments</a>.
 </p>
 </dd>
+<dt> &lsquo;<samp>-cdw</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--cuddle-do-while</samp>&rsquo;</dt>
+<dd><p>Cuddle while of <code>do {} while;</code> and preceding &lsquo;<samp>}</samp>&rsquo;.
+See section <a href="#Comments">Comments</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-ce</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--cuddle-else</samp>&rsquo;</dt>
-<dd><p>Cuddle else and preceeding &lsquo;<samp>}</samp>&rsquo;.<br>
+<dd><p>Cuddle else and preceding &lsquo;<samp>}</samp>&rsquo;.<br>
 See section <a href="#Comments">Comments</a>.
 </p>
 </dd>
@@ -1531,6 +1624,12 @@ See section <a href="#Declarations">Declarations</a>.
 See section <a href="#Comments">Comments</a>.
 </p>
 </dd>
+<dt> &lsquo;<samp>-ncdw</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--dont-cuddle-do-while</samp>&rsquo;</dt>
+<dd><p>Do not cuddle <code>}</code> and the <code>while</code> of a <code>do {} while;</code>.<br>
+See section <a href="#Statements">Statements</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-nce</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--dont-cuddle-else</samp>&rsquo;</dt>
 <dd><p>Do not cuddle <code>}</code> and <code>else</code>.<br>
@@ -1611,9 +1710,15 @@ Disables &lsquo;<samp>-ss</samp>&rsquo;.<br>
 See section <a href="#Statements">Statements</a>.
 </p>
 </dd>
+<dt> &lsquo;<samp>-nut</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--no-tabs</samp>&rsquo;</dt>
+<dd><p>Use spaces instead of tabs.<br>
+See section <a href="#Indentation">Indentation</a>.
+</p>
+</dd>
 <dt> &lsquo;<samp>-nv</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--no-verbosity</samp>&rsquo;</dt>
-<dd><p>Disable verbose mode. See section <a href="#Miscellaneous-options">Miscellaneous options</a>.
+<dd><p>Disable verbose mode. See section <a href="#Miscellaneous-options">Miscellaneous options</a>.<br>
 </p>
 </dd>
 <dt> &lsquo;<samp>-orig</samp>&rsquo;</dt>
@@ -1673,7 +1778,7 @@ See section <a href="#Blank-lines">Blank lines</a>.
 </dd>
 <dt> &lsquo;<samp>-ss</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--space-special-semicolon</samp>&rsquo;</dt>
-<dd><p>On one-line <code>for</code> and <code>while</code> statments,
+<dd><p>On one-line <code>for</code> and <code>while</code> statements,
 force a blank before the semicolon.<br>
 See section <a href="#Statements">Statements</a>.
 </p>
@@ -1698,6 +1803,12 @@ See section <a href="#Declarations">Declarations</a>.
 <dt> &lsquo;<samp>-ts<var>n</var></samp>&rsquo;</dt>
 <dt> &lsquo;<samp>--tab-size<var>n</var></samp>&rsquo;</dt>
 <dd><p>Set tab size to <var>n</var> spaces.<br>
+See section <a href="#Indentation">Indentation</a>.
+</p>
+</dd>
+<dt> &lsquo;<samp>-ut</samp>&rsquo;</dt>
+<dt> &lsquo;<samp>--use-tabs</samp>&rsquo;</dt>
+<dd><p>Use tabs. This is the default.
 See section <a href="#Indentation">Indentation</a>.
 </p>
 </dd>
@@ -1803,12 +1914,13 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002dbs"><code>-bs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dc_002b_002b"><code>-c++</code></a></td><td valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dc_002dplus_002dplus"><code>--c-plus-plus</code></a></td><td valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002d_002dcase_002dindentationn"><code>--case-indentation<var>n</var></code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dcase_002dbrace_002dindentationn"><code>--case-brace-indentation<var>n</var></code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dcbin"><code>-cbi<var>n</var></code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcdb"><code>-cdb</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcdn"><code>-cd<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dcdw"><code>-cdw</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dce"><code>-ce</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcin"><code>-ci<var>n</var></code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_002dclin"><code>-cli<var>n</var></code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcn"><code>-c<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dcomment_002ddelimiters_002don_002dblank_002dlines"><code>--comment-delimiters-on-blank-lines</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dcomment_002dindentationn"><code>--comment-indentation<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
@@ -1816,6 +1928,7 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002d_002dcontinue_002dat_002dparentheses"><code>--continue-at-parentheses</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcpn"><code>-cp<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dcs"><code>-cs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dcuddle_002ddo_002dwhile"><code>--cuddle-do-while</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dcuddle_002delse"><code>--cuddle-else</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dD"><code>-D</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddebug"><code>--debug</code></a></td><td valign="top"><a href="#Miscellaneous-options">1.11 Miscellaneous options</a></td></tr>
@@ -1824,6 +1937,7 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002ddin"><code>-di<var>n</var></code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002ddn"><code>-d<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddont_002dbreak_002dprocedure_002dtype"><code>--dont-break-procedure-type</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002ddont_002dcuddle_002ddo_002dwhile"><code>--dont-cuddle-do-while</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddont_002dcuddle_002delse"><code>--dont-cuddle-else</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddont_002dformat_002dcomments"><code>--dont-format-comments</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002ddont_002dformat_002dfirst_002dcolumn_002dcomments"><code>--dont-format-first-column-comments</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
@@ -1854,6 +1968,7 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002d_002dleave_002dpreprocessor_002dspace"><code>--leave-preprocessor-space</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dlex_002dor_002dyacc"><code>--lex-or-yacc</code></a></td><td valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002d_002dline_002dcomments_002dindentationn"><code>--line-comments-indentation<var>n</var></code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dlinux"><code>--linux</code></a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dlp"><code>-lp</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dlps"><code>-lps</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dly"><code>-ly</code></a></td><td valign="top"><a href="#Other-Languages">1.10 Other Languages</a></td></tr>
@@ -1863,6 +1978,7 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-_002dnbbb"><code>-nbbb</code></a></td><td valign="top"><a href="#Blank-lines">1.4 Blank lines</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnbc"><code>-nbc</code></a></td><td valign="top"><a href="#Declarations">1.7 Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dncdb"><code>-ncdb</code></a></td><td valign="top"><a href="#Comments">1.5 Comments</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002dncdw"><code>-ncdw</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dnce"><code>-nce</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dncs"><code>-ncs</code></a></td><td valign="top"><a href="#Statements">1.6 Statements</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_002dneei"><code>-neei</code></a></td><td valign="top"><a href="#Indentation">1.8 Indentation</a></td></tr>
@@ -1946,6 +2062,7 @@ the corresponding short option.
 <tr><td></td><td valign="top"><a href="#index-Kernighan-_0026-Ritchie-style">Kernighan &amp; Ritchie style</a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
 <tr><td colspan="3"> <hr></td></tr>
 <tr><th><a name="Index-1_ky_letter-L">L</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-Linux-style">Linux style</a></td><td valign="top"><a href="#Common-styles">1.3 Common styles</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-Long-options_002c-use-of">Long options, use of</a></td><td valign="top"><a href="#Invoking-indent">1.1 Invoking <code>indent</code></a></td></tr>
 <tr><td colspan="3"> <hr></td></tr>
 <tr><th><a name="Index-1_ky_letter-O">O</a></th><td></td><td></td></tr>
@@ -2050,7 +2167,7 @@ maintain consistency with the POSIX standard.
 </tr></table>
 <h1>About This Document</h1>
 <p>
-  This document was generated by <em>Thomas E. Dickey</em> on <em>July 7, 2019</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas E. Dickey</em> on <em>July 31, 2019</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
 </p>
 <p>
   The buttons in the navigation panels have the following meaning:
@@ -2152,7 +2269,7 @@ maintain consistency with the POSIX standard.
 <hr size="1">
 <p>
  <font size="-1">
-  This document was generated by <em>Thomas E. Dickey</em> on <em>July 7, 2019</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas E. Dickey</em> on <em>July 31, 2019</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
  </font>
  <br>
 

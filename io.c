@@ -769,7 +769,7 @@ unterminated_inhibit (int start_no)
 {
   int save_line_no = in_line_no;
   in_line_no = start_no + 1;
-  message (1, "unterminated INDENT-OFF comment", 0);
+  message (1, "unterminated INDENT-OFF comment");
   in_line_no = save_line_no;
 }
 
@@ -974,7 +974,7 @@ fill_buffer (void)
 			}
 		      else if (!strncmp (p, "*INDENT-", (size_t) 8))
 			{
-			  message (1, "unexpected INDENT-comment", 0);
+			  message (1, "unexpected INDENT-comment");
 			}
 		    }
 		}
@@ -1000,7 +1000,7 @@ fill_buffer (void)
       else if ((unsigned int) (p - current_input->data) < current_input->size)
 	{
 	  message (-1, "Warning: File %s contains NULL-characters\n",
-		   current_input->name, 0);
+		   current_input->name);
 	  p++;
 	}
       /* Here for EOF with no terminating newline char. */
