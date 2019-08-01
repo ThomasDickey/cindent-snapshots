@@ -1,5 +1,5 @@
 /*
- * $Id: xxx-profile,v 1.10 2019/07/21 17:22:10 tom Exp $
+ * $Id: xxx-profile,v 1.13 2019/08/01 23:01:39 tom Exp $
  ****************************************************************************
  * Copyright (c) 2019 Thomas E. Dickey                                      *
  *                                                                          *
@@ -82,7 +82,9 @@
 -T CallbackProcPtr
 -T CallbackPtr
 -T ClientPtr
+-T Colormap
 -T ColormapPtr
+-T Cursor
 -T CursorPtr
 -T Depth
 -T DevPrivateKey
@@ -98,6 +100,7 @@
 -T Font
 -T FontPtr
 -T GCPtr
+-T GContext
 -T GrabMask
 -T GrabParameters
 -T GrabPtr
@@ -107,11 +110,13 @@
 -T InputOption
 -T InternalEvent
 -T KeyCode
+-T KeySym
 -T KeySymsPtr
 -T LockInfoPtr
 -T Mask
 -T OsTimerPtr
 -T POINTBLOCK
+-T Pixmap
 -T PixmapPtr
 -T PrivatePtr
 -T PropertyPtr
@@ -134,6 +139,7 @@
 -T TouchOwnershipEvent
 -T ValuatorMask
 -T Visual
+-T VisualID
 -T WakeupHandlerProcPtr
 -T Window
 -T WindowPtr
@@ -171,7 +177,6 @@
 -T XFontSet
 -T XFontSetExtents
 -T XFontStruct
--T XEDataObject
 -T XGCValues
 -T XGenericEventCookie
 -T XGraphicsExposeEvent
@@ -543,19 +548,25 @@
 -T XrmResourceList
 -T XtAccelerators
 -T XtActionHookId
+-T XtActionHookProc
 -T XtActionList
+-T XtActionProc
 -T XtActionsRec
 -T XtAddressMode
 -T XtAppContext
 -T XtAppStruct
 -T XtArgVal
 -T XtBlockHookId
+-T XtBlockHookProc
 -T XtBoundActions
 -T XtCacheRef
 -T XtCacheType
 -T XtCallbackList
+-T XtCallbackProc
 -T XtCallbackRec
 -T XtCallbackStatus
+-T XtCancelConvertSelectionProc
+-T XtCaseProc
 -T XtChangeHookData
 -T XtChangeHookDataRec
 -T XtChangeHookSetValuesData
@@ -565,16 +576,28 @@
 -T XtConfigureHookData
 -T XtConfigureHookDataRec
 -T XtConvertArgList
+-T XtConvertArgProc
 -T XtConvertArgRec
+-T XtConvertSelectionIncrProc
+-T XtConvertSelectionProc
+-T XtConverter
 -T XtCreateHookData
 -T XtCreateHookDataRec
+-T XtCreatePopupChildProc
 -T XtDestroyHookData
 -T XtDestroyHookDataRec
+-T XtDestructor
 -T XtDevice
 -T XtDeviceRec
 -T XtEnum
+-T XtErrorHandler
+-T XtErrorMsgHandler
+-T XtEventDispatchProc
+-T XtEventHandler
 -T XtEventRec
 -T XtEventTable
+-T XtExtensionSelectProc
+-T XtFilePredicate
 -T XtGCMask
 -T XtGeneology
 -T XtGeometryHookData
@@ -584,10 +607,15 @@
 -T XtGrabKind
 -T XtGrabList
 -T XtGrabRec
+-T XtInputCallbackProc
 -T XtInputId
 -T XtInputMask
 -T XtIntervalId
+-T XtKeyProc
+-T XtLanguageProc
 -T XtListPosition
+-T XtLoseSelectionIncrProc
+-T XtLoseSelectionProc
 -T XtPerDisplay
 -T XtPerDisplayInput
 -T XtPerDisplayInputRec
@@ -599,25 +627,39 @@
 -T XtPopdownIDRec
 -T XtRequestId
 -T XtResource
+-T XtResourceDefaultProc
 -T XtResourceList
 -T XtSaveYourself
+-T XtSelectionCallbackProc
+-T XtSelectionDoneIncrProc
+-T XtSelectionDoneProc
 -T XtServerGrabExtPtr
 -T XtServerGrabExtRec
 -T XtServerGrabPtr
 -T XtServerGrabRec
 -T XtServerGrabType
+-T XtSignalCallbackProc
 -T XtSignalId
 -T XtTM
 -T XtTMRec
+-T XtTimerCallbackProc
 -T XtTranslations
+-T XtTypeConverter
 -T XtTypedArg
 -T XtTypedArgList
 -T XtValueMask
 -T XtVarArgsList
 -T XtVersionType
 -T XtWidgetGeometry
+-T XtWorkProc
 -T XtWorkProcId
+-T _XtBoolean
+-T _XtDimension
+-T _XtKeyCode
+-T _XtPosition
+-T _XtString
 -T _XtTranslateOp
+-T _XtXtEnum
 
 /* Xaw */
 -T AsciiClassPart
