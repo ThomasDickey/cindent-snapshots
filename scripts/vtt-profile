@@ -1,5 +1,5 @@
 /*
- * $Id: vtt-profile,v 1.3 2019/07/21 17:27:37 tom Exp $
+ * $Id: vtt-profile,v 1.4 2019/08/01 09:05:38 tom Exp $
  ****************************************************************************
  * Copyright (c) 2010,2019 Thomas E. Dickey                                 *
  *                                                                          *
@@ -40,6 +40,7 @@
 --no-blank-lines-after-commas
 --no-blank-lines-after-declarations
 --no-space-after-function-call-names
+--no-tabs
 --procnames-start-lines
 --space-special-semicolon
 --swallow-optional-blank-lines

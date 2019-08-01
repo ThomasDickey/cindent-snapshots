@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: xxx-indent,v 1.1 2019/05/18 11:19:24 tom Exp $
+# $Id: xxx-indent,v 1.2 2019/08/01 09:07:38 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2019 Thomas E. Dickey                                      *
 #*                                                                          *
@@ -28,4 +28,4 @@
 #* authorization.                                                           *
 #****************************************************************************/
 # indent a la "x-indent.sh"
-exec tdindent -s -profile xxx-profile "$@"
+exec tdindent -profile xxx-profile "$@"
