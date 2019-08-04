@@ -1,4 +1,12 @@
--- $Id: ChangeLog,v 1.102 2019/08/01 20:39:38 tom Exp $
+-- $Id: ChangeLog,v 1.105 2019/08/04 22:40:23 tom Exp $
+
+2019-08-04
+	+ suppress tab-conversion within "*INDENT-OFF*" blocks.
+
+	+ revised tdlint script to work with readonly files/directories in
+	  dry-run (-n) mode.
+
+	+ add a few ncurses types to ncu-profile
 
 2019-08-01
 	+ add _XtString, etc., to xxx-profile.

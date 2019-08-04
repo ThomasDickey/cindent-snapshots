@@ -1,5 +1,5 @@
 /*
- * $Id: ncu-profile,v 1.13 2019/07/21 17:21:37 tom Exp $
+ * $Id: ncu-profile,v 1.14 2019/08/04 19:06:43 tom Exp $
  ****************************************************************************
  * Copyright (c) 2010-2017,2019 Thomas E. Dickey                            *
  *                                                                          *
@@ -64,7 +64,11 @@
 /* ncurses */
 -T FIELD
 -T FORM
+-T NCURSES_ATTR_T
+-T NCURSES_BOOL
+-T NCURSES_CH_T
 -T NCURSES_COLOR_T
+-T NCURSES_CONST
 -T NCURSES_EXPORT_VAR
 -T NCURSES_INLINE
 -T NCURSES_INT2
@@ -72,11 +76,13 @@
 -T NCURSES_SIZE_T
 -T NCURSES_SP_ARGx
 -T NCURSES_SP_DCLx
+-T NCURSES_TPARM_ARG
 -T PANEL
 -T SCREEN
 -T TERMINAL
 -T TERMTYPE
 -T TERMTYPE2
+-T WINDOW
 -T attr_t
 -T cchar_t
 -T chtype
@@ -87,7 +93,6 @@
 -T LINE
 -T MARK
 -T TBUFF
--T WINDOW
 
 /* X libraries */
 -T Atom

@@ -65,6 +65,7 @@ int indent_eqls;
 int indent_eqls_1st;
 
 int suppress_blanklines = 0;
+static int suppress_formatting = 0;
 static int not_first_line;
 
 int paren_target;
@@ -112,7 +113,7 @@ pass_char (int ch)
   else if (ch == TAB)
     {
       int target_column = out_column_no + tabsize - (out_column_no % tabsize);
-      if (use_tabs)
+      if (use_tabs || suppress_formatting)
 	{
 	  out_column_no = target_column;
 	}
@@ -904,6 +905,7 @@ fill_buffer (void)
 	      int inhibited = 1;
 	      int starting_no = in_line_no;
 
+	      suppress_formatting = 1;
 	      if (s_com != e_com || s_lab != e_lab || s_code != e_code)
 		dump_line ();
 	      while (q < p)
@@ -960,6 +962,7 @@ fill_buffer (void)
 				    {
 				      ++in_line_no;
 				      inhibited = 0;
+				      suppress_formatting = 0;
 				      cur_line = p + 1;
 				    }
 				  pass_char (*p++);
