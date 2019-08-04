@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.35 2019/08/01 20:05:56 tom Exp $
+# $Id: tdindent,v 1.41 2019/08/04 21:42:44 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010-2014,2019 Thomas E. Dickey                            *
 #*                                                                          *
@@ -39,9 +39,49 @@ TEST_D=no
 TEST_N=no
 
 PROFILE=
-EXPAND=cat
 
-while test $# != 0
+MY_PWD=`pwd`
+MY_TMP=`mktemp -d 2>/dev/null`
+[ -d "$MY_TMP" ] || mkdir ${TMPDIR:=/tmp}/indent$$
+mkdir $MY_TMP/scripts
+trap "cd $MY_PWD; rm -rf $MY_TMP" EXIT INT QUIT TERM HUP
+
+cat >$MY_TMP/prepro <<'EOF'
+/EMPTY_MODULE(/s/)$/);/
+s,\(MODULEID(\),//\1,
+/MODULE_ID(/s/)$/);/
+s,[[:space:]]*\<GCC_UNUSED[[:space:]]*\([;]\),\1//GCC_UNUSED,
+s,[[:space:]]*\<GCC_NORETURN\(.*\);,;//GCC_NORETURN\1,
+s,[[:space:]]*\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,
+s,[[:space:]]*\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,
+:gcc2
+/\/\/GCC_.*\/\/GCC_/ {
+	s,\(//GCC_[UNPS][^/][^/]*\)//\(GCC_[UNPS].*\),\1 \2,
+	b gcc2
+}
+s,\(\<NCURSES_EXPORT_VAR\>.*;\),//\1,
+s,\(\<MARK_END_OF_PROLOG\>\),\1;,
+s,\(\<YY_RULE_SETUP\>\),\1;,
+s,\(\<YY_BREAK\>\),\1;,
+EOF
+
+cat >$MY_TMP/postpro <<'EOF'
+/EMPTY_MODULE(/s/);$/)/
+s,//\(MODULEID(\),\1,
+/MODULE_ID(/s/);$/)/
+s,[[:space:]]*\([;]\)[[:space:]]*//GCC_UNUSED\(.*\), GCC_UNUSED\1\2,
+s,;[[:space:]]*//GCC_NORETURN\(.*\);, GCC_NORETURN\1;,
+s,;[[:space:]]*//GCC_PRINTFLIKE(\(.*\);, GCC_PRINTFLIKE(\1;,
+s,;[[:space:]]*//GCC_SCANFLIKE(\(.*\);, GCC_SCANFLIKE(\1;,
+s,;[[:space:]]*//\(GCC_.*\), \1;,
+s,\(\<GCC_[^[:space:]][^[:space:]]*\)[[:space:]][[:space:]]*\(\<GCC_[^[:space:]]\),\1 \2,g
+s,//\(\<NCURSES_EXPORT_VAR\>[ ]*\),\1,
+s,\(\<MARK_END_OF_PROLOG\>\);,\1,
+s,\(\<YY_RULE_SETUP\>\);,\1,
+s,\(\<YY_BREAK\>\);,\1,
+EOF
+
+while [ $# != 0 ]
 do
 	OPT2=
 	name="$1"
@@ -80,19 +120,19 @@ EOF
 EOF
 		;;
 	-profile|--profile)
-		if test $# = 0
+		if [ $# = 0 ]
 		then
 			echo "?? missing parameter for $name"
 			$0 -h
 			exit 1
 		fi
-		if test -f "$1"
+		if [ -f "$1" ]
 		then
 			PROFILE="$1"
-		elif test -f "$HOME/$1"
+		elif [ -f "$HOME/$1" ]
 		then
 			PROFILE="$HOME/$1"
-		elif test -f "$INDENT_DATA/$1"
+		elif [ -f "$INDENT_DATA/$1" ]
 		then
 			PROFILE="$INDENT_DATA/$1"
 		else
@@ -103,6 +143,9 @@ EOF
 		shift
 		case `$INDENT_PROG -version 2>/dev/null` in
 		*.*-2[0-9][0-9][0-9][0-9][0-9][0-9][0-9])	# cindent uses yyyymmdd
+			myprof=`basename "$PROFILE"`
+			cat "$PROFILE" >$MY_TMP/scripts/$myprof
+			PROFILE=./scripts/$myprof
 			OPTS="--profile $PROFILE"
 			;;
 		*)
@@ -113,7 +156,7 @@ EOF
 			OPTS="-npro $OPTS"
 			;;
 		esac
-		test "$NOOP" = yes && OPTS="$OPTS -v"
+		[ "$NOOP" = yes ] && OPTS="$OPTS -v"
 		;;
 	-D)
 		TEST_D=yes
@@ -132,72 +175,58 @@ EOF
 			;;
 		esac
 		USED=yes
-		save="${name}".a$$
-		test="${name}".b$$
+
+		leaf=`basename "$name"`
+		save="$MY_TMP/${leaf}".orig
+		test="$MY_TMP/${leaf}"
 		rm -f "$save" "$test"
-		mv "$name" "$save"
+
 		# (pre-filter) temporarily comment-out macros which confuse indent
-		sed \
-			-e '/EMPTY_MODULE(/s/)$/);/' \
-			-e 's,\(MODULEID(\),//\1,' \
-			-e '/MODULE_ID(/s/)$/);/' \
-			-e 's,[ 	]*\<GCC_UNUSED[ 	]*\([;]\),\1//GCC_UNUSED,' \
-			-e 's,[ 	]*\<GCC_NORETURN\(.*\);,;//GCC_NORETURN\1,' \
-			-e 's,[ 	]*\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,' \
-			-e 's,[ 	]*\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,' \
-			-e 's,\(\<NCURSES_EXPORT_VAR\>.*;\),//\1,' \
-			-e 's,\(\<MARK_END_OF_PROLOG\>\),\1;,' \
-			-e 's,\(\<YY_RULE_SETUP\>\),\1;,' \
-			-e 's,\(\<YY_BREAK\>\),\1;,' \
-			"$save" >"$test"
-		cp "$test" "$name"
+		cp "$name" "$save"
+		sed -f $MY_TMP/prepro "$save" >"$test"
+
+		# work in the temp-directory to leave its pathname out of diffs
+		cd $MY_TMP
+
 		# show the result of pre-filtering for the -D option
-		if test $TEST_D = yes ; then
+		if [ $TEST_D = yes ]; then
 			echo ".. pre-filtering"
-			diff -u "$save" "$name"
+			diff -u "$leaf".orig "$leaf"
 		fi
-		chmod u+w "$name"
+
 		# if the -N option is given, simply echo the command rather than
 		# performing it.
-		if test $TEST_N = yes ; then
-			echo "$INDENT_PROG $OPTS $OPT2 $name"
+		if [ $TEST_N = yes ]; then
+			echo "$INDENT_PROG $OPTS $OPT2 $leaf"
 		else
-			$INDENT_PROG $OPTS $OPT2 "$name" 2>&1 | sed -e "s/^${INDENT_PROG##*/}: //"
+			$INDENT_PROG $OPTS $OPT2 "$leaf" 2>&1 | \
+				sed -e "s/^${INDENT_PROG##*/}: //"
 		fi
+
 		# (post-filter) restore the file.  There is an extra chunk used to
 		# handle multiple GCC_xxx's on the same line.
-		sed \
-			-e '/EMPTY_MODULE(/s/);$/)/' \
-			-e 's,//\(MODULEID(\),\1,' \
-			-e '/MODULE_ID(/s/);$/)/' \
-			-e 's,[ 	]*\([;]\)[ 	]*//GCC_UNUSED\(.*\), GCC_UNUSED\1\2,' \
-			-e 's,;[ 	]*//GCC_NORETURN\(.*\);, GCC_NORETURN\1;,' \
-			-e 's,;[ 	]*//GCC_PRINTFLIKE(\(.*\);, GCC_PRINTFLIKE(\1;,' \
-			-e 's,;[ 	]*//GCC_SCANFLIKE(\(.*\);, GCC_SCANFLIKE(\1;,' \
-			-e 's,;[	]*//\(GCC_.*\), \1;,' \
-			-e 's,\(\<GCC_[^ 	][^ 	]*\)[ 	][ 	]*\(\<GCC_[^ 	]\),\1 \2,g' \
-			-e 's,//\(\<NCURSES_EXPORT_VAR\>[ ]*\),\1,' \
-			-e 's,\(\<MARK_END_OF_PROLOG\>\);,\1,' \
-			-e 's,\(\<YY_RULE_SETUP\>\);,\1,' \
-			-e 's,\(\<YY_BREAK\>\);,\1,' \
-			"$name" | $EXPAND >"$test"
-		mv "$test" "$name"
-		rm -f "${name}~"
-		if test $NOOP = yes ; then
-			if (cmp -s "$name" "$save" ) then
+		sed -f $MY_TMP/postpro "$leaf" >"$leaf".new
+		rm -f "${leaf}"
+		rm -f "${leaf}~"
+		mv "$leaf".new "$leaf"
+
+		if [ $NOOP = yes ]; then
+			if ( cmp -s "$save" "$test" ) ; then
 				echo "** no change: $name"
 			else
-				diff -u "$save" "$name"
+				diff -u "$leaf".orig "$leaf"
 			fi
-			rm -f "$name"
-			mv "$save" "$name"
-		elif ( cmp -s "$name" "$save" ) ; then
-			echo "** unchanged $name"
-			rm -f "${name}"
-			mv "$save" "$name"
+			cd "$MY_PWD"
 		else
-			echo "** updated $name"
-			rm -f "$save"
+			cd "$MY_PWD"
+			if ( cmp -s "$save" "$test" ) ; then
+				echo "** unchanged $name"
+			else
+				echo "** updated $name"
+				chmod u+w "$name"
+				cat "$test" >"$name"
+				chmod u-w "$name"
+			fi
 		fi
 		;;
 	*)
@@ -206,7 +235,7 @@ EOF
 		;;
 	esac
 done
-if test $USED = no
+if [ $USED = no ]
 then
 	echo "?? no filenames given"
 	$0 -h
