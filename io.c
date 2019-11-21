@@ -142,6 +142,9 @@ pass_text (const char *s)
     pass_char (*s++);
 }
 
+#define at_current_eof(p) \
+	((unsigned) ((p) - current_input->data) == current_input->size)
+
 static char *
 pass_line (char *p)
 {
@@ -155,8 +158,7 @@ pass_line (char *p)
       in_prog_pos = p;
       cur_line = p;
     }
-  else if (*p == '\0'
-	   && ((unsigned int) (p - current_input->data) == current_input->size))
+  else if (*p == '\0' && at_current_eof (p))
     {
       buf_ptr = buf_end = in_prog_pos = p;
       had_eof = true;
@@ -366,7 +368,6 @@ dump_line (void)
       if (e_lab != s_lab)
 	{			/* print lab, if any */
 	  int label_target = compute_label_target ();
-	  int pad_preproc = 0;
 	  char *skip_pound = s_lab;
 	  char *s_key;
 
@@ -389,8 +390,9 @@ dump_line (void)
 		{
 		  int adj = (!strncmp (s_key, "if", (size_t) 2) ||
 			     !strncmp (s_key, "el", (size_t) 2)) ? 1 : 0;
-		  pad_preproc = ((preprocessor_level (parser_state_tos) - adj)
-				 * preprocessor_indentation);
+		  int pad_preproc = ((preprocessor_level (parser_state_tos)
+				      - adj)
+				     * preprocessor_indentation);
 		  cur_col = pad_output (cur_col, cur_col + pad_preproc);
 		}
 	    }
@@ -915,8 +917,7 @@ fill_buffer (void)
 		{
 		  while (*p != '\0' && *p != EOL)
 		    pass_char (*p++);
-		  if (*p == '\0'
-		      && ((unsigned int) (p - current_input->data) == current_input->size))
+		  if (*p == '\0' && at_current_eof (p))
 		    {
 		      buf_ptr = buf_end = in_prog_pos = p;
 		      had_eof = true;
@@ -947,10 +948,7 @@ fill_buffer (void)
 			    {
 			      while (*p != '\0' && *p != EOL)
 				pass_char (*p++);
-			      if (*p == '\0'
-				  && ((unsigned int) (p -
-						      current_input->data)
-				      == current_input->size))
+			      if (*p == '\0' && at_current_eof (p))
 				{
 				  buf_ptr = buf_end = in_prog_pos = p;
 				  had_eof = true;
@@ -964,8 +962,14 @@ fill_buffer (void)
 				      inhibited = 0;
 				      suppress_formatting = 0;
 				      cur_line = p + 1;
+				      if (*cur_line == '\0' &&
+					  at_current_eof (cur_line))
+					{
+					  pass_char (EOL);
+					}
 				    }
-				  pass_char (*p++);
+				  else
+				    pass_char (*p++);
 				}
 			    }
 			  while (inhibited);
@@ -1000,7 +1004,7 @@ fill_buffer (void)
 	  in_prog_pos = p + 1;
 	}
       /* Here for embedded NULLs */
-      else if ((unsigned int) (p - current_input->data) < current_input->size)
+      else if ((unsigned) (p - current_input->data) < current_input->size)
 	{
 	  message (-1, "Warning: File %s contains NULL-characters\n",
 		   current_input->name);

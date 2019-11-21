@@ -1,5 +1,18 @@
 #! /bin/sh
-# preinst script for indent
+# preinst script for cindent, which checks if there is an un-renamed "indent"
+# program, and renames it to "indent-base".  Uninstalling this package will
+# point the link to "indent-base".  Since "indent" package does not do this,
+# installing/updating "indent" after "cindent" will overwrite the link.  But
+# reinstalling "cindent" should work.
+
+save() {
+	if [ -f $1 -a ! -L $1 ]; then
+		if [ -f $2 ]; then
+			rm -f $2
+		fi
+		mv $1 $2
+	fi
+}
 
 set -e
 
@@ -10,20 +23,17 @@ PKG=indent-base
 BINDIR=/usr/bin
 MANDIR=/usr/share/man/man1
 
-if [ ! -f /usr/bin/$PKG \
-    -a -f /usr/bin/$ALT \
-    -a ! -f /usr/bin/cindent ]
-then
-	mv $BINDIR/$ALT      $BINDIR/$PKG 
-	mv $MANDIR/$ALT.1.gz $MANDIR/$PKG.1.gz
+if [ -f $BINDIR/$ALT \
+-a ! -L $BINDIR/$ALT ]; then
+	save $BINDIR/$ALT      $BINDIR/$PKG
+	save $MANDIR/$ALT.1.gz $MANDIR/$PKG.1.gz
 
 	update-alternatives \
 		--install \
-			$BINDIR/$ALT $ALT \
-			$BINDIR/$PKG $PRI \
+			$BINDIR/$ALT      $ALT \
+			$BINDIR/$PKG      $PRI \
 		--slave $MANDIR/$ALT.1.gz $ALT.1.gz \
 			$MANDIR/$PKG.1.gz
-
 fi
 
 #DEBHELPER#
