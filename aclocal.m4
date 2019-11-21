@@ -1,4 +1,4 @@
-dnl $Id: aclocal.m4,v 1.12 2019/07/31 22:25:24 tom Exp $
+dnl $Id: aclocal.m4,v 1.14 2019/11/20 23:57:07 tom Exp $
 dnl autoconf macros for vttest - T.E.Dickey
 dnl ---------------------------------------------------------------------------
 dnl Copyright:  1997-2018,2019 by Thomas E. Dickey
@@ -540,9 +540,10 @@ rm -rf conftest*
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_GCC_VERSION version: 7 updated: 2012/10/18 06:46:33
+dnl CF_GCC_VERSION version: 8 updated: 2019/09/07 13:38:36
 dnl --------------
-dnl Find version of gcc
+dnl Find version of gcc, and (because icc/clang pretend to be gcc without being
+dnl compatible), attempt to determine if icc/clang is actually used.
 AC_DEFUN([CF_GCC_VERSION],[
 AC_REQUIRE([AC_PROG_CC])
 GCC_VERSION=none
@@ -552,9 +553,11 @@ if test "$GCC" = yes ; then
 	test -z "$GCC_VERSION" && GCC_VERSION=unknown
 	AC_MSG_RESULT($GCC_VERSION)
 fi
+CF_INTEL_COMPILER(GCC,INTEL_COMPILER,CFLAGS)
+CF_CLANG_COMPILER(GCC,CLANG_COMPILER,CFLAGS)
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_GCC_WARNINGS version: 35 updated: 2019/06/16 09:45:01
+dnl CF_GCC_WARNINGS version: 36 updated: 2019/09/07 13:38:36
 dnl ---------------
 dnl Check if the compiler supports useful warning options.  There's a few that
 dnl we don't use, simply because they're too noisy:
@@ -576,8 +579,6 @@ dnl
 AC_DEFUN([CF_GCC_WARNINGS],
 [
 AC_REQUIRE([CF_GCC_VERSION])
-CF_INTEL_COMPILER(GCC,INTEL_COMPILER,CFLAGS)
-CF_CLANG_COMPILER(GCC,CLANG_COMPILER,CFLAGS)
 if test "x$have_x" = xyes; then CF_CONST_X_STRING fi
 cat > conftest.$ac_ext <<EOF
 #line __oline__ "${as_me:-configure}"
@@ -1038,11 +1039,16 @@ AC_SUBST(PROG_EXT)
 test -n "$PROG_EXT" && AC_DEFINE_UNQUOTED(PROG_EXT,"$PROG_EXT",[Define to the program extension (normally blank)])
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_PROG_LINT version: 3 updated: 2016/05/22 15:25:54
+dnl CF_PROG_LINT version: 4 updated: 2019/11/20 18:55:37
 dnl ------------
 AC_DEFUN([CF_PROG_LINT],
 [
 AC_CHECK_PROGS(LINT, lint cppcheck splint)
+case "x$LINT" in
+(xcppcheck|x*/cppcheck)
+	test -z "$LINT_OPTS" && LINT_OPTS="--enable=all"
+	;;
+esac
 AC_SUBST(LINT_OPTS)
 ])dnl
 dnl ---------------------------------------------------------------------------

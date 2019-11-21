@@ -1,4 +1,14 @@
--- $Id: ChangeLog,v 1.105 2019/08/04 22:40:23 tom Exp $
+-- $Id: ChangeLog,v 1.108 2019/11/21 00:28:58 tom Exp $
+
+2019-11-20
+	+ provide a simpler change for "*INDENT-ON*", which does not trim.
+
+	+ repair Debian test-package's workaround for update-alternatives
+
+	+ minor fix for configure macro CF_GCC_WARNINGS to accommodate
+	  inconsistency between gcc and clang warning options.
+
+	+ update config.guess, config.sub
 
 2019-08-04
 	+ suppress tab-conversion within "*INDENT-OFF*" blocks.

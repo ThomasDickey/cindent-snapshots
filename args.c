@@ -576,7 +576,7 @@ option_prefix (const char *arg)
     {
       const char *this_prefix = *prefixes;
       const char *argp = arg;
-      while (*this_prefix == *argp)
+      while ((*this_prefix == *argp) && (*this_prefix != '\0'))
 	{
 	  this_prefix++;
 	  argp++;

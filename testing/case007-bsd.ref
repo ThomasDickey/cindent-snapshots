@@ -29,7 +29,6 @@ _nc_altcharset_name(attr_t attr, chtype ch)
 	    { 's', "ACS_S9"       },
 	    { '\0', (char *) 0    }
 	/* *INDENT-ON* */
-
 	};
 	const NAMES    *sp;
 	/* *INDENT-OFF* */
@@ -43,7 +42,6 @@ _nc_altcharset_name(attr_t attr, chtype ch)
 	    { '0', "ACS_BLOCK"    },
 	};
 	/* *INDENT-ON* */
-
 	const NAMES    *sp2;
 
 	for (cp = acs_chars; cp[0] && cp[1]; cp += 2) {
@@ -66,3 +64,7 @@ _nc_altcharset_name(attr_t attr, chtype ch)
     }
     return result;
 }
+// *INDENT-OFF*/
+	#include <stdio.h>
+	int main(void) { return 0; }
+	// *INDENT-ON*	just for testing

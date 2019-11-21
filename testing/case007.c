@@ -63,3 +63,8 @@ _nc_altcharset_name(attr_t attr, chtype ch)
     }
     return result;
 }
+
+// *INDENT-OFF*/
+	#include <stdio.h>
+	int main(void) { return 0; }
+	// *INDENT-ON*	just for testing
