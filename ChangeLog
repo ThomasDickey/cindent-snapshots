@@ -1,4 +1,10 @@
--- $Id: ChangeLog,v 1.108 2019/11/21 00:28:58 tom Exp $
+-- $Id: ChangeLog,v 1.112 2019/11/22 23:27:38 tom Exp $
+
+2019-11-22
+	+ admend treatment of "*INDENT-OFF*" to avoid trimming blank lines
+	  before/after except as set via the -sob option. 
+	+ amend tdlint script to account for renaming of GNU indent program
+	  in test-packages, so that line-number messages are filtered properly.
 
 2019-11-20
 	+ provide a simpler change for "*INDENT-ON*", which does not trim.

@@ -87,8 +87,8 @@ ident_is_cast (void)
   return result;
 }
 
-enum codes
-lexi (void)
+static enum codes
+parse_token (void)
 {
 
   int unary_delim;		/* this is set to 1 if the current token
@@ -767,6 +767,31 @@ lexi (void)
   if (parser_state_tos->last_token == cpp_operator)
     return overloaded;
   return (code);
+}
+
+enum codes
+lexi (void)
+{
+  enum codes code = parse_token ();
+  if (debug > 1)
+    {
+      switch (code)
+	{
+	case lparen:
+	case rparen:
+	case comma:
+	case semicolon:
+	case colon:
+	case question:
+	case binary_op:
+	  printf ("lexi: %s '%c'\n", parsecode2s (code), token[0]);
+	  break;
+	default:
+	  printf ("lexi: %s\n", parsecode2s (code));
+	  break;
+	}
+    }
+  return code;
 }
 
 int

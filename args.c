@@ -36,13 +36,13 @@ int else_endif_col;
 enum profile
   {
     PRO_BOOL,			/* boolean */
-    PRO_INT,			/* integer */
+    PRO_INTS,			/* integer */
     PRO_FONT,			/* troff font */
-    PRO_IGN,			/* ignore it */
-    PRO_KEY,			/* -T switch */
-    PRO_SETTINGS,		/* bundled set of settings */
-    PRO_PRSTRING,		/* Print string and exit */
-    PRO_FUNCTION		/* Call the associated function. */
+    PRO_SKIP,			/* ignore it */
+    PRO_KEYS,			/* -T switch */
+    PRO_LIST,			/* bundled set of settings */
+    PRO_TEXT,			/* Print string and exit */
+    PRO_FUNC			/* Call the associated function. */
   };
 
 /* profile specials for booleans */
@@ -63,9 +63,14 @@ static int exp_bad = 0;
 static int exp_badp = 0;
 static int exp_bap = 0;
 static int exp_bbb = 0;
+static int exp_bbo = 0;
 static int exp_bc = 0;
+static int exp_bfda = 0;
 static int exp_bl = 0;
+static int exp_blf = 0;
 static int exp_bli = 0;
+static int exp_br = 0;
+static int exp_brs = 0;
 static int exp_bs = 0;
 static int exp_c = 0;
 static int exp_cbi = 0;
@@ -91,7 +96,9 @@ static int exp_fca = 0;
 static int exp_fk = 0;
 static int exp_fs = 0;
 static int exp_gnu = 0;
+static int exp_hnl = 0;
 static int exp_i = 0;
+static int exp_il = 0;
 static int exp_ip = 0;
 static int exp_kr = 0;
 static int exp_l = 0;
@@ -105,7 +112,11 @@ static int exp_orig = 0;
 static int exp_pcs = 0;
 static int exp_ppi = 0;
 static int exp_pro = 0;
+static int exp_prs = 0;
 static int exp_psl = 0;
+static int exp_saf = 0;
+static int exp_sai = 0;
+static int exp_saw = 0;
 static int exp_sc = 0;
 static int exp_sob = 0;
 static int exp_ss = 0;
@@ -115,6 +126,39 @@ static int exp_ts = 0;
 static int exp_ut = 0;
 static int exp_v = 0;
 static int exp_version = 0;
+
+#define exp_nbacc exp_bacc
+#define exp_nbad  exp_bad
+#define exp_nbadp exp_badp
+#define exp_nbap  exp_bap
+#define exp_nbbb  exp_bbb
+#define exp_nbbo  exp_bbo
+#define exp_nbc   exp_bc
+#define exp_nbfda exp_bfda
+#define exp_nbs   exp_bs
+#define exp_ncdb  exp_cdb
+#define exp_ncdw  exp_cdw
+#define exp_nce   exp_ce
+#define exp_ncs   exp_cs
+#define exp_ndj   exp_dj
+#define exp_neei  exp_eei
+#define exp_nei   exp_ei
+#define exp_nfc1  exp_fc1
+#define exp_nfca  exp_fca
+#define exp_nlp   exp_lp
+#define exp_nlps  exp_lps
+#define exp_npcs  exp_pcs
+#define exp_npro  exp_pro
+#define exp_nprs  exp_prs
+#define exp_npsl  exp_psl
+#define exp_nsc   exp_sc
+#define exp_nsob  exp_sob
+#define exp_nss   exp_ss
+#define exp_nut   exp_ut
+#define exp_nv    exp_v
+
+#define exp_h     exp_version
+#define exp_o     expect_output_file
 
 static int ignored;		/* unimplemented placeholders */
 
@@ -155,6 +199,7 @@ int lineup_to_parens;
 int ljust_decl;
 int max_col;
 int n_real_blanklines;
+int parentheses_space;
 int postfix_blankline_requested;
 int prefix_blankline_requested;
 int preprocessor_indentation;
@@ -189,11 +234,11 @@ struct pro
        variable. Not used for other p_type's.  */
     enum on_or_off p_special;
 
-    /* if p_type == PRO_SETTINGS, a (char *) pointing to a list of the switches
+    /* if p_type == PRO_LIST, a (char *) pointing to a list of the switches
        to set, separated by NULs, terminated by 2 NULs. if p_type == PRO_BOOL,
-       PRO_INT, or PRO_FONT, address of the variable that gets set by the
-       option. if p_type == PRO_PRSTRING, a (char *) pointing to the string.
-       if p_type == PRO_FUNCTION, a pointer to a function to be called. */
+       PRO_INTS, or PRO_FONT, address of the variable that gets set by the
+       option. if p_type == PRO_TEXT, a (char *) pointing to the string.
+       if p_type == PRO_FUNC, a pointer to a function to be called. */
     int *d_number;
     const char *d_string;
     void (*d_functn) (void);
@@ -205,29 +250,32 @@ struct pro
     int *p_explicit;
   };
 
-#define INIT_BOOL(name, dft, subtype, obj, flag) \
-  {name, PRO_BOOL, dft, subtype, obj,0,0, flag}
+#define INIT_BOOL(name, dft, subtype, obj) \
+  {#name, PRO_BOOL, dft, subtype, &obj,0,0, &exp_##name}
 
-#define INIT_FONT(name, dft, subtype, obj, flag) \
-  {name, PRO_FONT, dft, subtype, obj,0,0, flag}
+#define INIT_FONT(name, dft, subtype, obj) \
+  {#name, PRO_FONT, dft, subtype, (int *) &obj,0,0, &exp_##name}
 
-#define INIT_FUNCTION(name, dft, subtype, obj, flag) \
-  {name, PRO_FUNCTION, dft, subtype, 0,0,obj, flag}
+#define INIT_FUNC(name, dft, subtype, obj) \
+  {#name, PRO_FUNC, dft, subtype, 0,0,obj, &exp_##name}
 
-#define INIT_IGN(name, dft, subtype, obj, flag) \
-  {name, PRO_IGN, dft, subtype, obj,0,0, flag}
+#define INIT_SKIP(name, dft, subtype, obj) \
+  {#name, PRO_SKIP, dft, subtype, obj,0,0, &exp_##name}
 
-#define INIT_INT(name, dft, subtype, obj, flag) \
-  {name, PRO_INT, dft, subtype, obj,0,0, flag}
+#define INIT_INTS(name, dft, subtype, obj) \
+  {#name, PRO_INTS, dft, subtype, &obj,0,0, &exp_##name}
 
-#define INIT_KEY(name, dft, subtype, obj, flag) \
-  {name, PRO_KEY, dft, subtype, obj,0,0, flag}
+#define INIT_KEYS(name, dft, subtype, obj) \
+  {#name, PRO_KEYS, dft, subtype, obj,0,0, &exp_##name}
 
-#define INIT_PRSTRING(name, dft, subtype, obj, flag) \
-  {name, PRO_PRSTRING, dft, subtype, 0,obj,0, flag}
+#define INIT_TEXT(name, dft, subtype, obj) \
+  {#name, PRO_TEXT, dft, subtype, 0,obj,0, &exp_##name}
 
-#define INIT_SETTINGS(name, dft, subtype, obj, flag) \
-  {name, PRO_SETTINGS, dft, subtype, 0,obj,0, flag}
+#define INIT_LIST(name, dft, subtype, obj) \
+  {#name, PRO_LIST, dft, subtype, 0,obj,0, &exp_##name}
+
+#define INIT_NULL() \
+  {NULL, PRO_SKIP, 0, 0, NULL,0,0, NULL}
 
 #define SETTINGS_BSD \
 "-nbap\0-nbad\0-bc\0-br\0-c33\0-cd33\0-cdb\0-ce\0-ci4\0\
@@ -295,122 +343,120 @@ struct pro
 #define DFT_EI   true
 #define DFT_LPS  true
 #define DFT_LP   true
+#define DFT_PRS  true
 #define DFT_PSL  true
 #define DFT_SOB  false
 #define DFT_SS   false
 #define DFT_V    false
 
+/* *INDENT-OFF* */
 struct pro pro[] =
 {
-  INIT_INT ("D", 0, ONOFF_NA, &debug, &exp_D),
-  INIT_KEY ("T", 0, ONOFF_NA, 0, &exp_T),
-  INIT_BOOL ("bacc", DFT_BACC, ON,
-	     &blanklines_around_conditional_compilation, &exp_bacc),
-  INIT_BOOL ("badp", DFT_BADP, ON,
-	     &blanklines_after_declarations_at_proctop, &exp_badp),
-  INIT_BOOL ("bad", DFT_BAD, ON, &blanklines_after_declarations, &exp_bad),
-  INIT_BOOL ("bap", DFT_BAP, ON, &blanklines_after_procs, &exp_bap),
-  INIT_BOOL ("bbb", DFT_BBB, ON, &blanklines_before_blockcomments, &exp_bbb),
-  INIT_BOOL ("bbo", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("bc", DFT_BC, OFF, &leave_comma, &exp_bc),
-  INIT_BOOL ("bfda", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("blf", DFT_BAD, ON, &ignored, &ignored),
-  INIT_INT ("bli", DFT_BLI, ONOFF_NA, &brace_indent, &exp_bli),
-  INIT_BOOL ("bl", DFT_BR, OFF, &btype_2, &exp_bl),
-  INIT_BOOL ("brs", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("br", DFT_BR, ON, &btype_2, &exp_bl),
-  INIT_BOOL ("bs", DFT_BS, ON, &blank_after_sizeof, &exp_bs),
-  INIT_INT ("cbi", DFT_I, ONOFF_NA, &case_brace_indent, &exp_cbi),
-  INIT_BOOL ("cdb", DFT_CDB, ON, &comment_delimiter_on_blankline, &exp_cdb),
-  INIT_BOOL ("cdw", false, ON, &cuddle_do_while, &exp_cdw),
-  INIT_INT ("cd", 33, ONOFF_NA, &decl_com_ind, &exp_cd),
-  INIT_BOOL ("ce", DFT_CE, ON, &cuddle_else, &exp_ce),
-  INIT_INT ("ci", DFT_CI, ONOFF_NA, &continuation_indent, &exp_ci),
-  INIT_INT ("cli", 0, ONOFF_NA, &case_indent, &exp_cli),
-  INIT_INT ("cp", DFT_CP, ONOFF_NA, &else_endif_col, &exp_cp),
-  INIT_BOOL ("cs", DFT_CS, ON, &cast_space, &exp_cs),
-  INIT_INT ("c", 33, ONOFF_NA, &com_ind, &exp_c),
-  INIT_INT ("di", DFT_DI, ONOFF_NA, &decl_indent, &exp_di),
-  INIT_BOOL ("dj", DFT_DJ, ON, &ljust_decl, &exp_dj),
-  INIT_INT ("d", 0, ONOFF_NA, &unindent_displace, &exp_d),
-  INIT_BOOL ("eei", DFT_EEI, ON, &extra_expression_indent, &exp_eei),
-  INIT_BOOL ("ei", DFT_EI, ON, &else_if, &exp_ei),
-  INIT_FONT ("fbc", 0, ONOFF_NA, (int *) &blkcomf, &exp_fbc),
-  INIT_FONT ("fbx", 0, ONOFF_NA, (int *) &boxcomf, &exp_fbx),
-  INIT_FONT ("fb", 0, ONOFF_NA, (int *) &bodyf, &exp_fb),
-  INIT_BOOL ("fc1", DFT_FC1, ON, &format_col1_comments, &exp_fc1),
-  INIT_BOOL ("fca", DFT_FCA, ON, &format_comments, &exp_fca),
-  INIT_FONT ("fc", 0, ONOFF_NA, (int *) &scomf, &exp_fc),
-  INIT_FONT ("fk", 0, ONOFF_NA, (int *) &keywordf, &exp_fk),
-  INIT_FONT ("fs", 0, ONOFF_NA, (int *) &stringf, &exp_fs),
-  INIT_SETTINGS ("gnu", 0, ONOFF_NA, SETTINGS_GNU, &exp_gnu),
-  INIT_BOOL ("hnl", DFT_BAD, ON, &ignored, &ignored),
-  INIT_FUNCTION ("h", 0, ONOFF_NA, usage, &exp_version),
-  INIT_INT ("il", DFT_I, ONOFF_NA, &ignored, &ignored),
-  INIT_INT ("ip", DFT_IP, ON, &indent_parameters, &exp_ip),
-  INIT_INT ("i", DFT_I, ONOFF_NA, &ind_size, &exp_i),
-  INIT_SETTINGS ("kr", 0, ONOFF_NA, SETTINGS_KR, &exp_kr),
-  INIT_INT ("lc", DEFAULT_RIGHT_COMMENT_MARGIN,
-	    ONOFF_NA, &comment_max_col, &exp_lc),
-  INIT_SETTINGS ("linux", 0, ONOFF_NA, SETTINGS_LINUX, &exp_linux),
-  INIT_BOOL ("lps", DFT_LPS, ON, &leave_preproc_space, &exp_lps),
-  INIT_BOOL ("lp", DFT_LP, ON, &lineup_to_parens, &exp_lp),
-  INIT_BOOL ("ly", false, ON, &lex_or_yacc, &exp_ly),
-  INIT_INT ("l", DEFAULT_RIGHT_MARGIN, ONOFF_NA, &max_col, &exp_l),
-  INIT_BOOL ("nbacc", DFT_BACC, OFF,
-	     &blanklines_around_conditional_compilation, &exp_bacc),
-  INIT_BOOL ("nbadp", DFT_BADP, OFF,
-	     &blanklines_after_declarations_at_proctop, &exp_badp),
-  INIT_BOOL ("nbad", DFT_BAD, OFF, &blanklines_after_declarations, &exp_bad),
-  INIT_BOOL ("nbap", DFT_BAP, OFF, &blanklines_after_procs, &exp_bap),
-  INIT_BOOL ("nbbb", DFT_BBB, OFF, &blanklines_before_blockcomments, &exp_bbb),
-  INIT_BOOL ("nbbo", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("nbc", DFT_BC, ON, &leave_comma, &exp_bc),
-  INIT_BOOL ("nbfda", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("nbs", DFT_BS, OFF, &blank_after_sizeof, &exp_bs),
-  INIT_BOOL ("ncdb", DFT_CDB, OFF, &comment_delimiter_on_blankline, &exp_cdb),
-  INIT_BOOL ("ncdw", false, OFF, &cuddle_do_while, &exp_cdw),
-  INIT_BOOL ("nce", DFT_CE, OFF, &cuddle_else, &exp_ce),
-  INIT_BOOL ("ncs", DFT_CS, OFF, &cast_space, &exp_cs),
-  INIT_BOOL ("ndj", DFT_DJ, OFF, &ljust_decl, &exp_dj),
-  INIT_BOOL ("neei", DFT_EEI, OFF, &extra_expression_indent, &exp_eei),
-  INIT_BOOL ("nei", DFT_EI, OFF, &else_if, &exp_ei),
-  INIT_BOOL ("nfc1", DFT_FC1, OFF, &format_col1_comments, &exp_fc1),
-  INIT_BOOL ("nfca", DFT_FCA, OFF, &format_comments, &exp_fca),
-  INIT_SETTINGS ("nip", 0, ONOFF_NA, "-ip0\0", &exp_nip),
-  INIT_BOOL ("nlps", DFT_LPS, OFF, &leave_preproc_space, &exp_lps),
-  INIT_BOOL ("nlp", DFT_LP, OFF, &lineup_to_parens, &exp_lp),
-  INIT_BOOL ("npcs", DFT_PCS, OFF, &proc_calls_space, &exp_pcs),
-  INIT_IGN ("npro", 0, ONOFF_NA, 0, &exp_pro),
-  INIT_BOOL ("nprs", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("npsl", DFT_PSL, OFF, &procnames_start_line, &exp_psl),
-  INIT_BOOL ("nsc", DFT_SC, OFF, &star_comment_cont, &exp_sc),
-  INIT_BOOL ("nsob", DFT_SOB, OFF, &swallow_optional_blanklines, &exp_sob),
-  INIT_BOOL ("nss", DFT_SS, OFF, &space_sp_semicolon, &exp_ss),
-  INIT_BOOL ("nut", false, OFF, &use_tabs, &exp_ut),
-  INIT_BOOL ("nv", DFT_V, OFF, &verbose, &exp_v),
-  INIT_SETTINGS ("orig", 0, ONOFF_NA, SETTINGS_BSD, &exp_orig),
-  INIT_BOOL ("o", false, ON, &expect_output_file, &expect_output_file),
-  INIT_BOOL ("pcs", DFT_PCS, ON, &proc_calls_space, &exp_pcs),
-  INIT_INT ("ppi", 0, ONOFF_NA, &preprocessor_indentation, &exp_ppi),
-  INIT_BOOL ("prs", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("psl", DFT_PSL, ON, &procnames_start_line, &exp_psl),
-  INIT_BOOL ("saf", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("sai", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("saw", DFT_BAD, ON, &ignored, &ignored),
-  INIT_BOOL ("sc", DFT_SC, ON, &star_comment_cont, &exp_sc),
-  INIT_BOOL ("sob", DFT_SOB, ON, &swallow_optional_blanklines, &exp_sob),
-  INIT_BOOL ("ss", DFT_SS, ON, &space_sp_semicolon, &exp_ss),
-  INIT_BOOL ("st", false, ON, &use_stdout, &exp_st),
-  INIT_BOOL ("ta", false, ON, &auto_typedefs, &exp_ta),
-  INIT_INT ("ts", 8, ONOFF_NA, &tabsize, &exp_ts),
-  INIT_BOOL ("ut", true, ON, &use_tabs, &exp_ut),
-  INIT_PRSTRING ("version", 0, ONOFF_NA, VERSION_STRING, &exp_version),
-  INIT_BOOL ("v", DFT_V, ON, &verbose, &exp_v),
+  INIT_INTS (D,       0,        ONOFF_NA, debug),
+  INIT_KEYS (T,       0,        ONOFF_NA, 0),
+  INIT_BOOL (bacc,    DFT_BACC, ON,       blanklines_around_conditional_compilation),
+  INIT_BOOL (badp,    DFT_BADP, ON,       blanklines_after_declarations_at_proctop),
+  INIT_BOOL (bad,     DFT_BAD,  ON,       blanklines_after_declarations),
+  INIT_BOOL (bap,     DFT_BAP,  ON,       blanklines_after_procs),
+  INIT_BOOL (bbb,     DFT_BBB,  ON,       blanklines_before_blockcomments),
+  INIT_BOOL (bbo,     DFT_BAD,  ON,       ignored),
+  INIT_BOOL (bc,      DFT_BC,   OFF,      leave_comma),
+  INIT_BOOL (bfda,    DFT_BAD,  ON,       ignored),
+  INIT_BOOL (blf,     DFT_BAD,  ON,       ignored),
+  INIT_INTS (bli,     DFT_BLI,  ONOFF_NA, brace_indent),
+  INIT_BOOL (bl,      DFT_BR,   OFF,      btype_2),
+  INIT_BOOL (brs,     DFT_BAD,  ON,       ignored),
+  INIT_BOOL (br,      DFT_BR,   ON,       btype_2),
+  INIT_BOOL (bs,      DFT_BS,   ON,       blank_after_sizeof),
+  INIT_INTS (cbi,     DFT_I,    ONOFF_NA, case_brace_indent),
+  INIT_BOOL (cdb,     DFT_CDB,  ON,       comment_delimiter_on_blankline),
+  INIT_BOOL (cdw,     false,    ON,       cuddle_do_while),
+  INIT_INTS (cd,      33,       ONOFF_NA, decl_com_ind),
+  INIT_BOOL (ce,      DFT_CE,   ON,       cuddle_else),
+  INIT_INTS (ci,      DFT_CI,   ONOFF_NA, continuation_indent),
+  INIT_INTS (cli,     0,        ONOFF_NA, case_indent),
+  INIT_INTS (cp,      DFT_CP,   ONOFF_NA, else_endif_col),
+  INIT_BOOL (cs,      DFT_CS,   ON,       cast_space),
+  INIT_INTS (c,       33,       ONOFF_NA, com_ind),
+  INIT_INTS (di,      DFT_DI,   ONOFF_NA, decl_indent),
+  INIT_BOOL (dj,      DFT_DJ,   ON,       ljust_decl),
+  INIT_INTS (d,       0,        ONOFF_NA, unindent_displace),
+  INIT_BOOL (eei,     DFT_EEI,  ON,       extra_expression_indent),
+  INIT_BOOL (ei,      DFT_EI,   ON,       else_if),
+  INIT_FONT (fbc,     0,        ONOFF_NA, blkcomf),
+  INIT_FONT (fbx,     0,        ONOFF_NA, boxcomf),
+  INIT_FONT (fb,      0,        ONOFF_NA, bodyf),
+  INIT_BOOL (fc1,     DFT_FC1,  ON,       format_col1_comments),
+  INIT_BOOL (fca,     DFT_FCA,  ON,       format_comments),
+  INIT_FONT (fc,      0,        ONOFF_NA, scomf),
+  INIT_FONT (fk,      0,        ONOFF_NA, keywordf),
+  INIT_FONT (fs,      0,        ONOFF_NA, stringf),
+  INIT_LIST (gnu,     0,        ONOFF_NA, SETTINGS_GNU),
+  INIT_BOOL (hnl,     DFT_BAD,  ON,       ignored),
+  INIT_FUNC (h,       0,        ONOFF_NA, usage),
+  INIT_INTS (il,      DFT_I,    ONOFF_NA, ignored),
+  INIT_INTS (ip,      DFT_IP,   ON,       indent_parameters),
+  INIT_INTS (i,       DFT_I,    ONOFF_NA, ind_size),
+  INIT_LIST (kr,      0,        ONOFF_NA, SETTINGS_KR),
+  INIT_INTS (lc,      DFT_CM,   ONOFF_NA, comment_max_col),
+  INIT_LIST (linux,   0,        ONOFF_NA, SETTINGS_LINUX),
+  INIT_BOOL (lps,     DFT_LPS,  ON,       leave_preproc_space),
+  INIT_BOOL (lp,      DFT_LP,   ON,       lineup_to_parens),
+  INIT_BOOL (ly,      false,    ON,       lex_or_yacc),
+  INIT_INTS (l,       DFT_RM,   ONOFF_NA, max_col),
+  INIT_BOOL (nbacc,   DFT_BACC, OFF,      blanklines_around_conditional_compilation),
+  INIT_BOOL (nbadp,   DFT_BADP, OFF,      blanklines_after_declarations_at_proctop),
+  INIT_BOOL (nbad,    DFT_BAD,  OFF,      blanklines_after_declarations),
+  INIT_BOOL (nbap,    DFT_BAP,  OFF,      blanklines_after_procs),
+  INIT_BOOL (nbbb,    DFT_BBB,  OFF,      blanklines_before_blockcomments),
+  INIT_BOOL (nbbo,    DFT_BAD,  ON,       ignored),
+  INIT_BOOL (nbc,     DFT_BC,   ON,       leave_comma),
+  INIT_BOOL (nbfda,   DFT_BAD,  ON,       ignored),
+  INIT_BOOL (nbs,     DFT_BS,   OFF,      blank_after_sizeof),
+  INIT_BOOL (ncdb,    DFT_CDB,  OFF,      comment_delimiter_on_blankline),
+  INIT_BOOL (ncdw,    false,    OFF,      cuddle_do_while),
+  INIT_BOOL (nce,     DFT_CE,   OFF,      cuddle_else),
+  INIT_BOOL (ncs,     DFT_CS,   OFF,      cast_space),
+  INIT_BOOL (ndj,     DFT_DJ,   OFF,      ljust_decl),
+  INIT_BOOL (neei,    DFT_EEI,  OFF,      extra_expression_indent),
+  INIT_BOOL (nei,     DFT_EI,   OFF,      else_if),
+  INIT_BOOL (nfc1,    DFT_FC1,  OFF,      format_col1_comments),
+  INIT_BOOL (nfca,    DFT_FCA,  OFF,      format_comments),
+  INIT_LIST (nip,     0,        ONOFF_NA, "-ip0\0"),
+  INIT_BOOL (nlps,    DFT_LPS,  OFF,      leave_preproc_space),
+  INIT_BOOL (nlp,     DFT_LP,   OFF,      lineup_to_parens),
+  INIT_BOOL (npcs,    DFT_PCS,  OFF,      proc_calls_space),
+  INIT_SKIP (npro,    0,        ONOFF_NA, 0),
+  INIT_BOOL (nprs,    DFT_PRS,  OFF,      parentheses_space),
+  INIT_BOOL (npsl,    DFT_PSL,  OFF,      procnames_start_line),
+  INIT_BOOL (nsc,     DFT_SC,   OFF,      star_comment_cont),
+  INIT_BOOL (nsob,    DFT_SOB,  OFF,      swallow_optional_blanklines),
+  INIT_BOOL (nss,     DFT_SS,   OFF,      space_sp_semicolon),
+  INIT_BOOL (nut,     false,    OFF,      use_tabs),
+  INIT_BOOL (nv,      DFT_V,    OFF,      verbose),
+  INIT_LIST (orig,    0,        ONOFF_NA, SETTINGS_BSD),
+  INIT_BOOL (o,       false,    ON,       expect_output_file),
+  INIT_BOOL (pcs,     DFT_PCS,  ON,       proc_calls_space),
+  INIT_INTS (ppi,     0,        ONOFF_NA, preprocessor_indentation),
+  INIT_BOOL (prs,     DFT_PRS,  ON,       parentheses_space),
+  INIT_BOOL (psl,     DFT_PSL,  ON,       procnames_start_line),
+  INIT_BOOL (saf,     DFT_BAD,  ON,       ignored),
+  INIT_BOOL (sai,     DFT_BAD,  ON,       ignored),
+  INIT_BOOL (saw,     DFT_BAD,  ON,       ignored),
+  INIT_BOOL (sc,      DFT_SC,   ON,       star_comment_cont),
+  INIT_BOOL (sob,     DFT_SOB,  ON,       swallow_optional_blanklines),
+  INIT_BOOL (ss,      DFT_SS,   ON,       space_sp_semicolon),
+  INIT_BOOL (st,      false,    ON,       use_stdout),
+  INIT_BOOL (ta,      false,    ON,       auto_typedefs),
+  INIT_INTS (ts,      8,        ONOFF_NA, tabsize),
+  INIT_BOOL (ut,      true,     ON,       use_tabs),
+  INIT_TEXT (version, 0,        ONOFF_NA, VERSION_STRING),
+  INIT_BOOL (v,       DFT_V,    ON,       verbose),
 
 /* Signify end of structure.  */
-  INIT_IGN (0, 0, ONOFF_NA, 0, 0)
+  INIT_NULL ()
 };
+/* *INDENT-ON* */
 
 struct long_option_conversion
   {
@@ -418,115 +464,117 @@ struct long_option_conversion
     const char *short_name;
   };
 
-#define INIT_LONG(short_name, long_name) {long_name, short_name}
+#define INIT_LONG(short_name, long_name) {long_name, #short_name}
 
+/* *INDENT-OFF* */
 struct long_option_conversion option_conversions[] =
 {
-  INIT_LONG ("D", "debug"),
-  INIT_LONG ("T", "typedef"),
-  INIT_LONG ("bacc", "blank-lines-after-ifdefs"),
-  INIT_LONG ("bad", "blank-lines-after-declarations"),
-  INIT_LONG ("badp", "blank-lines-after-procedure-declarations"),
-  INIT_LONG ("bap", "blank-lines-after-procedures"),
-  INIT_LONG ("bbb", "blank-lines-after-block-comments"),
-  INIT_LONG ("bbo", "break-before-boolean-operator"),
-  INIT_LONG ("bc", "blank-lines-after-commas"),
-  INIT_LONG ("bfda", "break-function-decl-args"),
-  INIT_LONG ("bl", "braces-after-if-line"),
-  INIT_LONG ("bli", "brace-indent"),
-  INIT_LONG ("br", "braces-on-if-line"),
-  INIT_LONG ("bs", "Bill-Shannon"),
-  INIT_LONG ("bs", "blank-before-sizeof"),
-  INIT_LONG ("c", "comment-indentation"),
-  INIT_LONG ("cbi", "case-brace-indentation"),
-  INIT_LONG ("cd", "declaration-comment-column"),
-  INIT_LONG ("cdb", "comment-delimiters-on-blank-lines"),
-  INIT_LONG ("cdw", "cuddle-do-while"),
-  INIT_LONG ("ce", "cuddle-else"),
-  INIT_LONG ("ci", "continuation-indentation"),
-  INIT_LONG ("cli", "case-indentation"),
-  INIT_LONG ("cp", "else-endif-column"),
-  INIT_LONG ("cs", "space-after-cast"),
-  INIT_LONG ("d", "line-comments-indentation"),
-  INIT_LONG ("di", "declaration-indentation"),
-  INIT_LONG ("dj", "left-justify-declarations"),
-  INIT_LONG ("eei", "extra-expression-indentation"),
-  INIT_LONG ("ei", "else-if"),
-  INIT_LONG ("fb", "*"),
-  INIT_LONG ("fbc", "*"),
-  INIT_LONG ("fbx", "*"),
-  INIT_LONG ("fc", "*"),
-  INIT_LONG ("fc1", "format-first-column-comments"),
-  INIT_LONG ("fca", "format-all-comments"),
-  INIT_LONG ("fk", "*"),
-  INIT_LONG ("fs", "*"),
-  INIT_LONG ("gnu", "gnu-style"),
-  INIT_LONG ("hnl", "honor-newlines"),
-  INIT_LONG ("h", "help"),
-  INIT_LONG ("h", "usage"),
-  INIT_LONG ("il", "indent-label"),
-  INIT_LONG ("ip", "parameter-indentation"),
-  INIT_LONG ("i", "indentation-level"),
-  INIT_LONG ("i", "indent-level"),
-  INIT_LONG ("kr", "k-and-r-style"),
-  INIT_LONG ("kr", "kernighan-and-ritchie-style"),
-  INIT_LONG ("kr", "kernighan-and-ritchie"),
-  INIT_LONG ("lc", "comment-line-length"),
-  INIT_LONG ("linux", "linux-style"),
-  INIT_LONG ("ly", "lex-or-yacc"),
-  INIT_LONG ("lp", "continue-at-parentheses"),
-  INIT_LONG ("lps", "leave-preprocessor-space"),
-  INIT_LONG ("l", "line-length"),
-  INIT_LONG ("nbacc", "no-blank-lines-after-ifdefs"),
-  INIT_LONG ("nbadp", "no-blank-lines-after-procedure-declarations"),
-  INIT_LONG ("nbad", "no-blank-lines-after-declarations"),
-  INIT_LONG ("nbap", "no-blank-lines-after-procedures"),
-  INIT_LONG ("nbbb", "no-blank-lines-after-block-comments"),
-  INIT_LONG ("nbc", "no-blank-lines-after-commas"),
-  INIT_LONG ("nbs", "no-Bill-Shannon"),
-  INIT_LONG ("nbs", "no-blank-before-sizeof"),
-  INIT_LONG ("ncdb", "no-comment-delimiters-on-blank-lines"),
-  INIT_LONG ("ncdw", "dont-cuddle-do-while"),
-  INIT_LONG ("nce", "dont-cuddle-else"),
-  INIT_LONG ("ncs", "no-space-after-casts"),
-  INIT_LONG ("ndj", "dont-left-justify-declarations"),
-  INIT_LONG ("neei", "no-extra-expression-indentation"),
-  INIT_LONG ("nei", "no-else-if"),
-  INIT_LONG ("nfc1", "dont-format-first-column-comments"),
-  INIT_LONG ("nfca", "dont-format-comments"),
-  INIT_LONG ("nip", "no-parameter-indentation"),
-  INIT_LONG ("nip", "dont-indent-parameters"),
-  INIT_LONG ("nlps", "remove-preprocessor-space"),
-  INIT_LONG ("nlp", "dont-line-up-parentheses"),
-  INIT_LONG ("npcs", "no-space-after-function-call-names"),
-  INIT_LONG ("npro", "ignore-profile"),
-  INIT_LONG ("npsl", "dont-break-procedure-type"),
-  INIT_LONG ("nsc", "dont-star-comments"),
-  INIT_LONG ("nsob", "leave-optional-blank-lines"),
-  INIT_LONG ("nss", "dont-space-special-semicolon"),
-  INIT_LONG ("nut", "no-tabs"),
-  INIT_LONG ("nv", "no-verbosity"),
-  INIT_LONG ("o", "output"),
-  INIT_LONG ("o", "output-file"),
-  INIT_LONG ("orig", "original"),
-  INIT_LONG ("orig", "original-style"),
-  INIT_LONG ("orig", "berkeley-style"),
-  INIT_LONG ("orig", "berkeley"),
-  INIT_LONG ("pcs", "space-after-procedure-calls"),
-  INIT_LONG ("prs", "space-after-parenthesis"),
-  INIT_LONG ("ppi", "preprocessor-indentation"),
-  INIT_LONG ("psl", "procnames-start-lines"),
-  INIT_LONG ("sc", "start-left-side-of-comments"),
-  INIT_LONG ("sob", "swallow-optional-blank-lines"),
-  INIT_LONG ("ss", "space-special-semicolon"),
-  INIT_LONG ("st", "standard-output"),
-  INIT_LONG ("ta", "auto-typedefs"),
-  INIT_LONG ("ut", "use-tabs"),
-  INIT_LONG ("ts", "tab-size"),
-  INIT_LONG ("version", "version"),
-  INIT_LONG ("v", "verbose"),
+  INIT_LONG (D,       "debug"),
+  INIT_LONG (T,       "typedef"),
+  INIT_LONG (bacc,    "blank-lines-after-ifdefs"),
+  INIT_LONG (bad,     "blank-lines-after-declarations"),
+  INIT_LONG (badp,    "blank-lines-after-procedure-declarations"),
+  INIT_LONG (bap,     "blank-lines-after-procedures"),
+  INIT_LONG (bbb,     "blank-lines-after-block-comments"),
+  INIT_LONG (bbo,     "break-before-boolean-operator"),
+  INIT_LONG (bc,      "blank-lines-after-commas"),
+  INIT_LONG (bfda,    "break-function-decl-args"),
+  INIT_LONG (bl,      "braces-after-if-line"),
+  INIT_LONG (bli,     "brace-indent"),
+  INIT_LONG (br,      "braces-on-if-line"),
+  INIT_LONG (bs,      "Bill-Shannon"),
+  INIT_LONG (bs,      "blank-before-sizeof"),
+  INIT_LONG (c,       "comment-indentation"),
+  INIT_LONG (cbi,     "case-brace-indentation"),
+  INIT_LONG (cd,      "declaration-comment-column"),
+  INIT_LONG (cdb,     "comment-delimiters-on-blank-lines"),
+  INIT_LONG (cdw,     "cuddle-do-while"),
+  INIT_LONG (ce,      "cuddle-else"),
+  INIT_LONG (ci,      "continuation-indentation"),
+  INIT_LONG (cli,     "case-indentation"),
+  INIT_LONG (cp,      "else-endif-column"),
+  INIT_LONG (cs,      "space-after-cast"),
+  INIT_LONG (d,       "line-comments-indentation"),
+  INIT_LONG (di,      "declaration-indentation"),
+  INIT_LONG (dj,      "left-justify-declarations"),
+  INIT_LONG (eei,     "extra-expression-indentation"),
+  INIT_LONG (ei,      "else-if"),
+  INIT_LONG (fb,      "*"),
+  INIT_LONG (fbc,     "*"),
+  INIT_LONG (fbx,     "*"),
+  INIT_LONG (fc,      "*"),
+  INIT_LONG (fc1,     "format-first-column-comments"),
+  INIT_LONG (fca,     "format-all-comments"),
+  INIT_LONG (fk,      "*"),
+  INIT_LONG (fs,      "*"),
+  INIT_LONG (gnu,     "gnu-style"),
+  INIT_LONG (hnl,     "honor-newlines"),
+  INIT_LONG (h,       "help"),
+  INIT_LONG (h,       "usage"),
+  INIT_LONG (il,      "indent-label"),
+  INIT_LONG (ip,      "parameter-indentation"),
+  INIT_LONG (i,       "indentation-level"),
+  INIT_LONG (i,       "indent-level"),
+  INIT_LONG (kr,      "k-and-r-style"),
+  INIT_LONG (kr,      "kernighan-and-ritchie-style"),
+  INIT_LONG (kr,      "kernighan-and-ritchie"),
+  INIT_LONG (lc,      "comment-line-length"),
+  INIT_LONG (linux,   "linux-style"),
+  INIT_LONG (ly,      "lex-or-yacc"),
+  INIT_LONG (lp,      "continue-at-parentheses"),
+  INIT_LONG (lps,     "leave-preprocessor-space"),
+  INIT_LONG (l,       "line-length"),
+  INIT_LONG (nbacc,   "no-blank-lines-after-ifdefs"),
+  INIT_LONG (nbadp,   "no-blank-lines-after-procedure-declarations"),
+  INIT_LONG (nbad,    "no-blank-lines-after-declarations"),
+  INIT_LONG (nbap,    "no-blank-lines-after-procedures"),
+  INIT_LONG (nbbb,    "no-blank-lines-after-block-comments"),
+  INIT_LONG (nbc,     "no-blank-lines-after-commas"),
+  INIT_LONG (nbs,     "no-Bill-Shannon"),
+  INIT_LONG (nbs,     "no-blank-before-sizeof"),
+  INIT_LONG (ncdb,    "no-comment-delimiters-on-blank-lines"),
+  INIT_LONG (ncdw,    "dont-cuddle-do-while"),
+  INIT_LONG (nce,     "dont-cuddle-else"),
+  INIT_LONG (ncs,     "no-space-after-casts"),
+  INIT_LONG (ndj,     "dont-left-justify-declarations"),
+  INIT_LONG (neei,    "no-extra-expression-indentation"),
+  INIT_LONG (nei,     "no-else-if"),
+  INIT_LONG (nfc1,    "dont-format-first-column-comments"),
+  INIT_LONG (nfca,    "dont-format-comments"),
+  INIT_LONG (nip,     "no-parameter-indentation"),
+  INIT_LONG (nip,     "dont-indent-parameters"),
+  INIT_LONG (nlps,    "remove-preprocessor-space"),
+  INIT_LONG (nlp,     "dont-line-up-parentheses"),
+  INIT_LONG (npcs,    "no-space-after-function-call-names"),
+  INIT_LONG (npro,    "ignore-profile"),
+  INIT_LONG (npsl,    "dont-break-procedure-type"),
+  INIT_LONG (nsc,     "dont-star-comments"),
+  INIT_LONG (nsob,    "leave-optional-blank-lines"),
+  INIT_LONG (nss,     "dont-space-special-semicolon"),
+  INIT_LONG (nut,     "no-tabs"),
+  INIT_LONG (nv,      "no-verbosity"),
+  INIT_LONG (o,       "output"),
+  INIT_LONG (o,       "output-file"),
+  INIT_LONG (orig,    "original"),
+  INIT_LONG (orig,    "original-style"),
+  INIT_LONG (orig,    "berkeley-style"),
+  INIT_LONG (orig,    "berkeley"),
+  INIT_LONG (pcs,     "space-after-procedure-calls"),
+  INIT_LONG (prs,     "space-after-parenthesis"),
+  INIT_LONG (ppi,     "preprocessor-indentation"),
+  INIT_LONG (psl,     "procnames-start-lines"),
+  INIT_LONG (sc,      "start-left-side-of-comments"),
+  INIT_LONG (sob,     "swallow-optional-blank-lines"),
+  INIT_LONG (ss,      "space-special-semicolon"),
+  INIT_LONG (st,      "standard-output"),
+  INIT_LONG (ta,      "auto-typedefs"),
+  INIT_LONG (ut,      "use-tabs"),
+  INIT_LONG (ts,      "tab-size"),
+  INIT_LONG (version, "version"),
+  INIT_LONG (v,       "verbose"),
   {0, 0},
 };
+/* *INDENT-ON* */
 
 /* S1 should be a string.  S2 should be a string, perhaps followed by an
    argument.  Compare the two, returning true if they are equal, and if they
@@ -554,7 +602,7 @@ set_defaults (void)
   struct pro *p;
 
   for (p = pro; p->p_name; p++)
-    if (p->p_type == PRO_BOOL || p->p_type == PRO_INT)
+    if (p->p_type == PRO_BOOL || p->p_type == PRO_INTS)
       *NumberData (p) = p->p_default;
 }
 
@@ -592,7 +640,7 @@ option_prefix (const char *arg)
 /* Process an option ARG (e.g. "-l60").  PARAM is a possible value
    for ARG, if PARAM is nonzero.  EXPLICT should be nonzero iff the
    argument is being explicitly specified (as opposed to being taken from a
-   PRO_SETTINGS group of settings).
+   PRO_LIST group of settings).
 
    Returns 1 if the option had a value, returns 0 otherwise. */
 
@@ -668,9 +716,9 @@ found:
 	  fflush (stdout);
 	  switch (p->p_type)
 	    {
-	    case PRO_KEY:
+	    case PRO_KEYS:
 	      /* FALLTHRU */
-	    case PRO_INT:
+	    case PRO_INTS:
 	      use_param = (*param_start ? param_start : param);
 	      break;
 	    default:
@@ -690,18 +738,18 @@ found:
       switch (p->p_type)
 	{
 
-	case PRO_PRSTRING:
+	case PRO_TEXT:
 	  /* This is not really an error, but zero exit values are
 	     returned only when code has been successfully formatted. */
 	  puts (StringData (p));
 	  exit (invocation_error);
 	  /* NOTREACHED */
 
-	case PRO_FUNCTION:
+	case PRO_FUNC:
 	  FunctnData (p) ();
 	  break;
 
-	case PRO_SETTINGS:
+	case PRO_LIST:
 	  {
 	    const char *t;	/* current position */
 
@@ -716,10 +764,10 @@ found:
 	  }
 	  break;
 
-	case PRO_IGN:
+	case PRO_SKIP:
 	  break;
 
-	case PRO_KEY:
+	case PRO_KEYS:
 	  {
 	    char *str;
 	    if (*param_start == 0)
@@ -743,7 +791,7 @@ found:
 	    *NumberData (p) = true;
 	  break;
 
-	case PRO_INT:
+	case PRO_INTS:
 	  if (*param_start == 0)
 	    {
 	      if (!(param_start = param))
@@ -929,7 +977,7 @@ print_options (void)
 
   for (p = pro, q = 0; p->p_name; q = p++)
     {
-      if (p->p_name[0] == 'n' && p->p_type != PRO_IGN)
+      if (p->p_name[0] == 'n' && p->p_type != PRO_SKIP)
 	{
 	  int found = 0;
 	  for (r = pro; r->p_name; r++)
@@ -955,25 +1003,25 @@ print_options (void)
 	    case PRO_BOOL:	/* boolean */
 	      sprintf (next, " %s", *NumberData (p) ? "ON" : "OFF");
 	      break;
-	    case PRO_INT:	/* integer */
+	    case PRO_INTS:	/* integer */
 	      sprintf (next, " %d", *NumberData (p));
 	      break;
 	    case PRO_FONT:	/* troff font */
 	      sprintf (next, " font");
 	      break;
-	    case PRO_IGN:	/* ignore it */
+	    case PRO_SKIP:	/* ignore it */
 	      sprintf (next, " ignored");
 	      break;
-	    case PRO_KEY:	/* -T switch */
+	    case PRO_KEYS:	/* -T switch */
 	      sprintf (next, " keyword");
 	      break;
-	    case PRO_SETTINGS:	/* bundled set of settings */
+	    case PRO_LIST:	/* bundled set of settings */
 	      sprintf (next, " settings %s", *p->p_explicit ? "ON" : "OFF");
 	      break;
-	    case PRO_PRSTRING:	/* Print string and exit */
+	    case PRO_TEXT:	/* Print string and exit */
 	      sprintf (next, " \"%s\"", StringData (p));
 	      break;
-	    case PRO_FUNCTION:	/* Call the associated function. */
+	    case PRO_FUNC:	/* Call the associated function. */
 	      sprintf (next, " function");
 	      break;
 	    }

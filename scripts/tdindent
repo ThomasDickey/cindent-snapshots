@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.41 2019/08/04 21:42:44 tom Exp $
+# $Id: tdindent,v 1.43 2019/11/22 22:51:54 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010-2014,2019 Thomas E. Dickey                            *
 #*                                                                          *
@@ -39,6 +39,7 @@ TEST_D=no
 TEST_N=no
 
 PROFILE=
+unset INDENT_PROFILE
 
 MY_PWD=`pwd`
 MY_TMP=`mktemp -d 2>/dev/null`
@@ -200,7 +201,8 @@ EOF
 			echo "$INDENT_PROG $OPTS $OPT2 $leaf"
 		else
 			$INDENT_PROG $OPTS $OPT2 "$leaf" 2>&1 | \
-				sed -e "s/^${INDENT_PROG##*/}: //"
+				sed	-E \
+					-e "s/^(${INDENT_PROG##*/}|indent): //"
 		fi
 
 		# (post-filter) restore the file.  There is an extra chunk used to
