@@ -133,9 +133,9 @@ enum rwcodes
 
 #define UChar(c) (0xff & ((unsigned char)(c)))
 
-#define DEFAULT_RIGHT_MARGIN 78
+#define DFT_RM 78		/* default right margin */
 
-#define DEFAULT_RIGHT_COMMENT_MARGIN 78
+#define DFT_CM 78		/* default right comment-margin */
 
 #define at_buffer_end(p) ((p) >= buf_end)
 #define at_line_end(p)   (at_buffer_end(p) || (*p) == EOL)
@@ -144,7 +144,7 @@ enum rwcodes
 #if defined(GCC_PRINTF) && !defined(printf)
 #define GCC_PRINTFLIKE(fmt,var) __attribute__((format(printf,fmt,var)))
 #else
-#define GCC_PRINTFLIKE(fmt,var) /*nothing*/
+#define GCC_PRINTFLIKE(fmt,var)	/*nothing */
 #endif
 #endif
 extern const char *progname;	/* actual name of this program */
@@ -308,6 +308,7 @@ extern int ljust_decl;		/* true if declarations should be left
 				   justified */
 extern int max_col;		/* the maximum allowable line length */
 extern int n_real_blanklines;
+extern int parentheses_space;	/* add space within parentheses */
 extern int postfix_blankline_requested;
 extern int prefix_blankline_requested;
 extern int preprocessor_indentation;
@@ -425,7 +426,7 @@ struct parser_state
     /* also, remember its depth in parentheses */
     int last_rw_depth;
 
-    /* Used to store case stmt indentation levels.  */
+    /* Used to store case statement indentation levels.  */
     /* Currently allocated size is stored in p_stack_size.  */
     int *cstk;
 
@@ -461,7 +462,7 @@ struct parser_state
     int col_1;			/* set to true if the last token started in
 				   column 1 */
     int com_col;		/* this is the column in which the current
-				   coment should start */
+				   comment should start */
     int dec_nest;		/* current nesting level for structure or
 				   init */
     int decl_on_line;		/* set to true if this line of code has part
@@ -471,13 +472,13 @@ struct parser_state
 				   printed */
     int in_comment;		/* set to true while processing a C comment */
     int in_decl;		/* set to true when we are in a declaration
-				   stmt.  The processing of braces is then
+				   statement.  The processing of braces is then
 				   slightly different */
-    int in_stmt;		/* set to 1 while in a stmt */
+    int in_stmt;		/* set to 1 while in a statement */
     int ind_level;		/* the current indentation level in spaces */
     int ind_stmt;		/* set to 1 if next line should have an extra
 				   indentation level because we are in the
-				   middle of a stmt */
+				   middle of a statement */
     int inner_stmt;		/* set to true if processing ({statement}) */
     int last_u_d;		/* set to true after scanning a token which
 				   forces a following operator to be unary */
@@ -500,7 +501,7 @@ struct parser_state
 				   regular label */
     int search_brace;		/* set to true by parse when it is necessary
 				   to buffer up all info up to the start of a
-				   stmt after an if, while, etc */
+				   statement after an if, while, etc */
     int use_ff;			/* set to one if the current line should be
 				   terminated with a form feed */
     int want_blank;		/* set to true when the following token

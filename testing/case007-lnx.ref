@@ -30,6 +30,7 @@ const char *_nc_altcharset_name(attr_t attr, chtype ch)
 	/* *INDENT-ON* */
 	};
 	const NAMES *sp;
+
 	/* *INDENT-OFF* */
 	static const NAMES name2[] = {
 	    { ',', "ACS_LARROW"   },

@@ -47,6 +47,8 @@
 /* number of levels a label is placed to left of code */
 #define LABEL_OFFSET 2
 
+#define beginning_comment(p) ((p)[0] == '/' && ((p)[1] == '*' || ((p)[1]) == '/'))
+
 /* Stuff that needs to be shared with the rest of indent. Documented in
    indent.h.  */
 char *in_prog;
@@ -310,6 +312,33 @@ preprocessor_level (struct parser_state *p)
   return level;
 }
 
+static void
+drain_blanklines (void)
+{
+  if (debug > 2)
+    {
+      printf ("drain_blanklines:");
+      printf (" bl_line:%d, ", parser_state_tos->bl_line);
+      printf (" request:%d, ", prefix_blankline_requested);
+      printf (" atfirst:%d, ", not_first_line);
+      printf (" swallow:%d, ", swallow_optional_blanklines);
+      printf (" actual:%d, ", n_real_blanklines);
+      printf ("\n");
+    }
+  suppress_blanklines = 0;
+  parser_state_tos->bl_line = false;
+  if (prefix_blankline_requested
+      && not_first_line
+      && n_real_blanklines == 0)
+    n_real_blanklines = 1;
+  else if (swallow_optional_blanklines && n_real_blanklines > 1)
+    n_real_blanklines = 1;
+
+  while (--n_real_blanklines >= 0)
+    pass_char (EOL);
+  n_real_blanklines = 0;
+}
+
 void
 dump_line (void)
 {				/* dump_line is the routine that actually
@@ -345,18 +374,8 @@ dump_line (void)
     {
       int cur_col;
 
-      suppress_blanklines = 0;
-      parser_state_tos->bl_line = false;
-      if (prefix_blankline_requested
-	  && not_first_line
-	  && n_real_blanklines == 0)
-	n_real_blanklines = 1;
-      else if (swallow_optional_blanklines && n_real_blanklines > 1)
-	n_real_blanklines = 1;
+      drain_blanklines ();
 
-      while (--n_real_blanklines >= 0)
-	pass_char (EOL);
-      n_real_blanklines = 0;
       if (parser_state_tos->ind_level == 0)
 	parser_state_tos->ind_stmt = 0;		/* This is a class A kludge. Don't do
 						   additional statement indentation
@@ -434,7 +453,7 @@ dump_line (void)
 		      pass_char (' ');
 		      ++cur_col;
 		    }
-		  if (s[0] == '/' && (s[1] == '*' || s[1] == '/'))
+		  if (beginning_comment (s))
 		    {
 		      pass_n_text (s, len);
 		    }
@@ -894,7 +913,7 @@ fill_buffer (void)
 
       /* If we are looking at the beginning of a comment, see
          if it turns off formatting with off-on directives. */
-      if (*p == '/' && (*(p + 1) == '*' || *(p + 1) == '/'))
+      if (beginning_comment (p))
 	{
 	  p += 2;
 	  while (isblank (*p))
@@ -907,6 +926,7 @@ fill_buffer (void)
 	      int inhibited = 1;
 	      int starting_no = in_line_no;
 
+	      drain_blanklines ();
 	      suppress_formatting = 1;
 	      if (s_com != e_com || s_lab != e_lab || s_code != e_code)
 		dump_line ();
@@ -934,7 +954,7 @@ fill_buffer (void)
 		  while (isblank (*p))
 		    pass_char (*p++);
 
-		  if (*p == '/' && (*(p + 1) == '*' || *(p + 1) == '/'))
+		  if (beginning_comment (p))
 		    {
 		      /* We've hit a comment.  See if it turns formatting
 		         back on. */
@@ -966,6 +986,10 @@ fill_buffer (void)
 					  at_current_eof (cur_line))
 					{
 					  pass_char (EOL);
+					}
+				      else
+					{
+					  in_line_no--;
 					}
 				    }
 				  else
