@@ -1,0 +1,30 @@
+static size_t
+fill_addrinfo(void **buffer)
+{
+    for (count = 0; count < limit; ++count) {
+
+        /* *INDENT-EQLS* */
+        actual->ai_flags = phost->ai_flags;
+        actual->ai_family = phost->ai_family;
+        actual->ai_socktype = phost->ai_socktype;
+        actual->ai_protocol = phost->ai_protocol;
+        actual->ai_addrlen = phost->ai_addrlen;
+        actual->ai_addr = (struct sockaddr *) (void *) heap;
+
+    }
+    return (size_t) (heap - (char *) result);
+}
+
+void
+failed(mode_t *_t)
+{
+    /* *INDENT-EQLS* */
+    parser_state_tos->next = 0;
+    parser_state_tos->tos = 0;
+    parser_state_tos->paren_indents_size = 1;
+    parser_state_tos->p_stack[0] = stmt;
+
+    parser_state_tos->last_nl = true;
+    perror(_t);
+    exit(BADEXIT);
+}

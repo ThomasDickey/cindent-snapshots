@@ -1,4 +1,4 @@
-.\" $Id: tdindent.1,v 1.9 2019/07/07 21:35:27 tom Exp $
+.\" $Id: tdindent.1,v 1.12 2019/11/23 10:36:27 tom Exp $
 .\" Copyright:  2010-2018,2019 by Thomas E. Dickey
 .\"
 .\" Permission is hereby granted, free of charge, to any person obtaining a
@@ -62,7 +62,7 @@ to get the tab-size for expansion.
 after pre-filtering,
 show the changes that this script passes to the \fI\*n\fP program.
 This and the \fB\-N\fP option are useful for verifying that the
-macros which are filtered are handled correctly. 
+macros which are filtered are handled correctly.
 .TP 5
 \-N
 do not execute the \fI\*n\fP program.
@@ -74,14 +74,14 @@ It accepts these:
 .B .c .h
 These are the standard C suffixes.
 .TP 5
-.B .cc .cpp .hh 
+.B .cc .cpp .hh
 These are accepted as "close enough" to C.
 .TP 5
 .B .l .y
 The wrapper adds to \fB\-ly\fP option, telling \fI\*n\fP to process
 lex/yacc files.
 .PP
-It ignores other file-suffixes, making it possible to run the \fI\*n\fP 
+It ignores other file-suffixes, making it possible to run the \fI\*n\fP
 program on all files in a directory.
 .SS FILTERING
 The \fI\*n\fP program by itself cannot handle certain commonly-used
@@ -137,6 +137,20 @@ These are the settings used for \fIvttest\fP.
 .TP 5
 yak-indent
 These are the settings used for \fIbyacc\fP (Berkeley Yacc).
+.TP 5
+xxx-indent
+These settings are useful for formatting X11, Xt and Xaw source files.
+.PP
+There are a few scripts used for comparison with GNU indent:
+.TP 5
+twm-indent
+Uses \fBxorg-indent\fP, adding typedefs from \fBtwm\fP headers.
+.TP 5
+xorg-indent
+Uses GNU indent with the profile from \fBxxx-indent\fP.
+.TP 5
+xxx-compare
+Compares the results from \fBxxx-indent\fP and \fBxorg-indent\fP.
 .SH ENVIRONMENT
 .TP 5
 INDENT_PROG

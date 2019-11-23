@@ -1,6 +1,6 @@
 # Makefile template for GNU indent
-# $Id: makefile.in,v 1.29 2013/12/07 12:50:45 tom Exp $
-# Copyright 1999-2010,2013, Thomas E. Dickey
+# $Id: makefile.in,v 1.31 2019/11/23 10:39:26 tom Exp $
+# Copyright 1999-2013,2019 Thomas E. Dickey
 # Copyright (C) 1994, Joseph Arceneaux.  All rights reserved
 # Copyright (C) 1992, Free Software Foundation, Inc.
 #
@@ -173,7 +173,7 @@ install \
 install-man :: $(MANDIR)
 	${INSTALL_DATA} ${srcdir}/indent.1 $(MANDIR)/$(actual_PROG).1
 	${INSTALL_DATA} ${srcdir}/tdindent.1 $(MANDIR)/tdindent.1
-	$(SHELL) -c 'aliases=`cd $(srcdir)/scripts;echo *-indent`; cd $(MANDIR); for name in $$aliases; do echo ".so tdindent.1" >$$name.1;done'
+	$(SHELL) -c 'aliases=`cd $(srcdir)/scripts;echo *-indent *-compare`; cd $(MANDIR); for name in $$aliases; do echo ".so tdindent.1" >$$name.1;done'
 
 install \
 install-scripts :: $(BINDIR) $(DATADIR)
@@ -181,6 +181,7 @@ install-scripts :: $(BINDIR) $(DATADIR)
 	$(INSTALL_SCRIPT) tdindent.tmp $(BINDIR)/tdindent
 	rm -f tdindent.tmp
 	$(INSTALL_SCRIPT) $(srcdir)/scripts/*-indent $(BINDIR)
+	$(INSTALL_SCRIPT) $(srcdir)/scripts/*-compare $(BINDIR)
 	$(INSTALL_DATA) $(srcdir)/scripts/*profile $(DATADIR)
 
 $(BINDIR) \
@@ -205,6 +206,7 @@ uninstall \
 uninstall-scripts ::
 	rm -f $(BINDIR)/tdindent
 	$(SHELL) -c 'for name in $(srcdir)/scripts/*-indent; do rm -f $(BINDIR)/`basename $$name`; done'
+	$(SHELL) -c 'for name in $(srcdir)/scripts/*-compare; do rm -f $(BINDIR)/`basename $$name`; done'
 	$(SHELL) -c 'for name in $(srcdir)/scripts/*-profile; do rm -f $(DATADIR)/`basename $$name`; done'
 
 # Cleaning up

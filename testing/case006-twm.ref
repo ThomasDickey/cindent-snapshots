@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <errno.h>
+#include <stdarg.h>
+
+void
+message(int warnings, const char *string, ...)
+{
+    if (((warnings > 0) && verbose) || (warnings <= 0)) {
+        va_list ap;
+
+        fflush(stdout);
+        if (warnings >= 0) {
+            fprintf(stderr, "%s:%d", in_name, in_line_no);
+            if (warnings > 1)
+                fprintf(stderr, ":%d", warnings);       // column for broken-line
+            fprintf(stderr, ": ");
+        }
+        fprintf(stderr, "%s: ", warnings ? "Warning" : "Error");
+
+        va_start(ap, string);
+        vfprintf(stderr, string, ap);
+        va_end(ap);
+
+        fprintf(stderr, "\n");
+        fflush(stderr);
+    }
+}

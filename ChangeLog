@@ -1,7 +1,11 @@
--- $Id: ChangeLog,v 1.112 2019/11/22 23:27:38 tom Exp $
+-- $Id: ChangeLog,v 1.113 2019/11/23 09:58:07 tom Exp $
+
+2019-11-23
+	+ add scripts xxx-compare, xorg-indent and twm-indent to support my
+	  work on twm.
 
 2019-11-22
-	+ admend treatment of "*INDENT-OFF*" to avoid trimming blank lines
+	+ amend treatment of "*INDENT-OFF*" to avoid trimming blank lines
 	  before/after except as set via the -sob option. 
 	+ amend tdlint script to account for renaming of GNU indent program
 	  in test-packages, so that line-number messages are filtered properly.
