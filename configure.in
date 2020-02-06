@@ -1,7 +1,7 @@
-dnl $Id: configure.in,v 1.8 2019/07/31 22:24:32 tom Exp $
+dnl $Id: configure.in,v 1.10 2020/02/06 00:13:03 tom Exp $
 dnl Process this file with autoconf to produce a configure script.
 dnl ---------------------------------------------------------------------------
-dnl Copyright:  1999-2013,2019 by Thomas E. Dickey
+dnl Copyright:  1999-2019,2020 by Thomas E. Dickey
 dnl
 dnl Permission is hereby granted, free of charge, to any person obtaining a
 dnl copy of this software and associated documentation files (the
@@ -26,10 +26,16 @@ dnl Except as contained in this notice, the name(s) of the above copyright
 dnl holders shall not be used in advertising or otherwise to promote the
 dnl sale, use or other dealings in this Software without prior written
 dnl authorization.
-AC_PREREQ(2.52.20011201)
+AC_PREREQ(2.52.20200111)
 AC_INIT(indent.c)
 
 AC_ARG_PROGRAM
+
+dnl suppress macros needed for X Window checks
+AC_DEFUN([AC_PATH_XTRA],[])
+AC_DEFUN([CF_CONST_X_STRING],[echo;])
+AC_DEFUN([CF_SAVE_XTRA_FLAGS],[])
+AC_DEFUN([CF_RESTORE_XTRA_FLAGS],[])
 
 CF_PROG_CC
 CF_PROG_EXT
