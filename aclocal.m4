@@ -1,7 +1,7 @@
-dnl $Id: aclocal.m4,v 1.14 2019/11/20 23:57:07 tom Exp $
+dnl $Id: aclocal.m4,v 1.15 2020/02/06 00:02:20 tom Exp $
 dnl autoconf macros for vttest - T.E.Dickey
 dnl ---------------------------------------------------------------------------
-dnl Copyright:  1997-2018,2019 by Thomas E. Dickey
+dnl Copyright:  1997-2019,2020 by Thomas E. Dickey
 dnl
 dnl Permission is hereby granted, free of charge, to any person obtaining a
 dnl copy of this software and associated documentation files (the
@@ -319,60 +319,6 @@ cf_save_CFLAGS="$cf_save_CFLAGS -Qunused-arguments"
 fi
 ])
 dnl ---------------------------------------------------------------------------
-dnl CF_CONST_X_STRING version: 1 updated: 2019/04/08 17:50:29
-dnl -----------------
-dnl The X11R4-X11R6 Xt specification uses an ambiguous String type for most
-dnl character-strings.
-dnl
-dnl It is ambiguous because the specification accommodated the pre-ANSI
-dnl compilers bundled by more than one vendor in lieu of providing a standard C
-dnl compiler other than by costly add-ons.  Because of this, the specification
-dnl did not take into account the use of const for telling the compiler that
-dnl string literals would be in readonly memory.
-dnl
-dnl As a workaround, one could (starting with X11R5) define XTSTRINGDEFINES, to
-dnl let the compiler decide how to represent Xt's strings which were #define'd. 
-dnl That does not solve the problem of using the block of Xt's strings which
-dnl are compiled into the library (and is less efficient than one might want).
-dnl
-dnl Xt specification 7 introduces the _CONST_X_STRING symbol which is used both
-dnl when compiling the library and compiling using the library, to tell the
-dnl compiler that String is const.
-AC_DEFUN([CF_CONST_X_STRING],
-[
-AC_TRY_COMPILE(
-[
-#include <stdlib.h>
-#include <X11/Intrinsic.h>
-],
-[String foo = malloc(1)],[
-
-AC_CACHE_CHECK(for X11/Xt const-feature,cf_cv_const_x_string,[
-	AC_TRY_COMPILE(
-		[
-#define _CONST_X_STRING	/* X11R7.8 (perhaps) */
-#undef  XTSTRINGDEFINES	/* X11R5 and later */
-#include <stdlib.h>
-#include <X11/Intrinsic.h>
-		],[String foo = malloc(1); *foo = 0],[
-			cf_cv_const_x_string=no
-		],[
-			cf_cv_const_x_string=yes
-		])
-])
-
-case $cf_cv_const_x_string in
-(no)
-	CF_APPEND_TEXT(CPPFLAGS,-DXTSTRINGDEFINES)
-	;;
-(*)
-	CF_APPEND_TEXT(CPPFLAGS,-D_CONST_X_STRING)
-	;;
-esac
-
-])
-])dnl
-dnl ---------------------------------------------------------------------------
 dnl CF_DISABLE_ECHO version: 13 updated: 2015/04/18 08:56:57
 dnl ---------------
 dnl You can always use "make -n" to see the actual options, but it's hard to
@@ -557,12 +503,13 @@ CF_INTEL_COMPILER(GCC,INTEL_COMPILER,CFLAGS)
 CF_CLANG_COMPILER(GCC,CLANG_COMPILER,CFLAGS)
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_GCC_WARNINGS version: 36 updated: 2019/09/07 13:38:36
+dnl CF_GCC_WARNINGS version: 37 updated: 2020/01/05 20:04:12
 dnl ---------------
 dnl Check if the compiler supports useful warning options.  There's a few that
 dnl we don't use, simply because they're too noisy:
 dnl
 dnl	-Wconversion (useful in older versions of gcc, but not in gcc 2.7.x)
+dnl	-Winline (usually not worthwhile)
 dnl	-Wredundant-decls (system headers make this too noisy)
 dnl	-Wtraditional (combines too many unrelated messages, only a few useful)
 dnl	-Wwrite-strings (too noisy, but should review occasionally).  This
@@ -618,7 +565,7 @@ then
 		fi
 	done
 	CFLAGS="$cf_save_CFLAGS"
-elif test "$GCC" = yes
+elif test "$GCC" = yes && test "$GCC_VERSION" != "unknown"
 then
 	AC_CHECKING([for $CC warning options])
 	cf_save_CFLAGS="$CFLAGS"
@@ -640,7 +587,7 @@ then
 		Wpointer-arith \
 		Wshadow \
 		Wstrict-prototypes \
-		Wundef $cf_gcc_warnings $cf_warn_CONST $1
+		Wundef Wno-inline $cf_gcc_warnings $cf_warn_CONST $1
 	do
 		CFLAGS="$cf_save_CFLAGS $EXTRA_CFLAGS -$cf_opt"
 		if AC_TRY_EVAL(ac_compile); then
@@ -1001,11 +948,15 @@ AC_TRY_COMPILE([#include <stdio.h>],[
 ])
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_PROG_CC version: 4 updated: 2014/07/12 18:57:58
+dnl CF_PROG_CC version: 5 updated: 2019/12/31 08:53:54
 dnl ----------
 dnl standard check for CC, plus followup sanity checks
 dnl $1 = optional parameter to pass to AC_PROG_CC to specify compiler name
 AC_DEFUN([CF_PROG_CC],[
+CF_ACVERSION_CHECK(2.53,
+	[AC_MSG_WARN(this will incorrectly handle gnatgcc choice)
+	 AC_REQUIRE([AC_PROG_CC])],
+	[])
 ifelse($1,,[AC_PROG_CC],[AC_PROG_CC($1)])
 CF_GCC_VERSION
 CF_ACVERSION_CHECK(2.52,

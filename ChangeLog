@@ -1,4 +1,12 @@
--- $Id: ChangeLog,v 1.113 2019/11/23 09:58:07 tom Exp $
+-- $Id: ChangeLog,v 1.116 2020/02/06 00:04:55 tom Exp $
+
+2020-02-05
+	+ add special case in tdlint script for _X_UNUSED and X_NORETURN
+
+	+ resync with my-autoconf, but define stub macros to avoid X Window
+	  checks in this program's configure-script.
+
+	+ update config.guess
 
 2019-11-23
 	+ add scripts xxx-compare, xorg-indent and twm-indent to support my

@@ -1,7 +1,7 @@
 #!/bin/sh
-# $Id: tdindent,v 1.43 2019/11/22 22:51:54 tom Exp $
+# $Id: tdindent,v 1.45 2020/02/05 23:49:27 tom Exp $
 #****************************************************************************
-#* Copyright (c) 2010-2014,2019 Thomas E. Dickey                            *
+#* Copyright (c) 2010-2019,2020 Thomas E. Dickey                            *
 #*                                                                          *
 #* Permission is hereby granted, free of charge, to any person obtaining a  *
 #* copy of this software and associated documentation files (the            *
@@ -52,6 +52,8 @@ cat >$MY_TMP/prepro <<'EOF'
 s,\(MODULEID(\),//\1,
 /MODULE_ID(/s/)$/);/
 s,[[:space:]]*\<GCC_UNUSED[[:space:]]*\([;]\),\1//GCC_UNUSED,
+s,[[:space:]]*\<_X_NORETURN\(.*\);,;//_X_NORETURN\1,
+s,[[:space:]]*\<_X_UNUSED\(.*\);,;//_X_UNUSED\1,
 s,[[:space:]]*\<GCC_NORETURN\(.*\);,;//GCC_NORETURN\1,
 s,[[:space:]]*\<GCC_PRINTFLIKE(\(.*\);,;//GCC_PRINTFLIKE(\1,
 s,[[:space:]]*\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,
@@ -71,9 +73,12 @@ cat >$MY_TMP/postpro <<'EOF'
 s,//\(MODULEID(\),\1,
 /MODULE_ID(/s/);$/)/
 s,[[:space:]]*\([;]\)[[:space:]]*//GCC_UNUSED\(.*\), GCC_UNUSED\1\2,
+s,;[[:space:]]*//_X_NORETURN\(.*\);, _X_NORETURN\1;,
+s,;[[:space:]]*//_X_UNUSED\(.*\);, _X_UNUSED\1;,
 s,;[[:space:]]*//GCC_NORETURN\(.*\);, GCC_NORETURN\1;,
 s,;[[:space:]]*//GCC_PRINTFLIKE(\(.*\);, GCC_PRINTFLIKE(\1;,
 s,;[[:space:]]*//GCC_SCANFLIKE(\(.*\);, GCC_SCANFLIKE(\1;,
+s,;[[:space:]]*//\(_X_.*\), \1;,
 s,;[[:space:]]*//\(GCC_.*\), \1;,
 s,\(\<GCC_[^[:space:]][^[:space:]]*\)[[:space:]][[:space:]]*\(\<GCC_[^[:space:]]\),\1 \2,g
 s,//\(\<NCURSES_EXPORT_VAR\>[ ]*\),\1,
