@@ -10,7 +10,7 @@ _nc_altcharset_name(attr_t attr, chtype ch)
             unsigned int val;
             const char *name;
         } names[] =
-	{
+        {
 	    /* *INDENT-OFF* */
 	    { 'l', "ACS_ULCORNER" },
 	    { 'm', "ACS_LLCORNER" },

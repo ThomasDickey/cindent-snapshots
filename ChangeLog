@@ -1,4 +1,7 @@
--- $Id: ChangeLog,v 1.116 2020/02/06 00:04:55 tom Exp $
+-- $Id: ChangeLog,v 1.118 2020/06/08 23:31:12 tom Exp $
+
+2020-06-08
+	+ fix a couple of regressions with "*INDENT-ON*" and "*INDENT-OFF*"
 
 2020-02-05
 	+ add special case in tdlint script for _X_UNUSED and X_NORETURN

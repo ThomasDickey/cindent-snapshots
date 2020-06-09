@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2010,2018, Thomas E. Dickey
+   Copyright 1999-2019,2020, Thomas E. Dickey
 
    Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
 
@@ -114,7 +114,7 @@ static const char *simple_backup_suffix = BACKUP_SUFFIX_STR;
 
 /* What kinds of backup files to make -- see
    table `version_control_values' below. */
-enum backup_mode version_control = unknown;
+static enum backup_mode version_control = unknown;
 
 
 /* Construct a simple backup name for PATHNAME by appending
