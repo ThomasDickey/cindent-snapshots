@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2010,2019, Thomas E. Dickey
+   Copyright 1999-2019,2020, Thomas E. Dickey
 
    Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
 
@@ -26,10 +26,10 @@
 
 /* Like malloc but get error if no storage available. */
 
-char *
+void *
 xmalloc (size_t size)
 {
-  char *val = (char *) malloc (size);
+  void *val = malloc (size);
   if (!val)
     {
       fprintf (stderr, "%s: Virtual memory exhausted.\n", progname);
@@ -47,7 +47,7 @@ xmalloc (size_t size)
 
 /* Like realloc but get error if no storage available.  */
 
-char *
+void *
 xrealloc (char *ptr, size_t size)
 {
   char *val = (char *) realloc (ptr, size);

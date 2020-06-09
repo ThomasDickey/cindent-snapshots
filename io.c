@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2018,2019, Thomas E. Dickey
+   Copyright 1999-2019,2020, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -742,7 +742,7 @@ read_file (const char *filename)
 /* Suck the standard input into a file_buffer structure, and
    return a pointer to that structure. */
 
-struct file_buffer stdinptr;
+static struct file_buffer stdinptr;
 
 struct file_buffer *
 read_stdin (void)
@@ -927,9 +927,9 @@ fill_buffer (void)
 	      int starting_no = in_line_no;
 
 	      drain_blanklines ();
-	      suppress_formatting = 1;
 	      if (s_com != e_com || s_lab != e_lab || s_code != e_code)
 		dump_line ();
+	      suppress_formatting = 1;
 	      while (q < p)
 		pass_char (*q++);
 
@@ -990,10 +990,16 @@ fill_buffer (void)
 				      else
 					{
 					  in_line_no--;
+					  if (p[0] == EOL && p[1] == EOL)
+					    {
+					      pass_char (EOL);
+					    }
 					}
 				    }
 				  else
-				    pass_char (*p++);
+				    {
+				      pass_char (*p++);
+				    }
 				}
 			    }
 			  while (inhibited);

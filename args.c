@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2018,2019, Thomas E. Dickey
+   Copyright 1999-2019,2020, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -254,7 +254,7 @@ struct pro
   {#name, PRO_BOOL, dft, subtype, &obj,0,0, &exp_##name}
 
 #define INIT_FONT(name, dft, subtype, obj) \
-  {#name, PRO_FONT, dft, subtype, (int *) &obj,0,0, &exp_##name}
+  {#name, PRO_FONT, dft, subtype, (int *) (void *) &obj,0,0, &exp_##name}
 
 #define INIT_FUNC(name, dft, subtype, obj) \
   {#name, PRO_FUNC, dft, subtype, 0,0,obj, &exp_##name}
@@ -350,7 +350,7 @@ struct pro
 #define DFT_V    false
 
 /* *INDENT-OFF* */
-struct pro pro[] =
+static struct pro pro[] =
 {
   INIT_INTS (D,       0,        ONOFF_NA, debug),
   INIT_KEYS (T,       0,        ONOFF_NA, 0),
@@ -467,7 +467,7 @@ struct long_option_conversion
 #define INIT_LONG(short_name, long_name) {long_name, #short_name}
 
 /* *INDENT-OFF* */
-struct long_option_conversion option_conversions[] =
+static struct long_option_conversion option_conversions[] =
 {
   INIT_LONG (D,       "debug"),
   INIT_LONG (T,       "typedef"),
@@ -648,7 +648,7 @@ int
 set_option (const char *option, const char *param, int explicit)
 {
   struct pro *p = pro;
-  const char *param_start;
+  const char *param_start = NULL;
   int option_length, val;
 
   val = 0;

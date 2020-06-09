@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2018,2019 Thomas Dickey
+   Copyright 1999-2019,2020 Thomas Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -58,7 +58,7 @@ static unsigned int user_specials_idx;
 /* this is used to facilitate the decision of what type (alphanumeric,
  * operator) each character is
  */
-char chartype[256];
+static char chartype[256];
 
 #include "gperf.c"
 

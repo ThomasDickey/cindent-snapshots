@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2018,2019, Thomas E. Dickey
+   Copyright 1999-2019,2020, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -139,6 +139,10 @@ enum rwcodes
 
 #define at_buffer_end(p) ((p) >= buf_end)
 #define at_line_end(p)   (at_buffer_end(p) || (*p) == EOL)
+
+#ifndef GCC_NORETURN
+#define GCC_NORETURN /* nothing */
+#endif
 
 #ifndef GCC_PRINTFLIKE
 #if defined(GCC_PRINTF) && !defined(printf)
@@ -530,11 +534,11 @@ extern int else_endif_col;
 
 
 /* Declared in globs.c */
-extern char *xmalloc (size_t);
-extern char *xrealloc (char *, size_t);
+extern void *xmalloc (size_t);
+extern void *xrealloc (char *, size_t);
 extern char *xstrdup (const char *);
 extern void message (int, const char *, ...) GCC_PRINTFLIKE(2,3);
-extern void fatal (const char *, ...) GCC_PRINTFLIKE(1,2);
+extern void fatal (const char *, ...) GCC_PRINTFLIKE(1,2) GCC_NORETURN;
 
 /* Declared in args.c */
 extern char *set_profile (const char *);
@@ -549,7 +553,7 @@ extern void print_comment (void);
 extern int squest;
 extern struct file_buffer *current_input;
 
-extern void usage (void);
+extern void usage (void) GCC_NORETURN;
 
 /* Declared in io.c */
 extern int compute_code_target (void);
