@@ -6,13 +6,13 @@ START-INFO-DIR-ENTRY
 * CIndent: (cindent).           C code formatter (fork).
 END-INFO-DIR-ENTRY
 
+Copyright (C) 1999-2018, 2020 Thomas E. Dickey
+Copyright (C) 1995, 1996 Joseph Arceneaux
 Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software
 Foundation, Inc.
-Copyright (C) 1995, 1996 Joseph Arceneaux
-Copyright (C) 1999-2018, 2019 Thomas E. Dickey
 
-   This is Edition 2.0, July, 2019, of 'The 'indent' Manual', for Indent
-Version 2.0
+   This is Edition 2.0, October, 2020, of 'The 'indent' Manual', for
+Indent Version 2.0
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -135,7 +135,7 @@ be:
 may put those options into a file named '.indent.pro'.  'indent' will
 first look for '.indent.pro' in the current directory and use that if
 found.  Otherwise, 'indent' will search your home directory for
-'.indent.pro' and use that file if it is found.  This behaviour is
+'.indent.pro' and use that file if it is found.  This behavior is
 different from that of other versions of 'indent', which load both files
 if they both exist.
 
@@ -196,10 +196,10 @@ then only simple backups will be made.  If its value is the string
 'numbered-existing', then numbered backups will be made if there
 *already exist* numbered backups for the file being indented; otherwise,
 a simple backup is made.  If 'VERSION_CONTROL' is not set, then 'indent'
-assumes the behaviour of 'numbered-existing'.
+assumes the behavior of 'numbered-existing'.
 
    Other versions of 'indent' use the suffix '.BAK' in naming backup
-files.  This behaviour can be emulated by setting 'SIMPLE_BACKUP_SUFFIX'
+files.  This behavior can be emulated by setting 'SIMPLE_BACKUP_SUFFIX'
 to '.BAK'.
 
    Note also that other versions of 'indent' make backups in the current
@@ -219,7 +219,7 @@ values for all other options.  However, explicitly specified options
 always override options implied by a background option.
 
    As of version 1.2, the default style of GNU 'indent' is the GNU
-style.  Thus, it is no longer neccessary to specify the option '-gnu' to
+style.  Thus, it is no longer necessary to specify the option '-gnu' to
 obtain this format, although doing so will not cause an error.  Option
 settings which correspond to the GNU style are:
 
@@ -515,7 +515,7 @@ The '-br' option produces structure declarations like the following:
          char chp;
      } Vname;
 
-   The default behaviour, also obtained by specifying '-bl', would yield
+   The default behavior, also obtained by specifying '-bl', would yield
 the following format for the same declaration:
 
      struct Sname
@@ -677,7 +677,7 @@ required for the 'etags' program to work correctly, as well as some of
 the 'c-mode' functions of Emacs.
 
    You should use the '-T' option to tell 'indent' the name of all the
-typenames in your program that are defined by 'typedef'.  '-T' can be
+type-names in your program that are defined by 'typedef'.  '-T' can be
 specified more than once, and all names specified are used.  For
 example, if your program contains
 
@@ -687,7 +687,8 @@ example, if your program contains
 you would use the options '-T CODE_ADDR -T COLOR'.
 
    You may also use the '-ta' option to tell 'indent' to interpret
-identifiers ending with "_t" as if they were typenames declared by '-T'.
+identifiers ending with "_t" as if they were type-names declared by
+'-T'.
 
 
 File: indent.info,  Node: Indentation,  Next: Disabling Formatting,  Prev: Declarations,  Up: Indent Program
@@ -890,7 +891,7 @@ The following copyright notice applies to the 'indent' program.  The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 
-     Copyright 1999-2018, 2019 Thomas E. Dickey
+     Copyright (C) 1999-2019, 2020 Thomas E. Dickey
      Copyright (C) 1995, 1996 Joseph Arceneaux
      Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
      Copyright (C) 1985 Sun Microsystems, Inc.
@@ -1262,12 +1263,12 @@ option.  It is followed by a cross key alphabetized by long option.
      *Note Invoking indent::.
 
 '-T'
-     Tell 'indent' the name of typenames.
+     Tell 'indent' the name of type-names.
      *Note Declarations::.
 
 '-ta'
 '-auto-typedefs'
-     Tell 'indent' to assume names ending with "_t" are typenames.
+     Tell 'indent' to assume names ending with "_t" are type-names.
      *Note Declarations::.
 
 '-tsN'
@@ -1546,25 +1547,25 @@ Index
 
 
 Tag Table:
-Node: Top635
-Node: Indent Program1137
-Node: Invoking indent2219
-Ref: Invoking indent-Footnote-15931
-Node: Backup files6020
+Node: Top638
+Node: Indent Program1140
+Node: Invoking indent2222
+Ref: Invoking indent-Footnote-15933
+Node: Backup files6022
 Node: Common styles7882
-Node: Blank lines10420
-Node: -bad11635
-Node: -bap12275
-Node: Comments13130
-Node: Statements17916
-Node: Declarations21338
+Node: Blank lines10419
+Node: -bad11634
+Node: -bap12274
+Node: Comments13129
+Node: Statements17915
+Node: Declarations21336
 Node: Indentation22988
 Node: Disabling Formatting25771
 Node: Other Languages28072
 Node: Miscellaneous options29271
 Node: Bugs30009
 Node: Copyright30317
-Node: Option Summary31806
-Node: Index43847
+Node: Option Summary31810
+Node: Index43853
 
 End Tag Table

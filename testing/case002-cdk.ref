@@ -70,7 +70,7 @@ static Boolean SaveConvertedLength (XtPointer * target, unsigned long source)
 	 unsigned long temp = source;
 	 memcpy ((char *)*target,
 		 ((char *)&temp) + sizeof (temp) - 4,
-		 (size_t) 4);
+		 (size_t)4);
       }
    }
    return result;

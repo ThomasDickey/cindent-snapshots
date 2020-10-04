@@ -24,12 +24,12 @@
 @end direntry
 
 @ifinfo
-Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.@*
+Copyright @copyright{} 1999-2018, 2020 Thomas E. Dickey@*
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux@*
-Copyright @copyright{} 1999-2018, 2019 Thomas E. Dickey
+Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.@*
 
 @c !!set edition, date, version
-This is Edition 2.0, July, 2019, of @cite{The @code{indent} Manual},
+This is Edition 2.0, October, 2020, of @cite{The @code{indent} Manual},
 for Indent Version 2.0
 
 Permission is granted to make and distribute verbatim copies of
@@ -58,16 +58,17 @@ original English.
 @sp 1
 @c !!set edition, version, date
 @subtitle Edition 2.0, for Indent Version 2.0
-@subtitle October, 2010
-@author Joseph Arceneaux
+@subtitle October, 2020
 @author Thomas E. Dickey
+@author Joseph Arceneaux
 @page
 @vskip 0pt plus1filll
+Copyright @copyright{} 1999-2019, 2020 Thomas E. Dickey
+
+Copyright @copyright{} 1995, 1996 Joseph Arceneaux
+
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software
 Foundation, Inc.
-
-Copyright @copyright{} 1999-2010, 2016 Thomas E. Dickey
-Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 
 Permission is granted to make and distribute verbatim copies of
 this manual provided the copyright notice and this permission notice
@@ -246,7 +247,7 @@ may put those options into a file named @file{.indent.pro}.
 @code{indent} will first look for @file{.indent.pro} in the current
 directory and use that if found.  Otherwise, @code{indent} will search
 your home directory for @file{.indent.pro} and use that file if it is
-found.  This behaviour is different from that of other versions of
+found.  This behavior is different from that of other versions of
 @code{indent}, which load both files if they both exist.
 
 The format of @code{.indent.pro} is simply a list of options, just as
@@ -303,11 +304,11 @@ the string @samp{numbered}, then numbered backups will be made.  If its
 value is @samp{numbered-existing}, then numbered backups will be made if
 there @strong{already exist} numbered backups for the file being indented;
 otherwise, a simple backup is made.  If @code{VERSION_CONTROL} is not
-set, then @code{indent} assumes the behaviour of
+set, then @code{indent} assumes the behavior of
 @samp{numbered-existing}.
 
 Other versions of @code{indent} use the suffix @samp{.BAK} in naming
-backup files.  This behaviour can be emulated by setting
+backup files.  This behavior can be emulated by setting
 @code{SIMPLE_BACKUP_SUFFIX} to @samp{.BAK}.
 
 Note also that other versions of @code{indent} make backups in the
@@ -328,7 +329,7 @@ always override options implied by a background option.
 @kindex -gnu
 @kindex --gnu-style
 As of version 1.2, the default style of GNU @code{indent} is the GNU
-style.  Thus, it is no longer neccessary to specify the option
+style.  Thus, it is no longer necessary to specify the option
 @samp{-gnu} to obtain this format, although doing so will not cause an
 error.  Option settings which correspond to the GNU style are:
 
@@ -760,7 +761,7 @@ struct Sname @{
 @end group
 @end example
 
-The default behaviour, also obtained by specifying @samp{-bl}, would
+The default behavior, also obtained by specifying @samp{-bl}, would
 yield the following format for the same declaration:
 
 @example
@@ -1020,7 +1021,7 @@ of the @code{c-mode} functions of Emacs.
 @kindex -T
 @cindex Typenames
 You should use the @samp{-T}
-option to tell @code{indent} the name of all the typenames in your
+option to tell @code{indent} the name of all the type-names in your
 program that are defined by @code{typedef}.  @samp{-T} can be specified
 more than once, and all names specified are used.  For example, if your
 program contains
@@ -1040,7 +1041,7 @@ you would use the options @samp{-T CODE_ADDR -T COLOR}.
 @cindex Typenames
 You may also use the @samp{-ta}
 option to tell @code{indent} to interpret identifiers ending with ``_t''
-as if they were typenames declared by @samp{-T}.
+as if they were type-names declared by @samp{-T}.
 
 @node Indentation, Disabling Formatting, Declarations, Indent Program
 @comment  node-name,  next,  previous,  up
@@ -1328,7 +1329,7 @@ The copyright and copying permissions for this manual appear near the
 beginning of this document.
 
 @display
-Copyright 1999-2018, 2019 Thomas E. Dickey
+Copyright @copyright{} 1999-2019, 2020 Thomas E. Dickey
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright @copyright{} 1985 Sun Microsystems, Inc.
@@ -1703,12 +1704,12 @@ Write to standard output.@*
 @xref{Invoking indent}.
 
 @item -T
-Tell @code{indent} the name of typenames.@*
+Tell @code{indent} the name of type-names.@*
 @xref{Declarations}.
 
 @item -ta
 @itemx -auto-typedefs
-Tell @code{indent} to assume names ending with ``_t'' are typenames.@*
+Tell @code{indent} to assume names ending with ``_t'' are type-names.@*
 @xref{Declarations}.
 
 @c Ignore the following since it is not supported.  When someone

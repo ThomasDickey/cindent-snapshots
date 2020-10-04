@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
 <html>
-<!-- Created on July 31, 2019 by texi2html 1.82
+<!-- Created on October 4, 2020 by texi2html 1.82
 texi2html was written by: 
             Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -199,7 +199,7 @@ may put those options into a file named &lsquo;<tt>.indent.pro</tt>&rsquo;.
 <code>indent</code> will first look for &lsquo;<tt>.indent.pro</tt>&rsquo; in the current
 directory and use that if found.  Otherwise, <code>indent</code> will search
 your home directory for &lsquo;<tt>.indent.pro</tt>&rsquo; and use that file if it is
-found.  This behaviour is different from that of other versions of
+found.  This behavior is different from that of other versions of
 <code>indent</code>, which load both files if they both exist.
 </p>
 <p>The format of <code>.indent.pro</code> is simply a list of options, just as
@@ -273,11 +273,11 @@ the string &lsquo;<samp>numbered</samp>&rsquo;, then numbered backups will be ma
 value is &lsquo;<samp>numbered-existing</samp>&rsquo;, then numbered backups will be made if
 there <strong>already exist</strong> numbered backups for the file being indented;
 otherwise, a simple backup is made.  If <code>VERSION_CONTROL</code> is not
-set, then <code>indent</code> assumes the behaviour of
+set, then <code>indent</code> assumes the behavior of
 &lsquo;<samp>numbered-existing</samp>&rsquo;.
 </p>
 <p>Other versions of <code>indent</code> use the suffix &lsquo;<samp>.BAK</samp>&rsquo; in naming
-backup files.  This behaviour can be emulated by setting
+backup files.  This behavior can be emulated by setting
 <code>SIMPLE_BACKUP_SUFFIX</code> to &lsquo;<samp>.BAK</samp>&rsquo;.
 </p>
 <p>Note also that other versions of <code>indent</code> make backups in the
@@ -315,7 +315,7 @@ always override options implied by a background option.
 <a name="index-_002dgnu"></a>
 <a name="index-_002d_002dgnu_002dstyle"></a>
 <p>As of version 1.2, the default style of GNU <code>indent</code> is the GNU
-style.  Thus, it is no longer neccessary to specify the option
+style.  Thus, it is no longer necessary to specify the option
 &lsquo;<samp>-gnu</samp>&rsquo; to obtain this format, although doing so will not cause an
 error.  Option settings which correspond to the GNU style are:
 </p>
@@ -729,7 +729,7 @@ transformed (with &lsquo;<samp>-cdb -sc</samp>&rsquo;) into:
 } Vname;
 </pre></td></tr></table>
 
-<p>The default behaviour, also obtained by specifying &lsquo;<samp>-bl</samp>&rsquo;, would
+<p>The default behavior, also obtained by specifying &lsquo;<samp>-bl</samp>&rsquo;, would
 yield the following format for the same declaration:
 </p>
 <table><tr><td>&nbsp;</td><td><pre class="example">struct Sname
@@ -964,7 +964,7 @@ of the <code>c-mode</code> functions of Emacs.
 <a name="index-_002dT"></a>
 <a name="index-Typenames"></a>
 <p>You should use the &lsquo;<samp>-T</samp>&rsquo;
-option to tell <code>indent</code> the name of all the typenames in your
+option to tell <code>indent</code> the name of all the type-names in your
 program that are defined by <code>typedef</code>.  &lsquo;<samp>-T</samp>&rsquo; can be specified
 more than once, and all names specified are used.  For example, if your
 program contains
@@ -980,7 +980,7 @@ typedef enum {red, blue, green} COLOR;
 <a name="index-Typenames-1"></a>
 <p>You may also use the &lsquo;<samp>-ta</samp>&rsquo;
 option to tell <code>indent</code> to interpret identifiers ending with &ldquo;_t&rdquo;
-as if they were typenames declared by &lsquo;<samp>-T</samp>&rsquo;.
+as if they were type-names declared by &lsquo;<samp>-T</samp>&rsquo;.
 </p>
 <hr size="6">
 <a name="Indentation"></a>
@@ -1334,7 +1334,7 @@ source as a hardcopy output option, among other things.
 The copyright and copying permissions for this manual appear near the
 beginning of this document.
 </p>
-<table><tr><td>&nbsp;</td><td><pre class="display">Copyright 1999-2018, 2019 Thomas E. Dickey
+<table><tr><td>&nbsp;</td><td><pre class="display">Copyright &copy; 1999-2019, 2020 Thomas E. Dickey
 Copyright &copy; 1995, 1996 Joseph Arceneaux
 Copyright &copy; 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright &copy; 1985 Sun Microsystems, Inc.
@@ -1790,13 +1790,13 @@ See section <a href="#Invoking-indent">Invoking <code>indent</code></a>.
 </p>
 </dd>
 <dt> &lsquo;<samp>-T</samp>&rsquo;</dt>
-<dd><p>Tell <code>indent</code> the name of typenames.<br>
+<dd><p>Tell <code>indent</code> the name of type-names.<br>
 See section <a href="#Declarations">Declarations</a>.
 </p>
 </dd>
 <dt> &lsquo;<samp>-ta</samp>&rsquo;</dt>
 <dt> &lsquo;<samp>-auto-typedefs</samp>&rsquo;</dt>
-<dd><p>Tell <code>indent</code> to assume names ending with &ldquo;_t&rdquo; are typenames.<br>
+<dd><p>Tell <code>indent</code> to assume names ending with &ldquo;_t&rdquo; are type-names.<br>
 See section <a href="#Declarations">Declarations</a>.
 </p>
 </dd>
@@ -2167,7 +2167,7 @@ maintain consistency with the POSIX standard.
 </tr></table>
 <h1>About This Document</h1>
 <p>
-  This document was generated by <em>Thomas E. Dickey</em> on <em>July 31, 2019</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas E. Dickey</em> on <em>October 4, 2020</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
 </p>
 <p>
   The buttons in the navigation panels have the following meaning:
@@ -2269,7 +2269,7 @@ maintain consistency with the POSIX standard.
 <hr size="1">
 <p>
  <font size="-1">
-  This document was generated by <em>Thomas E. Dickey</em> on <em>July 31, 2019</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+  This document was generated by <em>Thomas E. Dickey</em> on <em>October 4, 2020</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
  </font>
  <br>
 
