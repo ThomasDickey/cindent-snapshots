@@ -1,4 +1,4 @@
-static          size_t
+static size_t
 fill_addrinfo(void **buffer)
 {
     for (count = 0; count < limit; ++count) {

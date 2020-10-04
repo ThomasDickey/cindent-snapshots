@@ -12,7 +12,7 @@ static size_t fill_addrinfo (void **buffer)
       actual->ai_addr     = (struct sockaddr *)(void *)heap;
 
    }
-   return (size_t) (heap - (char *)result);
+   return (size_t)(heap - (char *)result);
 }
 
 void failed (mode_t * _t)

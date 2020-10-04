@@ -1,4 +1,13 @@
--- $Id: ChangeLog,v 1.118 2020/06/08 23:31:12 tom Exp $
+-- $Id: ChangeLog,v 1.121 2020/10/04 15:52:46 tom Exp $
+
+2020-10-04
+	+ add type names from C99 to symbol table.
+
+	+ minor documentation updates
+
+	+ resync with my-autoconf.
+
+	+ update config.guess
 
 2020-06-08
 	+ fix a couple of regressions with "*INDENT-ON*" and "*INDENT-OFF*"

@@ -73,7 +73,7 @@ SaveConvertedLength(XtPointer * target, unsigned long source)
 
 	  memcpy((char *)*target,
 		 ((char *)&temp) + sizeof(temp) - 4,
-		 (size_t) 4);
+		 (size_t)4);
 	}
     }
   return result;

@@ -1,6 +1,6 @@
 # Makefile template for GNU indent
-# $Id: makefile.in,v 1.31 2019/11/23 10:39:26 tom Exp $
-# Copyright 1999-2013,2019 Thomas E. Dickey
+# $Id: makefile.in,v 1.35 2020/10/04 16:24:05 tom Exp $
+# Copyright 1999-2019,2020 Thomas E. Dickey
 # Copyright (C) 1994, Joseph Arceneaux.  All rights reserved
 # Copyright (C) 1992, Free Software Foundation, Inc.
 #
@@ -128,7 +128,13 @@ memcpy.o: memcpy.c indent.h sys.h makefile
 
 # Build source files which rely on tools not necessarily on target
 gperf.c : indent.gperf
-	gperf -LANSI-C -C -c -p -t -T -g -j1 -o -K rwd -N is_reserved indent.gperf  >$@
+	echo "/* *INDENT-OFF* */" >$@
+	gperf -LANSI-C -C -c -p -t -T -g -j1 -o -K rwd -N is_reserved indent.gperf |\
+	sed \
+		-e 's/{""}/{"", rw_none}/g' \
+		-e 's/int hval = /unsigned hval =/' \
+		-e 's/key = hash/key = (int)hash/' >>$@
+	echo "/* *INDENT-ON* */" >>$@
 
 indent.1 : indent.info
 	perl make-man.pl indent.info >$@

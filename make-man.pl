@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
-# $Id: make-man.pl,v 1.25 2019/07/07 22:57:04 tom Exp $
+# $Id: make-man.pl,v 1.26 2020/10/04 15:01:28 tom Exp $
 #------------------------------------------------------------------------------
-# Copyright:  2010-2018,2019 by Thomas E. Dickey
+# Copyright:  2010-2019,2020 by Thomas E. Dickey
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the
@@ -365,7 +365,11 @@ $rootname \- $name
             }
             else {
                 if ( $input[$n] ne "" ) {
-                    my @parts = split /\.\s+/, $input[$n];
+                    my $input = $input[$n];
+                    $input =~ s/\s+$//;
+                    $input =~ s/\.\s+/.\n/g
+                      unless ( $input =~ /\b\w\.\s/ or $input =~ /(\.\s+){3}/ );
+                    my @parts = split /\n/, $input;
                     for my $part ( 0 .. $#parts ) {
                         printf "%s\n", $parts[$part];
                     }
