@@ -1,4 +1,13 @@
--- $Id: ChangeLog,v 1.121 2020/10/04 15:52:46 tom Exp $
+-- $Id: ChangeLog,v 1.124 2020/12/12 00:21:13 tom Exp $
+
+2020-12-11
+	+ add typedef names from form.h and menu.h to jpf-profile.
+
+	+ add *_EXPORT_VAR names to tdindent script.
+
+	+ resync with my-autoconf.
+
+	+ update config.guess, config.sub
 
 2020-10-04
 	+ add type names from C99 to symbol table.

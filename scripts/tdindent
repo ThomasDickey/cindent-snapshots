@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.45 2020/02/05 23:49:27 tom Exp $
+# $Id: tdindent,v 1.46 2020/12/11 23:51:43 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010-2019,2020 Thomas E. Dickey                            *
 #*                                                                          *
@@ -62,7 +62,10 @@ s,[[:space:]]*\<GCC_SCANFLIKE(\(.*\);,;//GCC_SCANFLIKE(\1,
 	s,\(//GCC_[UNPS][^/][^/]*\)//\(GCC_[UNPS].*\),\1 \2,
 	b gcc2
 }
+s,\(\<FORM_EXPORT_VAR\>.*;\),//\1,
+s,\(\<MENU_EXPORT_VAR\>.*;\),//\1,
 s,\(\<NCURSES_EXPORT_VAR\>.*;\),//\1,
+s,\(\<PANEL_EXPORT_VAR\>.*;\),//\1,
 s,\(\<MARK_END_OF_PROLOG\>\),\1;,
 s,\(\<YY_RULE_SETUP\>\),\1;,
 s,\(\<YY_BREAK\>\),\1;,
@@ -81,7 +84,10 @@ s,;[[:space:]]*//GCC_SCANFLIKE(\(.*\);, GCC_SCANFLIKE(\1;,
 s,;[[:space:]]*//\(_X_.*\), \1;,
 s,;[[:space:]]*//\(GCC_.*\), \1;,
 s,\(\<GCC_[^[:space:]][^[:space:]]*\)[[:space:]][[:space:]]*\(\<GCC_[^[:space:]]\),\1 \2,g
+s,//\(\<FORM_EXPORT_VAR\>[ ]*\),\1,
+s,//\(\<MENU_EXPORT_VAR\>[ ]*\),\1,
 s,//\(\<NCURSES_EXPORT_VAR\>[ ]*\),\1,
+s,//\(\<PANEL_EXPORT_VAR\>[ ]*\),\1,
 s,\(\<MARK_END_OF_PROLOG\>\);,\1,
 s,\(\<YY_RULE_SETUP\>\);,\1,
 s,\(\<YY_BREAK\>\);,\1,

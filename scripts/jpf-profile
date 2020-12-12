@@ -1,7 +1,7 @@
 /*
- * $Id: jpf-profile,v 1.2 2010/10/08 22:49:34 tom Exp $
+ * $Id: jpf-profile,v 1.4 2020/12/12 00:29:09 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010 Thomas E. Dickey                                      *
+ * Copyright (c) 2010,2020 Thomas E. Dickey                                 *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -43,18 +43,60 @@
 --swallow-optional-blank-lines
 --tab-size8
 
+/* form.h */
 -T FIELD
 -T FIELDTYPE
 -T FIELD_CELL
 -T FORM
+-T Field_Options
+-T Form_Hook
+-T Form_Options
+-T Binding_Info
+-T Generic_Method
+-T RegExp_Arg
+-T TypeArgument
+-T enumARG
+-T enumParams
+-T integerPARM
+-T tagITEM 
+-T thisARG
+-T thisPARM
+
+/* menu.h */
+-T ITEM
+-T Item_Options
+-T MENU
+-T Menu_Hook
+-T Menu_Options
+-T TEXT
+
+/* ncurses.h */
+-T NCURSES_ATTR_T
+-T NCURSES_BOOL
+-T NCURSES_CH_T
+-T NCURSES_COLOR_T
+-T NCURSES_CONST
+-T NCURSES_EXPORT_VAR
 -T NCURSES_INLINE
--T RegExp_Arg 
--T TypeArgument 
+-T NCURSES_INT2
+-T NCURSES_PAIRS_T
+-T NCURSES_SIZE_T
+-T NCURSES_SP_ARGx
+-T NCURSES_SP_DCLx
+-T NCURSES_TPARM_ARG
 -T WINDOW
 -T attr_t
 -T bool
 -T cchar_t
 -T chtype
--T enumARG
 -T va_list
--T wchar_t 
+-T wchar_t
+
+/* panel.h */
+-T PANEL
+
+/* term.h */
+-T SCREEN
+-T TERMINAL
+-T TERMTYPE
+-T TERMTYPE2
