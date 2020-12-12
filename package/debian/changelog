@@ -1,3 +1,15 @@
+cindent (2.0.20201211) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Fri, 11 Dec 2020 18:53:17 -0500
+
+cindent (2.0.20201212) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Fri, 11 Dec 2020 18:52:35 -0500
+
 cindent (2.0.20201004) unstable; urgency=low
 
   * maintenance updates
