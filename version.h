@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2019,2020 Thomas E. Dickey
+   Copyright 1999-2020,2021 Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -15,4 +15,4 @@
    The number after the base version is my patch date -TD
 */
 
-#define VERSION_STRING "GNU indent 2.0-20201211"
+#define VERSION_STRING "GNU indent 2.0-20210109"
