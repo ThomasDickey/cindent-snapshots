@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: run_test.sh,v 1.15 2010/10/31 14:15:41 tom Exp $
+# $Id: run_test.sh,v 1.16 2021/01/10 00:45:45 tom Exp $
 # vi:ts=4 sw=4
 CODE=0
 unset CDPATH
@@ -62,7 +62,15 @@ do
 				rm -f $TST
 			else
 				diff -u $REF $TST
-				CODE=1
+				case $REF in
+				*-twm.*|*-xorg.*)
+					echo "... expect some differences!"
+					rm -f $TST
+					;;
+				*)
+					CODE=1
+					;;
+				esac
 			fi
 		else
 			echo "... saving $REF"
