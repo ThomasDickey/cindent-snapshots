@@ -1,3 +1,9 @@
+cindent (2.0.20210227) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Sat, 27 Feb 2021 11:33:39 -0500
+
 cindent (2.0.20210109) unstable; urgency=low
 
   * maintenance updates

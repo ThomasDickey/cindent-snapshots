@@ -1,7 +1,7 @@
 /*
- * $Id: ncu-profile,v 1.14 2019/08/04 19:06:43 tom Exp $
+ * $Id: ncu-profile,v 1.15 2021/02/27 16:36:03 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010-2017,2019 Thomas E. Dickey                            *
+ * Copyright (c) 2010-2019,2021 Thomas E. Dickey                            *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -64,6 +64,7 @@
 /* ncurses */
 -T FIELD
 -T FORM
+-T NCURSES_API
 -T NCURSES_ATTR_T
 -T NCURSES_BOOL
 -T NCURSES_CH_T

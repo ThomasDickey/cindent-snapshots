@@ -1,4 +1,4 @@
-dnl $Id: aclocal.m4,v 1.20 2021/01/06 00:40:50 tom Exp $
+dnl $Id: aclocal.m4,v 1.21 2021/01/13 21:51:52 tom Exp $
 dnl autoconf macros for vttest - T.E.Dickey
 dnl ---------------------------------------------------------------------------
 dnl Copyright:  1997-2020,2021 by Thomas E. Dickey
@@ -1160,7 +1160,7 @@ AC_DEFUN([CF_VERBOSE],
 CF_MSG_LOG([$1])
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_WITHOUT_X version: 2 updated: 2020/10/04 10:05:20
+dnl CF_WITHOUT_X version: 3 updated: 2021/01/13 16:51:52
 dnl ------------
 dnl Use this to cancel the check for X headers/libraries which would be pulled
 dnl in via CF_GCC_WARNINGS.
@@ -1169,6 +1169,8 @@ AC_DEFUN([AC_PATH_XTRA],[])
 AC_DEFUN([CF_SAVE_XTRA_FLAGS],[])
 AC_DEFUN([CF_RESTORE_XTRA_FLAGS],[])
 AC_DEFUN([CF_CONST_X_STRING],[echo "skipping X-const check";])dnl
+AC_SUBST(X_CFLAGS)
+AC_SUBST(X_LIBS)
 [])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_XOPEN_SOURCE version: 57 updated: 2021/01/01 16:53:59

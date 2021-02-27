@@ -1,4 +1,9 @@
--- $Id: ChangeLog,v 1.127 2021/01/10 00:50:56 tom Exp $
+-- $Id: ChangeLog,v 1.128 2021/02/27 16:34:39 tom Exp $
+
+2021-02-27
+	+ add NCURSES_API to ncu-profile
+
+	+ resync with my-autoconf.
 
 2021-01-09
 	+ modify test-script to not error-out when reporting differences for
