@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2019,2020, Thomas E. Dickey
+   Copyright 1999-2020,2022, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -20,7 +20,7 @@
    promote products derived from this software without specific prior written
    permission. THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
    IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES
-   OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
+   OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
 
 
 /* Argument scanning and profile reading code.  Default parameters are set
@@ -638,7 +638,7 @@ option_prefix (const char *arg)
 }
 
 /* Process an option ARG (e.g. "-l60").  PARAM is a possible value
-   for ARG, if PARAM is nonzero.  EXPLICT should be nonzero iff the
+   for ARG, if PARAM is nonzero.  EXPLICIT should be nonzero iff the
    argument is being explicitly specified (as opposed to being taken from a
    PRO_LIST group of settings).
 

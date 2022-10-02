@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2002,2010, Thomas E. Dickey
+   Copyright 1999-2012,2022, Thomas E. Dickey
 
    Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
 
@@ -15,7 +15,7 @@
    GNU General Public License for more details. */
 
 
-/* When to make backup files.  Analagous to 'version-control'
+/* When to make backup files.  Analogous to 'version-control'
    in Emacs. */
 enum backup_mode
   {

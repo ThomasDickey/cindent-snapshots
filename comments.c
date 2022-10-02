@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2010,2018, Thomas E. Dickey
+   Copyright 1999-2018,2022, Thomas E. Dickey
 
    Copyright (c) 1993 - 1998, Joseph Arceneaux.  All rights reserved.
 
@@ -19,7 +19,7 @@
 #include "sys.h"
 #include "indent.h"
 
-/* Check the limits of the comment buffer, and expand as neccessary. */
+/* Check the limits of the comment buffer, and expand as necessary. */
 
 #define CHECK_COM_SIZE \
 	if (e_com >= l_com) \
@@ -345,7 +345,7 @@ print_comment (void)
       dump_line ();
 
       /* Check if the delimiter was already on a line by itself,
-         and skip whitespace if formating. */
+         and skip whitespace if formatting. */
       while (isblank (*p))
 	p++;
       if (*p == EOL)
@@ -379,7 +379,7 @@ print_comment (void)
 	    case ' ':
 	    case TAB:
 	      /* If formatting, and previous break marker is
-	         nonexistant, or before text on line, reset
+	         nonexistent, or before text on line, reset
 	         it to here. */
 	      if (format && line_break_ptr < text_on_line)
 		line_break_ptr = e_com;

@@ -1,4 +1,15 @@
--- $Id: ChangeLog,v 1.128 2021/02/27 16:34:39 tom Exp $
+-- $Id: ChangeLog,v 1.130 2022/10/02 17:32:55 tom Exp $
+
+2022-10-02
+	+ fix some codespell warnings
+
+	+ fix some shellcheck warnings
+
+	+ add TPARM_STATE, TPARM_DATA to ncu-profile
+
+	+ resync with my-autoconf.
+
+	+ update config.guess, config.sub
 
 2021-02-27
 	+ add NCURSES_API to ncu-profile
@@ -437,7 +448,7 @@
 
 1998-11-25    <jla@void.arceneaux.com>
 
-	* lexi.c (lexi): New case lable for 'L' in switch (*token) to
+	* lexi.c (lexi): New case label for 'L' in switch (*token) to
 	handle wide strings.
 	In the if statement for alphanums, fail the test if we are looking
 	at L" or L'.
@@ -483,7 +494,7 @@
 1998-11-21    <jla@void.arceneaux.com>
 
 	* indent.h (struct buf): New `len' and `column' elements added to
-	struc buf.
+	struct buf.
 	* indent.c (indent): Update `save_com.len' where appropriate.  Set
 	`save_com.column' where appropriate.
 	* io.c (current_column): Use `len' element of save_com to detect
@@ -554,7 +565,7 @@ Thu Aug 27 10:19:24 1998    <jla@void.arceneaux.com>
 
 	* indent.c (indent): If we plan to break the line, set
 	`break_line' and `force_nl'.
-	Whereever we append a blank to the output line, set `buf_break' to
+	Wherever we append a blank to the output line, set `buf_break' to
 	that point.  Also, NULL-terminate the line.
 
 	* indent.c, args.c, io.c:  All troff-related code removed.
@@ -595,7 +606,7 @@ Fri Apr 11 12:25:08 1997  Joseph Arceneaux  <jla@emptiness.arceneaux.com>
 	* lexi.c (lexi): Recognize "::" as new code doublecolon.
 	* indent.c (indent): Handle new code `doublecolon'.
 
-	* backup.c (make_backup): Use new variable `size' to handle MSDOS
+	* backup.c (make_backup): Use new variable `size' to handle MS-DOS
 	16 bit values for amount written to file.
 
 	* io.c (dump_line): Cast (e_lab - s_lab) to an int for the "%.*s"
@@ -603,7 +614,7 @@ Fri Apr 11 12:25:08 1997  Joseph Arceneaux  <jla@emptiness.arceneaux.com>
 	the width).
 	(read_file): Cast size arguments to `xrealloc' and `xmalloc' to
 	unsigned.
-	(read_file): Use unsigned int for `size' on MSDOS, so that we can
+	(read_file): Use unsigned int for `size' on MS-DOS, so that we can
 	read slightly larger sizes.  Ugh!
 
 Thu Dec 12 10:13:22 1996  Joseph Arceneaux  <jla@emptiness.arceneaux.com>
@@ -621,7 +632,7 @@ Thu Jan  4 11:39:39 1996  Joseph Arceneaux  <jla@emptiness.samsara.com>
 	(parse): In main switch, case lbrace, if `swstmt' is on top of
 	stack and `case_indent' is non-zero, add it to
 	`parser_state_tos->i_l_follow'.
-	(parse): In main swtich, case `swstmt', just increment
+	(parse): In main switch, case `swstmt', just increment
 	`parser_state_tos->i_l_follow' by `ind_size', not `case_indent'.
 
 Sat Dec 30 09:51:52 1995  Joseph Arceneaux  <jla@emptiness.samsara.com>
@@ -636,7 +647,7 @@ Fri Dec 29 13:42:30 1995  Joseph Arceneaux  <jla@emptiness.samsara.com>
 
 	* regression/TEST: New test file right-margin-comment.c.
 
-	* comments.c (print_comment): After the main switch statment, if
+	* comments.c (print_comment): After the main switch statement, if
 	formatting and the line break is after any text, then skip any
 	white space.  For C++ comments, if that white space includes a
 	newline, then end the comment by jumping to new label
@@ -671,7 +682,7 @@ Wed Dec 27 14:33:36 1995  Joseph Arceneaux  <jla@emptiness.samsara.com>
 	handling cases of lines consisting of two or more comments, but no
 	code, on a single line.  All updates of
 	`parser_state_tos->com_col' now consider this variable.
-	Also, set `parser_state_tos->box_com' to `boxed_comment' whereever
+	Also, set `parser_state_tos->box_com' to `boxed_comment' wherever
 	`parser_state_tos->com_col' is set.
 
 	(print_comment): Subsequent to the first handling of boxed
@@ -765,7 +776,7 @@ Thu Oct 26 11:05:38 1995  Joseph Arceneaux  <jla@emptiness.samsara.com>
 	(indent): A the beginning and end of the main loop, check to see
 	if we have surpassed any line length restrictions (specified by
 	`max_col'), and if so, set `force_nl'.
-	(indent): In main switch statment cases `comma', and `newline',
+	(indent): In main switch statement cases `comma', and `newline',
 	remove ancient check for surpassed line length.
 
 	* indent.c (indent): No longer sets `comment_max_col' to `max_col'
@@ -984,7 +995,7 @@ Wed Dec 22 14:11:24 1993  Joe Arceneaux  (jla at sparky)
 
 Mon Jun 28 20:41:52 1993  Joseph Arceneaux  (jla@wookumz.gnu.ai.mit.edu)
 
-	* sys.h: For MSDOS, only define USG if not using GCC.  This breaks
+	* sys.h: For MS-DOS, only define USG if not using GCC.  This breaks
 	`memcpy' and stuff from ctypes.h, apparently.
 
 	* makefile.in (distclean): Remove config.status.
@@ -1330,7 +1341,7 @@ Fri Aug 14 19:08:04 1992  Joseph Arceneaux  (jla@churchy.gnu.ai.mit.edu)
 	from (prefix_blankline_requested && not_first_line).  Makes "-sob"
 	work properly.
 
-	* indent.c (indent): Intialize several local variables to 0.
+	* indent.c (indent): Initialize several local variables to 0.
 
 Tue Aug 11 18:02:38 1992  Joseph Arceneaux  (jla@churchy.gnu.ai.mit.edu)
 
@@ -1369,7 +1380,7 @@ Mon Aug  3 21:14:40 1992  Joseph Arceneaux  (jla@churchy.gnu.ai.mit.edu)
 	parser_state_tos->in_decl is true and ..->block_init is false.
 	The old change broke the "-ncs" feature.  Perhaps this could have
 	been done otherwise by using ..->last_u_d.
-	Also, decrement `parser_state_tos->paren_depth' immediatly.
+	Also, decrement `parser_state_tos->paren_depth' immediately.
 
 	* All source files formatted with ./indent.
 
@@ -1381,7 +1392,7 @@ Mon Aug  3 21:14:40 1992  Joseph Arceneaux  (jla@churchy.gnu.ai.mit.edu)
 	simpler, but the old code used `cur_line' to count those spaces,
 	which was pointing to the *NEXT* line in some cases (because some
 	code in indent () which ignored newlines (like in the case of
-	multi-line comments after #define statments) called fill_buffer ()).
+	multi-line comments after #define statements) called fill_buffer ()).
 	Another example of just how brain damaged this code is.  For more
 	extreme self-abuse, look a the interaction between pr_comment ()
 	and dump_line ().
@@ -1401,7 +1412,7 @@ Wed Jul 29 22:50:45 1992  Joseph Arceneaux  (jla@churchy.gnu.ai.mit.edu)
 Tue Jul 28 17:17:08 1992  Joseph Arceneaux  (jla@churchy.gnu.ai.mit.edu)
 
 	* parse.c (parse): In case lbrace, handle state of being in a decl
-	specially: If this brace succedes a struct-like thing and it goes
+	specially: If this brace succeeds a struct-like thing and it goes
 	on a line by itself (! btype_2), then add `brace_indent' to the
 	amount of indentation.  This make GNU-style indentation of
 	structures, etc. work properly.
@@ -1636,14 +1647,14 @@ Tue Apr 28 23:18:07 1992  Joseph Arceneaux  (jla at hugo)
 Sun Mar 22 14:59:35 1992  Joseph Arceneaux  (jla at hugo)
 
 	* parse.c (init_parser, reset_parser):  Two new functions which
-	respectively allocate the neccessary parser data structures, and
+	respectively allocate the necessary parser data structures, and
 	initialize the parser state.
 	* indent.c (indent): New function which does the actual indenting
 	of it's input, which comes in the form of a file_buffer pointer.
 	(main): Command line scan changed to use new option "-o" and read
 	possibly multiple files into new variable `in_file_names'.
 	Main body changed to use new `indent' function on possibly
-	multiple files, and accomodate default standard io specification.
+	multiple files, and accommodate default standard io specification.
 
 	* io.c (make_backup, read_file, read_stdin):  All file io routines
 	rewritten (`make_backup' formerly `bakcopy').  read routines
@@ -1674,7 +1685,7 @@ Thu Jan 23 14:02:06 1992  Joseph Arceneaux  (jla at wombat.gnu.ai.mit.edu)
 
 	* lexi.c ():  Added explicit parens in checks for alphanums.
 	* indent.c (main):  On switch default when searching brace, added
-	explicit parens to 2nd if statment.
+	explicit parens to 2nd if statement.
 	* indent_globs.h, io.c: Made variable `in_prog_size' unsigned.
 
 Wed Jan 15 11:59:35 1992  Joseph Arceneaux  (jla at hugo)

@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2019,2020 Thomas Dickey
+   Copyright 1999-2020,2022 Thomas Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -20,7 +20,7 @@
    promote products derived from this software without specific prior written
    permission. THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
    IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES
-   OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
+   OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
 
 
 /* Here we have the token scanner for indent.  It scans off one token and
@@ -212,7 +212,7 @@ parse_token (void)
 	  return (decl);
 	}
 
-      /* Operator after indentifier is binary */
+      /* Operator after identifier is binary */
       parser_state_tos->last_u_d = false;
       last_code = ident;
 
@@ -424,7 +424,7 @@ parse_token (void)
 	return overloaded;
 
       return (ident);		/* the ident is not in the list */
-    }				/* end of procesing for alpanum character */
+    }				/* end of processing for alphanum character */
   /* Scan a non-alphanumeric token */
 
   /* If it is not a one character token, token_end will get changed later.  */
@@ -689,7 +689,7 @@ parse_token (void)
 	  indent_eqls = token_col ();
 	}
       break;
-      /* can drop thru!!! */
+      /* can drop through!!! */
 
     case '>':
     case '<':

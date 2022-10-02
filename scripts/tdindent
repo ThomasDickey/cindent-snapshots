@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: tdindent,v 1.46 2020/12/11 23:51:43 tom Exp $
+# $Id: tdindent,v 1.47 2022/10/02 17:43:50 tom Exp $
 #****************************************************************************
 #* Copyright (c) 2010-2019,2020 Thomas E. Dickey                            *
 #*                                                                          *
@@ -29,8 +29,8 @@
 #****************************************************************************/
 # this was ncu-indent, before integrating with cindent package in 2010.
 
-: ${INDENT_PROG:=indent}
-: ${INDENT_DATA:=.}
+: "${INDENT_PROG:=indent}"
+: "${INDENT_DATA:=.}"
 
 NOOP=no
 OPTS="-npro"
@@ -43,11 +43,11 @@ unset INDENT_PROFILE
 
 MY_PWD=`pwd`
 MY_TMP=`mktemp -d 2>/dev/null`
-[ -d "$MY_TMP" ] || mkdir ${TMPDIR:=/tmp}/indent$$
-mkdir $MY_TMP/scripts
-trap "cd $MY_PWD; rm -rf $MY_TMP" EXIT INT QUIT TERM HUP
+[ -d "$MY_TMP" ] || mkdir "${TMPDIR:=/tmp}"/indent$$
+mkdir "$MY_TMP"/scripts
+trap 'cd $MY_PWD; rm -rf $MY_TMP' EXIT INT QUIT TERM HUP
 
-cat >$MY_TMP/prepro <<'EOF'
+cat >"$MY_TMP"/prepro <<'EOF'
 /EMPTY_MODULE(/s/)$/);/
 s,\(MODULEID(\),//\1,
 /MODULE_ID(/s/)$/);/
@@ -71,7 +71,7 @@ s,\(\<YY_RULE_SETUP\>\),\1;,
 s,\(\<YY_BREAK\>\),\1;,
 EOF
 
-cat >$MY_TMP/postpro <<'EOF'
+cat >"$MY_TMP"/postpro <<'EOF'
 /EMPTY_MODULE(/s/);$/)/
 s,//\(MODULEID(\),\1,
 /MODULE_ID(/s/);$/)/
@@ -156,15 +156,15 @@ EOF
 		case `$INDENT_PROG -version 2>/dev/null` in
 		*.*-2[0-9][0-9][0-9][0-9][0-9][0-9][0-9])	# cindent uses yyyymmdd
 			myprof=`basename "$PROFILE"`
-			cat "$PROFILE" >$MY_TMP/scripts/$myprof
+			cat "$PROFILE" >"$MY_TMP"/scripts/"$myprof"
 			PROFILE=./scripts/$myprof
 			OPTS="--profile $PROFILE"
 			;;
 		*)
-			OPTS=`sed \
+			OPTS="`sed \
 				-e '/\/\*.*\*\//d' \
 				-e '/\/\*/,/\*\//d' \
-				-e 's/[ 	]*\([0-9]\)/\1/g' $PROFILE | tr '\n' ' '`
+				-e 's/[ 	]*\([0-9]\)/\1/g' "$PROFILE" | tr '\n' ' '`"
 			OPTS="-npro $OPTS"
 			;;
 		esac
@@ -195,10 +195,10 @@ EOF
 
 		# (pre-filter) temporarily comment-out macros which confuse indent
 		cp "$name" "$save"
-		sed -f $MY_TMP/prepro "$save" >"$test"
+		sed -f "$MY_TMP"/prepro "$save" >"$test"
 
 		# work in the temp-directory to leave its pathname out of diffs
-		cd $MY_TMP
+		cd "$MY_TMP" || exit
 
 		# show the result of pre-filtering for the -D option
 		if [ $TEST_D = yes ]; then
@@ -229,9 +229,9 @@ EOF
 			else
 				diff -u "$leaf".orig "$leaf"
 			fi
-			cd "$MY_PWD"
+			cd "$MY_PWD" || exit
 		else
-			cd "$MY_PWD"
+			cd "$MY_PWD" || exit
 			if ( cmp -s "$save" "$test" ) ; then
 				echo "** unchanged $name"
 			else

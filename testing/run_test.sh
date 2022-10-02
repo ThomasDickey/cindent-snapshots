@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: run_test.sh,v 1.16 2021/01/10 00:45:45 tom Exp $
+# $Id: run_test.sh,v 1.17 2022/10/02 18:08:01 tom Exp $
 # vi:ts=4 sw=4
 CODE=0
 unset CDPATH
@@ -16,7 +16,7 @@ then
 fi
 
 SCRIPTS=`echo "$TOP/../scripts" | sed -e 's,[^/][^/]*/../,,'`
-PATH=`cd "$SCRIPTS";pwd`:$PATH
+PATH=`cd "$TOP"/.. && pwd`:`cd "$SCRIPTS" && pwd`:$PATH
 export PATH
 
 INDENT_DATA="$SCRIPTS"

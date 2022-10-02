@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2018,2019, Thomas E. Dickey
+   Copyright 1999-2019,2022, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -17,7 +17,7 @@
    promote products derived from this software without specific prior written
    permission. THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
    IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES
-   OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
+   OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
 
 #include "sys.h"
 #include "indent.h"

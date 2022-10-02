@@ -5,7 +5,7 @@
    } c;
 
    if (condition)   /* Force a blank line after single statement ifs. */
-      whatever;     /* force single statment to begin on new line */
+      whatever;     /* force single statement to begin on new line */
 
 
    while (*c = *p)  /* Force semicolon on new line. Same with for and if */
@@ -38,12 +38,12 @@
       return EXIT_SUCCESS;
       }
 
-* Someone requested an option to keep cases statments all on one line.
+* Someone requested an option to keep case statements all on one line.
 
 * Consider an option to produce "char* c" rather than  "char *c"
 
 *  There is no way to specify that a unary & (as in address-of
-   operator) not preceed it's argument by a space.
+   operator) not precede its argument by a space.
 [rms: I agree that is a desirable mode we should support somehow.]
 
 

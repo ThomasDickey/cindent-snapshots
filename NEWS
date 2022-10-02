@@ -56,10 +56,10 @@ Release notes for GNU indent version 2.0, November 1998
 
   1 : This means `indent' was incorrectly invoked.
   2 : Errors occurred during formatting, but processing continued.
-  3 : An unrecoverable error occured during the processing of an input
+  3 : An unrecoverable error occurred during the processing of an input
       file.  If there are more input files, indent will proceed to
       process them, but will return the error value 3.
-  4 : A serious internal error occured.  All processing is terminated.
+  4 : A serious internal error occurred.  All processing is terminated.
   5 : A system error during processing occurred.  In this case,
      `indent' terminates.
 
@@ -150,7 +150,7 @@ Release Notes for GNU indent version 1.6.
 * All reported bugs have been fixed.
 
 * The makefiles have been, hopefully, improved (see the file `README'
-  for installation procedure).  Essentially, it is sufficent to type
+  for installation procedure).  Essentially, it is sufficient to type
   "make" to build indent.  `indent' is distributed with `configure'
   just as other GNU software.  Thus, in conformance with the GNU
   standards, "configure; make" should function properly and `indent'

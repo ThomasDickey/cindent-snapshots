@@ -3,7 +3,7 @@ Upstream source https://invisible-island.net/cindent/
 -------------------------------------------------------------------------------
 Files: indent.c, indent.info
 
-     Copyright 1999-2020,2021 Thomas E. Dickey
+     Copyright 1999-2021,2022 Thomas E. Dickey
      Copyright (c) 1995, 1996 Joseph Arceneaux
      Copyright (c) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
      Copyright (c) 1985 Sun Microsystems, Inc.
@@ -22,7 +22,7 @@ Files: indent.c, indent.info
      derived from this software without specific prior written permission.
      THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
      IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-     WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR
+     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
      PURPOSE.
 -------------------------------------------------------------------------------
 Files: install-sh
@@ -61,7 +61,7 @@ Licence: other-BSD
     shared with many OS's install programs.
 
 Files: debian/*
-Copyright:  1999-2020,2021 Thomas E. Dickey
+Copyright:  1999-2021,2022 Thomas E. Dickey
 Licence: other-BSD
     Permission to use, copy, modify, and distribute this software and its
     documentation for any purpose and without fee is hereby granted,

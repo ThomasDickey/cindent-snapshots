@@ -24,7 +24,7 @@
 @end direntry
 
 @ifinfo
-Copyright @copyright{} 1999-2018, 2020 Thomas E. Dickey@*
+Copyright @copyright{} 1999-2020, 2022 Thomas E. Dickey@*
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux@*
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.@*
 
@@ -63,7 +63,7 @@ original English.
 @author Joseph Arceneaux
 @page
 @vskip 0pt plus1filll
-Copyright @copyright{} 1999-2019, 2020 Thomas E. Dickey
+Copyright @copyright{} 1999-2020, 2022 Thomas E. Dickey
 
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 
@@ -1329,7 +1329,7 @@ The copyright and copying permissions for this manual appear near the
 beginning of this document.
 
 @display
-Copyright @copyright{} 1999-2019, 2020 Thomas E. Dickey
+Copyright @copyright{} 1999-2020, 2022 Thomas E. Dickey
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright @copyright{} 1985 Sun Microsystems, Inc.
@@ -1348,7 +1348,7 @@ or Sun Microsystems may not be used to endorse or promote products
 derived from this software without specific prior written permission.
 THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 PURPOSE.
 @end display
 

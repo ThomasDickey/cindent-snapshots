@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2019,2020, Thomas E. Dickey
+   Copyright 1999-2020,2022, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -20,7 +20,7 @@
    promote products derived from this software without specific prior written
    permission. THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
    IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES
-   OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
+   OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
 
 #ifndef INDENT_H
 #define INDENT_H 1
@@ -335,7 +335,7 @@ extern int star_comment_cont;	/* true iff comment continuation lines should
 extern int swallow_optional_blanklines;
 extern int tabsize;		/* The number of columns a tab character
 				   generates. */
-extern int troff;		/* true iff were generating troff input */
+extern int troff;		/* true iff we're generating troff input */
 extern int unindent_displace;	/* comments not to the right of code will be
 				   placed this many indentation levels to the
 				   left of code */

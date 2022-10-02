@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2018,2019, Thomas E. Dickey
+   Copyright 1999-2019,2022, Thomas E. Dickey
 
    Copyright (c) 1994,1996,1997, Joseph Arceneaux.  All rights reserved.
 
@@ -20,7 +20,7 @@
    promote products derived from this software without specific prior written
    permission. THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
    IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES
-   OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
+   OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. */
 
 #include "sys.h"
 #include "indent.h"
@@ -475,7 +475,7 @@ indent (struct file_buffer *this_file)
 
 	      if (save_com.end == save_com.ptr)
 		{
-		  /* ignore buffering if comment wasnt saved up */
+		  /* ignore buffering if comment wasn't saved up */
 		  parser_state_tos->search_brace = false;
 		  goto check_type;
 		}
@@ -637,7 +637,7 @@ indent (struct file_buffer *this_file)
 	       && !(parser_state_tos->last_token == comma &&
 		    !leave_comma))
 	{
-	  /* preserve force_nl thru a comment but
+	  /* preserve force_nl through a comment but
 	     cancel forced newline after newline, form feed, etc.
 	     however, don't cancel if last thing seen was comma-newline
 	     and -bc flag is on. */
@@ -863,7 +863,7 @@ indent (struct file_buffer *this_file)
 	      parser_state_tos->last_u_d = true;	/* inform lexi that a
 							   following operator is
 							   unary */
-	      parser_state_tos->in_stmt = false;	/* dont use statement
+	      parser_state_tos->in_stmt = false;	/* don't use statement
 							   continuation
 							   indentation */
 
@@ -1106,7 +1106,7 @@ indent (struct file_buffer *this_file)
 		parser_state_tos->p_l_follow = 0;
 	    }
 
-	  parser_state_tos->in_stmt = false;	/* dont indent the {} */
+	  parser_state_tos->in_stmt = false;	/* don't indent the {} */
 	  if (!parser_state_tos->block_init)
 	    force_nl = true;	/* force other stuff on same line as left curly-brace onto
 				   new line */
@@ -1139,7 +1139,7 @@ indent (struct file_buffer *this_file)
 	    prefix_blankline_requested = 0;
 
 	  if (s_code == e_code)
-	    parser_state_tos->ind_stmt = false;		/* dont put extra indentation
+	    parser_state_tos->ind_stmt = false;		/* don't put extra indentation
 							   on line with left curly-brace */
 	  if (parser_state_tos->in_decl && parser_state_tos->in_or_st)
 	    {
@@ -1157,9 +1157,9 @@ indent (struct file_buffer *this_file)
 	  else
 	    {
 	      parser_state_tos->in_decl = false;
-	      parser_state_tos->decl_on_line = false;	/* we cant be in the
+	      parser_state_tos->decl_on_line = false;	/* we can't be in the
 							   middle of a
-							   declaration, so dont
+							   declaration, so don't
 							   do special
 							   indentation of
 							   comments */
@@ -1469,7 +1469,7 @@ indent (struct file_buffer *this_file)
 	      *e_code++ = *t_ptr;
 	    }
 
-	  parser_state_tos->want_blank = false;		/* dont put a blank after a
+	  parser_state_tos->want_blank = false;		/* don't put a blank after a
 							   period */
 	  break;
 

@@ -174,7 +174,7 @@ Sat Sep  2 20:53:11 1989  Jim Kingdon  (kingdon at apple-gunkies.ai.mit.edu)
 
 	* various: Remove unnecessary semicolons after "}".
 
-	* indent.c (main, case comment) Remove unnecesary label proc_comment.
+	* indent.c (main, case comment) Remove unnecessary label proc_comment.
 
 	* indent.c (main): Allow space between '#' and preprocessor
 	directives (two changes: 1. skip over the space; 2. change
