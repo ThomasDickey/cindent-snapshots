@@ -141,7 +141,7 @@ enum rwcodes
 #define at_line_end(p)   (at_buffer_end(p) || (*p) == EOL)
 
 #ifndef GCC_NORETURN
-#define GCC_NORETURN /* nothing */
+#define GCC_NORETURN		/* nothing */
 #endif
 
 #ifndef GCC_PRINTFLIKE
@@ -216,7 +216,7 @@ extern char *token_buf;
 extern enum codes lexi (void);
 extern int token_col (void);
 extern int first_token_col (void);
-extern void addkey (const char *, enum rwcodes);
+extern int addkey (const char *, enum rwcodes);
 extern void init_lexi (void);
 
 /* Used to keep track of buffers.  */

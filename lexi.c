@@ -843,14 +843,14 @@ first_token_col (void)
 /* Add the given keyword to the keyword table, using val as
    the keyword type */
 
-void
+int
 addkey (const char *key, enum rwcodes val)
 {
   struct templ *p;
 
   /* Check to see whether key is a reserved word or not. */
   if (is_reserved (key, (unsigned) strlen (key)) != 0)
-    return;
+    return 0;
 
   if (user_specials == 0)
     {
@@ -869,7 +869,7 @@ addkey (const char *key, enum rwcodes val)
   p = &user_specials[user_specials_idx++];
   p->rwd = key;
   p->rwcode = val;
-  return;
+  return 1;
 }
 
 static void

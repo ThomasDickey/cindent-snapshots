@@ -1,7 +1,22 @@
 #!/bin/sh
-# $Id: run_test.sh,v 1.17 2022/10/02 18:08:01 tom Exp $
+# $Id: run_test.sh,v 1.18 2022/10/16 15:55:10 tom Exp $
 # vi:ts=4 sw=4
 CODE=0
+
+expect_diffs() {
+	case $REF in
+	*-twm.*|*-xorg.*)
+		echo "... ok $1 (expected diff)"
+		[ -n "$INDENT_DIFF" ] && diff -u $1 $2
+		rm -f $2
+		;;
+	*)
+		diff -u $1 $2
+		CODE=1
+		;;
+	esac
+}
+
 unset CDPATH
 if test $# = 0
 then
@@ -61,16 +76,7 @@ do
 				echo "... ok $REF"
 				rm -f $TST
 			else
-				diff -u $REF $TST
-				case $REF in
-				*-twm.*|*-xorg.*)
-					echo "... expect some differences!"
-					rm -f $TST
-					;;
-				*)
-					CODE=1
-					;;
-				esac
+				expect_diffs $REF $TST
 			fi
 		else
 			echo "... saving $REF"
@@ -93,8 +99,7 @@ do
 					echo "... ok $MSG"
 					rm -f $ERR
 				else
-					diff -u $MSG $ERR
-					CODE=1
+					expect_diffs $MSG $ERR
 				fi
 			else
 				echo "... saving messages $MSG"

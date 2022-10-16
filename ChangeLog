@@ -1,4 +1,20 @@
--- $Id: ChangeLog,v 1.130 2022/10/02 17:32:55 tom Exp $
+-- $Id: ChangeLog,v 1.132 2022/10/16 16:05:27 tom Exp $
+
+2022-10-16
+	+ testing/run_test.sh:
+	make checking less verbose (can override with $INDENT_DIFF), because
+	twm/xorg files will "never" match
+
+	+ indent.h, args.c, lexi.c: memory-leak
+
+	+ make-man.pl:
+	workaround for a case where the font change is wrapped to the next line
+
+	+ indent.1: fix glitch reported by check-manpage
+
+	+ indent.gperf: add the numeric variations, too
+
+	+ resync with my-autoconf.
 
 2022-10-02
 	+ fix some codespell warnings

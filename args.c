@@ -780,7 +780,8 @@ found:
 
 	    str = (char *) xmalloc (strlen (param_start) + 1);
 	    strcpy (str, param_start);
-	    addkey (str, rw_decl);
+	    if (!addkey (str, rw_decl))
+	      free (str);
 	  }
 	  break;
 

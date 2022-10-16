@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
-# $Id: make-man.pl,v 1.26 2020/10/04 15:01:28 tom Exp $
+# $Id: make-man.pl,v 1.27 2022/10/16 13:33:06 tom Exp $
 #------------------------------------------------------------------------------
-# Copyright:  2010-2019,2020 by Thomas E. Dickey
+# Copyright:  2010-2020,2022 by Thomas E. Dickey
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the
@@ -309,7 +309,12 @@ sub do_file($) {
         }
     }
 
+    my $wrap = 0;
     for $n ( 0 .. $#input ) {
+        if ($wrap) {
+            $input[$n] =~ s/^([^']+)'/$1\\fR/;
+            $wrap = 0;
+        }
         $input[$n] =~ s/``([^`']+)``([^`']+)''([^`']+)''/\\fB$1$2$3\\fP/g;
         $input[$n] =~ s/['`]([^`']+)`([^`']+)'([^`']+)'/\\fB$1$2$3\\fP/g;
         $input[$n] =~ s/``([^']+)''/\\fB$1\\fR/g;
@@ -318,6 +323,11 @@ sub do_file($) {
         $input[$n] =~ s/\\n/\\en/g if ( $input[$n] !~ /^\./ );
         $input[$n] =~ s/\(\*note (.*)::\)/(see \\fB$1\\fR)/g;
         $input[$n] =~ s/\*Note (.*)::/(see \\fB$1\\fR)/g;
+
+        if ( $input[$n] =~ /['`]/ and $input[$n] !~ /^\./ ) {
+            $wrap = 1;
+            $input[$n] =~ s/['`]/\\fB/;
+        }
     }
 
     my $rootname = $name;

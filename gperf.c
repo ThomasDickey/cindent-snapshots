@@ -1,7 +1,7 @@
 /* *INDENT-OFF* */
-/* ANSI-C code produced by gperf version 3.0.4 */
+/* ANSI-C code produced by gperf version 3.1 */
 /* Command-line: gperf -LANSI-C -C -c -p -t -T -g -j1 -o -K rwd -N is_reserved indent.gperf  */
-/* Computed positions: -k'1,3,5' */
+/* Computed positions: -k'1-2,5' */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
       && ('%' == 37) && ('&' == 38) && ('\'' == 39) && ('(' == 40) \
@@ -27,19 +27,19 @@
       && ('w' == 119) && ('x' == 120) && ('y' == 121) && ('z' == 122) \
       && ('{' == 123) && ('|' == 124) && ('}' == 125) && ('~' == 126))
 /* The character set is not based on ISO-646.  */
-#error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gnu-gperf@gnu.org>."
+#error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gperf@gnu.org>."
 #endif
 
 #line 1 "indent.gperf"
 
 /* Command-line: gperf -c -p -t -T -g -j1 -o -K rwd -N is_reserved indent.gperf  */
 
-#define TOTAL_KEYWORDS 56
+#define TOTAL_KEYWORDS 64
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 12
-#define MIN_HASH_VALUE 2
-#define MAX_HASH_VALUE 70
-/* maximum key range = 69, duplicates = 0 */
+#define MIN_HASH_VALUE 3
+#define MAX_HASH_VALUE 82
+/* maximum key range = 80, duplicates = 0 */
 
 #ifdef __GNUC__
 __inline
@@ -49,38 +49,38 @@ inline
 #endif
 #endif
 static unsigned int
-hash (register const char *str, register unsigned int len)
+hash (register const char *str, register size_t len)
 {
   static const unsigned char asso_values[] =
     {
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71,  2, 71,  1, 14,  6,
-       4, 10, 18,  0, 10,  0,  1,  3, 15, 33,
-       6, 24, 19, 71,  7,  0,  0, 10, 47, 28,
-      71, 71, 18, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71, 71, 71, 71, 71,
-      71, 71, 71, 71, 71, 71
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 22,
+      55, 19, 52, 83, 20, 83, 18, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 11, 14, 83, 83,
+      83, 83, 83,  0, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 23, 83,  8, 21, 11,
+      29,  0,  6, 41, 37,  0,  5,  3,  1,  9,
+       0, 10, 12, 83,  2,  1,  6, 33, 19,  8,
+       1,  0, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83, 83, 83, 83, 83,
+      83, 83, 83, 83, 83, 83
     };
-  register unsigned hval =len;
+  register unsigned hval = (unsigned) len;
 
   switch (hval)
     {
@@ -89,9 +89,9 @@ hash (register const char *str, register unsigned int len)
       /*FALLTHROUGH*/
       case 4:
       case 3:
-        hval += asso_values[(unsigned char)str[2]];
-      /*FALLTHROUGH*/
       case 2:
+        hval += asso_values[(unsigned char)str[1]];
+      /*FALLTHROUGH*/
       case 1:
         hval += asso_values[(unsigned char)str[0]];
         break;
@@ -99,142 +99,150 @@ hash (register const char *str, register unsigned int len)
   return hval;
 }
 
-#ifdef __GNUC__
-__inline
-#if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
-#endif
-const struct templ *
-is_reserved (register const char *str, register unsigned int len)
+static const struct templ *
+is_reserved (register const char *str, register size_t len)
 {
   static const struct templ wordlist[] =
     {
-      {"", rw_none}, {"", rw_none},
-#line 24 "indent.gperf"
-      {"if", rw_sp_paren,},
+      {"", rw_none}, {"", rw_none}, {"", rw_none},
 #line 26 "indent.gperf"
       {"int", rw_decl,},
-#line 23 "indent.gperf"
-      {"goto", rw_break,},
-#line 9 "indent.gperf"
-      {"auto", rw_decl,},
-#line 15 "indent.gperf"
-      {"do", rw_sp_nparen,},
+#line 18 "indent.gperf"
+      {"enum", rw_struct_like,},
+#line 17 "indent.gperf"
+      {"else", rw_sp_nparen,},
+#line 25 "indent.gperf"
+      {"inline", rw_decl,},
+#line 32 "indent.gperf"
+      {"signed", rw_decl,},
+#line 24 "indent.gperf"
+      {"if", rw_sp_paren,},
+#line 19 "indent.gperf"
+      {"extern", rw_decl,},
+#line 30 "indent.gperf"
+      {"return", rw_return,},
+#line 28 "indent.gperf"
+      {"register", rw_decl,},
+#line 29 "indent.gperf"
+      {"restrict", rw_decl,},
 #line 34 "indent.gperf"
       {"static", rw_decl,},
 #line 52 "indent.gperf"
       {"intptr_t", rw_decl,},
-#line 54 "indent.gperf"
-      {"intmax_t", rw_decl,},
-#line 11 "indent.gperf"
-      {"case", rw_case,},
-#line 12 "indent.gperf"
-      {"char", rw_decl,},
-#line 36 "indent.gperf"
-      {"switch", rw_switch,},
-#line 47 "indent.gperf"
-      {"sig_atomic_t", rw_decl,},
-#line 17 "indent.gperf"
-      {"else", rw_sp_nparen,},
-#line 28 "indent.gperf"
-      {"register", rw_decl,},
-#line 32 "indent.gperf"
-      {"signed", rw_decl,},
-#line 13 "indent.gperf"
-      {"const", rw_decl,},
-#line 39 "indent.gperf"
-      {"unsigned", rw_decl,},
-#line 35 "indent.gperf"
-      {"struct", rw_struct_like,},
-#line 30 "indent.gperf"
-      {"return", rw_return,},
-#line 38 "indent.gperf"
-      {"union", rw_struct_like,},
-#line 29 "indent.gperf"
-      {"restrict", rw_decl,},
-#line 19 "indent.gperf"
-      {"extern", rw_decl,},
-#line 18 "indent.gperf"
-      {"enum", rw_struct_like,},
 #line 27 "indent.gperf"
       {"long", rw_decl,},
-#line 49 "indent.gperf"
-      {"size_t", rw_decl,},
-#line 25 "indent.gperf"
-      {"inline", rw_decl,},
-#line 21 "indent.gperf"
-      {"for", rw_sp_paren,},
-#line 31 "indent.gperf"
-      {"short", rw_decl,},
-#line 37 "indent.gperf"
-      {"typedef", rw_decl,},
-#line 22 "indent.gperf"
-      {"global", rw_decl,},
-#line 10 "indent.gperf"
-      {"break", rw_break,},
-#line 48 "indent.gperf"
-      {"ptrdiff", rw_decl,},
-      {"", rw_none},
-#line 16 "indent.gperf"
-      {"double", rw_decl,},
-#line 46 "indent.gperf"
-      {"jmpbuf", rw_decl,},
-#line 45 "indent.gperf"
-      {"double_t", rw_decl,},
-#line 60 "indent.gperf"
-      {"wctrans_t", rw_decl,},
-#line 14 "indent.gperf"
-      {"default", rw_case,},
-#line 57 "indent.gperf"
-      {"clock_t", rw_decl,},
-#line 58 "indent.gperf"
-      {"time_t", rw_decl,},
-#line 59 "indent.gperf"
-      {"wint_t", rw_decl,},
-#line 43 "indent.gperf"
-      {"while", rw_sp_paren,},
-#line 53 "indent.gperf"
-      {"uintptr_t", rw_decl,},
-#line 8 "indent.gperf"
-      {"_Imaginary", rw_decl,},
-#line 6 "indent.gperf"
-      {"_Bool", rw_decl,},
-#line 20 "indent.gperf"
-      {"float", rw_decl,},
+#line 54 "indent.gperf"
+      {"intmax_t", rw_decl,},
 #line 33 "indent.gperf"
       {"sizeof", rw_sizeof,},
+#line 20 "indent.gperf"
+      {"float", rw_decl,},
+#line 21 "indent.gperf"
+      {"for", rw_sp_paren,},
 #line 44 "indent.gperf"
       {"float_t", rw_decl,},
-#line 56 "indent.gperf"
-      {"fpos_t", rw_decl,},
-#line 41 "indent.gperf"
-      {"void", rw_decl,},
+#line 47 "indent.gperf"
+      {"sig_atomic_t", rw_decl,},
+#line 57 "indent.gperf"
+      {"clock_t", rw_decl,},
+#line 11 "indent.gperf"
+      {"case", rw_case,},
+#line 35 "indent.gperf"
+      {"struct", rw_struct_like,},
+#line 48 "indent.gperf"
+      {"ptrdiff", rw_decl,},
+#line 36 "indent.gperf"
+      {"switch", rw_switch,},
+#line 63 "indent.gperf"
+      {"int16_t", rw_decl,},
 #line 50 "indent.gperf"
       {"wchar_t", rw_decl,},
-#line 7 "indent.gperf"
-      {"_Complex", rw_decl,},
-      {"", rw_none},
-#line 61 "indent.gperf"
-      {"wctype_t", rw_decl,},
+#line 62 "indent.gperf"
+      {"int8_t", rw_decl,},
+#line 49 "indent.gperf"
+      {"size_t", rw_decl,},
+#line 10 "indent.gperf"
+      {"break", rw_break,},
+#line 13 "indent.gperf"
+      {"const", rw_decl,},
+#line 41 "indent.gperf"
+      {"void", rw_decl,},
 #line 51 "indent.gperf"
       {"va_list", rw_decl,},
-      {"", rw_none},
-#line 55 "indent.gperf"
-      {"uintmax_t", rw_decl,},
-      {"", rw_none}, {"", rw_none},
+#line 58 "indent.gperf"
+      {"time_t", rw_decl,},
+#line 60 "indent.gperf"
+      {"wctrans_t", rw_decl,},
+#line 59 "indent.gperf"
+      {"wint_t", rw_decl,},
+#line 38 "indent.gperf"
+      {"union", rw_struct_like,},
+#line 61 "indent.gperf"
+      {"wctype_t", rw_decl,},
+#line 6 "indent.gperf"
+      {"_Bool", rw_decl,},
+#line 15 "indent.gperf"
+      {"do", rw_sp_nparen,},
+#line 37 "indent.gperf"
+      {"typedef", rw_decl,},
+#line 42 "indent.gperf"
+      {"volatile", rw_decl,},
 #line 40 "indent.gperf"
       {"va_dcl", rw_decl,},
-      {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none},
-#line 42 "indent.gperf"
-      {"volatile", rw_decl,}
+#line 9 "indent.gperf"
+      {"auto", rw_decl,},
+#line 16 "indent.gperf"
+      {"double", rw_decl,},
+#line 56 "indent.gperf"
+      {"fpos_t", rw_decl,},
+#line 45 "indent.gperf"
+      {"double_t", rw_decl,},
+#line 31 "indent.gperf"
+      {"short", rw_decl,},
+#line 43 "indent.gperf"
+      {"while", rw_sp_paren,},
+#line 55 "indent.gperf"
+      {"uintmax_t", rw_decl,},
+#line 12 "indent.gperf"
+      {"char", rw_decl,},
+#line 46 "indent.gperf"
+      {"jmpbuf", rw_decl,},
+#line 53 "indent.gperf"
+      {"uintptr_t", rw_decl,},
+#line 23 "indent.gperf"
+      {"goto", rw_break,},
+#line 22 "indent.gperf"
+      {"global", rw_decl,},
+#line 7 "indent.gperf"
+      {"_Complex", rw_decl,},
+#line 66 "indent.gperf"
+      {"uint8_t", rw_decl,},
+#line 65 "indent.gperf"
+      {"int64_t", rw_decl,},
+#line 68 "indent.gperf"
+      {"uint32_t", rw_decl,},
+#line 69 "indent.gperf"
+      {"uint64_t", rw_decl,},
+#line 64 "indent.gperf"
+      {"int32_t", rw_decl,},
+#line 67 "indent.gperf"
+      {"uint16_t", rw_decl,},
+      {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none},
+#line 14 "indent.gperf"
+      {"default", rw_case,},
+      {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none},
+#line 8 "indent.gperf"
+      {"_Imaginary", rw_decl,},
+      {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none}, {"", rw_none},
+#line 39 "indent.gperf"
+      {"unsigned", rw_decl,}
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {
-      register int key = (int)hash (str, len);
+      register unsigned int key = hash (str, len);
 
-      if (key <= MAX_HASH_VALUE && key >= 0)
+      if (key <= MAX_HASH_VALUE)
         {
           register const char *s = wordlist[key].rwd;
 
