@@ -1,16 +1,16 @@
 %define AppProgram indent
 %define AppVersion 2.0
-%define AppRelease 20221016
+%define AppRelease 20230205
 %define ActualProg c%{AppProgram}
-# $Id: indent.spec,v 1.47 2022/10/16 12:31:18 tom Exp $
+# $Id: indent.spec,v 1.49 2023/02/05 17:58:57 tom Exp $
 Summary: %{ActualProg} - format C program sources
 Name: c%{AppProgram}
 Version: %{AppVersion}
 Release: %{AppRelease}
 License: GPLv2
 Group: Applications/Development
-URL: ftp://ftp.invisible-island.net/%{AppProgram}
-Source0: %{AppProgram}-%{AppVersion}-%{AppRelease}.tgz
+URL: https://invisible-island.net/%{AppProgram}
+Source0: https://invisible-island.net/archives/%{AppProgram}-%{AppVersion}-%{AppRelease}.tgz
 Packager: Thomas Dickey <dickey@invisible-island.net>
 
 %description
@@ -32,26 +32,23 @@ not found in other versions of indent.
 %build
 
 INSTALL_PROGRAM='${INSTALL}' \
-	./configure \
-		--target %{_target_platform} \
-		--prefix=%{_prefix} \
-		--bindir=%{_bindir} \
-		--datadir=%{_datadir} \
-		--infodir=%{_infodir} \
-		--mandir=%{_mandir} \
-		--program-prefix=c
+%configure \
+  --target %{_target_platform} \
+  --prefix=%{_prefix} \
+  --bindir=%{_bindir} \
+  --datadir=%{_datadir} \
+  --infodir=%{_infodir} \
+  --mandir=%{_mandir} \
+  --program-prefix=c
 
 make
 
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
-make install                    DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 
 strip $RPM_BUILD_ROOT%{_bindir}/%{ActualProg}
-
-%clean
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)

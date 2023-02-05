@@ -1,4 +1,9 @@
--- $Id: ChangeLog,v 1.132 2022/10/16 16:05:27 tom Exp $
+-- $Id: ChangeLog,v 1.134 2023/02/05 14:39:33 tom Exp $
+
+2023-02-05
+	+ improved configure script checks, reducing compiler warnings.
+
+	+ update install-sh
 
 2022-10-16
 	+ testing/run_test.sh:
