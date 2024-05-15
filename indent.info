@@ -1,4 +1,4 @@
-This is indent.info, produced by makeinfo version 6.5 from
+This is indent.info, produced by makeinfo version 6.8 from
 indent.texinfo.
 
 INFO-DIR-SECTION Indent Code Formatter
@@ -6,13 +6,13 @@ START-INFO-DIR-ENTRY
 * CIndent: (cindent).           C code formatter (fork).
 END-INFO-DIR-ENTRY
 
-Copyright (C) 1999-2020, 2022 Thomas E. Dickey
+Copyright (C) 1999-2022, 2024 Thomas E. Dickey
 Copyright (C) 1995, 1996 Joseph Arceneaux
 Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software
 Foundation, Inc.
 
-   This is Edition 2.0, October, 2020, of 'The 'indent' Manual', for
-Indent Version 2.0
+   This is Edition 2.0, May, 2024, of 'The 'indent' Manual', for Indent
+Version 2.0
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -26,9 +26,6 @@ File: indent.info,  Node: Top,  Next: Indent Program,  Prev: (dir),  Up: (dir)
 
 The 'indent' program changes the appearance of a C program by inserting
 or deleting whitespace.
-
-   This is Edition 2.0, May 2016, of 'The 'indent' Manual', for Indent
-Version 2.0
 
 * Menu:
 
@@ -891,7 +888,7 @@ The following copyright notice applies to the 'indent' program.  The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 
-     Copyright (C) 1999-2020, 2022 Thomas E. Dickey
+     Copyright (C) 1999-2022, 2024 Thomas E. Dickey
      Copyright (C) 1995, 1996 Joseph Arceneaux
      Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
      Copyright (C) 1985 Sun Microsystems, Inc.
@@ -1547,25 +1544,30 @@ Index
 
 
 Tag Table:
-Node: Top638
-Node: Indent Program1140
-Node: Invoking indent2222
-Ref: Invoking indent-Footnote-15933
-Node: Backup files6022
-Node: Common styles7882
-Node: Blank lines10419
-Node: -bad11634
-Node: -bap12274
-Node: Comments13129
-Node: Statements17915
-Node: Declarations21336
-Node: Indentation22988
-Node: Disabling Formatting25771
-Node: Other Languages28072
-Node: Miscellaneous options29271
-Node: Bugs30009
-Node: Copyright30317
-Node: Option Summary31810
-Node: Index43853
+Node: Top634
+Node: Indent Program1052
+Node: Invoking indent2134
+Ref: Invoking indent-Footnote-15845
+Node: Backup files5934
+Node: Common styles7794
+Node: Blank lines10331
+Node: -bad11546
+Node: -bap12186
+Node: Comments13041
+Node: Statements17827
+Node: Declarations21248
+Node: Indentation22900
+Node: Disabling Formatting25683
+Node: Other Languages27984
+Node: Miscellaneous options29183
+Node: Bugs29921
+Node: Copyright30229
+Node: Option Summary31722
+Node: Index43765
 
 End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:

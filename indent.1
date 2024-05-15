@@ -1,12 +1,17 @@
 '\" t
-.TH INDENT 1
+.TH INDENT 1 2024-05-14 "" "User Commands"
+.ie n .ds CW R
+.el   \{
+.ie \n(.g .ds CW CR
+.el       .ds CW CW
+.\}
 .de NS
 .ie n  .sp
 .el    .sp .5
 .ie n  .in +4
 .el    .in +2
 .nf
-.ft C \" Courier
+.ft \*(CW
 ..
 .de NE
 .fi
@@ -15,34 +20,31 @@
 .el    .in -2
 ..
 .SH NAME
-indent - indent.info
-.PP
-.\" This is indent.info, produced by makeinfo version 6.5 from
+indent \-
+indent.info
+.\" This is indent.info, produced by makeinfo version 6.8 from
 .\" indent.texinfo.
-.\" 
+.\"
 .\" INFO\-DIR\-SECTION Indent Code Formatter
 .\" START\-INFO\-DIR\-ENTRY
 .\" * CIndent: (cindent).           C code formatter (fork).
 .\" END\-INFO\-DIR\-ENTRY
-.\" 
-.\" Copyright (C) 1999\-2020, 2022 Thomas E. Dickey
+.\"
+.\" Copyright (C) 1999\-2022, 2024 Thomas E. Dickey
 .\" Copyright (C) 1995, 1996 Joseph Arceneaux
 .\" Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software
 .\" Foundation, Inc.
-.\" 
-.\"    This is Edition 2.0, October, 2020, of \fBThe \fRindent\fB Manual\fR, for
-.\" Indent Version 2.0
-.\" 
+.\"
+.\"    This is Edition 2.0, May, 2024, of \fBThe \fRindent\fB Manual\fR, for Indent
+.\" Version 2.0
+.\"
 .\"    Permission is granted to make and distribute verbatim copies of this
 .\" manual provided the copyright notice and this permission notice are
 .\" preserved on all copies.
-.\" 
-.SH \fBindent\fR: Indent and Format C Program Source
+.\"
+.SH "\fBindent\fR: Indent and Format C Program Source"
 The \fBindent\fR program changes the appearance of a C program by inserting
 or deleting whitespace.
-.PP
-This is Edition 2.0, May 2016, of \fBThe \fRindent\fB Manual\fR, for Indent
-Version 2.0
 .TS
 l l
 l l .
@@ -51,7 +53,7 @@ Indent Program	see \fBThe \fBindent\fR Program\fR
 Option Summary	see \fBOption Summary\fR
 Index	see \fBIndex\fR
 .TE
-.SH The \fBindent\fR Program
+.SH "The \fBindent\fR Program"
 The \fBindent\fR program can be used to make code easier to read.
 It can
 also convert from one style of writing C to another.
@@ -79,7 +81,7 @@ Miscellaneous options	see \fBMiscellaneous options\fR
 Bugs	see \fBBugs\fR
 Copyright	see \fBCopyright\fR
 .TE
-.SH Invoking \fBindent\fR
+.SH "Invoking \fBindent\fR"
 As of version 1.3, the format of the \fBindent\fR command is:
 .NS
 indent [OPTIONS] [INPUT\-FILES]
@@ -187,7 +189,7 @@ overrides this, as well.
 .PP
 (*) \fB+\fR is being superseded by \fB\-\-\fR to maintain consistency with the
 POSIX standard.
-.SH Backup Files
+.SH "Backup Files"
 As of version 1.3, GNU \fBindent\fR makes GNU\-style backup files, the same
 way GNU Emacs does.
 This means that either "simple" or "numbered"
@@ -231,7 +233,7 @@ to \fB.BAK\fR.
 Note also that other versions of \fBindent\fR make backups in the current
 directory, rather than in the directory of the source file as GNU
 \fBindent\fR now does.
-.SH Common styles
+.SH "Common styles"
 There are several common styles of C code, including the GNU style, the
 Kernighan & Ritchie style, and the original Berkeley style.
 A style may
@@ -296,8 +298,7 @@ This style is equivalent to the following settings:
 \-cli0 \-d0 \-di1 \-nfc1 \-i8 \-ip0 \-l80 \-lp \-npcs \-nprs \-npsl \-sai
 \-saf \-saw \-ncs \-nsc \-sob \-nfca \-cp33 \-ss \-ts8 \-il1
 .NE
-.PP
-.SH Blank lines
+.SH "Blank lines"
 Various programming styles use blank lines in different places.
 \fBindent\fR has a number of options to insert or delete blank lines in
 specific places.
@@ -329,7 +330,7 @@ Menu:
 \-bad	see \fBMore on the \fB\-bad\fR option.\fR
 \-bap	see \fBMore on the \fB\-bap\fR option.\fR
 .TE
-.SS \-\-blank\-lines\-after\-declarations
+.SS "\-\-blank\-lines\-after\-declarations"
 The \fB\-bad\fR option forces a blank line after every block of declarations.
 The \fB\-nbad\fR option does not add any such blank lines.
 .PP
@@ -360,8 +361,7 @@ char *bar;
 */
 int baz;
 .NE
-.PP
-.SS \-\-blank\-lines\-after\-procedures
+.SS "\-\-blank\-lines\-after\-procedures"
 The \fB\-bap\fR option forces a blank line after every procedure body.
 .PP
 For example, given the input
@@ -414,7 +414,7 @@ bar ()
 .NE
 .PP
 No blank line will be added after the procedure \fBfoo\fR.
-.SH Comments
+.SH "Comments"
 \fBindent\fR formats both C and C++ comments.
 C comments are begun with
 \fB/*\fR, terminated with \fB*/\fR and may contain newline characters.
@@ -538,8 +538,7 @@ Thus, the single\-line comment above can be transformed
  * Claustrophobia
  */
 .NE
-.PP
-.SH Statements
+.SH "Statements"
 The \fB\-br\fR or \fB\-bl\fR option specifies how to format braces.
 .PP
 The \fB\-br\fR option formats statement braces like this:
@@ -703,7 +702,7 @@ The \fB\-bs\fR option ensures that there is a space between the keyword
 \fBsizeof\fR and its argument.
 In some versions, this is known as the
 \fBBill_Shannon\fR option.
-.SH Declarations
+.SH "Declarations"
 By default \fBindent\fR will line up identifiers, in the column specified by
 the \fB\-di\fR option.
 For example, \fB\-di16\fR makes things look like:
@@ -764,7 +763,7 @@ you would use the options \fB\-T CODE_ADDR \-T COLOR\fR.
 You may also use the \fB\-ta\fR option to tell \fBindent\fR to interpret
 identifiers ending with "_t" as if they were type\-names declared by
 \fB\-T\fR.
-.SH Indentation
+.SH "Indentation"
 One issue in the formatting of code is how far each line should be
 indented from the left margin.
 When the beginning of a statement such
@@ -840,7 +839,7 @@ Use the \fB\-eei\fR option to tell \fBindent\fR to improve readability of
 continuation lines from the expression part of \fBif(e)\fR, \fBwhile(e)\fR,
 \fBfor(e;e;e)\fR by indenting an extra tab stop so that they do not conflict
 with the code that follows.
-.SH Disabling Formatting
+.SH "Disabling Formatting"
 Formatting of C code may be disabled for portions of a program by
 embedding special "control comments" in the program.
 To turn off
@@ -911,8 +910,7 @@ dimensions = 2;
 x          = 5;
 y          += 6;
 .NE
-.PP
-.SH Other Languages
+.SH "Other Languages"
 In addition to recognizing C++ comments (which are now standard in C),
 \fBindent\fR provides limited support for C++ constructs:
 .PP
@@ -946,7 +944,7 @@ output.
 .NE
 .PP
 Other C statements within "rules" are not currently formatted.
-.SH Miscellaneous options
+.SH "Miscellaneous options"
 To find out what version of \fBindent\fR you have, use the command \fBindent
 \-\-version\fR.
 This will report the version number of \fBindent\fR, without
@@ -963,18 +961,18 @@ The \fB\-D\fR option can be used to turn on debugging traces.
 Its
 parameter gives the debugging level (0 is off, 1 is on, 2 is more
 verbose).
-.SH Bugs
+.SH "Bugs"
 The "\-troff" option is strongly deprecated, and is not supported.
 A
 good thing for someone to do is to rewrite \fBindent\fR to generate TeX
 source as a hardcopy output option, among other things.
-.SH Copyright
+.SH "Copyright"
 The following copyright notice applies to the \fBindent\fR program.
 The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 .NS
-Copyright (C) 1999\-2020, 2022 Thomas E. Dickey
+Copyright (C) 1999\-2022, 2024 Thomas E. Dickey
 Copyright (C) 1995, 1996 Joseph Arceneaux
 Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright (C) 1985 Sun Microsystems, Inc.
@@ -997,8 +995,7 @@ IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 PURPOSE.
 .NE
-.PP
-.SH Option Summary
+.SH "Option Summary"
 Here is a list of all the options for \fBindent\fR, alphabetized by short
 option.
 It is followed by a cross key alphabetized by long option.
@@ -1596,7 +1593,7 @@ Enable verbose mode.
 Output the version number of \fBindent\fR.
 (see \fBMiscellaneous options\fR).
 .RE
-.SS Options' Cross Key
+.SS "Options' Cross Key"
 Here is a list of options alphabetized by long option, to help you find
 the corresponding short option.
 .NS
@@ -1663,8 +1660,7 @@ the corresponding short option.
 \-\-use\-tabs                                      \-ut
 \-\-verbose                                       \-v
 .NE
-.PP
-.SH Index
+.SH "Index"
 .TS
 l l
 l l .

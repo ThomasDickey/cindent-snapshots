@@ -1,7 +1,7 @@
 /*
- * $Id: ncu-profile,v 1.16 2021/08/21 10:18:27 tom Exp $
+ * $Id: ncu-profile,v 1.18 2024/05/15 00:15:35 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010-2019,2021 Thomas E. Dickey                            *
+ * Copyright (c) 2010-2021,2024 Thomas E. Dickey                            *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -141,6 +141,7 @@
 -T RegisGraphicsContext
 -T RegisParseLevel
 -T RegisParseState
+-T RegisPoint
 -T RegisTextControls
 -T RegisWriteControls
 -T RegisterNum

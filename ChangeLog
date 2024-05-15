@@ -1,4 +1,13 @@
--- $Id: ChangeLog,v 1.134 2023/02/05 14:39:33 tom Exp $
+-- $Id: ChangeLog,v 1.138 2024/05/15 00:13:53 tom Exp $
+
+2024-05-14
+	+ improve manpage formatting.
+
+	+ add a few typedefs to lnx-profile and ncu-profile.
+
+	+ improved configure script checks, reducing compiler warnings.
+
+	+ update config.guess, config.sub
 
 2023-02-05
 	+ improved configure script checks, reducing compiler warnings.

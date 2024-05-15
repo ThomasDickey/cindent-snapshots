@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
-# $Id: make-man.pl,v 1.27 2022/10/16 13:33:06 tom Exp $
+# $Id: make-man.pl,v 1.34 2024/05/15 00:13:09 tom Exp $
 #------------------------------------------------------------------------------
-# Copyright:  2010-2020,2022 by Thomas E. Dickey
+# Copyright:  2010-2022,2024 by Thomas E. Dickey
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the
@@ -32,7 +32,8 @@
 
 use strict;
 use warnings;
-use diagnostics;
+
+use POSIX qw(strftime);
 
 our $margin = 70;
 our $ignore = ".";
@@ -142,6 +143,31 @@ sub is_title($$) {
     return $result;
 }
 
+sub isnt_title($$) {
+    my $item   = $_[0];
+    my @data   = @{ $_[1] };
+    my $result = 1;
+    my $skip   = 0;
+    while ( $item + 1 < $#data ) {
+        my $text = $data[$item];
+        if ( $skip != 0 ) {
+            $skip = 0;
+        }
+        elsif ( $text =~ /^\037/ ) {
+            $skip = 1;
+        }
+        elsif ( $text ne "" ) {
+            last;
+        }
+        ++$item;
+    }
+    if ( $item + 1 < $#data ) {
+        my $check = &is_title( $data[$item], $data[ $item + 1 ] );
+        $result = 0 if ( $check ne "" );
+    }
+    return $result;
+}
+
 sub do_file($) {
     my ($name) = @_;
     my $n;
@@ -226,7 +252,8 @@ sub do_file($) {
                 elsif ( &is_para_body($next) ) {
                     if ( $DS ne 0 ) {
                         $markup[$n] .= ".NE";
-                        $markup[$n] .= ".PP";
+                        $markup[$n] .= ".PP"
+                          if ( &isnt_title( $n + 1, \@input ) );
                         $DS = 0;
                     }
                     elsif ( $TS ne 0 ) {
@@ -300,7 +327,7 @@ sub do_file($) {
                     }
                     $section = &is_title( $input[$n], $next );
                     if ( $section ne "" ) {
-                        $input[$n] = $section . " " . $input[$n];
+                        $input[$n] = $section . " \"" . $input[$n] . "\"";
                         $input[ $n + 1 ] = $ignore;
                         next;
                     }
@@ -328,20 +355,27 @@ sub do_file($) {
             $wrap = 1;
             $input[$n] =~ s/['`]/\\fB/;
         }
+        $input[$n] =~ s/\s+$//;
     }
 
     my $rootname = $name;
     $rootname =~ s/\..*//;
     my $ROOTNAME = uc($rootname);
+    my $date     = strftime "%Y-%m-%d", localtime;
     printf "'\\\" t
-.TH $ROOTNAME 1
+.TH $ROOTNAME 1 $date \"\" \"User Commands\"
+.ie n .ds CW R
+.el   \\{
+.ie \\n(.g .ds CW CR
+.el       .ds CW CW
+.\\}
 .de NS
 .ie n  .sp
 .el    .sp .5
 .ie n  .in +4
 .el    .in +2
 .nf
-.ft C \\\" Courier
+.ft \\*(CW
 ..
 .de NE
 .fi
@@ -350,8 +384,8 @@ sub do_file($) {
 .el    .in -2
 ..
 .SH NAME
-$rootname \- $name
-.PP
+$rootname \\-
+$name
 ";
 
     for $n ( 0 .. $#input ) {

@@ -24,12 +24,12 @@
 @end direntry
 
 @ifinfo
-Copyright @copyright{} 1999-2020, 2022 Thomas E. Dickey@*
+Copyright @copyright{} 1999-2022, 2024 Thomas E. Dickey@*
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux@*
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.@*
 
 @c !!set edition, date, version
-This is Edition 2.0, October, 2020, of @cite{The @code{indent} Manual},
+This is Edition 2.0, May, 2024, of @cite{The @code{indent} Manual},
 for Indent Version 2.0
 
 Permission is granted to make and distribute verbatim copies of
@@ -58,12 +58,12 @@ original English.
 @sp 1
 @c !!set edition, version, date
 @subtitle Edition 2.0, for Indent Version 2.0
-@subtitle October, 2020
+@subtitle October, 2024
 @author Thomas E. Dickey
 @author Joseph Arceneaux
 @page
 @vskip 0pt plus1filll
-Copyright @copyright{} 1999-2020, 2022 Thomas E. Dickey
+Copyright @copyright{} 1999-2022, 2024 Thomas E. Dickey
 
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 
@@ -99,8 +99,6 @@ The @code{indent} program changes the appearance of a C program by
 inserting or deleting whitespace.
 
 @comment !!set edition, version, date
-This is Edition 2.0, May 2016, of @cite{The @code{indent} Manual},
-for Indent Version 2.0
 @end ifinfo
 
 @menu
@@ -1329,7 +1327,7 @@ The copyright and copying permissions for this manual appear near the
 beginning of this document.
 
 @display
-Copyright @copyright{} 1999-2020, 2022 Thomas E. Dickey
+Copyright @copyright{} 1999-2022, 2024 Thomas E. Dickey
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright @copyright{} 1985 Sun Microsystems, Inc.

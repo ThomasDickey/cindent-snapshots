@@ -1,7 +1,7 @@
 /*
- * $Id: lnx-profile,v 1.9 2018/12/26 13:14:11 tom Exp $
+ * $Id: lnx-profile,v 1.11 2024/05/15 00:15:12 tom Exp $
  ****************************************************************************
- * Copyright (c) 2010,2018 Thomas E. Dickey                                 *
+ * Copyright (c) 2010-2018,2024 Thomas E. Dickey                            *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -89,6 +89,7 @@
 -T InitResponseAPDU 
 -T Item 
 -T ItemList 
+-T LinkInfo
 -T LYEditCode
 -T LYKbLayout_t
 -T LYKeymap_t
