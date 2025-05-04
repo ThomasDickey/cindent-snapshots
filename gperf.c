@@ -250,6 +250,6 @@ is_reserved (register const char *str, register size_t len)
             return &wordlist[key];
         }
     }
-  return 0;
+  return NULL;
 }
 /* *INDENT-ON* */

@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2020,2022, Thomas E. Dickey
+   Copyright 1999-2022,2025, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -164,7 +164,7 @@ pass_line (char *p)
     {
       buf_ptr = buf_end = in_prog_pos = p;
       had_eof = true;
-      p = 0;
+      p = NULL;
     }
   return p;
 }
@@ -303,7 +303,7 @@ static int
 preprocessor_level (struct parser_state *p)
 {
   int level = 0;
-  while (p != 0)
+  while (p != NULL)
     {
       if (p->preprocessor_indent)
 	++level;
@@ -403,7 +403,7 @@ dump_line (void)
 
 	      if (s_key >= e_lab)
 		{
-		  s_key = 0;
+		  s_key = NULL;
 		}
 	      else if (preprocessor_indentation)
 		{
@@ -417,10 +417,10 @@ dump_line (void)
 	    }
 	  else
 	    {
-	      s_key = 0;
+	      s_key = NULL;
 	    }
 	  cur_col = pad_output (cur_col, label_target);
-	  if (s_key != 0
+	  if (s_key != NULL
 	      && (strncmp (s_key, "else", (size_t) 4) == 0
 		  || strncmp (s_key, "endif", (size_t) 5) == 0))
 	    {
@@ -709,7 +709,7 @@ read_file (const char *filename)
   if (file_stats.st_size < 0)
     fatal ("System problem reading file %s", filename);
   fileptr.size = (unsigned long) file_stats.st_size;
-  if (fileptr.data != 0)
+  if (fileptr.data != NULL)
     fileptr.data = (char *) xrealloc (fileptr.data,
 				      (size_t) file_stats.st_size + 1);
   else
@@ -727,7 +727,7 @@ read_file (const char *filename)
   if ((size_t) size < fileptr.size)
     fileptr.size = (size_t) size;
 
-  if (fileptr.name != 0)
+  if (fileptr.name != NULL)
     fileptr.name = (char *) xrealloc (fileptr.name, namelen + 1);
   else
     fileptr.name = (char *) xmalloc (namelen + 1);
@@ -752,7 +752,7 @@ read_stdin (void)
   int ch = EOF;
   char *p;
 
-  if (stdinptr.data != 0)
+  if (stdinptr.data != NULL)
     free (stdinptr.data);
 
   stdinptr.data = (char *) xmalloc (size + 1);
@@ -818,11 +818,11 @@ fill_buffer (void)
   /* indent() may be saving the text between "if (...)" and the following
      statement.  To do so, it uses another buffer (`save_com').  Switch
      back to the previous buffer here. */
-  if (bp_save != 0)
+  if (bp_save != NULL)
     {
       buf_ptr = bp_save;
       buf_end = be_save;
-      bp_save = be_save = 0;
+      bp_save = be_save = NULL;
 
       /* only return if there is really something in this buffer */
       if (!at_buffer_end (buf_ptr))

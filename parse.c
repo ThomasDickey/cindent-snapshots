@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2019,2022, Thomas E. Dickey
+   Copyright 1999-2022,2025, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -192,7 +192,7 @@ void
 reset_parser (void)
 {
   /* *INDENT-EQLS* */
-  parser_state_tos->next               = 0;
+  parser_state_tos->next               = NULL;
   parser_state_tos->tos                = 0;
   parser_state_tos->paren_indents_size = 1;
   parser_state_tos->p_stack[0]         = stmt;
@@ -262,8 +262,8 @@ reset_parser (void)
   out_line_no = 1;
   had_eof = false;
   break_comma = false;
-  bp_save = 0;
-  be_save = 0;
+  bp_save = NULL;
+  be_save = NULL;
 
   if (tabsize <= 0)
     tabsize = 1;

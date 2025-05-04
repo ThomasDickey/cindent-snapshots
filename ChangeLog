@@ -1,4 +1,11 @@
--- $Id: ChangeLog,v 1.138 2024/05/15 00:13:53 tom Exp $
+-- $Id: ChangeLog,v 1.140 2025/05/04 22:51:09 tom Exp $
+
+2025-05-04
+	+ improve manpage formatting.
+
+	+ improved configure script checks, reducing compiler warnings.
+
+	+ update config.guess, config.sub
 
 2024-05-14
 	+ improve manpage formatting.

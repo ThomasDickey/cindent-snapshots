@@ -6,7 +6,7 @@ START-INFO-DIR-ENTRY
 * CIndent: (cindent).           C code formatter (fork).
 END-INFO-DIR-ENTRY
 
-Copyright (C) 1999-2022, 2024 Thomas E. Dickey
+Copyright (C) 1999-2024, 2025 Thomas E. Dickey
 Copyright (C) 1995, 1996 Joseph Arceneaux
 Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software
 Foundation, Inc.
@@ -43,7 +43,7 @@ The 'indent' program can be used to make code easier to read.  It can
 also convert from one style of writing C to another.
 
    'indent' understands a substantial amount about the syntax of C, but
-it also attempts to cope with incomplete and misformed syntax.
+it also attempts to cope with incomplete and malformed syntax.
 
    In version 1.2 and more recent versions, the GNU style of indenting
 is the default.
@@ -861,8 +861,8 @@ doing any of the normal processing.
    Use the '--help' option to get a usage summary.
 
    The '-v' option can be used to turn on verbose mode.  When in verbose
-mode, 'indent' reports when it splits one line of input into two more
-more lines of output, and gives some size statistics at completion.
+mode, 'indent' reports when it splits one line of input into two or more
+lines of output, and gives some size statistics at completion.
 
    The '-D' option can be used to turn on debugging traces.  Its
 parameter gives the debugging level (0 is off, 1 is on, 2 is more
@@ -888,7 +888,7 @@ The following copyright notice applies to the 'indent' program.  The
 copyright and copying permissions for this manual appear near the
 beginning of this document.
 
-     Copyright (C) 1999-2022, 2024 Thomas E. Dickey
+     Copyright (C) 1999-2024, 2025 Thomas E. Dickey
      Copyright (C) 1995, 1996 Joseph Arceneaux
      Copyright (C) 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
      Copyright (C) 1985 Sun Microsystems, Inc.
@@ -1560,10 +1560,10 @@ Node: Indentation22900
 Node: Disabling Formatting25683
 Node: Other Languages27984
 Node: Miscellaneous options29183
-Node: Bugs29921
-Node: Copyright30229
-Node: Option Summary31722
-Node: Index43765
+Node: Bugs29919
+Node: Copyright30227
+Node: Option Summary31720
+Node: Index43763
 
 End Tag Table
 

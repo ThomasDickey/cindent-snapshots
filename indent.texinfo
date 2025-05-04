@@ -24,7 +24,7 @@
 @end direntry
 
 @ifinfo
-Copyright @copyright{} 1999-2022, 2024 Thomas E. Dickey@*
+Copyright @copyright{} 1999-2024, 2025 Thomas E. Dickey@*
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux@*
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.@*
 
@@ -58,12 +58,12 @@ original English.
 @sp 1
 @c !!set edition, version, date
 @subtitle Edition 2.0, for Indent Version 2.0
-@subtitle October, 2024
+@subtitle May, 2025
 @author Thomas E. Dickey
 @author Joseph Arceneaux
 @page
 @vskip 0pt plus1filll
-Copyright @copyright{} 1999-2022, 2024 Thomas E. Dickey
+Copyright @copyright{} 1999-2024, 2025 Thomas E. Dickey
 
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 
@@ -124,7 +124,7 @@ can be used to make code easier to read.  It can also convert from one
 style of writing C to another.
 
 @code{indent} understands a substantial amount about the syntax of C,
-but it also attempts to cope with incomplete and misformed syntax.
+but it also attempts to cope with incomplete and malformed syntax.
 
 In version 1.2 and more recent versions, the GNU style of indenting is
 the default.
@@ -269,7 +269,6 @@ The option accepts a parameter which can be either an absolute pathname
 If the pathname is relative, @code{indent} searches in the current
 and home directories just like the @file{.indent.pro} file.
 The @samp{-npro} option overrides this, as well.
-@refill
 
 @node Backup files, Common styles, Invoking indent, Indent Program
 @comment  node-name,  next,  previous,  up
@@ -929,7 +928,6 @@ body of the @code{for} or @code{while} statement is an empty statement.
 The @samp{-pcs} option causes a space to be placed between the name of
 the procedure being called and the @samp{(} (for example, @w{@code{puts
 ("Hi");}}.  The @samp{-npcs} option would give @code{puts("Hi");}).
-@refill
 
 @kindex -cs
 @kindex --space-after-cast
@@ -1302,7 +1300,7 @@ in place.
 @kindex --no-verbosity
 The @samp{-v} option can be used to turn on verbose mode.  When in
 verbose mode, @code{indent} reports when it splits one line of input
-into two more more lines of output, and gives some size statistics at
+into two or more lines of output, and gives some size statistics at
 completion.
 
 @kindex -D
@@ -1327,7 +1325,7 @@ The copyright and copying permissions for this manual appear near the
 beginning of this document.
 
 @display
-Copyright @copyright{} 1999-2022, 2024 Thomas E. Dickey
+Copyright @copyright{} 1999-2024, 2025 Thomas E. Dickey
 Copyright @copyright{} 1995, 1996 Joseph Arceneaux
 Copyright @copyright{} 1989, 1992, 1993, 1994, 1995, 1996 Free Software Foundation
 Copyright @copyright{} 1985 Sun Microsystems, Inc.

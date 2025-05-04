@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2019,2022, Thomas E. Dickey
+   Copyright 1999-2022,2025, Thomas E. Dickey
 
    Copyright (c) 1994,1996,1997, Joseph Arceneaux.  All rights reserved.
 
@@ -276,7 +276,7 @@ indent (struct file_buffer *this_file)
   scase = false;
   squest = false;
 
-  buf_break = 0;
+  buf_break = NULL;
   break_line = 0;
 
   if (decl_com_ind <= 0)	/* if not specified by user, set this */
@@ -1584,7 +1584,7 @@ indent (struct file_buffer *this_file)
 		com_end = (int) (e_lab - s_lab);
 	      }
 
-	    if (e_lab - s_lab == com_end && bp_save == 0)
+	    if (e_lab - s_lab == com_end && bp_save == NULL)
 	      {			/* comment on preprocessor line */
 		size_t added;
 
@@ -1846,7 +1846,7 @@ indent (struct file_buffer *this_file)
          declaration types (int, etc.), if, while, for,
          identifiers (handled at the beginning of the loop),
          periods, or preprocessor commands. */
-      if (max_col > 0 && buf_break != 0)
+      if (max_col > 0 && buf_break != NULL)
 	{
 	  if (((type_code == binary_op)
 	       || (type_code == postop)
@@ -1866,16 +1866,16 @@ indent (struct file_buffer *this_file)
     }				/* end of main while (1) loop */
 }
 
-const char *progname = 0;	/* actual name of this program */
+const char *progname = NULL;	/* actual name of this program */
 
 /* Points to current input file name */
-const char *in_name = 0;
+const char *in_name = NULL;
 
 /* Points to the current input buffer */
-struct file_buffer *current_input = 0;
+struct file_buffer *current_input = NULL;
 
 /* Points to the name of the output file */
-static const char *out_name = 0;
+static const char *out_name = NULL;
 
 /* How many input files were specified */
 static size_t input_files;
@@ -1904,12 +1904,12 @@ int
 main (int argc, char **argv)
 {
   int i;
-  char *profile_pathname = 0;
+  char *profile_pathname = NULL;
   int using_stdin = false;
   enum exit_values exit_status;
   const char *profile_filename = INDENT_PROFILE;
 
-  if ((progname = strrchr (argv[0], '/')) != 0)
+  if ((progname = strrchr (argv[0], '/')) != NULL)
     ++progname;
   else
     progname = argv[0];
@@ -1919,7 +1919,7 @@ main (int argc, char **argv)
   initialize_backups ();
   exit_status = total_success;
 
-  output = 0;
+  output = NULL;
   input_files = 0;
   in_file_names = (const char **) xmalloc (max_input_files * sizeof (char *));
 
@@ -1939,7 +1939,7 @@ main (int argc, char **argv)
       if (strcmp (param, "--profile") == 0)
 	{
 	  profile_filename = argv[++i];
-	  if (profile_filename == 0)
+	  if (profile_filename == NULL)
 	    usage ();
 	}
     }
@@ -1954,7 +1954,7 @@ main (int argc, char **argv)
 	{
 	  if (expect_output_file == true)	/* Last arg was "-o" */
 	    {
-	      if (out_name != 0)
+	      if (out_name != NULL)
 		{
 		  fprintf (stderr,
 			   "%s: only one output file (2nd was %s)\n",
@@ -1988,7 +1988,7 @@ main (int argc, char **argv)
 	      input_files++;
 	      if (input_files > 1)
 		{
-		  if (out_name != 0)
+		  if (out_name != NULL)
 		    {
 		      fprintf (stderr,
 			       "%s: only one input file when output file is specified\n",
@@ -2037,7 +2037,7 @@ main (int argc, char **argv)
 	      ++i;
 	    }
 	  else
-	    i += set_option (param, (i < argc ? argv[i + 1] : 0), 1);
+	    i += set_option (param, (i < argc ? argv[i + 1] : NULL), 1);
 	}
     }
 
@@ -2058,7 +2058,7 @@ main (int argc, char **argv)
 	  in_name = out_name = in_file_names[i];
 	  current_input = read_file (in_file_names[i]);
 	  output = fopen (out_name, "w");
-	  if (output == 0)
+	  if (output == NULL)
 	    {
 	      fprintf (stderr, "%s: can't create %s\n", progname, out_name);
 	      exit (indent_fatal);
@@ -2104,7 +2104,7 @@ main (int argc, char **argv)
       else
 	{
 	  output = fopen (out_name, "w");
-	  if (output == 0)
+	  if (output == NULL)
 	    {
 	      fprintf (stderr, "%s: can't create %s\n", progname, out_name);
 	      exit (invocation_error);

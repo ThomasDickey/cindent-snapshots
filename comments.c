@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2018,2022, Thomas E. Dickey
+   Copyright 1999-2022,2025, Thomas E. Dickey
 
    Copyright (c) 1993 - 1998, Joseph Arceneaux.  All rights reserved.
 
@@ -84,9 +84,9 @@ print_comment (void)
 
   int two_contiguous_comments = 0;
   int save_length = 0;
-  char *save_ptr = 0;
-  char *text_on_line = 0;
-  char *line_break_ptr = 0;
+  char *save_ptr = NULL;
+  char *text_on_line = NULL;
+  char *line_break_ptr = NULL;
   const char *start_delim;
 
   const char *line_preamble;
@@ -201,7 +201,7 @@ print_comment (void)
   else
     {
       start_delim = "/*";
-      line_preamble = 0;
+      line_preamble = NULL;
       line_preamble_length = 0;
       visible_preamble = 0;
       boxed_comment = 0;
@@ -646,7 +646,7 @@ print_comment (void)
 	}
       else
 	column = start_column;
-      line_break_ptr = 0;
+      line_break_ptr = NULL;
 
       /* If we have broken the line before the end for formatting,
          copy the text after the break onto the beginning of this
@@ -664,7 +664,7 @@ print_comment (void)
 	  /* We only break if formatting, in which cases there
 	     are no tabs, only spaces. */
 	  column += save_length;
-	  save_ptr = 0;
+	  save_ptr = NULL;
 	  save_length = 0;
 	}
       else
@@ -672,7 +672,7 @@ print_comment (void)
 	  while (isblank (*buf_ptr))
 	    if (at_buffer_end (++buf_ptr))
 	      fill_buffer ();
-	  text_on_line = 0;
+	  text_on_line = NULL;
 	}
     }
 

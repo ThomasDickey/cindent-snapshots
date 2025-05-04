@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2019,2020, Thomas E. Dickey
+   Copyright 1999-2020,2025, Thomas E. Dickey
 
    Copyright (c) 1993,1994, Joseph Arceneaux.  All rights reserved.
 
@@ -174,7 +174,7 @@ highest_version (const char *filename, const char *dirname)
   the_highest = 0;
   file_name_length = strlen (filename);
 
-  while ((dp = readdir (dirp)) != 0)
+  while ((dp = readdir (dirp)) != NULL)
     {
       if (!REAL_DIR_ENTRY (dp) || NAMLEN (dp) <= file_name_length + 2)
 	continue;
@@ -236,7 +236,7 @@ generate_backup_filename (
   char *backup_name;
 
   if (the_mode == none)
-    return 0;
+    return NULL;
 
   if (the_mode == simple)
     return simple_backup_name (pathname);
@@ -249,7 +249,7 @@ generate_backup_filename (
   last_numbered_version++;
   backup_name = xmalloc (strlen (pathname) + 16);
   if (!backup_name)
-    return 0;
+    return NULL;
 
   sprintf (backup_name, BACKUP_SUFFIX_FORMAT, pathname,
 	   (int) last_numbered_version);
@@ -266,7 +266,7 @@ static struct version_control_values values[] =
   {numbered_existing, "nil"},	/* Ditto */
   {numbered, "numbered"},	/* Numbered backups */
   {numbered, "t"},		/* Ditto */
-  {unknown, 0}			/* Initial, undefined value. */
+  {unknown, NULL}		/* Initial, undefined value. */
 };
 
 /* Determine the value of `version_control' by looking in the
@@ -280,7 +280,7 @@ version_control_value (void)
   struct version_control_values *v;
 
   version = getenv ("VERSION_CONTROL");
-  if (version == 0 || *version == 0)
+  if (version == NULL || *version == 0)
     return numbered_existing;
 
   v = &values[0];

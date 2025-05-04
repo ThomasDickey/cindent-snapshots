@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2020,2022, Thomas E. Dickey
+   Copyright 1999-2022,2025, Thomas E. Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved.
 
@@ -251,31 +251,31 @@ struct pro
   };
 
 #define INIT_BOOL(name, dft, subtype, obj) \
-  {#name, PRO_BOOL, dft, subtype, &obj,0,0, &exp_##name}
+  {#name, PRO_BOOL, dft, subtype, &obj,NULL,NULL, &exp_##name}
 
 #define INIT_FONT(name, dft, subtype, obj) \
-  {#name, PRO_FONT, dft, subtype, (int *) (void *) &obj,0,0, &exp_##name}
+  {#name, PRO_FONT, dft, subtype, (int *) (void *) &obj,NULL,NULL, &exp_##name}
 
 #define INIT_FUNC(name, dft, subtype, obj) \
-  {#name, PRO_FUNC, dft, subtype, 0,0,obj, &exp_##name}
+  {#name, PRO_FUNC, dft, subtype, NULL,NULL,obj, &exp_##name}
 
 #define INIT_SKIP(name, dft, subtype, obj) \
-  {#name, PRO_SKIP, dft, subtype, obj,0,0, &exp_##name}
+  {#name, PRO_SKIP, dft, subtype, obj,NULL,NULL, &exp_##name}
 
 #define INIT_INTS(name, dft, subtype, obj) \
-  {#name, PRO_INTS, dft, subtype, &obj,0,0, &exp_##name}
+  {#name, PRO_INTS, dft, subtype, &obj,NULL,NULL, &exp_##name}
 
 #define INIT_KEYS(name, dft, subtype, obj) \
-  {#name, PRO_KEYS, dft, subtype, obj,0,0, &exp_##name}
+  {#name, PRO_KEYS, dft, subtype, obj,NULL,NULL, &exp_##name}
 
 #define INIT_TEXT(name, dft, subtype, obj) \
-  {#name, PRO_TEXT, dft, subtype, 0,obj,0, &exp_##name}
+  {#name, PRO_TEXT, dft, subtype, NULL,obj,NULL, &exp_##name}
 
 #define INIT_LIST(name, dft, subtype, obj) \
-  {#name, PRO_LIST, dft, subtype, 0,obj,0, &exp_##name}
+  {#name, PRO_LIST, dft, subtype, NULL,obj,NULL, &exp_##name}
 
 #define INIT_NULL() \
-  {NULL, PRO_SKIP, 0, 0, NULL,0,0, NULL}
+  {NULL, PRO_SKIP, 0, 0, NULL,NULL,NULL, NULL}
 
 #define SETTINGS_BSD \
 "-nbap\0-nbad\0-bc\0-br\0-c33\0-cd33\0-cdb\0-ce\0-ci4\0\
@@ -353,7 +353,7 @@ struct pro
 static struct pro pro[] =
 {
   INIT_INTS (D,       0,        ONOFF_NA, debug),
-  INIT_KEYS (T,       0,        ONOFF_NA, 0),
+  INIT_KEYS (T,       0,        ONOFF_NA, NULL),
   INIT_BOOL (bacc,    DFT_BACC, ON,       blanklines_around_conditional_compilation),
   INIT_BOOL (badp,    DFT_BADP, ON,       blanklines_after_declarations_at_proctop),
   INIT_BOOL (bad,     DFT_BAD,  ON,       blanklines_after_declarations),
@@ -426,7 +426,7 @@ static struct pro pro[] =
   INIT_BOOL (nlps,    DFT_LPS,  OFF,      leave_preproc_space),
   INIT_BOOL (nlp,     DFT_LP,   OFF,      lineup_to_parens),
   INIT_BOOL (npcs,    DFT_PCS,  OFF,      proc_calls_space),
-  INIT_SKIP (npro,    0,        ONOFF_NA, 0),
+  INIT_SKIP (npro,    0,        ONOFF_NA, NULL),
   INIT_BOOL (nprs,    DFT_PRS,  OFF,      parentheses_space),
   INIT_BOOL (npsl,    DFT_PSL,  OFF,      procnames_start_line),
   INIT_BOOL (nsc,     DFT_SC,   OFF,      star_comment_cont),
@@ -572,7 +572,7 @@ static struct long_option_conversion option_conversions[] =
   INIT_LONG (ts,      "tab-size"),
   INIT_LONG (version, "version"),
   INIT_LONG (v,       "verbose"),
-  {0, 0},
+  {NULL, NULL},
 };
 /* *INDENT-ON* */
 
@@ -612,7 +612,7 @@ static const char *option_prefixes[] =
   "--",
   "-",
   "+",
-  0
+  NULL
 };
 
 static int
@@ -711,7 +711,7 @@ found:
     {
       if (verbose)
 	{
-	  const char *use_param = 0;
+	  const char *use_param = NULL;
 
 	  fflush (stdout);
 	  switch (p->p_type)
@@ -756,7 +756,7 @@ found:
 	    t = StringData (p);
 	    do
 	      {
-		set_option (t, 0, 0);
+		set_option (t, NULL, 0);
 		/* advance to character following next NUL */
 		while (*t++);
 	      }
@@ -838,7 +838,7 @@ scan_profile (FILE * f)
   char b1[BUFSIZ];
 
   next = b0;
-  this = 0;
+  this = NULL;
   while (1)
     {
       for (p = next; ((i = getc (f)) != EOF
@@ -898,7 +898,7 @@ scan_profile (FILE * f)
 
 	  if (set_option (this, next, 1))
 	    {
-	      this = 0;
+	      this = NULL;
 	      next = b0;
 	      continue;
 	    }
@@ -910,7 +910,7 @@ scan_profile (FILE * f)
       else if (i == EOF)
 	{
 	  if (this)
-	    set_option (this, 0, 1);
+	    set_option (this, NULL, 1);
 	  return;
 	}
     }
@@ -968,7 +968,7 @@ set_profile (const char *given)
       free (fname);
     }
 
-  return 0;
+  return NULL;
 }
 
 void
@@ -976,7 +976,7 @@ print_options (void)
 {
   struct pro *p, *q, *r;
 
-  for (p = pro, q = 0; p->p_name; q = p++)
+  for (p = pro, q = NULL; p->p_name; q = p++)
     {
       if (p->p_name[0] == 'n' && p->p_type != PRO_SKIP)
 	{

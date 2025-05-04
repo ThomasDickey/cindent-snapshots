@@ -1,5 +1,5 @@
 /*
-   Copyright 1999-2020,2022 Thomas Dickey
+   Copyright 1999-2022,2025 Thomas Dickey
 
    Copyright (c) 1994, Joseph Arceneaux.  All rights reserved
 
@@ -47,7 +47,7 @@ struct templ
   };
 
 /* Pointer to a vector of keywords specified by the user.  */
-static struct templ *user_specials = 0;
+static struct templ *user_specials = NULL;
 
 /* Allocated size of user_specials.  */
 static unsigned int user_specials_max;
@@ -219,7 +219,7 @@ parse_token (void)
       /* Check whether the token is a reserved word.  Use perfect hashing... */
       p = is_reserved (token, (unsigned) (token_end - token));
 
-      if (!p && user_specials != 0)
+      if (!p && user_specials != NULL)
 	{
 	  for (p = &user_specials[0];
 	       p < &user_specials[0] + user_specials_idx;
@@ -250,7 +250,7 @@ parse_token (void)
 		}
 	    }
 	  /* Didn't find anything in user_specials.  */
-	  p = 0;
+	  p = NULL;
 	}
 
       if (p)
@@ -849,10 +849,10 @@ addkey (const char *key, enum rwcodes val)
   struct templ *p;
 
   /* Check to see whether key is a reserved word or not. */
-  if (is_reserved (key, (unsigned) strlen (key)) != 0)
+  if (is_reserved (key, (unsigned) strlen (key)) != NULL)
     return 0;
 
-  if (user_specials == 0)
+  if (user_specials == NULL)
     {
       user_specials = (struct templ *) xmalloc (5 * sizeof (struct templ));
       user_specials_max = 5;
